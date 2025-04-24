@@ -1,7 +1,7 @@
-# watrkit v2
-yea this is the second interation because the first one sucked.
+# watrbx slightly rewritten
+this is basically just on a newer codebase but on a branch because im not done and a lot of the time it 500s
 
-this project supports up to php 8.0 (because dependencies aren't fully updated) unless you're willing to ignore deprecation notices or fix it yourself
+if you'd like to help & speed things up feel free too by forking
 
 # Setup
 configure .env-example and rename it to .env
@@ -9,4 +9,4 @@ configure .env-example and rename it to .env
 install composer and run
 `composer install`
 
-that's all for now, this is a really early version so don't expect much.
+then you should be done for now.
