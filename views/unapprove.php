@@ -4,7 +4,7 @@
     use watrlabs\authentication;
     $auth = new authentication();
     $auth->requiresession();
-    $userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+    $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
     $pagebuilder->set_page_name("Unapproved");
     $pagebuilder->buildheader();
     include(baseurl . "/conn.php");

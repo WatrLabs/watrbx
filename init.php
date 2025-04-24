@@ -2,6 +2,7 @@
 use Pixie\Connection;
 use Pixie\QueryBuilder\QueryBuilderHandler;
 use watrlabs\router\routing;
+
 global $dotenv;
 global $db;
 
@@ -32,6 +33,10 @@ spl_autoload_register(function ($class_name) {
         if($_ENV["APP_ENV"] == "debug" || $_ENV["APP_ENV"] == "dev"){
             throw new ErrorException("Failed to include class $class_name");
         } else {
+
+            throw new ErrorException("Failed to include class $class_name");
+            die();
+
             $e = array(
                 "e"=>"Failed to include class $class_name",
             );
@@ -40,7 +45,6 @@ spl_autoload_register(function ($class_name) {
         }
     }
 });
-
 
 try {
 

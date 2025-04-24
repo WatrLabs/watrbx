@@ -6,9 +6,7 @@ use watrbx\sitefunctions;
 $pagebuilder = new pagebuilder;
 $auth = new authentication();
 $auth->requiresession();
-$userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
-
-
+$userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
 $pagebuilder->set_page_name("Home");
 $pagebuilder->addresource('cssfiles', '/assets/css/home.css?t=' . time());
 $pagebuilder->buildheader();
@@ -17,7 +15,7 @@ $pagebuilder->buildheader();
 <div id="main" style="width: 60%;">
     <h1 id="welcome-text">
         <img id="pfp" src="/images/headshot.png">
-        Welcome, <?= $userinfo["username"] ?> 👋
+        Welcome, <?= $userinfo->username; ?> 👋
     </h1>
     
     <h1>Friends</h1>
@@ -33,39 +31,42 @@ $pagebuilder->buildheader();
         <button id="slideBack" type="button">&lt;</button>
         <div id="gamelist">
             <?php
-            include (baseurl . '/conn.php');
-            $gamefetch = $pdo->prepare("
-    SELECT u.* 
-    FROM universes u
-    JOIN (
-        SELECT MAX(id) AS time
-        FROM visits
-        GROUP BY universeid
-    ) lv ON u.id = (SELECT universeid FROM visits WHERE id = lv.time AND userid = ?)
-    WHERE u.parent IS NULL
-    ORDER BY lv.time DESC
-");
+            global $db;
 
-            $gamefetch->execute([$userinfo["id"]]);
-            $games = $gamefetch->fetchAll(PDO::FETCH_ASSOC);
+            $userid = $userinfo->id;
 
-            foreach ($games as $game) {
-                $stmt = $pdo->prepare("SELECT COUNT(*) as usrcount FROM `activeplayers` WHERE pid = ?");
-                $placeid = $game["placeid"];
-                $stmt->execute([$placeid]);
-                $playingcount = $stmt->fetchColumn();
-            ?>
-            <a href="/game/<?= $game["id"] ?>/" id="game-text">
+            $query = $db->table('universes')
+            ->select(
+                'universes.id',
+                'universes.title',
+                'universes.placeid',
+                $db->raw('COUNT(activeplayers.id) as active_count'),
+                $db->raw('MAX(visits.time) as last_visited')
+            )
+            ->join('visits', function ($join) use ($userid) {
+                $join->on('visits.universeid', '=', 'universes.id')
+                ->where('visits.userid', '=', $userid);
+            })
+            ->leftJoin('activeplayers', 'activeplayers.pid', '=', 'universes.placeid')
+            ->groupBy('universes.id', 'universes.name')
+            ->orderBy('last_visited', 'desc');
+            $result = $query->get();
+
+
+
+
+            foreach ($result as $row) { ?>
+                <a href="/game/<?= $row->id ?>/" id="game-text">
                 <div id="game" class="container">
-                    <img src="https://watrbx.xyz/api/get-thumb?assetid=<?= $game["placeid"] ?>&dimensions=1024x1024"
+                    <img src="https://watrbx.xyz/api/get-thumb?assetid=<?= $row->placeid ?>&dimensions=1024x1024"
                          onerror="this.onerror=null;this.src='https://watrbx.xyz/api/get-thumb?error=true';" id="game-img">
                     <div id="gameshiz">
-                        <p id="game-text"><?= $game["title"] ?></p>
-                        <p id="playingtext"><?= $playingcount ?> Playing</p>
+                        <p id="game-text"><?= $row->title ?></p>
+                        <p id="playingtext"><?= $row->active_count ?> Playing</p>
                     </div>
                 </div>
             </a>
-            <?php } ?>
+            <? } ?>
         </div>      
         <button id="slide" type="button">&gt;</button>
     </div>

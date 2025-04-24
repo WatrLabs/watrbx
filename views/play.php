@@ -31,9 +31,9 @@
     }
     //die(var_dump($userinfo));
     
-    if (isset($_COOKIE["watrbxcookie"])) {
-        $userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
-        $token = $_COOKIE["watrbxcookie"];
+    if (isset($_COOKIE["watrbxsession"])) {
+        $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
+        $token = $_COOKIE["watrbxsession"];
     } else {
         $guestid = rand(100, 999);
         setcookie(".ROBLOSECURITY", "Guest/$guestid", time() + 99999999, "");
@@ -48,7 +48,7 @@
         <?php
           if (isset($creator)) {?>
             <small><p style="color: gainsboro; position: relative; bottom: 2em;"> Created by <a href="/users/<?=$creator["id"]?>/"><?=$creator["username"]?></a> <? 
-            if(isset($_COOKIE["watrbxcookie"])) { if($userinfo["id"] == $creator["id"]){ ?> - <a href="/game/<?=$gameinfo["id"]?>/update">Edit</a> <? } } ?></p></small>
+            if(isset($_COOKIE["watrbxsession"])) { if($userinfo["id"] == $creator["id"]){ ?> - <a href="/game/<?=$gameinfo["id"]?>/update">Edit</a> <? } } ?></p></small>
           <?}
         ?>
         <button id="playbutton" onclick="joingame();">Play</button>

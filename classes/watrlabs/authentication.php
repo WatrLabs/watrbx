@@ -2,7 +2,8 @@
 
 namespace watrlabs;
 
-use watrlabs\sitefunctions;
+use watrbx\sitefunctions;
+use watrlabs\users\getuserinfo;
 use watrlabs\watrkit\sanitize;
 use Pixie\Connection;
 use Pixie\QueryBuilder\QueryBuilderHandler;
@@ -53,7 +54,7 @@ class authentication {
                 'data' => json_encode(array()),
                 'expiration' => $expiration
             );
-            $insertId = QB::table('sessions')->insert($data);
+            $insertId = $db->table('sessions')->insert($data);
             setcookie("watrbxsession", $session, $expiration);
         }
         
@@ -61,8 +62,59 @@ class authentication {
         
     }
     
-    static function havesession(){
+    public function havesession(){
         return isset($_COOKIE["watrbxsession"]);
+    }
+
+    public function login($username, $password){
+
+        global $db;
+
+        $query = $db->table('users')->where('username', '=', $username);
+        $user = $query->first();
+
+        if($user == null){
+            $errorjson = array(
+                "code"=>400,
+                "message"=>"User does not exist!"
+            );
+            return json_encode($errorjson);
+        } else {
+            $hashedpass = $user->password;
+
+            if(password_verify($password, $hashedpass)){
+                if($this->havesession()){
+                    $this->relateaccount($user->id);
+                    $errorjson = array(
+                        "code"=>200,
+                        "message"=>"Login Success."
+                    );
+                    return json_encode($errorjson);
+                } else {
+                    $this->createsession($user->id);
+                    $errorjson = array(
+                        "code"=>200,
+                        "message"=>"Login Success."
+                    );
+                    return json_encode($errorjson);
+                }
+            }
+        }
+
+    }
+
+    public function getuserinfo($session) {
+        if($this->hasaccount()){
+
+            $userid = $this->hasaccount();
+
+            global $db;
+            $query = $db->table('users')->where('id', '=', $userid);
+            $user = $query->first();
+            return $user;
+        } else {
+            return false;
+        }
     }
     
     public function getsession() {
@@ -70,9 +122,26 @@ class authentication {
         
         if(isset($_COOKIE["watrbxsession"])){
             $session = $sanitize::string($_COOKIE["watrbxsession"]); // nobody knows....
+            return $session;
         } else {
             $session = $this->createsession();
             return $session;
+        }
+    }
+
+    public function relateaccount($user){
+        global $db;
+        $session = $this->getsession();
+
+        $users = new getuserinfo();
+        $userinfo = $users->getuserinfo->id($user);
+
+        if(!$this->hasaccount){
+            $data = array(
+                'author' => $user,
+            );
+            $db->table('sessions')->where('session', $session)->update($data);
+            return true;
         }
     }
     
@@ -80,14 +149,15 @@ class authentication {
         global $db;
         $session = $this->getsession();
         $query = $db->table('sessions')->where('session', '=', $session);
-        $sesiondata = $query->first();
+        $sessiondata = $query->first();
         
-        if($sesiondata == null){
-            return false;
-        } else {
-            if($sesiondata->author !== NULL){
-                return true;
+        if($sessiondata){
+            
+            if($sessiondata->author !== NULL){
+                return $sessiondata->author;
             }
+        } else {
+            return false;
         }
         
         return false;

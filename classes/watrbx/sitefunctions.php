@@ -3,10 +3,9 @@
 namespace watrbx;
 use Pixie\Connection;
 use Pixie\QueryBuilder\QueryBuilderHandler;
+use watrlabs\users\getinfo;
 
 class sitefunctions {
-
-
     
     public $key = 'kzjdL3lbXc4ZpHP571VLUrbxWHCIeGEP';
     public $method = 'AES-128-CTR'; 
@@ -16,6 +15,23 @@ class sitefunctions {
         //$method = $this->method;
         $encrypted = openssl_encrypt($text, $this->method, $this->key, 0, $this->iv);
         return $encrypted;
+    }
+    
+    public function decrypt($text){
+        $decrypted = openssl_decrypt($text, $this->method, $this->key, 0, $this->iv);
+        return $decrypted;
+    }
+    
+    static function getip() {
+        
+        if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+            return $_SERVER["HTTP_CF_CONNECTING_IP"];
+        } else {
+            return $_SERVER['REMOTE_ADDR'];
+        }
+        
+        return false; // fallback in case idk
+        
     }
 
     static function getsiteconf() {
@@ -35,22 +51,13 @@ class sitefunctions {
             return $row;
         }
     }
-    
-    public function decrypt($text){
-        $decrypted = openssl_decrypt($text, $this->method, $this->key, 0, $this->iv);
-        return $decrypted;
-    }
-    
-    static function getip() {
-        
-        if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
-            return $_SERVER["HTTP_CF_CONNECTING_IP"];
-        } else {
-            return $_SERVER['REMOTE_ADDR'];
-        }
-        
-        return false; // fallback in case idk
-        
+
+    static function getusercount() {
+        global $db;
+        $query = $db->table('users')->select('*');
+        $count = $query->count();
+
+        return $count;
     }
     
     public function genstring($length) {

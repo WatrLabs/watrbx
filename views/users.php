@@ -42,7 +42,7 @@
 					<p> <?=$bio?> </p>
 				</div>
 				<?php 
-				if (isset($_COOKIE["watrbxcookie"])) {?>
+				if (isset($_COOKIE["watrbxsession"])) {?>
 				    <!-- logged in users only !--->
 				    <hr id="profile-sep">
 				    <div id="options">

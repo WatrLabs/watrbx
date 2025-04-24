@@ -11,6 +11,7 @@
 }
 
 #friendimg {
+    border-radius: 0.5em;
     border-style: solid;
     border-color: grey;
     width: 100px;
@@ -78,6 +79,7 @@
 }
 
 #slideBack {
+    border-radius: 0.5em;
     box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.8);
     float: left;
     margin: 0px;
@@ -90,6 +92,7 @@
 }
 
 #slide {
+    border-radius: 0.5em;
     box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.8);
     margin: 0px;
     background-color: #2e2e2e;

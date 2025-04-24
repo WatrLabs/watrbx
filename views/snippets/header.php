@@ -1,22 +1,13 @@
 <?php 
 use watrlabs\authentication;
-use watrlabs\users\getuserinfo; 
 $auth = new authentication(); 
 use watrbx\sitefunctions;
 $sitefunc = new sitefunctions();
 $siteconf = $sitefunc->getsiteconf();
-if(isset($_COOKIE["watrbxcookie"])){ 
-    $usrinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]); 
-    
-    if($usrinfo == false){
-        setcookie("watrbxcookie", "", time() - 99999, "/");
-        header("Location: /login");
-        die();
-    }
-    
-    $role = $usrinfo["role"]; 
 
-    
+if(isset($_COOKIE["watrbxsession"])){ 
+    $usrinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);     
+    $role = $usrinfo->role; 
 } 
 ?>
 <!DOCTYPE html>
@@ -42,18 +33,18 @@ if(isset($_COOKIE["watrbxcookie"])){
         <a href="/"><img align="center" src="/assets/watrbxlogo2.png" height="36px" style="margin-top: 6px; margin-left: 12px;"></a>
         
         <?php 
-        if(isset($_COOKIE["watrbxcookie"])){ ?> 
+        if(isset($_COOKIE["watrbxsession"])){ ?> 
         <a href="/home" id="nav-item">Home</a> 
             <a href="/games" id="nav-item">Games</a>
         <? } ?>
     </div>
     <div id="nav-group">
         <?php 
-        if(isset($_COOKIE["watrbxcookie"])){ ?>
+        if(isset($_COOKIE["watrbxsession"])){ ?>
             <img src="/images/robuxicon.png" class="icon">
-            <p id="icon-text"><?=$usrinfo["robux"]?></p>
+            <p id="icon-text"><?=$usrinfo->tix?></p>
             <img src="/images/tix-icon.png" class="icon">
-            <p id="icon-text"><?=$usrinfo["tix"]?></p>
+            <p id="icon-text"><?=$usrinfo->robux?></p>
             <!--<img src="/images/mail.png" class="icon">
             <p id="icon-text">0</p> -->
             <img src="/images/settings.png" class="icon">
@@ -69,7 +60,7 @@ if(isset($_COOKIE["watrbxcookie"])){
 <?php if (isset($usrinfo)) {?><div id="second-navbar">
         <div id="bottom-nav-group">
             <a href="/game/upload"> Create </a>
-            <a href="/users/<?=$usrinfo["id"]?>/">Profile </a>
+            <a href="/users/<?=$usrinfo->id?>/">Profile </a>
         </div>
 </div><?}?>
 <? if($siteconf->sitebanner !== ""){ ?>

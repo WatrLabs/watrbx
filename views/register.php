@@ -1,15 +1,24 @@
 <?php
     use watrlabs\watrkit\pagebuilder;
     use watrlabs\authentication;
-    use watrbx\sitefunctions;
-    $sitefunc = new sitefunctions();
+	use watrbx\sitefunctions;
+	$sitefunc = new sitefunctions();
+	$siteconf = $sitefunc->getsiteconf();
     $pagebuilder = new pagebuilder;
     $auth = new authentication;
     $pagebuilder->set_page_name("Register");
     $pagebuilder->addresource('cssfiles', '/assets/loginreq.css?t='. time());
     $pagebuilder->addresource('jsfiles', 'https://challenges.cloudflare.com/turnstile/v0/api.js');
     $pagebuilder->buildheader();
+
     //$sitefunc->get_message();
+
+	if($siteconf->register_enabled == 0){
+		require("regdisabled.html");
+		$pagebuilder->get_snippet("footer");
+		die();
+
+	}
 
 ?>
     <div id="main">

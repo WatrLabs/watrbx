@@ -6,7 +6,7 @@ use watrlabs\authentication;
 $pagebuilder->buildheader();
 $auth = new authentication();
 $auth->requiresession();
-$userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+$userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
 if (isset($id)) {
     $stmt = $pdo->prepare("SELECT * FROM `messages` WHERE `id` = ?");
     $stmt->execute([$id]);

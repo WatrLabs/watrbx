@@ -10,7 +10,7 @@ $auth->createcsrf("assetupload");
 $pagebuilder->set_page_name("Asset Uploader");
 $pagebuilder->addresource('cssfiles', '/assets/css/games.css?t='. time());
 $pagebuilder->buildheader();
-$userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+$userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
 
 $assetTypes = array(
     'Image' => 1,

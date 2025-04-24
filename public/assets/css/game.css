@@ -25,6 +25,7 @@ a {
 
 
 #div1 {
+    border-radius: 0.5em;
     clear: both;
     width: 900px;
     height: 358.328px;
@@ -33,6 +34,7 @@ a {
 }
 
 #div2 {
+    border-radius: 0.5em;
     text-align: center;
     width: 900px;
     height: 100px;
@@ -49,6 +51,7 @@ a {
 
 
 #gamebanner {
+    border-radius: 0.5em;
     float: left;
     aspect-ratio: 16/9;
     width: 640px;

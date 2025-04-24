@@ -185,6 +185,7 @@ class Routing {
     }
 
     static function return_status($statuscode, $e = []){
+        ob_clean();
         $pagebuilder = new pagebuilder();
         $pagebuilder->get_template("status_codes/$statuscode", $e);
         http_response_code($statuscode);

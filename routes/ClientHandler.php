@@ -166,7 +166,7 @@ function setupClientHandlerRoutes($router) {
     $router->get('/gen-ticket', function() {
        $func = new sitefunctions();
        
-       if(isset($_COOKIE["watrbxcookie"]) && $_GET["placeId"]){
+       if(isset($_COOKIE["watrbxsession"]) && $_GET["placeId"]){
             header("Content-type: text/plain");
             //sleep(5); // give time for the place to open (ik lazy hack)
            
@@ -176,7 +176,7 @@ function setupClientHandlerRoutes($router) {
             $privatekey = file_get_contents("../storage/priaaaaaaaa.pem");
            
             $auth = new authentication();
-            $userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+            $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
            
             $id = $userinfo["id"];
             $name = $userinfo["username"];
@@ -347,7 +347,7 @@ function setupClientHandlerRoutes($router) {
                 exit;
             } else {
                 setcookie(".ROBLOSECURITY", $_GET["suggest"], time() + 86400, "/", "", false, true);
-                setcookie("watrbxcookie", $_GET["suggest"], time() + 86400, "/", "", false, true);
+                setcookie("watrbxsession", $_GET["suggest"], time() + 86400, "/", "", false, true);
                 die("True");
             }
         }
@@ -529,9 +529,9 @@ function setupClientHandlerRoutes($router) {
 
                 if($assetinfo["prodid"] == 9){
 
-                    if(isset($_COOKIE["watrbxcookie"])){
+                    if(isset($_COOKIE["watrbxsession"])){
                         $auth = new authentication();
-                        $user = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                        $user = $auth->getuserinfo($_COOKIE["watrbxsession"]);
                         
                         if($user["id"] !== $assetinfo["owner"]){
                             http_response_code(403);
@@ -591,9 +591,9 @@ function setupClientHandlerRoutes($router) {
 
                 if($assetinfo["prodid"] == 9){
 
-                    if(isset($_COOKIE["watrbxcookie"])){
+                    if(isset($_COOKIE["watrbxsession"])){
                         $auth = new authentication();
-                        $user = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                        $user = $auth->getuserinfo($_COOKIE["watrbxsession"]);
                         
                         if($user["id"] !== $assetinfo["owner"]){
                             http_response_code(403);
@@ -660,9 +660,9 @@ function setupClientHandlerRoutes($router) {
 
                 if($assetinfo["prodid"] == 9){
 
-                    if(isset($_COOKIE["watrbxcookie"])){
+                    if(isset($_COOKIE["watrbxsession"])){
                         $auth = new authentication();
-                        $user = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                        $user = $auth->getuserinfo($_COOKIE["watrbxsession"]);
                         
                         if($user["id"] !== $assetinfo["owner"]){
                             http_response_code(403);
@@ -722,9 +722,9 @@ function setupClientHandlerRoutes($router) {
 
                 if($assetinfo["prodid"] == 9){
 
-                    if(isset($_COOKIE["watrbxcookie"])){
+                    if(isset($_COOKIE["watrbxsession"])){
                         $auth = new authentication();
-                        $user = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                        $user = $auth->getuserinfo($_COOKIE["watrbxsession"]);
                         
                         if($user["id"] !== $assetinfo["owner"]){
                             http_response_code(403);
@@ -971,12 +971,12 @@ function setupClientHandlerRoutes($router) {
                 
             } else {
                 $auth = new authentication();
-                $userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
                 if(!$userinfo){
                     http_response_code(403);
                     die();
                 }
-                $placelauncher["authenticationTicket"] = $_COOKIE["watrbxcookie"];
+                $placelauncher["authenticationTicket"] = $_COOKIE["watrbxsession"];
             }
             
             
@@ -1113,12 +1113,12 @@ function setupClientHandlerRoutes($router) {
                 
             } else {
                 $auth = new authentication();
-                $userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
                 if(!$userinfo){
                     http_response_code(403);
                     die();
                 }
-                $placelauncher["authenticationTicket"] = $_COOKIE["watrbxcookie"];
+                $placelauncher["authenticationTicket"] = $_COOKIE["watrbxsession"];
             }
             
             
@@ -1251,9 +1251,9 @@ function setupClientHandlerRoutes($router) {
             die();
         }
         
-        if(isset($_COOKIE["watrbxcookie"])){
-            if (isset($_COOKIE["watrbxcookie"]) && preg_match("/Guest\/\d+/", $_COOKIE["watrbxcookie"]) && $guests){
-                $cookie = $_COOKIE["watrbxcookie"];
+        if(isset($_COOKIE["watrbxsession"])){
+            if (isset($_COOKIE["watrbxsession"]) && preg_match("/Guest\/\d+/", $_COOKIE["watrbxsession"]) && $guests){
+                $cookie = $_COOKIE["watrbxsession"];
                 
                 $userinfo["builderclub"] = "None";
                 
@@ -1268,7 +1268,7 @@ function setupClientHandlerRoutes($router) {
                 
             } else {
                 $auth = new authentication();
-                $userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
                 if(!$userinfo){
                     http_response_code(403);
                     die();

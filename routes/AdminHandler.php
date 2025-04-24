@@ -10,8 +10,8 @@ function checkperms() {
     // yea this is really lazy but it works so
     $auth = new authentication();
     
-    if(isset($_COOKIE["watrbxcookie"])){
-        $cookie = $_COOKIE["watrbxcookie"]; // putting it in a variable so I dont have to type a paragraph like I am now because im lazy but not but I am but im not afasdlgfjk;sdfgf;dlgshf g
+    if(isset($_COOKIE["watrbxsession"])){
+        $cookie = $_COOKIE["watrbxsession"]; // putting it in a variable so I dont have to type a paragraph like I am now because im lazy but not but I am but im not afasdlgfjk;sdfgf;dlgshf g
         $userinf = $auth->getuserinfo($cookie);
         if(!$userinf["role"] == 1){
             die(require("../pagehandler/403.php")); // why tf do we not have a 403 file??? (i'm blaming czech for no reason)
@@ -34,8 +34,8 @@ function setupAdminHandlerRoutes($router) {
                         die("Invalid input or too many uses! (limit is 50!)");
                     } else {
                         
-                        if(isset($_COOKIE["watrbxcookie"])){
-                            $cookie = $_COOKIE["watrbxcookie"]; // putting it in a variable so I dont have to type a paragraph like I am now because im lazy but not but I am but im not afasdlgfjk;sdfgf;dlgshf g
+                        if(isset($_COOKIE["watrbxsession"])){
+                            $cookie = $_COOKIE["watrbxsession"]; // putting it in a variable so I dont have to type a paragraph like I am now because im lazy but not but I am but im not afasdlgfjk;sdfgf;dlgshf g
                             $auth = new authentication();
                             $userinf = $auth->getuserinfo($cookie);
                         } else {
@@ -117,7 +117,7 @@ function setupAdminHandlerRoutes($router) {
                 $userid = $baduserinfo["id"];
                 
                 $auth = new authentication();
-                $modinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+                $modinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
 
                 $modid = $modinfo["id"];
                 $moderator = $modinfo["username"];

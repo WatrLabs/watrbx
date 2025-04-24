@@ -49,7 +49,7 @@
     <div id="home-inner">
         <img src="/assets/images/watrbxlogo3.png" id="logo">
         <p>We are a 2016 + (soon to be) 2013 ROBLOX private server.</p>
-        <p>We currently have <? echo 0; ?> Users, why don't you join today?</p>
+        <p>We currently have <? echo $sitefunc::getusercount(); ?> Users, why don't you join today?</p>
         <button id="home-buttons" onclick="window.location.href = '/register'">Join</button>
         <button id="home-buttons" onclick="window.location.href = '/login'">Login</button>
     </div>

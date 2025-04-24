@@ -5,7 +5,7 @@ use watrbx\sitefunctions;
 $func = new sitefunctions();
 $auth = new authentication();
 $auth->requiresession();
-$userinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]);
+$userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
 $pagebuilder = new pagebuilder;
 $pagebuilder->set_page_name("Admin - Index");
 $pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css?t='. time());
