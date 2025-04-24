@@ -1,0 +1,78 @@
+#home-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.8);
+    background-image: url("/assets/images/bgs/1.png");
+    background-position: 30% 45%;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    padding: 50px;
+    height: 20%;
+}
+
+#home-inner {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    text-shadow: 2px 2px 2px black;
+}
+
+#home-buttons {
+    width: 100%;
+}
+
+#socials {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+#social {
+    padding: 15px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    /* border-radius: 0.5em; */
+}
+
+#social:hover {
+    cursor: pointer;
+    background-color: #255c78;
+}
+
+#sociallogo {
+    width: 100px;
+    height: 90px;
+    padding: 10px;
+}
+
+#yap {
+    margin-right: auto;
+    margin-left: auto;
+    width: 60%;
+    padding: 0.5em;
+}
+
+#yap h2 {
+    /* margin-left: 20%; */
+}
+
+#yap-inner {
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+}
+
+#yap-inner div {
+    width: 100%;
+}
+
+.reason {
+    text-align: left;
+}

@@ -1,0 +1,50 @@
+body {
+    text-align: left;
+}
+
+#login {
+    text-align: center;
+    width: 25em;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5em;
+}
+
+#reg {
+    text-align: center;
+    width: 38em;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5em;
+}
+
+#loginform {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+#login h2 {
+    text-align: center;
+}
+
+#loginform input {
+    padding: 0.5em;
+    outline: none;
+    color: white;
+    border-style: none;
+    width: 74.5%;
+    background-color: #4b4b4b;
+}
+
+#loginform button {
+    border-style: none;
+    padding: 10px;
+    background-color: #378db8;
+    color: white;
+}
+
+#login a {
+    color: #378db8;
+    text-decoration: none;
+}

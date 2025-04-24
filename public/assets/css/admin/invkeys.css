@@ -1,0 +1,20 @@
+
+
+tr {
+
+    padding: 15px;
+
+}
+
+th {
+    background-color: #378db8;
+    border: 2px solid white;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+td {
+    border: 2px solid white;
+    padding-left: 10px;
+    padding-right: 10px;
+}

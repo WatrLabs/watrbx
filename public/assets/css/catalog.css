@@ -1,0 +1,40 @@
+#main {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: flex-start;
+}
+
+#item-select {
+    text-align: left;
+    width: 150px;
+    min-height: 200px;
+    max-height: 400px;
+}
+
+#list {
+    padding: 0px;
+    margin: 0;
+    list-style: none;
+}
+
+#item {
+    text-align: center;
+    height: 200px;
+    width: 150px;
+    margin-right: 15px;
+}
+
+#item img {
+    width: 150px;
+    height: 150px;
+}
+
+#item-list {
+    margin-left: 15px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    
+}

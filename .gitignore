@@ -1,0 +1,6 @@
+vendor/
+routes/webhandler.php
+.env
+composer.lock
+public/.user.ini
+public/clients/*

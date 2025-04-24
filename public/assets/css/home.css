@@ -1,0 +1,101 @@
+#main {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#welcome-text {
+    display: flex; 
+    align-items: center; 
+    margin: 0;
+    padding-left: none;
+}
+
+#friendimg {
+    border-style: solid;
+    border-color: grey;
+    width: 100px;
+    height: 100px;
+}
+
+#friend {
+    width: 100px;
+    text-align: center;
+}
+
+#friendtxt {
+    margin: 1px;
+}
+
+#headingtext {
+    margin: 15px;
+}
+
+#gamecontainer {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
+
+#gamelist {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+}
+
+#game-img {
+    width: 200;
+    height: 200px;
+}
+
+#game {
+    width: 200px;
+    height: 310px;
+    transition: 0.2s;
+    padding: 0px;
+    padding-bottom: 10px;
+}
+
+#gameshiz {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-end;
+}
+
+#playingtext {
+    margin: 10px;
+}
+
+#game-text {
+    margin: 10px;
+    text-decoration: none;
+}
+
+#game:hover {
+    transition: 0.2s;
+    background-color: #454545;
+}
+
+#slideBack {
+    box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.8);
+    float: left;
+    margin: 0px;
+    background-color: #2e2e2e;
+    height: 330px;
+}
+
+#slideBack:hover {
+    background-color: #454545;
+}
+
+#slide {
+    box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.8);
+    margin: 0px;
+    background-color: #2e2e2e;
+    height: 330px;
+}
+
+#slide:hover{
+    background-color: #454545;
+}

@@ -1,0 +1,23 @@
+.button {
+    margin-top: 5px;
+}
+
+#welcome-text {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 38em;
+}
+
+h2 {
+    margin-bottom: 0 !important;
+}
+
+#other-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}

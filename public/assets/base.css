@@ -1,0 +1,362 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+    display: flex;
+    margin: 0px;
+    background-color: #1f1f1f;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    min-height: 100vh; 
+    flex-direction: column;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+a {
+    color: lightgrey;
+}
+
+#main {
+    flex: 1;
+    padding: 25px;
+    height: 100%;
+    min-height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, .bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#navbar {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-top: 2px;
+    height: 42px;
+    background-color: #378db8;
+    align-content: center;
+    justify-content: space-between;
+    box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
+}
+
+#site-alert {
+    align-content: center;
+    width: 100%;
+    background-color: #ef4444;
+    height: 50px;
+    text-align: center;
+    box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
+}
+
+#site-alert-test {
+    width: 100%;
+}
+
+.h-small {
+    font-weight: 400;
+}
+
+#nav-group {
+    display: flex;
+}
+
+#nav-item {
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+#footer {
+    position: relative;
+    clear: both;
+    align-content: center;
+    width: 100%;
+    background-color: #378db8;
+    height: 50px;
+    text-align: center;
+    bottom: 0px;
+}
+
+.container {
+    border-radius: 0.5em;
+    background-color: #303030;
+    padding: 10px;
+    box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
+}
+
+.container-inner {
+    margin: 15px; /* lazyyyyy */
+}
+
+#homecontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+
+#userprofile {
+    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#userbreh {
+    background-color: #303030;
+    width: 16.5em;
+    padding: 1em;
+    border-style: solid;
+    border-width: 1.5px;
+    border-color: gray;
+    position: relative;
+}
+
+#userbio {
+    border-style: solid;
+    /* border-color: #4b4b4b; */
+    border-color: gray;
+    border-width: 1px;
+    padding: 0.5em;
+    font-size: small;
+}
+
+.yeee {
+    font-size: small;
+}
+
+#avi img {
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+
+#options {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+
+#profile-sep {
+    border-color: gray;
+}
+
+#options a {
+    color: #378db8;
+    text-decoration: none;
+}
+
+button, .button {
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    
+    background-color: #378db8;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    width: auto;
+    transition: 0.2s;
+}
+
+.input {
+    background-color: #4b4b4b;
+    border: none;
+    padding: 10px;
+}
+
+.error {
+    color: red;
+    border-radius: 0.5em;
+    border: 5px solid red;
+}
+
+.button:hover {
+    color: #378db8;
+    background-color: white;
+}
+
+button:hover {
+    color: #378db8;
+    background-color: white;
+}
+
+
+#logo {
+    width: 250px;
+    border-radius: 0px;
+    /* let height figure itself out */
+    
+}
+
+.spin {
+    display: inline-block;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#pfp {
+    border-radius: 25%;
+    margin: 25px;
+    margin-left: 0px;
+}
+
+input, textarea {
+    transition: 0.2s;
+    padding: 0.5em;
+    outline: none;
+    color: white;
+    border-style: none;
+    background-color: #4b4b4b;
+}
+
+input:hover {
+    background-color: #616060;
+}
+
+.icon {
+    margin: 11px;
+    height: 25px;
+    width: 25px;
+}
+
+#icon-text {
+    margin-right: 13px;
+}
+
+#second-navbar {
+    background-image: linear-gradient(#DE2626, #BC2828);
+    padding: 0.3em;
+    padding-left: 20px;
+}
+
+#bottom-nav-group a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.8em;
+}
+
+#bottom-nav-group a:not(:last-child):after {
+    content: " | ";
+}
+
+.spinner {
+   width: 56px;
+   height: 56px;
+   border-radius: 50%;
+   border: 9px solid #378db8;
+   animation: spinner-bulqg1 0.8s infinite linear alternate,
+        spinner-oaa3wk 1.6s infinite linear;
+        margin-left: auto;
+        margin-right: auto;
+}
+
+@keyframes spinner-bulqg1 {
+   0% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+   }
+
+   12.5% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
+   }
+
+   25% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%);
+   }
+
+   50% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+   }
+
+   62.5% {
+      clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+   }
+
+   75% {
+      clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%);
+   }
+
+   100% {
+      clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%);
+   }
+}
+
+@keyframes spinner-oaa3wk {
+   0% {
+      transform: scaleY(1) rotate(0deg);
+   }
+
+   49.99% {
+      transform: scaleY(1) rotate(135deg);
+   }
+
+   50% {
+      transform: scaleY(-1) rotate(0deg);
+   }
+
+   100% {
+      transform: scaleY(-1) rotate(-135deg);
+   }
+}
+
+#modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: none;
+    padding: 25px;
+    text-align: center;
+    width: 250px;
+    padding-top: 35px;
+}
+
+#installmodal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: none;
+    padding: 25px;
+    text-align: center;
+    width: 350px;
+}
+
+#modal-bg {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+#install-modal-bg {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+#errormsg {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
+    padding: 10px;
+    background-color: #ef4444;
+    text-align: center;
+}

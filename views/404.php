@@ -1,0 +1,1 @@
+<? die(require("../pagehandler/404.php")) ?>
