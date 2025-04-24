@@ -55,7 +55,7 @@ class pagebuilder {
         $this->addmetatag("og:title", $_ENV["APP_NAME"] . " - " . $this->config['title']);
         $this->addmetatag("og:description", $_ENV["APP_DESC"]);
 
-        $this->addresource('cssfiles', '/assets/base.css?t='. time());
+        $this->addresource('cssfiles', '/assets/base.css?t='. time(), true);
         
         // this HAS to be expanded in the future 
         $this->get_snippet('header', [

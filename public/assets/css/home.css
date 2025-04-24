@@ -32,6 +32,8 @@
 }
 
 #gamecontainer {
+    align-items: center;
+    border-radius: 0.5em;
     width: 100%;
     display: flex;
     align-content: center;
@@ -39,6 +41,8 @@
 }
 
 #gamelist {
+    align-items: center;
+    border-radius: 0.5em;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -46,11 +50,14 @@
 }
 
 #game-img {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
     width: 200;
     height: 200px;
 }
 
 #game {
+    border-radius: 0.5em;
     width: 200px;
     height: 310px;
     transition: 0.2s;
@@ -69,6 +76,7 @@
 }
 
 #game-text {
+    border-radius: 0.5em;
     margin: 10px;
     text-decoration: none;
 }
@@ -84,10 +92,12 @@
     float: left;
     margin: 0px;
     background-color: #2e2e2e;
-    height: 330px;
+    height: 320px;
+    width: 30px;
 }
 
 #slideBack:hover {
+    box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.4);
     background-color: #454545;
 }
 
@@ -96,9 +106,11 @@
     box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.8);
     margin: 0px;
     background-color: #2e2e2e;
-    height: 330px;
+    height: 320px;
+    width: 30px;
 }
 
 #slide:hover{
+    box-shadow: 10px 10px 10px rgba(15, 15, 15, 0.4);
     background-color: #454545;
 }

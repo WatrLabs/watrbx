@@ -1,10 +1,10 @@
 <?php
-// ../routes/template.php
 use watrlabs\authentication;
 use watrbx\sitefunctions;
 use watrlabs\logging;
 
-// make sure you replace setup<PHP FILE NAME>Routes function
+
+global $router;
 
 function checkperms() {
     // yea this is really lazy but it works so
@@ -23,11 +23,8 @@ function checkperms() {
     }
     
 }
-
-function setupAdminHandlerRoutes($router) {
     $router->group('/api/admin', function($router) {
-        $router->post('/makekey', function() {
-                checkperms(); // again I told you this was lazy
+        $router->post('/makekey', function() {         
                 
                 if(isset($_POST["uses"])){
                     if (!isset($_POST["uses"]) || !is_numeric($_POST["uses"]) || $_POST["uses"] > 50) {
@@ -70,7 +67,7 @@ function setupAdminHandlerRoutes($router) {
         });
         
         $router->post('/siteconfig', function() {
-                checkperms();
+                
                 
                 if(isset($_POST["sitebanner"])){
                     require(baseurl . "/conn.php");
@@ -93,8 +90,6 @@ function setupAdminHandlerRoutes($router) {
     });
 
     $router->post('/ban', function() {
-        checkperms();
-
         $sitefunc = new sitefunctions();
 
         if(isset($_POST["username"]) && isset($_POST["note"])){
@@ -150,48 +145,42 @@ function setupAdminHandlerRoutes($router) {
 
     });
         
-    });
+    }, 'checkperms');
     
     
     
     $router->group('/admin', function($router) {
         $router->get('/', function() {
-                checkperms(); // again I told you this was lazy
-                die(require("../templates/admin/index.php"));
+            die(require("../templates/admin/index.php"));
         });
         
         $router->get('/refers', function() {
-                checkperms(); // again I told you this was lazy
+                 
                 die(require("../templates/admin/refers.php"));
         });
         
         $router->get('/invkeys', function() {
-                checkperms(); // again I told you this was lazy
+                 
                 die(require("../templates/admin/invkey.php"));
         });
         
         $router->get('/site-config', function() {
-                checkperms(); // again I told you this was lazy
+                 
                 die(require("../templates/admin/siteconf.php"));
         });
         
         $router->get('/create-key', function() {
-                checkperms(); // again I told you this was lazy
+                 
                 die(require("../templates/admin/createinvkey.php"));
         });
 
         $router->get('/banuser', function() {
-            checkperms(); // again I told you this was lazy
+             
             die(require("../templates/admin/banuser.php"));
     });
         
         $router->get('/games', function() {
-                checkperms(); // again I told you this was lazy
+                 
                 die(require("../templates/admin/games.php"));
         });
-    });
-    
-    
-    
-        
-}
+    }, 'checkperms');

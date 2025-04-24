@@ -1,0 +1,32 @@
+#pfp {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#userinfo {
+    width: 50%;
+    max-width: 850px;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+#text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 15px;
+}
+
+#othertext {
+    float: left;
+    text-align: left;
+}
+
+#bio {
+    color: grey;
+    font-style: italic;
+}

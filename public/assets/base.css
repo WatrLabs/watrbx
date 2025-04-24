@@ -153,7 +153,7 @@ button, .button {
     cursor: pointer;
     color: white;
     text-decoration: none;
-    
+    border-radius: 0.3em;
     background-color: #378db8;
     padding: 10px;
     margin: 5px;
@@ -207,7 +207,7 @@ button:hover {
 }
 
 #pfp {
-    border-radius: 25%;
+    border-radius: 0.5em;
     margin: 25px;
     margin-left: 0px;
 }

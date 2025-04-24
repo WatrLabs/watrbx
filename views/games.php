@@ -14,7 +14,7 @@ $pagebuilder->buildheader();
         <p style="text-align: center;">Don't have the <a href="/watrbxlauncher.exe">launcher</a>? - <a href="/game/upload">Create a game?</a></p>
         <div id="welcome-text">
             <h2>Most Popular</h2>
-            <button style="margin-left: auto;">See All</button>
+            <button style="margin-left: auto;" onclick="alert('lol this still does nothing 🔥🔥🔥')">See All</button>
         </div>
         <div id="gamecontainer">
            
