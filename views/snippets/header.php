@@ -2,6 +2,7 @@
 $auth = new authentication(); 
 use watrbx\sitefunctions;
 $sitefunc = new sitefunctions();
+$siteconf = $sitefunc->getsiteconf();
 if(isset($_COOKIE["watrbxcookie"])){ 
     $usrinfo = $auth->getuserinfo($_COOKIE["watrbxcookie"]); 
     

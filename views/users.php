@@ -23,7 +23,7 @@
         die();
     }
     
-    use watergames\pagebuilder;
+    use watrlabs\watrkit\pagebuilder;
     $pagebuilder = new pagebuilder;
     $pagebuilder->set_page_name($username . "'s profile");
     $pagebuilder->addmetatag("og:title", $user["username"]);

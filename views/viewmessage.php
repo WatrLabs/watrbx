@@ -1,6 +1,6 @@
 <?php 
 include baseurl . "/conn.php";
-use watergames\pagebuilder;
+use watrlabs\watrkit\pagebuilder;
 $pagebuilder = new pagebuilder;
 use watrlabs\authentication;
 $pagebuilder->buildheader();

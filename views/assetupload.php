@@ -1,6 +1,6 @@
 <?php
 use watrlabs\authentication;
-use watergames\pagebuilder;
+use watrlabs\watrkit\pagebuilder;
 use watrbx\sitefunctions;
 $sitefunc = new sitefunctions();
 $pagebuilder = new pagebuilder;

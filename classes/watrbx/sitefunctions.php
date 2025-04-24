@@ -1,8 +1,12 @@
 <?php
 
 namespace watrbx;
+use Pixie\Connection;
+use Pixie\QueryBuilder\QueryBuilderHandler;
 
 class sitefunctions {
+
+
     
     public $key = 'kzjdL3lbXc4ZpHP571VLUrbxWHCIeGEP';
     public $method = 'AES-128-CTR'; 
@@ -12,6 +16,24 @@ class sitefunctions {
         //$method = $this->method;
         $encrypted = openssl_encrypt($text, $this->method, $this->key, 0, $this->iv);
         return $encrypted;
+    }
+
+    static function getsiteconf() {
+        global $db;
+
+        $query = $db->table('config')->select('*');
+        $row = $query->first();
+
+        if($row == null){
+            return $dummyarray = array(
+                "site_banner"=>"Failed to get site config!",
+                "register_enabled"=> 0, // 0 because in most cases the database doesn't exist.
+            );
+
+            return $dummyarray;
+        } else {
+            return $row;
+        }
     }
     
     public function decrypt($text){

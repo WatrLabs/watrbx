@@ -4,27 +4,39 @@
     $sitefunc = new sitefunctions();
     use watrlabs\authentication;
     $auth = new authentication;
+
+    global $db;
+
+    if($auth->havesession()){
+        if($auth->hasaccount()){
+            header("Location: /home");
+        }
+    }
+
     $pagebuilder = new pagebuilder;
     $pagebuilder->set_page_name("Landing");
     $pagebuilder->addresource('cssfiles', '/assets/css/index.css?t='. time());
     $pagebuilder->buildheader();
-    //$auth->requireguest();
-    
+
     if(isset($_GET["refer"])){
         $referid = $_GET["refer"];
+
+        $query = $db->table('refers')->where('refername', '=', $referid);
+        $referdata = $query->first();
         
-        include(baseurl . "/conn.php");
-        
-        $getrefers = $pdo->prepare("SELECT * FROM refers WHERE refername = ?");
-        $getrefers->execute([$referid]);
-        $referdata = $getrefers->fetch(PDO::FETCH_ASSOC);
-        
-        if($referdata){
+        if($referdata !== null){
     
             $newrefers = $referdata["visits"] + 1;
+
+            $updatearray = array(
+                "visits"=>$newrefers
+            );
             
             $updaterefers = $pdo->prepare("UPDATE refers SET visits = ?");
             $updaterefers->execute([$newrefers]);
+
+            $db->table('my_table')->where('id', 5)->update($data);
+
             
             setcookie("referer", $referid, time() + 8600);
         }

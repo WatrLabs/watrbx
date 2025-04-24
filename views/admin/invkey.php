@@ -1,5 +1,5 @@
 <?php 
-use watergames\pagebuilder;
+use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 $auth = new authentication();
 $auth->requiresession();

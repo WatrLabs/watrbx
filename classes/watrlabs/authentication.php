@@ -93,5 +93,23 @@ class authentication {
         return false;
         
     }
+
+    public function requireguest() {
+        if($this->havesession()){
+            if($this->hasaccount()){
+                header("Location: /home");
+            }
+        }
+    }
+
+    public function requiresession() {
+        if($this->havesession()){
+            if(!$this->hasaccount()){
+                header("Location: /login");
+            }
+        }
+    }
+
+
     
 }
