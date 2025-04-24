@@ -1,4 +1,6 @@
-<?php use watrlabs\authentication; 
+<?php 
+use watrlabs\authentication;
+use watrlabs\users\getuserinfo; 
 $auth = new authentication(); 
 use watrbx\sitefunctions;
 $sitefunc = new sitefunctions();
@@ -13,10 +15,9 @@ if(isset($_COOKIE["watrbxcookie"])){
     }
     
     $role = $usrinfo["role"]; 
-    
+
     
 } 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,6 +72,10 @@ if(isset($_COOKIE["watrbxcookie"])){
             <a href="/users/<?=$usrinfo["id"]?>/">Profile </a>
         </div>
 </div><?}?>
-<div id="site-alert">
-    <p id="site-alert-text">Still porting...</p>
-</div>
+<? if($siteconf->sitebanner !== ""){ ?>
+
+    <div id="site-alert">
+        <p id="site-alert-text"><?=$siteconf->sitebanner?></p>
+    </div>
+
+<? } ?>

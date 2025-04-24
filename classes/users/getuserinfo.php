@@ -16,7 +16,7 @@ class getuserinfo {
     
     public function id($id) {
         global $db;
-        $query = $db::table('users')->where('id', '=', $id);
+        $query = $db->table('users')->where('id', '=', $id);
         return $query->first();
     }
     
@@ -28,7 +28,7 @@ class getuserinfo {
     
     public function email($email) {
         global $db;
-        $query = $db::table('users')->where('email', '=', $email);
+        $query = $db->table('users')->where('email', '=', $email);
         return $query->first();
     }
     
