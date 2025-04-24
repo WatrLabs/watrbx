@@ -82,5 +82,55 @@ class sitefunctions {
         return false;
 
     }
+
+    public function set_message($message, $type = "error") {
+        $message = array(
+            "type" => $type,
+            "message" => $message
+        );
+        
+        $encoded = json_encode($message);
+        $encrypted = $this->encrypt($encoded);
+        setcookie("msg", $encrypted, time() + 500, '');
+        return $encrypted;
+    }
+    
+    public function get_message(){
+        if(isset($_COOKIE["msg"])){
+            
+            $msg = $_COOKIE["msg"];
+            
+            $decrypted = $this->decrypt($msg);
+            $decoded = json_decode($decrypted, true);
+            
+            if($decoded["type"] == "error"){
+                echo "<p id=\"errormsg\">". $decoded["message"] ."</p>";
+                setcookie("msg", $msg, time() - 500, '');
+            } elseif($decoded["type"] == "notice"){
+                echo "<p id=\"errormsg\" style=\"background-color: #378db8;\">". $decoded["message"] ."</p>";
+                setcookie("msg", $msg, time() - 500, '');
+            } else {
+                //throw new Exception('Invalid message type!');
+            }
+            
+        } else {
+            return false;
+        }
+    }
+
+    public function generateClientTicket($id, $name, $charapp, $jobid, $privatekey) {
+        $ticket = $id . "\n" . $jobid . "\n" . date('n\/j\/Y\ g\:i\:s\ A');
+        
+        openssl_sign($ticket, $sig, $privatekey, OPENSSL_ALGO_SHA1);
+        $sig = base64_encode($sig);
+        
+        $ticket2 = $id . "\n" . $name . "\n" . $charapp . "\n". $jobid . "\n" . date('n\/j\/Y\ g\:i\:s\ A');
+        openssl_sign($ticket2, $sig2, $privatekey, OPENSSL_ALGO_SHA1);
+        $sig2 = base64_encode($sig2);
+        
+        $final = date('n\/j\/Y\ g\:i\:s\ A') . ";" . $sig2 . ";" . $sig;
+        return $final;
+        // robloxes format is.. really weird.
+    }
     
 }

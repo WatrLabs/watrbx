@@ -180,6 +180,63 @@ class authentication {
         }
     }
 
+    public function verifycsrf($token, $form){
+        
+        if(isset($_COOKIE["watrbxsession"])){
+
+            global $db;
+            
+            $userinfo = $this->getuserinfo($_COOKIE["watrbxsession"]);
+
+            $csrfinfo = $db->table('csrftokens')
+                ->where("token", $token)
+                ->where("userid", $userinfo->id)
+                ->where("form", $form)
+                ->first();
+
+            
+            if($csrfinfo !== NULL){
+                $db->table("csrftokens")->where("token", $token)->delete();
+                setcookie("csrftoken", $token, time() - 120, '');
+                return true;
+            } else {
+                return false;
+            }
+            
+            
+        } else {
+            die(header("Location: /login")); // again never should be ran but just in case
+        }
+        
+    }
+    
+    public function createcsrf($form){
+        
+        if(isset($_COOKIE["watrbxsession"])){
+
+            global $db;
+
+            $func = new sitefunctions();
+            
+            $csrf = $func->genstring(20);
+            $userinfo = $this->getuserinfo($_COOKIE["watrbxsession"]);
+
+            $data = array(
+                "token"=>$csrf,
+                "userid"=> $userinfo->id,
+                "form"=>$form
+            );
+            $insertId = $db->table('csrftokens')->insert($data);
+
+            
+            setcookie("csrftoken", $csrf, time() + 900, '/'); // csrf tokens and messages have the same expire time :zany:
+            
+        } else {
+            die(header("Location: /login")); // this should never be run but just in case 
+        }
+        
+    }
+
 
     
 }
