@@ -15,7 +15,7 @@
 
     $pagebuilder = new pagebuilder;
     $pagebuilder->set_page_name("Landing");
-    $pagebuilder->addresource('cssfiles', '/assets/css/index.css?t='. time());
+    $pagebuilder->addresource('cssfiles', '/assets/css/index.css');
     $pagebuilder->buildheader();
 
     if(isset($_GET["refer"])){

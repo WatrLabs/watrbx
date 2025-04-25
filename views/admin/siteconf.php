@@ -7,7 +7,7 @@ $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder;
 $pagebuilder->set_page_name("Admin - Site Config");
-$pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css?t='. time());
+$pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css');
 $pagebuilder->buildheader();
 $siteconf = $sitefunc->getsiteconf();
 

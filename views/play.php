@@ -1,67 +1,63 @@
 <?php
     use watrlabs\watrkit\pagebuilder;
-    $pagebuilder = new pagebuilder;
+    use watrlabs\router\routing;
     use watrlabs\authentication;
+    $pagebuilder = new pagebuilder;
+    $router = new routing();
     $auth = new authentication();
-    //$auth->requiresession();
-    
-    
-    include(baseurl . '/conn.php');
-    $gamefetch = $pdo->prepare("SELECT * FROM universes WHERE parent IS NULL AND id = ?");
-    $gamefetch->execute([$id]);
-    if ($gamefetch->rowCount() < 1) {
-        header("Location: /404");
-        die();
-    } else {
-        /* else isnt really required but I like how it looks */
-        $gameinfo = $gamefetch->fetch(PDO::FETCH_ASSOC);
-        $pagebuilder->set_page_name($gameinfo["title"]);
-        $pagebuilder->addresource('cssfiles', '/assets/css/game.css?t='. time());
-        $pagebuilder->addmetatag("og:title", $gameinfo["title"]);
-        $pagebuilder->addmetatag("og:description", $gameinfo["description"]);
-        $pagebuilder->addmetatag("og:image", "https://watrbx.xyz/api/get-thumb?assetid=".$gameinfo["placeid"]."&dimensions=1024x1024");
-        $pagebuilder->buildheader();
-        // added on 1/16/25 5:41 PM by Czech
-        $gyatt = $pdo->prepare("SELECT * FROM `users` WHERE `id` = :b");
-        $gyatt->bindParam(":b", $gameinfo["owner"], PDO::PARAM_INT);
-        $gyatt->execute();
-        if ($gyatt->rowCount() > 0) {
-            $creator = $gyatt->fetch(PDO::FETCH_ASSOC);
-        }
-    }
-    //die(var_dump($userinfo));
-    
-    if (isset($_COOKIE["watrbxsession"])) {
-        $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
-        $token = $_COOKIE["watrbxsession"];
-    } else {
-        $guestid = rand(100, 999);
-        setcookie(".ROBLOSECURITY", "Guest/$guestid", time() + 99999999, "");
-        $token = "Guest/$guestid";
+    $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
+
+    global $db;
+
+    $query = $db->table("universes")->select("*")->join("users", "users.id", "=", "owner");
+    $gameinfo = $query->first();
+
+    if($gameinfo == null){
+        $router->return_status(404);
     }
 
+    $pagebuilder->addresource('cssfiles', '/assets/css/game.css');
+    $pagebuilder->addmetatag("og:title", $gameinfo->title);
+    $pagebuilder->addmetatag("og:description", $gameinfo->description);
+    $pagebuilder->addmetatag("og:image", "/api/get-thumb?assetid=".$gameinfo->placeid."&dimensions=1024x1024");
+    $pagebuilder->set_page_name($gameinfo->title);
+    $pagebuilder->buildheader();
 ?>
+
     <div id="main">
-    <div class="container" id="div1">
-        <img src="https://watrbx.xyz/api/get-thumb?assetid=<?=$gameinfo["placeid"]?>&dimensions=1280x720" onerror="this.onerror=null;this.src='https://watrbx.xyz/api/get-thumb?error=true';" width="1280px" height="720px" id="gamebanner">
-        <h2 id="gamename" style="position: relative; bottom: 0.5em"><?=$gameinfo["title"]?></h2>
-        <?php
-          if (isset($creator)) {?>
-            <small><p style="color: gainsboro; position: relative; bottom: 2em;"> Created by <a href="/users/<?=$creator["id"]?>/"><?=$creator["username"]?></a> <? 
-            if(isset($_COOKIE["watrbxsession"])) { if($userinfo["id"] == $creator["id"]){ ?> - <a href="/game/<?=$gameinfo["id"]?>/update">Edit</a> <? } } ?></p></small>
-          <?}
-        ?>
-        <button id="playbutton" onclick="joingame();">Play</button>
-    </div>
-    
-    <div class="container" id="div2">
-        <p id="div2-text"><?=$gameinfo["description"]?></p>
-        <hr>
-        0 Playing - 0 Favorites - 0 Servers
-    </div>
-    <p style="text-align: center;">this layout is temp btw</p>
+        <div id="main-container" class="container">
+            <div id="thumbnail-container">
+                <img src="https://watrbx.xyz/api/get-thumb?assetid=1&dimensions=1280x720" id="thumbnail">
+            </div>
+            <div id="gametext">
+                <h2><?=$gameinfo->title?></h2>
+                <small>by <a href="<?=$gameinfo->owner?>"><?=$gameinfo->username?></a></small>
+                <br>
+                <div id="thebelow">
+                    <button id="playbutton" onclick="joingame();">Play</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="tabs">
+            <div id="tabbutton"><a href="javascript:showabout();" id="aboutbutton" class="selected">About</a></div>
+            <div id="tabbutton"><a href="javascript:showabout();" id="aboutbutton">Store</a></div>
+            <div id="tabbutton"><a href="javascript:showcreations();" id="createbutton">Servers</a></div>
+        </div>
+        <div class="container" id="tabcontent">
+            <div id="about" class="card">
+                <h2>Description</h2>
+                <p>This game has no description.</p>
+            </div>
+
+            <div id="creations" class="hidden card">
+                <h2>Creations</h2>
+                <p>This user has no games.</p>
+            </div>
+        </div>
 
     </div>
+
     <div id="modal-bg">
         <div id="modal" class="container">
             <div class="spinner"></div>
@@ -79,8 +75,8 @@
     <script>
         async function joingame() {
             
-            const placeid = <?=$gameinfo["placeid"];?>;
-            const token = "<?=$token?>";
+            const placeid = <?=$gameinfo->placeid;?>;
+            const token = "<?=$_COOKIE["watrbxsession"]?>";
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             var placelauncherurl = "/Game/PlaceLauncher.ashx?placeId=" + placeid;
 

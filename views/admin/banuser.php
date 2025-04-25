@@ -7,7 +7,7 @@ $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder;
 $pagebuilder->set_page_name("Admin - Ban a user");
-$pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css?t='. time());
+$pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css');
 $pagebuilder->buildheader();
 ?>
 

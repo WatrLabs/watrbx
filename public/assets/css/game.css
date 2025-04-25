@@ -1,70 +1,107 @@
-body {
+#main-container {
     display: flex;
-    margin: 0px;
-    background-color: #1f1f1f;
-    color: white;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    min-height: 100vh; 
-    flex-direction: column;
-    text-rendering: optimizeLegibility !important;
-    -webkit-font-smoothing: antialiased !important;
-}
-
-a {
-    color: lightgrey;
-}
-
-#main {
-    flex: 1;
-    padding: 25px;
-    height: 100%;
-    min-height: 100%;
-}
-
-
-#div1 {
-    border-radius: 0.5em;
-    clear: both;
-    width: 900px;
-    height: 358.328px;
+    flex-direction: row;
+    width: 60%;
     margin-left: auto;
     margin-right: auto;
+    max-width: 870px;
+    min-width: 830px;
+    padding-right: 0px;
+    padding-bottom: 0px;
 }
 
-#div2 {
-    border-radius: 0.5em;
-    text-align: center;
-    width: 900px;
-    height: 100px;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#div2-text {
-
-    top: 50%;
-    transform: translate(0, -35%);
-}
-
-
-#gamebanner {
-    border-radius: 0.5em;
-    float: left;
+#thumbnail {
     aspect-ratio: 16/9;
     width: 640px;
-    height: 358.328px;
-    margin-right: 15px;
+    height: 360px;
+    border-radius: 0.5em;
 }
 
-#gametitle {
-    position: relative;
-    top: 3.2em;
-    left: 11%;
+#gametext {
+    flex-grow: 1;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+    margin-top: 0px;
+    height: 360px;
+}
+
+#thebelow {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
 }
 
 #playbutton {
-    margin-top: auto;
+    margin: 0px;
+    width: 100%;
+}
+
+#gametext h2 {
+    margin: 0px;
+}
+
+#tabs {
+    transition: 0.5s;
+    margin-top: 15px;
+    width: 50%;
+    max-width: 850px;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom: thick solid #32a1ce;
+
+}
+
+#tabs a {
+    text-decoration: none;
+}
+
+#tabbutton {
+    color: grey;
+    height: 100%;
+    width: 100%;
+}
+
+#tabbutton a {
+    color: grey;
+    text-decoration: none;
+    
+}
+
+#tabcontent {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    width: 50%;
+    max-width: 850px;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.card {
+    width: 100%;
+    margin: 15px;
+}
+
+#tabbutton .selected {
+    text-decoration: bold;
+    color: white;
+    height: 100%;
+    width: 100%;
 }

@@ -5,7 +5,7 @@ $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder;
 $pagebuilder->set_page_name("Admin - Invite Keys");
-$pagebuilder->addresource('cssfiles', '/assets/css/admin/invkeys.css?t='. time());
+$pagebuilder->addresource('cssfiles', '/assets/css/admin/invkeys.css');
 $pagebuilder->buildheader();
 
 ?>

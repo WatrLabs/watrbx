@@ -5,7 +5,7 @@ $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder;
 $pagebuilder->set_page_name("Admin - Manage Games");
-$pagebuilder->addresource('cssfiles', '/assets/css/admin/invkeys.css?t='. time());
+$pagebuilder->addresource('cssfiles', '/assets/css/admin/invkeys.css');
 $pagebuilder->buildheader();
 global $db;
 ?>

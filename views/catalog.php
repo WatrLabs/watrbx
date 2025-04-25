@@ -5,7 +5,7 @@ $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder;
 $pagebuilder->set_page_name("Catalog");
-$pagebuilder->addresource('cssfiles', '/assets/css/catalog.css?t='. time());
+$pagebuilder->addresource('cssfiles', '/assets/css/catalog.css');
 $pagebuilder->buildheader();
 ?>
 

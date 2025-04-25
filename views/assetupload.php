@@ -8,7 +8,7 @@ $auth = new authentication();
 $auth->requiresession();
 $auth->createcsrf("assetupload");
 $pagebuilder->set_page_name("Asset Uploader");
-$pagebuilder->addresource('cssfiles', '/assets/css/games.css?t='. time());
+$pagebuilder->addresource('cssfiles', '/assets/css/games.css');
 $pagebuilder->buildheader();
 $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
 

@@ -12,6 +12,7 @@ body {
     flex-direction: column;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
+    min-width: 1000px;
 }
 
 a {

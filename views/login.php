@@ -7,7 +7,7 @@
     $auth = new authentication;
     //$auth->requireguest();
     $pagebuilder->set_page_name("Login");
-    $pagebuilder->addresource('cssfiles', '/assets/loginreq.css?t='. time());
+    $pagebuilder->addresource('cssfiles', '/assets/loginreq.css');
     $pagebuilder->buildheader();
 
 ?>
