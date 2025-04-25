@@ -4,38 +4,36 @@ use watrlabs\authentication;
 $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder;
-$pagebuilder->set_page_name("Admin - Game Manager");
-$pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css?t='. time());
+$pagebuilder->set_page_name("Admin - Manage Games");
+$pagebuilder->addresource('cssfiles', '/assets/css/admin/invkeys.css?t='. time());
 $pagebuilder->buildheader();
-?>
-<div id="main">
-    
-
-<p>game manager</p>
-<h1>games in queue</h1>
-<?php
-
-include(baseurl . '/conn.php');
-        $getServers = $pdo->query("SELECT * FROM serverqueue");
-        $allServers = $getServers->fetchAll();
-        
-        foreach ($allServers as $server) {
+global $db;
 ?>
 
-<p>game <?=$server['place']?> in queue</p><br>
-<? } ?>
+<div id="main" style="text-align: center;">
+    <br><br>
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <th>Job ID</th>
+            <th>Place ID</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+        <?php
 
-<br><br><br>
-<h1>games running</h1>
-<?php
-        $getServers = $pdo->query("SELECT * FROM games");
-        $allServers = $getServers->fetchAll();
-        
-        foreach ($allServers as $server) {
-?>
+                $query = $db->table("games")->select("*");
+                $allgameservers = $query->get();
+                
+                foreach($allgameservers as $gameserver){
 
-<p>game <?=$server['place']?> running with jobid <?=$server['jobId']?> <a href="/matchmake/close?key=<?=arbiterKeySite?>&jobId=<?=$server['jobId']?>">close</a></p>
-<? } ?>
-
+        ?>        
+        <tr>
+            <td><?=$gameserver->jobId?></td>
+            <td><?=$gameserver->place?></td>
+            <td><?=$gameserver->isactive?></td>
+            <td><a href="/matchmake/close?key=<?=$_ENV["arbiterKeySite"]?>&jobId=<?=$gameserver->jobId?>">Close</a></td>
+        </tr>
+        <? } ?>
+    </table>
 </div>
 <? $pagebuilder->get_snippet("footer"); ?>

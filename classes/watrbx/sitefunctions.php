@@ -70,6 +70,31 @@ class sitefunctions {
         return $randomString;
     }
     
+    public function getplaying() {
+        global $db;
+
+        $query = $db->table("activeplayers")->select("*");
+        return $query->count();
+    }
+
+    public function getgamecount() {
+        global $db;
+
+        $query = $db->table("universes")->select("*");
+        return $query->count();
+    }
+
+    public function getnewusers() {
+
+        global $db;
+
+        $day = 86400;
+        $adayago = time() - $day;
+
+        $query = $db->table("users")->where("regtime", ">", $adayago);
+        return $query->count();
+    }
+
     static function isbadtext($text){
         $badlist = array_map('trim', array_filter(explode(",", file_get_contents("../storage/bad_words.txt"))));
                 

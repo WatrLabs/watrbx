@@ -49,7 +49,7 @@ if(isset($_COOKIE["watrbxsession"])){
             <p id="icon-text">0</p> -->
             <img src="/images/settings.png" class="icon">
                 <? if($role == 1){ ?> 
-                    <a href="/admin/" id="nav-item">Admin</a>
+                    <a href="/admin/dashboard" id="nav-item">Admin</a>
                 <? } ?>
             <? } else { ?> 
                 <a href="/register" id="nav-item">Register</a>

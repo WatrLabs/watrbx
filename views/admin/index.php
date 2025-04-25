@@ -7,7 +7,7 @@ $auth = new authentication();
 $auth->requiresession();
 $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
 $pagebuilder = new pagebuilder;
-$pagebuilder->set_page_name("Admin - Index");
+$pagebuilder->set_page_name("Admin - Dashboard");
 $pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css?t='. time());
 $pagebuilder->buildheader();
 ?>
@@ -16,7 +16,7 @@ $pagebuilder->buildheader();
 <div id="welcome-text">
         <img id="pfp" src="/images/headshot.png">
         <div id="other-text">
-            <h2>Welcome, <?= $userinfo["username"] ?></h2>
+            <h2>Welcome, <?= $userinfo->username ?></h2>
             <p><?=$func->getplaying();?> currently in game<br>Current php version: <?=phpversion();?><br><?=$func->getgamecount();?> games have been created<br><?=$func->getnewusers();?> new user(s) today<br>Running on <?=gethostname()
             ?></p>
         </div>

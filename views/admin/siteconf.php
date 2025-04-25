@@ -11,7 +11,7 @@ $pagebuilder->addresource('cssfiles', '/assets/css/admin/index.css?t='. time());
 $pagebuilder->buildheader();
 $siteconf = $sitefunc->getsiteconf();
 
-if($siteconf["register_enabled"] == "1"){
+if($siteconf->register_enabled == "1"){
     $regenabled = true;
 } else {
     $regenabled = false;
@@ -21,7 +21,7 @@ if($siteconf["register_enabled"] == "1"){
 <div id="main" style="text-align: center;">
     <h1>Change site config</h1>
     <form method="POST" action="/api/admin/siteconfig">
-        <input type="text" name="sitebanner" placeholder="Site Banner" value="<?=$siteconf["sitebanner"]?>" style="width: 550px; text-align: center;"><br>
+        <input type="text" name="sitebanner" placeholder="Site Banner" value="<?=$siteconf->sitebanner?>" style="width: 550px; text-align: center;"><br>
         <br><br>
         <p>is register enabled?</p>
         <input type="radio" value="1" name="regenabled" <?if($regenabled){ echo "checked"; } ?>>yes<br>

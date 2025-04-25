@@ -19,18 +19,16 @@ $pagebuilder->buildheader();
             <th>signups</th>
         </tr>
         <?php
+
+        global $db;
+        $query = $db->table("refers")->select("*");
+        $allrefers = $query->get();    
         
-        include(baseurl . '/conn.php');
-        $getkeys = $pdo->query("SELECT * FROM refers");
-        $allkeys = $getkeys->fetchAll();
-        
-        var_dump($allkeys);    
-        
-        foreach ($allkeys as $key) { ?>
+        foreach ($allrefers as $refer) { ?>
         <tr>
-            <td><?=$key["refername"]?></td>
-            <td><?=$key["visits"]?></td>
-            <td><?=$key["signups"]?></td>
+            <td><?=$refer->refername?></td>
+            <td><?=$refer->visits?></td>
+            <td><?=$refer->signups?></td>
         </tr>
         <? } ?>
         

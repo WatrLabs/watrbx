@@ -19,6 +19,7 @@
     flex-direction: row;
     align-items: center;
     margin: 15px;
+    flex-grow: 1;
 }
 
 #othertext {
@@ -29,4 +30,82 @@
 #bio {
     color: grey;
     font-style: italic;
+}
+
+#thething {
+    width: 100%;
+    display: flex; 
+    align-items: center; 
+}
+
+#buttons {
+    display: flex;
+    align-self: flex-end;
+    height: 100%;
+    margin-top: auto; 
+    margin: 15px;
+    margin-left: auto;
+}
+
+#tabs {
+    transition: 0.5s;
+    margin-top: 15px;
+    width: 50%;
+    max-width: 850px;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom: thick solid #32a1ce;
+
+}
+
+#tabs a {
+    text-decoration: none;
+}
+
+#tabbutton {
+    color: grey;
+    height: 100%;
+    width: 100%;
+}
+
+#tabbutton a {
+    color: grey;
+    text-decoration: none;
+    
+}
+
+#tabcontent {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    width: 50%;
+    max-width: 850px;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.card {
+    width: 100%;
+    margin: 15px;
+}
+
+#tabbutton .selected {
+    text-decoration: bold;
+    color: white;
+    height: 100%;
+    width: 100%;
 }

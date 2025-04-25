@@ -13,7 +13,7 @@ function checkperms() {
     if(isset($_COOKIE["watrbxsession"])){
         $cookie = $_COOKIE["watrbxsession"]; // putting it in a variable so I dont have to type a paragraph like I am now because im lazy but not but I am but im not afasdlgfjk;sdfgf;dlgshf g
         $userinf = $auth->getuserinfo($cookie);
-        if(!$userinf["role"] == 1){
+        if(!$userinf->role == 1){
             die(require("../pagehandler/403.php")); // why tf do we not have a 403 file??? (i'm blaming czech for no reason)
             // ok I really lazily wrote one (I just copied and pasted the 404 one 🤪)
         }
@@ -150,37 +150,37 @@ function checkperms() {
     
     
     $router->group('/admin', function($router) {
-        $router->get('/', function() {
-            die(require("../templates/admin/index.php"));
+        $router->get('/dashboard', function() {
+            die(require("../views/admin/index.php"));
         });
         
         $router->get('/refers', function() {
                  
-                die(require("../templates/admin/refers.php"));
+                die(require("../views/admin/refers.php"));
         });
         
         $router->get('/invkeys', function() {
                  
-                die(require("../templates/admin/invkey.php"));
+                die(require("../views/admin/invkey.php"));
         });
         
         $router->get('/site-config', function() {
                  
-                die(require("../templates/admin/siteconf.php"));
+                die(require("../views/admin/siteconf.php"));
         });
         
         $router->get('/create-key', function() {
                  
-                die(require("../templates/admin/createinvkey.php"));
+                die(require("../views/admin/createinvkey.php"));
         });
 
         $router->get('/banuser', function() {
              
-            die(require("../templates/admin/banuser.php"));
+            die(require("../views/admin/banuser.php"));
     });
         
         $router->get('/games', function() {
                  
-                die(require("../templates/admin/games.php"));
+                die(require("../views/admin/games.php"));
         });
     }, 'checkperms');
