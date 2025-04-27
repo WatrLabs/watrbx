@@ -23,6 +23,7 @@
 ?>
     <div id="main">
         <div style="position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
+			<?=$sitefunc->get_message();?>
         <div id="reg" class="container">
 			<h2><img src="/assets/images/watrbxlogo3.png" width="254" height="57" style="margin: 15px;"></h2>
 			<form method="POST" id="loginform">

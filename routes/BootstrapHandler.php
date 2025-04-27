@@ -2,8 +2,8 @@
 // ../routes/template.php
 
 // make sure you replace setup<PHP FILE NAME>Routes function
+global $router;
 
-function setupBootstrapHandlerRoutes($router) {
         $router->get('/version.txt', function() {
                 echo "15";
         });
@@ -13,4 +13,3 @@ function setupBootstrapHandlerRoutes($router) {
         });
         
         
-}

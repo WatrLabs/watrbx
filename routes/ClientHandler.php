@@ -5,7 +5,7 @@ use watrlabs\logging;
 use watrbx\sitefunctions;
 $gameserver = new gameserver();
 
-function setupClientHandlerRoutes($router) {  
+global $router;
     
     function logchat($chat, $user){
         $timestamp = date("c", strtotime("now"));
@@ -920,8 +920,6 @@ function setupClientHandlerRoutes($router) {
         // 13 = server busy (shutting down)
         // 14 = hash WAS on list
         // 15 = hash exception
-        
-        include(baseurl . '/conn.php');
         $gameserver = new gameserver(); 
         header("Content-Type: application/json"); 
         
@@ -955,7 +953,7 @@ function setupClientHandlerRoutes($router) {
         $sitefunc = new sitefunctions();
         $siteconf = $sitefunc->getsiteconf();
         
-        $guests = ($siteconf["guestenabled"] == 1) ? true : false;
+        $guests = ($siteconf->guestenabled == 1) ? true : false;
         
         if(isset($_COOKIE["_ROBLOSECURITY"])){
             
@@ -987,39 +985,41 @@ function setupClientHandlerRoutes($router) {
         }
         
         $pid = $_GET["placeId"];
+
+        global $db;
+        $query = $db->table("assets")->where("id", $pid);
+        $placeinfo = $query->first();
         
-        $getplace = $pdo->prepare("SELECT * FROM assets WHERE id = :pid");
-        $getplace->bindParam(':pid', $pid, PDO::PARAM_INT);
-        $getplace->execute();
-        $placeinfo = $getplace->fetch(PDO::FETCH_ASSOC);
-        
-        if(!$placeinfo){
+        if($placeinfo == null){
             http_response_code(404);
             die();
         }
 
-        $creator = $pdo->prepare("SELECT * FROM games WHERE place = :pid");
-        $creator->bindParam(':pid', $pid, PDO::PARAM_INT);
-        $creator->execute();
+        $query = $db->table("games")->where("place", $pid);
+        $serverinfo = $query->first();
+        
 
-        if ($creator->rowCount() > 0) {
-            $serverinfo = $creator->fetch(PDO::FETCH_ASSOC);
-            $ip = $serverinfo["ip"];
-            $port = $serverinfo["port"];
+        if ($serverinfo !== null) {
+            $ip = $serverinfo->ip;
+            $port = $serverinfo->port;
             $placelauncher["status"] = 1;
-            $placelauncher["jobid"] = $serverinfo["jobId"];
-            $isactive = $serverinfo["isactive"];
+            $placelauncher["jobid"] = $serverinfo->jobId;
+            $isactive = $serverinfo->isactive;
             
             if($isactive == 1){
                 $placelauncher["status"] = 2;
                 $auth = new authentication();
                 $joincode = $auth->genstring(10);
-                $creator = $pdo->prepare("INSERT INTO joincodes (code, ip, port, pid) VALUES (:code, :ip, :port, :pid)");
-                $creator->bindParam(':code', $joincode, PDO::PARAM_STR);
-                $creator->bindParam(':ip', $ip, PDO::PARAM_STR);
-                $creator->bindParam(':port', $port, PDO::PARAM_INT);
-                $creator->bindParam(':pid', $pid, PDO::PARAM_INT);
-                $creator->execute();
+
+                $insertarray = array(
+                    "code"=>$joincode,
+                    "ip"=>$ip,
+                    "port"=>$port,
+                    "pid"=>$pid
+                );
+
+                $db->table("joincodes")->insert($insertarray);
+
                 $placelauncher["joinScriptUrl"] = "http://www.watrbx.xyz/Game/Join.ashx?joincode=" . $joincode; // security :sunglasses:
             }
             
@@ -1354,5 +1354,3 @@ function setupClientHandlerRoutes($router) {
 
         die("--rbxsig%" . $signature . "%\r\n" . $data);
     });
-}
-

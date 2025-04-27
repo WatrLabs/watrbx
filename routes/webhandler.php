@@ -645,9 +645,8 @@ global $router;
             
             $sitefunc = new sitefunctions();
             $siteconf = $sitefunc->getsiteconf();
-            if($siteconf["register_enabled"] == 0){
-                include("regdisabled.html");
-                $pagebuilder->get_snippet("footer");
+            if($siteconf->register_enabled == 0){
+                http_response_code(401);
                 die();
             }
 
@@ -663,28 +662,21 @@ global $router;
                 
                 $dontreg = false;
                 
-                $badlist = array_map('trim', array_filter(explode(",", file_get_contents(baseurl . "/storage/bad_words.txt"))));
+                $badlist = array_map('trim', array_filter(explode(",", file_get_contents("../storage/bad_words.txt"))));
                 
                 foreach ($badlist as $word) {
                     if (stripos($_POST["username"], $word) !== false) {
-                        $dontreg = true;
-                        break;
+                        $sitefunc = new sitefunctions();
+                        $sitefunc->set_message("Username is not appropriate!", "error");
+                        header("Location: /register");
+		                die();
                     }
                 }
-
-                if ($dontreg) {
-                    $sitefunc = new sitefunctions();
-                    $sitefunc->set_message("Username is not appropriate!", "error");
-                    header("Location: /register");
-		            die();
-                }
-                
                 $func = new sitefunctions();
 	            $cfresponse = $_POST["cf-turnstile-response"];
 	            
 	            $url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-                $post_data = array('secret' => turnstilekey, "response"=>$cfresponse);
-
+                $post_data = array('secret' => $_ENV["TurnStileKey"], "response"=>$cfresponse);
 
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -700,9 +692,6 @@ global $router;
 	            } 
                 
                 include baseurl . "/conn.php";
-                //$stmt = $pdo->prepare("SELECT * FROM invitekeys WHERE invkey = ? AND uses < usedamount");
-                //$stmt->execute([$_POST["key"]]);
-                //$keycheck = $stmt->fetch(PDO::FETCH_ASSOC);
                 
                 $keycheck = true;
                 
@@ -710,24 +699,23 @@ global $router;
                     
                     $result = $auth->createuser($_POST["username"], $_POST["password"], $_POST["confpassword"]);
                     $decoded = json_decode($result, true);
-                    
-                   
-                
+                      
                     if($decoded["code"] == 200){
                         
                         if(isset($_COOKIE["referer"])){
                             
-                            $referid = $_COOKIE["referer"];
+                            $referid = $_COOKIE["referer"]; 
+
+                            global $db;
+
                             
-                            $getrefers = $pdo->prepare("SELECT * FROM refers WHERE refername = ?");
-                            $getrefers->execute([$referid]);
-                            $referdata = $getrefers->fetch(PDO::FETCH_ASSOC);
+                            $query = $db->table("refers")->where("refername", $referid);
+                            $referdata = $query->first();
             
-                            if($referdata){
-                                $newsignups = $referdata["signups"] + 1;
-                                
-                                $updaterefers = $pdo->prepare("UPDATE refers SET signups = ?");
-                                $updaterefers->execute([$newsignups]);
+                            if($referdata !== null){
+                                $newsignups = $referdata->signiups + 1;
+                                $db->table("refers")->update(array("signups"=>$newsignups, "refername"=>$referid));
+
                             }
                         
                         }

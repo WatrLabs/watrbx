@@ -6,9 +6,8 @@ $gameserver = new gameserver();
 
 
 
-// make sure you replace setup<PHP FILE NAME>Routes function
+global $router;
 
-function setupMatchHandlerRoutes($router) {
     $router->group('/matchmake', function($router) {
         $router->get('/', function() {
             die(include("../templates/matchmake/games.php"));
@@ -315,4 +314,3 @@ function setupMatchHandlerRoutes($router) {
         });
         
     });
-}

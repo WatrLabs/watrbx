@@ -1,6 +1,7 @@
 <?php
 
-function setupDataPersHandlerRoutes($router) {
+    global $router;
+
     $router->group('/persistence', function($router) {
         
         $router->post('/increment', function(){
@@ -178,4 +179,3 @@ function setupDataPersHandlerRoutes($router) {
             }
         });
     });
-}

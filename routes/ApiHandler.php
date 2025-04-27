@@ -12,7 +12,8 @@ function compileerror($error = "Unknown"){
     return json_encode($errorarray);
 };
 
-function setupApiHandlerRoutes($router) {
+global $router;
+
         $router->get('/api/get-quote', function() {
                 header("Content-type: application/json");
                 include(baseurl . "/conn.php");
@@ -68,4 +69,3 @@ function setupApiHandlerRoutes($router) {
             }
 
         });
-}

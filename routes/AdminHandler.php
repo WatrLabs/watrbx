@@ -67,23 +67,34 @@ function checkperms() {
         });
         
         $router->post('/siteconfig', function() {
-                
+
+            global $db;
                 
                 if(isset($_POST["sitebanner"])){
-                    require(baseurl . "/conn.php");
                     $sitebanner = $_POST["sitebanner"]; // im gonna allow html for now, just dont abuse it.
-                    $siteupdate = $pdo->prepare("UPDATE config SET sitebanner = :sitebanner");
-                    $siteupdate->bindParam(':sitebanner', $sitebanner, PDO::PARAM_STR);
-                    $siteupdate->execute();
+                    $updatevalue = array(
+                        "sitebanner"=>$sitebanner
+                    );
+
+                    $db->table("config")->update($updatevalue);
                     header("Location: /admin/site-config");
                 }
                 
                 if(isset($_POST["regenabled"])){
-                    require(baseurl . "/conn.php");
                     $regenabled = (int)$_POST["regenabled"];
-                    $siteupdate = $pdo->prepare("UPDATE config SET register_enabled = :regenabled");
-                    $siteupdate->bindParam(':regenabled', $regenabled, PDO::PARAM_STR);
-                    $siteupdate->execute();
+
+                    $updatevalue = array(
+                        "register_enabled"=>$regenabled
+                    );
+
+                    $db->table("config")->update($updatevalue);
+
+                    $logging = new logging();
+                    if($regenabled == 1){
+                        $logging->logwebhook("Register has been opened!");
+                    } elseif($regenabled == 0){
+                        $logging->logwebhook("Register has been closed.");
+                    }
                     header("Location: /admin/site-config");
                 }
                 

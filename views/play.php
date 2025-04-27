@@ -16,7 +16,7 @@
         $router->return_status(404);
     }
 
-    $pagebuilder->addresource('cssfiles', '/assets/css/game.css');
+    $pagebuilder->addresource('cssfiles', '/assets/css/game.css?t=' . time());
     $pagebuilder->addmetatag("og:title", $gameinfo->title);
     $pagebuilder->addmetatag("og:description", $gameinfo->description);
     $pagebuilder->addmetatag("og:image", "/api/get-thumb?assetid=".$gameinfo->placeid."&dimensions=1024x1024");
