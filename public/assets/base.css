@@ -360,4 +360,5 @@ input:hover {
     padding: 10px;
     background-color: #ef4444;
     text-align: center;
+    border-radius: 0.5em;
 }

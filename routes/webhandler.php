@@ -579,48 +579,42 @@ global $router;
                 
                 if(move_uploaded_file($_FILES["assetfile"]["tmp_name"], $location)){
                     
-                    
-                    
-                    
                     $assetid = 1;
                     $time = time();
                     $name = htmlentities($_POST["name"]);
                     $description = htmlentities($_POST["description"]);
-                    $assetupload = $pdo->prepare("INSERT INTO assets (prodid, name, assetid, created, updated, owner, assetfile) VALUES (:prodid, :name, :assetid, :time, :time, :owner, :assetname)");
-                    $pdoisfuckingstupid = 9;
-                    $assetupload->bindParam(':prodid', $pdoisfuckingstupid, PDO::PARAM_INT);
-                    $assetupload->bindParam(':assetid', $assetid, PDO::PARAM_INT);
-                    $assetupload->bindParam(':name', $name, PDO::PARAM_STR);
-                    $assetupload->bindParam(':time', $time, PDO::PARAM_INT);
-                    $assetupload->bindParam(':owner', $userinfo["id"], PDO::PARAM_INT);
-                    $assetupload->bindParam(':assetname', $assetname, PDO::PARAM_STR);
-                    $assetupload->execute();
-                    //$assetinfo = $assetupload->fetch(PDO::FETCH_ASSOC);
-                    
-                    //$assetfetch = $pdo->prepare("SELECT * FROM assets WHERE name = :name");
-                    //$assetfetch->bindParam(':name', $name, PDO::PARAM_STR);
-                    //$assetfetch->execute();
-                    //$assetinfo = $assetfetch->fetch(PDO::FETCH_ASSOC);
-                    
-                    $assetinfo["id"] = $pdo->lastInsertId();
+                    $insert = array(
+                        "prodid"=>9,
+                        "name"=>$name,
+                        "assetid"=>$assetid,
+                        "owner"=>$userinfo->id,
+                        "created"=>$time,
+                        "updated"=>$time,
+                        "assetfile"=>$assetname
+                    );
+
+                    global $db;
+                    $insertid = $db->table("assets")->insert($insert);
+
                     
                     // 🤦️
                     
-                    $userid = $userinfo['id'];
+                    $userid = $userinfo->id;
+
+                    $insert = array(
+                        "title"=>$name,
+                        "description"=>$description,
+                        "placeid"=>$insertid,
+                        "owner"=>$userid
+                    );
+
+                    $insertid = $db->table("universes")->insert($insert);
                     
-                    $gameupload = $pdo->prepare("INSERT INTO universes (title, description, placeid, owner) VALUES (:title, :description, :placeid, :owner)");
-                    $gameupload->bindParam(':title', $name, PDO::PARAM_STR);
-                    $gameupload->bindParam(':description', $description, PDO::PARAM_STR);
-                    $gameupload->bindParam(':placeid', $assetinfo["id"], PDO::PARAM_INT);
-                    $gameupload->bindParam(':owner', $userid, PDO::PARAM_INT);
-                    $gameupload->execute();
-                    
-                    $logging = new logging();
-                    $logging->logwebhook("A new game (".html_entity_decode($name).") has been uploaded!");
-                    
+                    //$logging = new logging();
+                    //$logging->logwebhook("A new game (".html_entity_decode($name).") has been uploaded!");
                     $sitefunc = new sitefunctions();
                     $sitefunc->set_message("Game uploaded successfully!", "notice");
-                    header("Location: /games");
+                    header("Location: /game/$insertid/");
                     die();
                 } else {
                     $sitefunc = new sitefunctions();
@@ -691,11 +685,16 @@ global $router;
 		            die();
 	            } 
                 
-                include baseurl . "/conn.php";
-                
                 $keycheck = true;
                 
                 if($keycheck){
+
+                    if($_POST["password"] !== $_POST["confpassword"]){
+                        $sitefunc = new sitefunctions();
+                        $sitefunc->set_message("Passwords do not match!", "error");
+                        header("Location: /register");
+		                die();
+                    }
                     
                     $result = $auth->createuser($_POST["username"], $_POST["password"], $_POST["confpassword"]);
                     $decoded = json_decode($result, true);
@@ -729,8 +728,8 @@ global $router;
                         //$stmt = $pdo->prepare("UPDATE users SET signup_key = ? WHERE username = ?");
                         //$stmt->execute([$_POST["key"], $_POST["username"]]);
                         
-                        $token = $decoded["token"];
-                        setcookie("watrbxsession", $token, time() + 864000, '');
+                        //$token = $decoded["token"];
+                        //setcookie("watrbxsession", $token, time() + 864000, '');
                         
                         //$emailhtml = file_get_contents("../storage/email-views/welcome.html");
                         //$emailhtml = str_replace("{username}",$_POST["username"], $emailhtml); // eventually make a parser for this

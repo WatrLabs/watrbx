@@ -9,7 +9,7 @@
 
     global $db;
 
-    $query = $db->table("universes")->select("*")->join("users", "users.id", "=", "owner");
+    $query = $db->table("universes")->select("*")->where("universes.id", $id)->join("users", "users.id", "=", "owner");
     $gameinfo = $query->first();
 
     if($gameinfo == null){
@@ -27,7 +27,7 @@
     <div id="main">
         <div id="main-container" class="container">
             <div id="thumbnail-container">
-                <img src="https://watrbx.xyz/api/get-thumb?assetid=1&dimensions=1280x720" id="thumbnail">
+                <img src="https://watrbx.xyz/api/get-thumb?assetid=<?=$gameinfo->placeid?>&dimensions=1280x720" id="thumbnail">
             </div>
             <div id="gametext">
                 <h2><?=$gameinfo->title?></h2>

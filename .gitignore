@@ -3,3 +3,4 @@ vendor/
 composer.lock
 public/.user.ini
 public/clients/*
+storage/assets/*

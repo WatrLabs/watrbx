@@ -61,9 +61,61 @@ class authentication {
         return $session;
         
     }
+
+    public function createuser($username, $password){
+
+        if(strlen($username) > 20){
+            return json_encode(array("code"=>"400", "message"=>"Username is too long."));
+        }
+
+        if(strlen($username) < 3){
+            return json_encode(array("code"=>"400", "message"=>"Username is too short."));
+        }
+
+        global $db;
+
+        $query = $db->table("users")->where("username", $username);
+        $result = $query->first();
+
+        if($result !== NULL){
+            return json_encode(array("code"=>"400", "message"=>"Username has already been taken."));
+        }
+
+        if (preg_match('/[^a-zA-Z0-9\s]/', $username)) {
+            return json_encode(array("code"=>"400", "message"=>"Username has special characters."));
+        }
+
+        if (ctype_space($username)) {
+            return json_encode(array("code"=>"400", "message"=>"Username has special characters."));
+        }
+
+        $insert = array(
+            "username"=>$username,
+            "password"=>$password,
+            "regtime"=>time()
+        );
+
+        $insertid = $db->table("users")->insert($insert);
+
+        if($this->havesession()){
+            $this->relateaccount($insertid);
+        } else {
+            $this->createsession($insertid);
+        }
+
+        return json_encode(array("code"=>"200"));
+        
+
+    }
     
     public function havesession(){
         return isset($_COOKIE["watrbxsession"]);
+    }
+
+    public function getuserbyid($id){
+        global $db;
+        $query = $db->table("users")->where("id", $id);
+        return $query->first();
     }
 
     public function login($username, $password){
@@ -132,11 +184,9 @@ class authentication {
     public function relateaccount($user){
         global $db;
         $session = $this->getsession();
+        $userinfo = $this->getuserbyid($user);
 
-        $users = new getuserinfo();
-        $userinfo = $users->getuserinfo->id($user);
-
-        if(!$this->hasaccount){
+        if(!$this->hasaccount()){
             $data = array(
                 'author' => $user,
             );
@@ -151,10 +201,11 @@ class authentication {
         $query = $db->table('sessions')->where('session', '=', $session);
         $sessiondata = $query->first();
         
-        if($sessiondata){
-            
+        if($sessiondata !== Null){
             if($sessiondata->author !== NULL){
                 return $sessiondata->author;
+            } else {
+                return false;
             }
         } else {
             return false;
@@ -176,7 +227,11 @@ class authentication {
         if($this->havesession()){
             if(!$this->hasaccount()){
                 header("Location: /login");
+                die();
             }
+        } else {
+            header("Location: /login");
+            die();
         }
     }
 
