@@ -63,10 +63,4 @@ if(isset($_COOKIE["watrbxsession"])){
             <a href="/users/<?=$usrinfo->id?>/">Profile </a>
         </div>
 </div><?}?>
-<? if($siteconf->sitebanner !== ""){ ?>
 
-    <div id="site-alert">
-        <p id="site-alert-text"><?=$siteconf->sitebanner?></p>
-    </div>
-
-<? } ?>

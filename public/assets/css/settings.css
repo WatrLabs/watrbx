@@ -1,0 +1,21 @@
+#center {
+    position: absolute; 
+    left: 50%; 
+    top: 50%; 
+    -webkit-transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
+}
+
+#settings {
+    text-align: left;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+}
+
+small {
+    margin-top: 5px;
+    color: grey;
+    text-decoration: italic;
+}

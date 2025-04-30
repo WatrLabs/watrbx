@@ -39,6 +39,7 @@ h1, h2, h3, h4, h5, h6, .bold {
     padding-top: 2px;
     height: 42px;
     background-color: #378db8;
+    background-image: linear-gradient(#378db8, #245c79);
     align-content: center;
     justify-content: space-between;
     box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
@@ -47,14 +48,20 @@ h1, h2, h3, h4, h5, h6, .bold {
 #site-alert {
     align-content: center;
     width: 100%;
-    background-color: #ef4444;
-    height: 50px;
-    text-align: center;
+    background-color: #a8031c;
+    background-image: linear-gradient(red, #a8031c);
+    height: 30px;
+    text-align: left;
     box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
 }
 
-#site-alert-test {
-    width: 100%;
+#site-alert-text {
+    align-content: center;
+    flex-wrap: wrap;
+    display: flex;
+    height: 30px;
+    margin: 0;
+    margin-left: 10px;
 }
 
 .h-small {
@@ -77,14 +84,20 @@ h1, h2, h3, h4, h5, h6, .bold {
     align-content: center;
     width: 100%;
     background-color: #378db8;
+    background-image: linear-gradient(#378db8, #245c79);
     height: 50px;
-    text-align: center;
+    text-align: left;
     bottom: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .container {
     border-radius: 0.5em;
     background-color: #303030;
+    background-image: linear-gradient(#303030, #212121);
     padding: 10px;
     box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
 }
@@ -170,7 +183,8 @@ button, .button {
 }
 
 .error {
-    color: red;
+    background-color: #a8031c;
+    background-image: linear-gradient(red, #a8031c);
     border-radius: 0.5em;
     border: 5px solid red;
 }
@@ -237,7 +251,8 @@ input:hover {
 }
 
 #second-navbar {
-    background-image: linear-gradient(#DE2626, #BC2828);
+    background-color: #a8031c;
+    background-image: linear-gradient(red, #a8031c);
     padding: 0.3em;
     padding-left: 20px;
 }

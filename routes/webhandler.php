@@ -31,10 +31,9 @@ global $router;
         $router->post("/api/joberror", function() {
             if(isset($_GET["jobid"])) {
                 $jobid = $_GET["jobid"];
-                
-                include(baseurl . "/conn.php");
-                $updatejob = $pdo->prepare("UPDATE jobs SET status = ? WHERE jobid = ?");
-                $updatejob->execute(["2", $jobid]);
+
+                global $db;
+                $db->table("jobs")->update(array("status"=>2))->where("jobid", $jobid);
                 
                 echo "Success.";
                 
@@ -52,8 +51,6 @@ global $router;
                 if(isset($_GET["assetid"]) && isset($_GET["dimensions"])){
                     
                     $func = new sitefunctions();
-                    
-                    include(baseurl . "/conn.php");
                     
                     $assetid = (int)$_GET["assetid"];
                     $dimensions = $_GET["dimensions"];
@@ -80,19 +77,19 @@ global $router;
                         header("Content-type: image/png");
                         die($err);
                     }
+
+                    global $db;
+                    $query = $db->table("thumbnails")->where("assetid", $assetid)->where("dimensions", $dimensions);
+                    $thumbdata = $query->first();
+
                     
-                    
-                    $getthumbdata = $pdo->prepare("SELECT * FROM thumbnails WHERE assetid = ? AND dimensions = ?");
-                    $getthumbdata->execute([$assetid, $dimensions]);
-                    $thumbdata = $getthumbdata->fetch(PDO::FETCH_ASSOC);
-                    
-                    if($thumbdata !== false){
+                    if($thumbdata !== null){
                         // the thumbnail exists!
                         
                         try {
                             header("Cache-Control: public, max-age=86400");
                             header("Expires: " . gmdate("D, d M Y H:i:s", time() + 86400) . " GMT");
-                            $render = file_get_contents($thumbdata["file"]);
+                            $render = file_get_contents($thumbdata->file);
                             header("Content-type: image/png");
                             //imagepng($thumbdata["file"]);
                             die($render);
@@ -106,16 +103,15 @@ global $router;
                         
                     } else {
                         // thumb does not exist!
-                        
-                        $getthumbdata = $pdo->prepare("SELECT * FROM jobs WHERE assetid = ? AND dimensions = ?");
-                        $getthumbdata->execute([$assetid, $dimensions]);
-                        $thumbdata = $getthumbdata->fetch(PDO::FETCH_ASSOC);
-                        
+
+                        $query = $db->table("jobs")->where("assetid", $assetid)->where("dimensions", $dimensions);
+                        $jobdata = $query->first();
                         
                         
-                        if($thumbdata !== false){
+                        
+                        if($jobdata !== null){
                             
-                            if($thumbdata["status"] == 2){
+                            if($jobdata->status == 2){
                                 $err = file_get_contents("../storage/renders/error.png");
                                 header("Content-type: image/png");
                                 die($err);
@@ -128,14 +124,16 @@ global $router;
                                 header("Content-type: image/png");
                                 die(file_get_contents("../storage/renders/pending.png")); // dimensions are invalid... just throw the pending at them
                             }
+
+                            header("Content-type: image/png");
                             
                             
                             $x = (int)$tornapart[0];
                             $y = (int)$tornapart[1];
                             $resized = $func->resize_image("../storage/renders/pending.png", $x, $y);
                         
-                            header("Content-type: image/png");
-                            imagepng($resized);
+                            //header("Content-type: image/png");
+                            //imagepng($resized);
                             die();
                             // its already in queue so dont add it again!
                         }
@@ -144,12 +142,14 @@ global $router;
                         $jobid = $func->createjobid();
                         $jobtype = 2;
                         
-                        $insertjob = $pdo->prepare("INSERT INTO jobs (jobid, jobtype, assetid, dimensions) VALUES (:jobid, :jobtype, :assetid, :dimensions)");
-                        $insertjob->bindParam(':jobid', $jobid, PDO::PARAM_STR);
-                        $insertjob->bindParam(':jobtype', $jobtype, PDO::PARAM_INT);
-                        $insertjob->bindParam(':assetid', $assetid, PDO::PARAM_INT);
-                        $insertjob->bindParam(':dimensions', $dimensions, PDO::PARAM_STR);
-                        $insertjob->execute();
+                        $insert = array(
+                            "jobid"=>$jobid,
+                            "jobtype"=>$jobtype,
+                            "assetid"=>$assetid,
+                            "dimensions"=>$dimensions
+                        );
+
+                        $db->table("jobs")->insert($insert);
                         
                         try {
                             $tornapart = explode("x", $dimensions);
@@ -200,6 +200,10 @@ global $router;
         
         $router->get("/games", function() {
                 include "../views/games.php";
+        });
+
+        $router->get("/settings", function() {
+            include "../views/user/settings.php";
         });
         
         $router->get("/captcha", function() {
@@ -265,6 +269,8 @@ global $router;
         });
         
         $router->post("/mobileapi/login/", function(){
+
+            die(); // im just not gonna bother with mobile for now.
             
             if(isset($_POST["username"]) && isset($_POST["password"])){
                 $auth = new authentication();
@@ -399,18 +405,21 @@ global $router;
 
                 $time = time();
 
-                include(baseurl . "/conn.php");
-                $updateuniverse = $pdo->prepare("UPDATE `universes` SET `title` = :title, `description` = :description WHERE `id` = :id");
-                $updateuniverse->bindParam(':title', $title, PDO::PARAM_STR);
-                $updateuniverse->bindParam(':description', $description, PDO::PARAM_STR);
-                $updateuniverse->bindParam(':id', $id, PDO::PARAM_INT);
-                $updateuniverse->execute();
+                global $db;
 
-                $updateplace = $pdo->prepare("UPDATE `assets` SET `updated` = :time, name = :title WHERE `id` = :id");
-                $updateplace->bindParam(':time', $time, PDO::PARAM_INT);
-                $updateplace->bindParam(':title', $title, PDO::PARAM_STR);
-                $updateplace->bindParam(':id', $universe["placeid"], PDO::PARAM_INT);
-                $updateplace->execute();
+                $updatearray = array(
+                    "title" => $title,
+                    "description"=> $description,
+                );
+
+                $db->table("universes")->update($updatearray)->where("id", $id);
+
+                $updatearray = array(
+                    "updated"=>time(),
+                    "name"=>$title
+                );
+
+                $db->table("assets")->update($updatearray)->where("id", $universe["placeid"]);
 
                 if (isset($_FILES["assetfile"]) && $_FILES["assetfile"]["size"] > 0) {
                     $sitefunc = new sitefunctions();
@@ -433,33 +442,32 @@ global $router;
                         $placeinfo = $sitefunc->getplaceinfo($universe["placeid"]);
                         $oldasset = $placeinfo["assetfile"];
 
-                        $addversion = $pdo->prepare("INSERT INTO `versionhistory` (placeid, file_id, datemodified) VALUES (:placeid, :file_id, :datemodified)");
-                        $addversion->bindParam(':placeid', $universe["placeid"], PDO::PARAM_INT);
-                        $addversion->bindParam(':file_id', $oldasset, PDO::PARAM_STR);
-                        $addversion->bindParam(':datemodified', $time, PDO::PARAM_INT);
-                        $addversion->execute();
+                        $insert = array(
+                            "placeid"=>$universe["placeid"],
+                            "flie_id"=>$oldasset,
+                            "datemodified"=>$time
+                        );
 
-                        $updateplace = $pdo->prepare("UPDATE `assets` SET `assetfile` = :file WHERE `id` = :id");
-                        $updateplace->bindParam(':file', $assetname, PDO::PARAM_STR);
-                        $updateplace->bindParam(':id', $universe["placeid"], PDO::PARAM_INT);
-                        $updateplace->execute();
+                        $db->table("versionhistory")->insert($insert);
 
-                        $stmt = $pdo->prepare("SELECT * FROM thumbnails WHERE assetid = :pid");
-                        $stmt->bindParam(':pid', $universe["placeid"], PDO::PARAM_INT);
-                        $stmt->execute();
-                        $allthumbs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $update = array(
+                            "assetfile"=>$assetname
+                        );
+
+                        $db->table("assets")->update($update)->where("id", $universe["placeid"]);
+
+                        $query = $db->table("thumbnails")->where("assetid", $universe["placeid"]);
+                        $allthumbs = $query->get();
 
                         foreach($allthumbs as $thumb){
                             try {
-                                unlink($thumb["file"]);
+                                unlink($thumb->file);
                             } catch(ErrorException $e) {
                                 // LOLLL!!! GET REKT PHP!! LOOSZER!!!
                             }
                         }
 
-                        $stmt = $pdo->prepare("DELETE FROM thumbnails WHERE assetid = :pid");
-                        $stmt->bindParam(':pid', $universe["placeid"], PDO::PARAM_INT);
-                        $stmt->execute(); // pklease work or im finna crash
+                        $db->table("thumbnails")->where("assetid", $universe["placeid"])->delete();
             
 
                         $sitefunc = new sitefunctions();
