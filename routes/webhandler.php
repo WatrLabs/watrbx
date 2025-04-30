@@ -27,6 +27,10 @@ global $router;
         $router->get('/catalog', function() {
                 include("../views/catalog.php");
         });
+
+        $router->get('/change-email', function() {
+            require("../views/user/addemail.php");
+        });
         
         $router->post("/api/joberror", function() {
             if(isset($_GET["jobid"])) {

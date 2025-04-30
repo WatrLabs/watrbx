@@ -6,14 +6,19 @@
     align-items: flex-start;
 }
 
+#main {
+    width: 900px;
+}
+
 #item-select {
     text-align: left;
-    width: 150px;
+    width: 200px;
     min-height: 200px;
     max-height: 400px;
 }
 
 #list {
+    width: 500px;
     padding: 0px;
     margin: 0;
     list-style: none;
@@ -24,6 +29,7 @@
     height: 200px;
     width: 150px;
     margin-right: 15px;
+    margin-top: 15px;
 }
 
 #item img {
@@ -37,4 +43,9 @@
     display: flex;
     flex-wrap: wrap;
     
+}
+
+#pagination-link {
+    color: lightgrey;
+    text-decoration: underline;
 }

@@ -3,6 +3,10 @@
 
 // make sure you replace setup<PHP FILE NAME>Routes function
 
+use watrlabs\authentication;
+use watrlabs\watrkit\sanitize;
+use watrbx\sitefunctions;
+
 function compileerror($error = "Unknown"){
     $errorarray = array(
         "success"=>false,
@@ -25,6 +29,96 @@ global $router;
                 $authorname = $authorfetch->fetch(PDO::FETCH_ASSOC);
                 $quote["author"] = $authorname["username"];
                 die(json_encode($quote));
+        });
+
+        $router->post('/api/v1/change-email', function() {
+
+            if(isset($_POST["email"]) && isset($_POST["password"])){
+                $email = $_POST["email"];
+                $password = $_POST["password"];
+
+                $sanitize = new sanitize();
+                if($sanitize::email($email)){
+
+                    $auth = new authentication();
+                    $auth->requiresession();
+                    $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
+
+                    if($userinfo->email !== null){
+                        if($userinfo->email == $email){
+                            header("Location: /home");
+                            die();
+                        }
+                    }
+        
+                    global $db;
+
+                    if(password_verify($password, $userinfo->password)){
+                        $func = new sitefunctions();
+                        $db->table("users")->where("id", $userinfo->id)->update(array("email"=>$email));
+                        $verifyemail = file_get_contents("../storage/emailtemplates/verifyemail.html");
+                        $code = $func->createguid();
+                        $link = "https://waahhh.site/api/v1/verify-email?code=" . $code;
+                        $verifyemail = str_replace("{verifylink}", $link, $verifyemail);
+
+                        $mail = $auth->getmail();
+
+                        $mail->setFrom($_ENV["MAIL_USER"], 'Info');
+                        $mail->addAddress($email, $userinfo->username);
+                        $mail->isHTML(true);
+                        $mail->Subject = 'Verify watrbx email address';
+                        $mail->Body    = $verifyemail;
+                        $mail->AltBody = 'Please visit the link below to verify your email adress: ' . $link;
+                        $mail->send();
+
+                        $insert = array(
+                            "guid"=>$code,
+                            "email"=>$email,
+                            "user"=>$userinfo->id
+                        );
+                        
+                        $db->table("emailcodes")->insert($insert);
+
+                        header("Location: /home");
+                        die();
+                    }
+
+                }
+            }
+
+        });
+
+        $router->get('/api/v1/verify-email', function() {
+            if(isset($_GET["code"])){
+                $code = $_GET["code"];
+
+                if(preg_match('/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/', $code)){
+                    global $db;
+
+                    $auth = new authentication();
+                    $auth->requiresession();
+                    $userinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);
+
+                    $query = $db->table("emailcodes")->where("guid", $code);
+                    $codedetails = $query->first();
+
+                    if($codedetails !== null){
+                        if($codedetails->user == $userinfo->id){
+                            $db->table("emailcodes")->where("guid", $code)->delete();
+                            header("Location: /");
+                        } else {
+                            header("Location: /");
+                            die();
+                        }
+                    } else {
+                        header("Location: /");
+                        die();
+                    }
+                }
+            } else {
+                header("Location: /");
+                die();
+            }
         });
         
         $router->get('/api/get-players', function() {

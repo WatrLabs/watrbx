@@ -55,6 +55,16 @@ h1, h2, h3, h4, h5, h6, .bold {
     box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
 }
 
+#warning {
+    align-content: center;
+    width: 100%;
+    background-color: #ef9b0a;
+    background-image: linear-gradient(#ef9b0a, #ce8507);
+    height: 30px;
+    text-align: left;
+    box-shadow: 5px 5px 5px rgba(15, 15, 15, 0.5);
+}
+
 #site-alert-text {
     align-content: center;
     flex-wrap: wrap;

@@ -8,6 +8,11 @@ $siteconf = $sitefunc->getsiteconf();
 if(isset($_COOKIE["watrbxsession"])){ 
     $usrinfo = $auth->getuserinfo($_COOKIE["watrbxsession"]);     
     $role = $usrinfo->role; 
+
+    global $db;
+
+    $query = $db->table("emailcodes")->where("user", $usrinfo->id);
+    $emailcode = $query->first();
 } 
 ?>
 <!DOCTYPE html>
@@ -34,8 +39,10 @@ if(isset($_COOKIE["watrbxsession"])){
         
         <?php 
         if(isset($_COOKIE["watrbxsession"])){ ?> 
-        <a href="/home" id="nav-item">Home</a> 
+            <a href="/home" id="nav-item">Home</a> 
             <a href="/games" id="nav-item">Games</a>
+            <a href="/catalog" id="nav-item">Catalog</a>
+            <a href="javascript:alert('Not implemented yet.');" id="nav-item">Forum</a>
         <? } ?>
     </div>
     <div id="nav-group">
@@ -48,9 +55,7 @@ if(isset($_COOKIE["watrbxsession"])){
             <!--<img src="/images/mail.png" class="icon">
             <p id="icon-text">0</p> -->
             <img src="/images/settings.png" class="icon">
-                <? if($role == 1){ ?> 
-                    <a href="/admin/dashboard" id="nav-item">Admin</a>
-                <? } ?>
+                
             <? } else { ?> 
                 <a href="/register" id="nav-item">Register</a>
                 <a href="/login" id="nav-item">Login</a>
@@ -59,8 +64,32 @@ if(isset($_COOKIE["watrbxsession"])){
 </div>
 <?php if (isset($usrinfo)) {?><div id="second-navbar">
         <div id="bottom-nav-group">
-            <a href="/game/upload"> Create </a>
-            <a href="/users/<?=$usrinfo->id?>/">Profile </a>
+            <a href="/users/<?=$usrinfo->id?>/">Profile</a>
+            <a href="/game/upload">Develop</a>
+            <a href="javascript:alert('Not implemented yet.');">Friends</a>
+            <a href="javascript:alert('Planned to be re-worked!');">Messages</a>
+            <a href="javascript:alert('Not implemented yet.');">Avatar</a>
+            <? if($role == 1){ ?> 
+                <a href="/admin/dashboard" >Admin</a>
+            <? } ?>
         </div>
-</div><?}?>
+</div>
+
+<?php
+if($usrinfo->email == null){?>
+
+<div id="warning">
+    <p id="site-alert-text" style="margin-left: 20px;">Seems like you don't have an email attached to your accout! You can add one <a href="/change-email" style="margin-left: 3px;">here</a>.</p>
+</div>
+<? } ?>
+
+<?php 
+    if($emailcode !== null){ ?>
+    <div id="warning">
+        <p id="site-alert-text" style="margin-left: 20px;">Your current email isn't verified! Check your email and click the verify link.</p>
+    </div>
+    <? }
+
+
+}?>
 
