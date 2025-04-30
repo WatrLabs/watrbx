@@ -20,15 +20,17 @@ global $router;
 
         $router->get('/api/get-quote', function() {
                 header("Content-type: application/json");
-                include(baseurl . "/conn.php");
-                $quotefetch = $pdo->prepare("SELECT * FROM quotes ORDER BY RAND () LIMIT 1");
-                $quotefetch->execute();
-                $quote = $quotefetch->fetch(PDO::FETCH_ASSOC);
-                $authorfetch = $pdo->prepare("SELECT username FROM users WHERE id = ?");
-                $authorfetch->execute([$quote["author"]]);
-                $authorname = $authorfetch->fetch(PDO::FETCH_ASSOC);
-                $quote["author"] = $authorname["username"];
-                die(json_encode($quote));
+
+                global $db;
+                $query = $db->table("quotes")->join("users", "users.id", "=", "quotes.author")->orderBy($db->raw("RAND()"))->limit(1);
+                $quote = $query->first();
+                
+                $quotearray = array(
+                    "quote"=>$quote->quote,
+                    "author"=>$quote->username
+                );
+
+                die(json_encode($quotearray));
         });
 
         $router->post('/api/v1/change-email', function() {
