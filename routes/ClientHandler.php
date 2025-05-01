@@ -313,8 +313,8 @@ global $router;
                 
                 if($message == "murdle"){
                     $userid = $cheater["id"];
-                    $getbanned = $pdo->prepare("INSERT INTO bans (id, userid, moderator, reason) VALUES (?, ?, ?, ?)");
-                    $getbanned->execute([$userid, $userid, "System", "Exploiting is not allowed on watrbx! (Cheat Engine Detected)"]);
+                    $getbanned = $pdo->prepare("INSERT INTO bans (id, userid, moderator, reason, bantype) VALUES (?, ?, ?, ?, ?)");
+                    $getbanned->execute([$userid, $userid, "System", "Exploiting is not allowed on watrbx! (Cheat Engine Detected)", "permban"]);
                     $logging->logwebhook("User " . $cheater["username"] . " has been struck by the ban hammer!");
                     
                 }

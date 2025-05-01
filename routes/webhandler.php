@@ -12,8 +12,16 @@ global $router;
                 include("../views/index.php");
         });
 
+        $router->get('/reset-pass', function(){
+            require("../views/changepass.php");
+        });
+
         $router->get('/game/{id}/update', function($id) {
             include("../views/update-game.php");
+        });
+
+        $router->get('/forgot-password', function() {
+            require("../views/forgot-password.php");
         });
         
         $router->get('/info/privacy', function() {
