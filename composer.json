@@ -1,0 +1,8 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "usmanhalalit/pixie": "^2.0",
+        "phpmailer/phpmailer": "^6.10",
+        "cocur/slugify": "^4.6"
+    }
+}

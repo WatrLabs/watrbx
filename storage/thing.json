@@ -1,0 +1,80 @@
+{
+    "IsValid": true,
+    "Data": {
+      "TotalItems": 1,
+      "Start": 0,
+      "End": 0,
+      "Page": 1,
+      "ItemsPerPage": 24,
+      "PageType": "inventory",
+      "Items": [
+        {
+          "AssetRestrictionIcon": {
+            "TooltipText": true,
+            "CssTag": null,
+            "LoadAssetRestrictionIconCss": true
+          },
+          "Item": {
+            "AssetId": 542845124,
+            "Name": "really rare thing",
+            "AbsoluteUrl": "/Inspection-Light-item?id=542845124",
+            "AssetType": 0,
+            "AssetTypeFriendlyLabel": null,
+            "Description": null,
+            "Genres": null,
+            "GearAttributes": null,
+            "AssetCategory": 0,
+            "CurrentVersionId": 0,
+            "IsApproved": false,
+            "LastUpdated": "/Date(-62135575200000)/",
+            "LastUpdatedBy": null,
+            "AudioUrl": null
+          },
+          "Creator": {
+            "Id": 1,
+            "Name": "watrbx",
+            "Type": 1,
+            "CreatorProfileLink": "/users/1/profile/"
+          },
+          "Product": {
+            "Id": 0,
+            "PriceInRobux": 9999999999999,
+            "PriceInTickets": 100,
+            "IsForSale": true,
+            "IsPublicDomain": true,
+            "IsResellable": true,
+            "IsLimited": true,
+            "IsLimitedUnique": true,
+            "SerialNumber": 234,
+            "IsRental": true,
+            "RentalDurationInHours": 0,
+            "BcRequirement": 0,
+            "TotalPrivateSales": 0,
+            "SellerId": 0,
+            "SellerName": null,
+            "LowestPrivateSaleUserAssetId": null,
+            "IsXboxExclusiveItem": false,
+            "OffsaleDeadline": null,
+            "NoPriceText": "Free"
+          },
+          "PrivateServer": null,
+          "Thumbnail": {
+            "Final": true,
+            "Url": "https://web.archive.org/web/20170406185611if_/https://t7.rbxcdn.com/207ef144505d87783cc77eb03a087064",
+            "RetryUrl": "",
+            "IsApproved": false
+          },
+          "UserItem": {
+            "UserAsset": null,
+            "IsItemOwned": true,
+            "ItemOwnedCount": 0,
+            "IsRentalExpired": false,
+            "IsItemCurrentlyRented": false,
+            "CanUserBuyItem": false,
+            "RentalExpireTime": null,
+            "CanUserRentItem": false
+          }
+        }
+      ]
+    }
+  }

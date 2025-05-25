@@ -1,0 +1,16 @@
+*
+{
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+H1
+{
+	font-weight: bold;
+	font-size: larger;
+}
+
+.CreationsPanel
+{
+    height: 250px;
+    width: 450px;
+}

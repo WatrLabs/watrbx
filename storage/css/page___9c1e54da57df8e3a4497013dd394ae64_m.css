@@ -1,0 +1,1108 @@
+/* ~/CSS/Pages/VotingPanel.css */
+.voting-panel .loading {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: url('/images/ProgressIndicator4.gif') #fff no-repeat center;
+	z-index: 1;
+	display: none;
+}
+
+.voting-panel {
+	max-width: 370px;
+}
+
+.users-vote .upvote,
+.users-vote .downvote {
+	height: 21px;
+	width: 22px;
+	background: url('/images/Icons/thumbsup.png?1') no-repeat 0 0;
+	float: left;
+}
+
+.voting-panel .users-vote,
+.voting-panel .vote-summary {
+	float: left;
+	font-size: 11px;
+}
+
+.voting-panel .vote-summary {
+	margin-left: 10px;
+}
+
+.users-vote .downvote {
+	background-position: 5px -85px;
+	margin-left: 5px;
+	padding-left: 5px;
+}
+
+.users-vote.has-voted .upvote:hover,
+.users-vote .upvote:hover {
+	background-position: 0 -21px;
+	cursor: pointer;
+}
+
+.users-vote.has-voted .upvote.selected {
+	background-position: 0 -41px;
+}
+
+.users-vote.has-voted .upvote {
+	background-position: 0 -63px;
+}
+
+.users-vote.has-voted .downvote:hover,
+.users-vote .downvote:hover {
+	background-position: 5px -106px;
+	cursor: pointer;
+}
+
+.users-vote.has-voted .downvote.selected {
+	background-position: 5px -149px;
+}
+
+.users-vote.has-voted .downvote {
+	background-position: 5px -128px;
+}
+
+.users-vote .upvote.tiny {
+	background-position: 0 -170px;
+}
+
+.users-vote .upvote.tiny:hover,
+.users-vote.has-voted .upvote.tiny:hover,
+.users-vote.has-voted .upvote.tiny.selected:hover {
+	background-position: 0 -183px;
+	cursor: pointer;
+}
+
+.users-vote.has-voted .upvote.tiny.selected {
+	background-position: 0 -196px;
+}
+
+.users-vote.has-voted .upvote.tiny {
+	background-position: 0 -210px;
+}
+
+.users-vote .downvote.tiny {
+	background-position: 0 -223px;
+}
+
+.users-vote .downvote.tiny:hover,
+.users-vote.has-voted .downvote.tiny:hover,
+.users-vote.has-voted .downvote.tiny.selected:hover {
+	background-position: 0 -236px;
+	cursor: pointer;
+}
+
+.users-vote.has-voted .downvote.tiny.selected {
+	background-position: 0 -264px;
+}
+
+.users-vote.has-voted .downvote.tiny {
+	background-position: 0 -251px;
+}
+
+.voting-panel .total-upvotes {
+	padding-right: 5px;
+	display: inline;
+}
+
+.voting-panel .total-upvotes span {
+	border: 0;
+}
+
+.voting-panel .total-upvotes-text span {
+	border: 0;
+}
+
+.voting-panel .total-downvotes {
+	padding-left: 5px;
+	display: inline;
+}
+
+.voting-panel .total-downvotes-text span {
+	border: 0;
+}
+
+.voting-panel .visual-container {
+	position: relative;
+	height: 5px;
+	margin-top: 5px;
+}
+
+.voting-panel .percent,
+.voting-panel .background {
+	position: absolute;
+	width: 100%;
+	height: 5px;
+	bottom: 0;
+}
+
+.voting-panel .percent {
+	width: 0;
+}
+
+.tiny-thumbs-up,
+.tiny-thumbs-down,
+.upvote.tiny,
+.downvote.tiny {
+	background: url('/images/Icons/thumbsup.png?1') no-repeat 0 -170px;
+	width: 12px;
+	height: 13px;
+	padding-right: 5px;
+	zoom: 1;
+	display: inline-block;
+	*display: inline;
+	position: relative;
+	top: 2px;
+	*top: -2px;
+}
+
+.tiny-thumbs-down {
+	background-position: 0 -224px;
+	margin-right: 0;
+	padding-right: 0;
+	margin-left: 5px;
+	top: 2px;
+	*top: 0;
+	*left: 5px;
+}
+
+.voting-panel .visual-container .background {
+	background-color: #ccc;
+}
+
+.voting-panel .visual-container .background.votes {
+	background-color: #CE645B;
+}
+
+.voting-panel .visual-container .percent {
+	background-color: #52A846;
+}
+
+.voting-panel .voting-details {
+	text-align: center;
+}
+
+/* ~/CSS/Pages/Games/GamesPage.css */
+.games-page-right {
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 200;
+}
+
+.sidebar-no-ad {
+	position: absolute;
+	top: 56px;
+	right: 0;
+}
+
+.sidebar-with-ad {
+	position: absolute;
+	top: 210px;
+	right: 0;
+}
+
+.games-page-right-sidebar {
+	width: 330px;
+	display: none;
+}
+
+.games-page-right-sidebar .ads-container .adp-gpt-container {
+	display: none;
+}
+
+.ads-container {
+	width: 300px;
+	height: 275px;
+	margin-left: 15px;
+}
+
+.games-page-left {
+	padding-left: 10px;
+}
+
+.games-lists-single .games-page-left,
+.games-page-left[data-searchstate="on"] {
+	width: 100%;
+}
+
+.games-page-left.page-no-ads {
+	margin: 0 auto;
+	padding: 0 10px;
+}
+
+.gutter-ads .games-page-left {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.games-page-lists-container {
+	min-width: 500px;
+	min-height: 820px;
+	line-height: 1.25;
+}
+
+.games-page-lists-container:before,
+.games-page-lists-container:after {
+	content: " ";
+	display: table;
+}
+
+.games-page-lists-container:after {
+	clear: both;
+}
+
+.games-list-container {
+	padding-left: 1px;
+	overflow: hidden;
+	position: relative;
+	background-color: #f2f2f2;
+}
+
+.overflow-visible {
+	overflow: visible;
+}
+
+.overflow-hidden {
+	overflow: hidden;
+}
+
+.container-main.content-no-ads,
+.content.content-no-ads {
+	max-width: none;
+}
+
+.move-with-window-stick-right {
+	position: absolute;
+	top: 90px;
+	right: 0;
+	width: 330px;
+}
+
+.games-page-right-sidebar.move-with-window-stick-right {
+	top: 210px;
+}
+
+.move-with-window-min-left {
+	position: absolute;
+	top: 90px;
+	left: 645px;
+}
+
+.games-list {
+	float: left;
+	margin-top: 5px;
+	min-height: 285px;
+	width: 100%;
+	position: relative;
+	padding-bottom: 5px;
+}
+
+.games-lists-single .games-list {
+	margin-bottom: 60px;
+}
+
+.multi-rows {
+	width: 100%;
+	padding-bottom: 33px;
+	white-space: normal;
+}
+
+.games-list-header {
+	float: left;
+}
+
+.games-list-header h2 {
+	overflow: hidden;
+}
+
+.games-list-header h3 {
+	margin: 0;
+}
+
+.see-all-button {
+	float: right;
+	margin-bottom: 5px;
+	margin-right: 6px;
+}
+
+.games-list-column {
+	float: left;
+	width: 202px;
+}
+
+.game-item-image {
+	width: 192px;
+	height: 108px;
+}
+
+.games-filter-changer:hover,
+.games-filter-resetter:hover {
+	cursor: pointer;
+}
+
+.games-page-hide-overflow {
+	position: relative;
+	height: 60px;
+	background-color: #f2f2f2;
+}
+
+.horizontally-scrollable {
+	float: left;
+	min-height: 164px;
+	position: absolute;
+	white-space: nowrap;
+}
+
+.horizontally-scrollable.wrap-games {
+	width: auto;
+	white-space: initial;
+}
+
+.scroller {
+	height: 160px;
+	width: 30px;
+	background-color: white;
+	background-color: rgba(255, 255, 255, 0.6);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	zoom: 1;
+	position: absolute;
+	z-index: 950;
+	border-radius: 0 3px 3px 0;
+	box-shadow: 0 0 3px 0 #ccc;
+}
+
+@media(min-width:480px) {
+	.scroller {
+		height: 221px;
+	}
+}
+
+.scroller:hover {
+	zoom: 1;
+	cursor: pointer;
+	background-color: white;
+	background-color: rgba(255, 255, 255, 0.6);
+	box-shadow: 0 0 3px 0 rgba(150, 150, 150, 0.74);
+}
+
+.scroller .arrow {
+	background-repeat: no-repeat;
+	height: 47px;
+	width: 27px;
+	position: absolute;
+	top: 30px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.scroller .arrow:hover {
+	background-position: 0 0;
+}
+
+.scroller .arrow span {
+	position: absolute;
+	top: 36px;
+	left: 7px;
+	opacity: .5;
+}
+
+@media(min-width:480px) {
+	.scroller .arrow span {
+		top: 70px;
+	}
+}
+
+.scroller.prev {
+	left: -1px;
+}
+
+.scroller.prev .arrow span {
+	left: 0;
+}
+
+.scroller.next {
+	right: 0;
+}
+
+.scroller.next .arrow {
+	right: 10px;
+}
+
+.search-results-container.search-pending {
+	cursor: wait;
+}
+
+.search-query-text {
+	font-weight: bold;
+}
+
+.top-abp-container {
+	margin: 0 auto;
+}
+
+.top-ad-970 {
+	width: 970px;
+}
+
+.top-ad-728 {
+	width: 728px;
+}
+
+.gutter-left,
+.gutter-right {
+	margin-top: 12px;
+	z-index: 2;
+}
+
+@media screen and (min-width:1480px) {
+	.gutter-ads .games-page-left {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+@media screen and (min-width:1359px) {
+	.top-abp-container .top-ad-728 {
+		padding-left: 150px;
+	}
+
+	.nav-no-left .top-abp-container.top-ad-970 {
+		padding-left: 0;
+	}
+}
+
+.games-responsive-wrapper {
+	margin: auto;
+	position: relative;
+}
+
+.ads-in-game-search .games-page-lists-container .game-item {
+	float: none;
+	display: inline-block;
+}
+
+.ads-in-game-search .games-page-right {
+	z-index: 100;
+}
+
+.ads-in-game-search .games-page-right-sidebar {
+	top: 91px;
+}
+
+.ads-in-game-search .games-page-right-sidebar.move-with-window-stick-right {
+	top: 91px;
+}
+
+.ads-in-game-search .games-page-right-sidebar.move-with-window-min-left {
+	left: auto;
+}
+
+.ads-in-game-search .abp-spacer {
+	display: inline-block;
+	height: 535px;
+	width: 355px;
+	float: right;
+}
+
+.gutter-ads .ads-in-game-search .abp-spacer {
+	display: none;
+}
+
+.ads-in-game-search .abp-spacer.no-spacer {
+	display: none;
+}
+
+.ads-in-game-search .in-game-search-ad {
+	width: 97%;
+	height: 292px;
+	display: inline-block;
+	text-align: center;
+	padding-top: 0;
+}
+
+.ads-in-game-search .in-game-search-ad .ad-annotations {
+	width: 300px;
+}
+
+.gutter-ads .ads-in-game-search .in-game-search-ad {
+	display: none;
+}
+
+.ads-in-game-search .ad-slot div {
+	width: auto;
+}
+
+.ads-in-game-search .ad-order-even {
+	float: left;
+}
+
+.ads-in-game-search .ad-order-odd {
+	float: none;
+	position: relative;
+}
+
+.container-main .games-page-lists-container .game-item:hover {
+	z-index: 900;
+}
+
+.container-main .games-page-lists-container .game-item:hover .rbx-votes .vote-bar .thumbs-down {
+	visibility: visible;
+}
+
+.container-main .games-page-lists-container .game-item:hover .rbx-votes .vote-bar .voting-container .background {
+	background-color: #d86868;
+	opacity: .6;
+}
+
+.container-main .games-page-lists-container .game-item:hover .rbx-votes .vote-bar .voting-container .background.no-votes {
+	background-color: #757575;
+}
+
+.container-main .games-page-lists-container .game-item:hover .rbx-votes .vote-bar .voting-container .votes {
+	background-color: #02b757;
+}
+
+.container-main .games-page-lists-container .game-item:hover .rbx-votes .vote-counts {
+	display: block;
+	float: left;
+}
+
+.container-main .games-page-lists-container .game-item:hover .rbx-developer {
+	display: block;
+	float: left;
+}
+
+.container-main .games-page-lists-container .game-item:hover .games-list .games .game {
+	position: absolute;
+}
+
+.container-main.rbx-touch .scroller {
+	display: none;
+}
+
+.container-main.rbx-touch .games-list .show-in-multiview-mode-only {
+	overflow-x: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+.container-main.rbx-touch .horizontally-scrollable {
+	position: static;
+}
+
+.container-main.rbx-touch .games-page-lists-container .game-item:hover {
+	display: inline-block;
+	box-shadow: 0 1px 3px rgba(150, 150, 150, 0.74);
+	z-index: auto;
+}
+
+.container-main.rbx-touch .games-page-lists-container .game-item:hover .rbx-votes .vote-bar .thumbs-down {
+	visibility: hidden;
+}
+
+.container-main.rbx-touch .games-page-lists-container .game-item:hover .rbx-votes .vote-bar .voting-container .background {
+	background-color: #ccc;
+}
+
+.container-main.rbx-touch .games-page-lists-container .game-item:hover .rbx-votes .vote-bar .voting-container .votes {
+	background-color: #757575;
+}
+
+.container-main.rbx-touch .games-page-lists-container .game-item:hover .rbx-votes .vote-counts {
+	display: none;
+	float: none;
+}
+
+.container-main.rbx-touch .games-page-lists-container .game-item:hover .rbx-developer {
+	display: none;
+	float: none;
+}
+
+.games-responsive-wrapper .games-page-filters {
+	width: 943px;
+	padding: 0 4px;
+}
+
+.games-responsive-wrapper .games-page-filters .rbx-input-group-btn {
+	display: inline-block;
+	width: 164px;
+	margin-right: .95%;
+}
+
+.games-responsive-wrapper .games-page-filters .rbx-input-group-btn .rbx-dropdown-menu {
+	max-height: none;
+}
+
+.games-list .games .game {
+	float: none;
+	vertical-align: top;
+	height: 157px;
+}
+
+@media(min-width:480px) {
+	.games-list .games .game {
+		height: 221px;
+	}
+}
+
+.game {
+	width: 102px;
+	padding: 0 3px;
+	display: inline-block;
+	margin-bottom: 12px;
+}
+
+@media(min-width:480px) {
+	.game {
+		padding: 0 4px;
+		width: 166px;
+	}
+}
+
+.game .game-item {
+	position: relative;
+	text-align: left;
+	float: left;
+	background-color: white;
+	box-shadow: 0 1px 3px rgba(150, 150, 150, 0.74);
+	border-radius: 3px;
+	width: 100%;
+	height: auto;
+	padding: 9px 6px 6px 6px;
+	margin: 0 auto;
+}
+
+@media(min-width:480px) {
+	.game .game-item {
+		min-width: 123px;
+	}
+}
+
+.game .game-item .game-thumb-content {
+	position: relative;
+	width: 100%;
+	display: inline-block;
+}
+
+@media(min-width:480px) {
+	.game .game-item .game-thumb-content {
+		height: 140px;
+		width: 140px;
+	}
+}
+
+.game .game-item .game-thumb-content .game-thumb-wrapper {
+	width: 100%;
+	overflow: hidden;
+	display: inline-block;
+	margin: auto;
+}
+
+@media(min-width:480px) {
+	.game .game-item .game-thumb-content .game-thumb-wrapper {
+		height: 140px;
+		margin: 0 0 0 3px;
+		width: 140px;
+	}
+}
+
+.game .game-item .game-thumb-content .game-thumb-wrapper .game-thumb {
+	margin: auto;
+	display: block;
+	width: 100%;
+}
+
+.game .game-item .rbx-game-title {
+	width: 142px;
+	width: calc(100% - 4px);
+	margin: 1px 3px 0 3px;
+	white-space: nowrap;
+	display: inline-block;
+	font-size: 12px;
+	line-height: 1.2em;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-game-title {
+		font-weight: 300;
+		font-size: 16px;
+	}
+}
+
+.game .game-item .rbx-game-text-notes {
+	display: block;
+	line-height: 1em;
+	margin: 1px 3px;
+	color: #757575;
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-game-text-notes {
+		font-size: 16px;
+	}
+}
+
+.game .game-item .rbx-votes {
+	width: 100%;
+	display: block;
+	padding-left: 1px;
+	margin-top: 5px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes {
+		margin-top: 9px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar {
+	position: relative;
+	height: 16px;
+}
+
+.game .game-item .rbx-votes .vote-bar .thumbs-up {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.game .game-item .rbx-votes .vote-bar .thumbs-up .rbx-icon-thumbs-up {
+	background-position: 0 0;
+	background-size: 24px auto;
+	width: 12px;
+	height: 12px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .thumbs-up .rbx-icon-thumbs-up {
+		background-position: 0 0;
+		background-size: 32px auto;
+		width: 16px;
+		height: 16px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar .thumbs-down {
+	position: absolute;
+	top: 0;
+	right: 0;
+	visibility: hidden;
+	opacity: .6;
+}
+
+.game .game-item .rbx-votes .vote-bar .thumbs-down .rbx-icon-thumbs-down {
+	background-position: 0 -12px;
+	background-size: 24px auto;
+	width: 12px;
+	height: 12px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .thumbs-down .rbx-icon-thumbs-down {
+		background-position: 0 -16px;
+		background-size: 32px auto;
+		width: 16px;
+		height: 16px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container {
+	position: relative;
+	width: 60px;
+	margin: auto;
+	height: 4px;
+	top: 8px;
+	margin-left: 12px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .voting-container {
+		margin-left: auto;
+		height: 6px;
+		width: 100px;
+		top: 4px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container .background {
+	background-color: #ccc;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container .votes {
+	background-color: #757575;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container .mask .segment {
+	background-color: white;
+	height: 8px;
+	width: 2px;
+	position: absolute;
+	top: 0;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .voting-container .mask .segment {
+		height: 16px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-one {
+	left: 10.8px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-one {
+		left: 18px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-two {
+	left: 22.8px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-two {
+		left: 38px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-three {
+	left: 34.8px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-three {
+		left: 58px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-four {
+	left: 46.8px;
+}
+
+@media(min-width:480px) {
+	.game .game-item .rbx-votes .vote-bar .voting-container .mask .seg-four {
+		left: 78px;
+	}
+}
+
+.game .game-item .rbx-votes .vote-counts {
+	position: relative;
+	padding-bottom: 6px;
+	width: 100%;
+	display: none;
+}
+
+.game .game-item .rbx-votes .vote-counts .up-votes-count {
+	color: #02b757;
+}
+
+.game .game-item .rbx-votes .vote-counts .down-votes-count {
+	float: right;
+	color: rgba(216, 104, 104, 0.6);
+	opacity: .6;
+}
+
+.game .game-item .rbx-developer {
+	display: none;
+	border-top: 1px solid #b8b8b8;
+	width: 100%;
+	padding-top: 6px;
+}
+
+.sponsored-game.list-item.game {
+	display: none;
+}
+
+.sponsored-game.list-item.game .game-item {
+	border: 1px solid #b8b8b8;
+	display: block;
+	padding-bottom: 0;
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.sponsored-game.list-item.game .game-item .game-thumb-content {
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.sponsored-game.list-item.game .game-item .rbx-game-title {
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.sponsored-game.list-item.game .native-ad-game-card-label-container {
+	position: relative;
+	height: 40px;
+}
+
+.sponsored-game.list-item.game .native-ad-game-card-label-container .native-ad-game-card-label {
+	height: 28px;
+	background-color: #b8b8b8;
+	position: relative;
+	color: white;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	box-shadow: 0 1px 3px rgba(150, 150, 150, 0.74);
+	top: 12px;
+}
+
+.sponsored-game.list-item.game .native-ad-game-card-label-container .native-ad-game-card-label span {
+	text-align: center;
+	display: block;
+	font-size: 12px;
+	position: relative;
+	line-height: .7em;
+	top: 11px;
+}
+
+.content .games-lists-multiple .games-list-container {
+	padding-top: 12px;
+	width: 100%;
+}
+
+.content .games-lists-multiple .games-list-container .game {
+	white-space: normal;
+}
+
+.games-list .show-in-multiview-mode-only {
+	overflow-x: auto;
+}
+
+.games-page-lists-container {
+	min-width: inherit;
+}
+
+.games-page-lists-container .can-search.overflow-visible .games-list-header h3 {
+	text-transform: none;
+}
+
+.gutter-ads .games-responsive-wrapper .abp-spacer {
+	display: none;
+}
+
+.games-responsive-wrapper .games-page-filters {
+	width: 100%;
+}
+
+.games-responsive-wrapper .games-page-filters.loading {
+	visibility: hidden;
+}
+
+.games-responsive-wrapper .games-page-filters .rbx-input-group-btn {
+	width: 100%;
+	margin-bottom: 6px;
+	padding-right: 12px;
+}
+
+.games-responsive-wrapper .abp-spacer {
+	display: none;
+}
+
+@media(min-width:480px) {
+	.games-responsive-wrapper .games-page-filters .rbx-input-group-btn {
+		width: 164px;
+		padding-right: 0;
+	}
+
+	.games-responsive-wrapper .game {
+		width: 166px;
+	}
+
+	.games-responsive-wrapper .game .game-thumb-content {
+		width: 140px;
+	}
+
+	.games-responsive-wrapper .game .game-thumb-content .game-thumb-wrapper {
+		margin: 0 0 0 3px;
+		width: 140px;
+	}
+}
+
+@media(min-width:505px) {
+	.ads-in-game-search .in-game-search-ad {
+		width: 332px;
+		padding-top: 101px;
+	}
+
+	.ads-in-game-search .ad-order-odd {
+		float: right;
+	}
+}
+
+@media(min-width:1024px) {
+	.games-page-right-sidebar {
+		display: inherit;
+	}
+
+	.games-page-right-sidebar .ads-container .adp-gpt-container {
+		display: block;
+	}
+
+	.games-page-left {
+		margin-right: 345px;
+	}
+
+	.games-page-left .see-all-button {
+		margin-right: 0;
+	}
+
+	.games-responsive-wrapper .games-page-filters {
+		width: 100%;
+	}
+
+	.games-responsive-wrapper .abp-spacer {
+		display: inline-block;
+	}
+
+	.games-responsive-wrapper .abp-spacer.no-spacer {
+		display: none;
+	}
+}
+
+@media(min-width:1688px) {
+	.no-gutter-ads.logged-in .content {
+		margin-left: 175px;
+	}
+}
+
+.no-gutter-ads .content {
+	max-width: none;
+}
+
+@media(max-width:1338px) {
+	.no-gutter-ads .content {
+		max-width: none;
+	}
+}
+
+.user-eligible-multirow-first-sort.games-lists-multiple .container-0 .games-list {
+	min-height: 988px;
+}
+
+.user-eligible-multirow-first-sort.games-lists-multiple .container-0 .horizontally-scrollable {
+	width: auto;
+}
+
+.container-main.rbx-touch .user-eligible-multirow-first-sort.games-lists-multiple .container-0 .games-list {
+	max-height: 988px;
+}

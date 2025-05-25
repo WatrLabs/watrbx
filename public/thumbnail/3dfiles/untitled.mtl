@@ -1,0 +1,16 @@
+# Blender 4.1.0 MTL File: 'None'
+# www.blender.org
+
+newmtl Player11Mtl
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800079 0.000000 0.002434
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+
+map_Ka player11text.png
+map_Kd player11text.png
+map_d player11text.png

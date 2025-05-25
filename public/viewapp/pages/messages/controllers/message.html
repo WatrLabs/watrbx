@@ -1,0 +1,15 @@
+
+<div ng-switch="currentStatus.moduleState">
+    <div rbx-messages-nav></div>
+    <div ng-switch-when="list">
+        <div rbx-messages-list></div>
+    </div>
+    <div ng-switch-when="detail" class="roblox-message-body">
+        <div rbx-messages-detail
+             selected-message="messageContent.selectedMessage"
+             send-message="sendMessage"
+             current-status="currentStatus"
+             toggle-messages-box="toggleMessagesBox('list')"
+             message-defaults ="MESSAGEDEFAULTS"></div>
+    </div>
+</div>
