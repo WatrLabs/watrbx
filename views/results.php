@@ -2,10 +2,34 @@
 use Cocur\Slugify\Slugify;
 $slugify = new Slugify();
 
+$startrows = 0;
+$genre = 0;
+$sort = 0;
+
+if(isset($_GET["SortFilter"])){
+    $sort = (int)$_GET["SortFilter"];
+}
+
+if(isset($_GET["GenreID"])){
+    $genre = (int)$_GET["GenreID"];
+}
+
+if(isset($_GET["StartRows"])){
+    $startrows = (int)$_GET["StartRows"];
+}
+
+if(isset($_GET["MaxRows"])){
+    $maxrows = (int)$_GET["MaxRows"];
+}
+
+if($sort !== 1){
+    die();
+}
+
 
 global $db;
 
-$query = $db->table("universes")->where("public", 1);
+$query = $db->table("universes")->where("public", 1)->offset($startrows)->limit($maxrows);
 
 $allgames = $query->get();
 
@@ -21,11 +45,11 @@ foreach($allgames as $game){
         <span class="card-thumb-content game-thumb-content">
             <span class="card-thumb-wrapper game-thumb-wrapper"
                   >
-                <img class="card-thumb game-thumb" src="/place.png" alt="Survival The PHP The Killers"
-                     thumbnail='{"Final":true,"Url":"/place.png","RetryUrl":null}' image-retry />
+                <img class="card-thumb game-thumb" src="/Thumbs/Place.aspx" alt="<?=$game->title?>"
+                     thumbnail='{"Final":true,"Url":"/Thumbs/Place.aspx","RetryUrl":null}' image-retry />
             </span>
         </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Survival The PHP The Killers" ng-non-bindable>
+        <span class="rbx-text-overflow rbx-game-title card-title" title="<?=$game->title?>" ng-non-bindable>
             <?=$game->title?>
         </span>
         <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
@@ -59,7 +83,7 @@ foreach($allgames as $game){
             </div>
         </span>
         <span class="rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/User.aspx?ID=2">watrabi</cite>
+            by <cite class="rbx-link-sm" data-href="/users/2/profile">watrabi</cite>
         </span>
     </a>
 </li>

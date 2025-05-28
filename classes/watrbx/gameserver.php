@@ -320,12 +320,13 @@ class gameserver {
                 $db->table("rccinstances")->where("guid", $rcc->guid)->update($update);
                 return $response;
             } else {
-                $port = $this->get_port($close_server);
-                if($this->start_rcc($close_server, $port, 1)){
-                    return true;
-                } else {
-                    return false;
-                }
+                //$port = $this->get_port($close_server);
+                // if($this->start_rcc($close_server, $port, 1)){
+                //     return true;
+                // } else {
+                //     return false;
+                // }
+                return false;
             }
             
         } else {

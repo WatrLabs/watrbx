@@ -25,14 +25,6 @@
     <script type="text/javascript" src="<?= $url ?>"></script>
     <?php }} ?>
 
-        
-    
-            <script type="text/javascript" src="https://cdns.gigya.com/js/gigya.js?apiKey=3_OsvmtBbTg6S_EUbwTPtbbmoihFY5ON6v6hbVrTbuqpBs7SyF_LQaJwtwKJ60sY1p">
-            {
-                bypassCookiePolicy: 'never'
-            }
-            </script>
-
 
 	<script type="text/javascript">
 
@@ -131,17 +123,17 @@ Roblox.Endpoints.Urls['/presence/user'] = '/presence/user';
 Roblox.Endpoints.Urls['/friends/list'] = '/friends/list';
 Roblox.Endpoints.Urls['/navigation/getCount'] = '/navigation/getCount';
 Roblox.Endpoints.Urls['/catalog/browse.aspx'] = '/catalog/browse.aspx';
-Roblox.Endpoints.Urls['/catalog/html'] = 'http://search.roblox.com/catalog/html';
-Roblox.Endpoints.Urls['/catalog/json'] = 'http://search.roblox.com/catalog/json';
-Roblox.Endpoints.Urls['/catalog/contents'] = 'http://search.roblox.com/catalog/contents';
-Roblox.Endpoints.Urls['/catalog/lists.aspx'] = 'http://search.roblox.com/catalog/lists.aspx';
-Roblox.Endpoints.Urls['/asset-hash-thumbnail/image'] = 'http://assetgame.roblox.com/asset-hash-thumbnail/image';
-Roblox.Endpoints.Urls['/asset-hash-thumbnail/json'] = 'http://assetgame.roblox.com/asset-hash-thumbnail/json';
-Roblox.Endpoints.Urls['/asset-thumbnail-3d/json'] = 'https://assetgame.roblox.com/asset-thumbnail-3d/json';
-Roblox.Endpoints.Urls['/asset-thumbnail/image'] = 'https://assetgame.roblox.com/asset-thumbnail/image';
-Roblox.Endpoints.Urls['/asset-thumbnail/json'] = 'https://assetgame.roblox.com/asset-thumbnail/json';
-Roblox.Endpoints.Urls['/asset-thumbnail/url'] = 'https://assetgame.roblox.com/asset-thumbnail/url';
-Roblox.Endpoints.Urls['/asset/request-thumbnail-fix'] = 'https://assetgame.roblox.com/asset/request-thumbnail-fix';
+Roblox.Endpoints.Urls['/catalog/html'] = '/catalog/html';
+Roblox.Endpoints.Urls['/catalog/json'] = '/catalog/json';
+Roblox.Endpoints.Urls['/catalog/contents'] = '/catalog/contents';
+Roblox.Endpoints.Urls['/catalog/lists.aspx'] = '/catalog/lists.aspx';
+Roblox.Endpoints.Urls['/asset-hash-thumbnail/image'] = '/asset-hash-thumbnail/image';
+Roblox.Endpoints.Urls['/asset-hash-thumbnail/json'] = '/asset-hash-thumbnail/json';
+Roblox.Endpoints.Urls['/asset-thumbnail-3d/json'] = '/asset-thumbnail-3d/json';
+Roblox.Endpoints.Urls['/asset-thumbnail/image'] = '/asset-thumbnail/image';
+Roblox.Endpoints.Urls['/asset-thumbnail/json'] = '/asset-thumbnail/json';
+Roblox.Endpoints.Urls['/asset-thumbnail/url'] = '/asset-thumbnail/url';
+Roblox.Endpoints.Urls['/asset/request-thumbnail-fix'] = '/asset/request-thumbnail-fix';
 Roblox.Endpoints.Urls['/avatar-thumbnail-3d/json'] = '/avatar-thumbnail-3d/json';
 Roblox.Endpoints.Urls['/avatar-thumbnail/image'] = '/avatar-thumbnail/image';
 Roblox.Endpoints.Urls['/avatar-thumbnail/json'] = '/avatar-thumbnail/json';

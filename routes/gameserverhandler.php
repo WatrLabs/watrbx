@@ -51,6 +51,7 @@ $router->get('/launch-place', function(){
     $gameserver = new gameserver();
 
     $response = $gameserver->request_game(11);
+    var_dump($response);
 
     $decoded = json_decode($response, true);
     if(isset($decoded["Success"])){

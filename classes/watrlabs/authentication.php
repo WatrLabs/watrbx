@@ -257,6 +257,21 @@ class authentication {
             );
 
             $db->table("logs")->insert($insert);
+
+            $baninfo = $db->table("moderation")->where("userid", $userinfo->id)->orderBy("id", "DESC")->first();
+
+            if($baninfo !== null){
+                if($baninfo->canignore == 0){
+                    $url = $_SERVER['REQUEST_URI'];
+
+                    if($url !== "/Membership/NotApproved.aspx?ID=" . $baninfo->id){
+                        header("Location: /Membership/NotApproved.aspx?ID=" . $baninfo->id);
+                    }
+                }
+            }
+
+
+
         }
 
         

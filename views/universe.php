@@ -7,6 +7,14 @@ $router = new Routing();
 $auth = new authentication();
 $pagebuilder = new pagebuilder();
 
+$ismobile = false;
+
+$useragent = $_SERVER['HTTP_USER_AGENT'];
+
+if(strpos($useragent, "Android")){
+    $ismobile = true;
+}
+
 $auth->requiresession();
 
 global $db;
@@ -305,9 +313,16 @@ $pagebuilder->buildheader();
 
 
 
-            <div id="MultiplayerVisitButton" class="VisitButton VisitButtonPlayPH" placeid="<?=$id?>" data-action="play" data-is-membership-level-ok="true">
-                <a class="rbx-btn-primary-lg">Play</a>
-            </div>
+            
+                
+            <?php
+                if($ismobile){
+                    echo '<a class="rbx-btn-primary-lg" onclick="location.href=\'games/start?placeid='.$id.'\'">Play</a>';
+                } else {
+                    echo '<div id="MultiplayerVisitButton" class="VisitButton VisitButtonPlayPH" placeid="'.$id.'" data-action="play" data-is-membership-level-ok="true"><a class="rbx-btn-primary-lg">Play</a> </div>';        
+                }
+            ?>
+           
 
 
 
@@ -696,21 +711,20 @@ $pagebuilder->buildheader();
 
 <ul class="hlist game-list">
 
-
 <li class="list-item card game">
     <a href="/games/9689581/ROBLOX-High-School" class="card-item game-item">
         <span class="card-thumb-content game-thumb-content">
             <span class="card-thumb-wrapper game-thumb-wrapper"
                   >
-                <img class="card-thumb game-thumb" src="https://t7.rbxcdn.com/effb1df0b0006f3cadfb3dc022d1c48a" alt="ROBLOX High School"
-                     thumbnail='{"Final":true,"Url":"https://t7.rbxcdn.com/effb1df0b0006f3cadfb3dc022d1c48a","RetryUrl":null}' image-retry />
+                <img class="card-thumb game-thumb" src="/Thumbs/Place.aspx" alt="ROBLOX High School"
+                     thumbnail='{"Final":true,"Url":"/Thumbs/Place.aspx","RetryUrl":null}' image-retry />
             </span>
         </span>
         <span class="rbx-text-overflow rbx-game-title card-title" title="ROBLOX High School" ng-non-bindable>
-            ROBLOX High School
+            Place
         </span>
         <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            3,609 Playing
+            0 Playing
         </span>
         <span class="rbx-votes">
             <div class="vote-bar">
@@ -718,8 +732,8 @@ $pagebuilder->buildheader();
                     <span class="rbx-icon-thumbs-up"></span>
                 </div>
                 <div class="voting-container"
-                     data-upvotes="76232"
-                     data-downvotes="8227"
+                     data-upvotes="0"
+                     data-downvotes="0"
                      data-voting-processed="false">
                     <div class="background "></div>
                     <div class="votes"></div>
@@ -735,268 +749,13 @@ $pagebuilder->buildheader();
                 </div>
             </div>
             <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">8,227</div>
-                <div class="up-votes-count rbx-font-xs">76,232</div>
+                <div class="down-votes-count rbx-font-xs">0</div>
+                <div class="up-votes-count rbx-font-xs">0</div>
 
             </div>
         </span>
         <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/2364169/profile">Cindering</cite>
-        </span>
-    </a>
-</li>
-
-
-
-<li class="list-item card game">
-    <a href="/games/162344480/Robloxs-Top-Model" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="https://t5.rbxcdn.com/55d9108845e5489108d5c849480ca4e3" alt="Roblox&#39;s Top Model "
-                     thumbnail='{"Final":true,"Url":"https://t5.rbxcdn.com/55d9108845e5489108d5c849480ca4e3","RetryUrl":null}' image-retry />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Roblox&#39;s Top Model " ng-non-bindable>
-            Roblox&#39;s Top Model 
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            735 Playing
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="59351"
-                     data-downvotes="6168"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">6,168</div>
-                <div class="up-votes-count rbx-font-xs">59,351</div>
-
-            </div>
-        </span>
-        <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/9221858/profile">DizzyPurple</cite>
-        </span>
-    </a>
-</li>
-
-
-
-<li class="list-item card game">
-    <a href="/games/18540115/Survive-The-Disasters-Classic" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="https://t4.rbxcdn.com/585c1ae7ca82889eb8cf272bb8fcb39c" alt="Survive The Disasters [Classic]"
-                     thumbnail='{"Final":true,"Url":"https://t4.rbxcdn.com/585c1ae7ca82889eb8cf272bb8fcb39c","RetryUrl":null}' image-retry />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Survive The Disasters [Classic]" ng-non-bindable>
-            Survive The Disasters [Classic]
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            1,610 Playing
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="60217"
-                     data-downvotes="4181"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">4,181</div>
-                <div class="up-votes-count rbx-font-xs">60,217</div>
-
-            </div>
-        </span>
-        <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/4307571/profile">VYRlSS</cite>
-        </span>
-    </a>
-</li>
-
-
-
-<li class="list-item card game">
-    <a href="/games/155615604/Prison-Life-v0-6" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="https://t1.rbxcdn.com/afce1fcab49842d336de544d5465aa8c" alt="Prison Life v0.6"
-                     thumbnail='{"Final":true,"Url":"https://t1.rbxcdn.com/afce1fcab49842d336de544d5465aa8c","RetryUrl":null}' image-retry />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Prison Life v0.6" ng-non-bindable>
-            Prison Life v0.6
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            1,732 Playing
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="55051"
-                     data-downvotes="10311"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">10,311</div>
-                <div class="up-votes-count rbx-font-xs">55,051</div>
-
-            </div>
-        </span>
-        <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/53537032/profile">Aesthetical</cite>
-        </span>
-    </a>
-</li>
-
-
-
-<li class="list-item card game">
-    <a href="/games/137877687/RoCitizens" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="https://t1.rbxcdn.com/8466580bb6366de2f6f7f3263f0715f9" alt="RoCitizens"
-                     thumbnail='{"Final":true,"Url":"https://t1.rbxcdn.com/8466580bb6366de2f6f7f3263f0715f9","RetryUrl":null}' image-retry />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="RoCitizens" ng-non-bindable>
-            RoCitizens
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            6,712 Playing
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="45684"
-                     data-downvotes="5982"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">5,982</div>
-                <div class="up-votes-count rbx-font-xs">45,684</div>
-
-            </div>
-        </span>
-        <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/2217098/profile">Firebrand1</cite>
-        </span>
-    </a>
-</li>
-
-
-
-<li class="list-item card game">
-    <a href="/games/152594797/UPD-The-Mad-Murderer" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="https://t1.rbxcdn.com/52aafd9e3e9ed5fba263fb4966705940" alt="[UPD] The Mad Murderer"
-                     thumbnail='{"Final":true,"Url":"https://t1.rbxcdn.com/52aafd9e3e9ed5fba263fb4966705940","RetryUrl":null}' image-retry />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="[UPD] The Mad Murderer" ng-non-bindable>
-            [UPD] The Mad Murderer
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            647 Playing
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="65058"
-                     data-downvotes="10795"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">10,795</div>
-                <div class="up-votes-count rbx-font-xs">65,058</div>
-
-            </div>
-        </span>
-        <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/2312310/profile">loleris</cite>
+            by <cite class="rbx-link-sm" data-href="/users/0/profile">nobody</cite>
         </span>
     </a>
 </li>

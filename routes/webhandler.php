@@ -46,6 +46,16 @@ $router->get("/my/messages", function() {
     $page::get_template("my/messages");
 });
 
+$router->get('/MEMBERSHIP/CREATIONDISABLED.aspx', function(){
+    $page = new pagebuilder;
+    $page::get_template("membership/creationdisabled");
+});
+
+$router->get('/Membership/NotApproved.aspx', function(){
+    $page = new pagebuilder;
+    $page::get_template("membership/notapproved");
+});
+
 $router->get('/Upgrades/BuildersClubMemberships.aspx', function() {
     $page = new pagebuilder;
     $page::get_template("bc");
@@ -109,6 +119,10 @@ $router->get("/my/groups.aspx", function() {
 $router->get("/my/money.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("my/money");
+});
+
+$router->get('/Thumbs/Place.aspx', function(){
+    header("Location: /images/9a4a5d6f14dd9785c0af4175e7aff706.png");
 });
 
 $router->get("/userads/{num}", function($num) {

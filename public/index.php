@@ -3,6 +3,7 @@
 use watrlabs\router\routing;
 use watrlabs\authentication;
 use watrlabs\users\getuserinfo;
+use watrlabs\logging\discord;
 
 require_once '../init.php';
 
@@ -72,11 +73,15 @@ try {
         ob_end_flush();
 
     } catch(PDOException $e){
+        $log = new discord();
         try {
+            $log->internal_log($e, "Site Error!");
             ob_clean();
             http_response_code(500);
             require("../views/status_codes/500.php");
         } catch(ErrorException $e){
+            $log = new discord();
+            $log->internal_log($e, "Site Error!");
             ob_clean();
             http_response_code(500);
             die("A fatal error occured.");
@@ -85,11 +90,14 @@ try {
 
     
 } catch(ErrorException $e){
+    $log = new discord();
     try {
+        $log->internal_log($e, "Site Error!");
         ob_clean();
         http_response_code(500);
         require("../views/status_codes/500.php");
     } catch(ErrorException $e){
+        $log->internal_log($e, "Site Error!");
         ob_clean();
         http_response_code(500);
         die("A fatal error occured.");

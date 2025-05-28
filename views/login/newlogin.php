@@ -140,7 +140,7 @@ $pagebuilder->buildheader();
 <div id="guestarea">
     <h2>You don't need an account to play ROBLOX</h2>
     <br/>
-    <p class="text">You can start playing right now, in guest mode! <a  href="http://www.roblox.com/games" class="btn-small btn-neutral" id="guestButton">Play as Guest</a></p>
+    <p class="text">You can start playing right now, in guest mode! <a  href="/games" class="btn-small btn-neutral" id="guestButton">Play as Guest</a></p>
     
 </div>
 
@@ -160,7 +160,7 @@ $pagebuilder->buildheader();
                     </div>
 <div id="Footer" class="footer-container">
     <div class="FooterNav">
-        <a href="http://www.roblox.com/info/Privacy.aspx">Privacy Policy</a>
+        <a href="/info/Privacy.aspx">Privacy Policy</a>
         &nbsp;|&nbsp;
         <a href="http://corp.roblox.com/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
         &nbsp;|&nbsp;
@@ -186,7 +186,7 @@ $pagebuilder->buildheader();
                 <p class="Legalese">
     ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="http://corp.roblox.com/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
     ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
-    Use of this site signifies your acceptance of the <a href="http://www.roblox.com/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
+    Use of this site signifies your acceptance of the <a href="/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
 </p>
             </div>
         <div class="clear"></div>
@@ -354,7 +354,7 @@ $pagebuilder->buildheader();
         <div style="clear:both; height:25px;"></div>
         <div class="RevisedFooter">
             <div style="width:200px;margin:10px auto 0 auto;">
-                <a href="http://www.roblox.com/?returnUrl=https%3A%2F%2Fwww.roblox.com%2FNewLogin"><div class="RevisedCharacterSelectSignup"></div></a>
+                <a href="/?returnUrl=https%3A%2F%2Fwww.roblox.com%2FNewLogin"><div class="RevisedCharacterSelectSignup"></div></a>
                 <a class="HaveAccount" href="/newlogin?returnUrl=https%3A%2F%2Fwww.roblox.com%2FNewLogin">I have an account</a>
             </div>
         </div>

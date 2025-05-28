@@ -399,7 +399,38 @@ $router->post('/voting/vote', function(){
 
 $router->get('/private-server/instance-list-json', function() {
     header("Content-type: Application/json");
-    die('{"Instances": [], "CurrentPage": 1, "TotalPages": 1 }'); 
+
+    $instances = array(
+        [
+            "Name"=>"Test Server",
+            "PlaceId"=>2,
+            "PlaceCapacity"=>20,
+            "PrivateServer" => array(
+                "Id"=>67,
+                "UniverseId"=>999999,
+                "StatusType"=>1,
+                "OwnerUserId"=>2
+            ),
+            "PrivateServerOwnerName"=>"watrabi",
+            "DoesBelongToUser"=>true,
+            "UserCanConfigure"=>true,
+            "UserCanShutdown"=>true,
+            "JoinScript"=>"code",
+            "IsPrivateServerSubscriptionActive"=>true,
+            "CanRenew"=>true,
+            "MostRecentPrivateServerStatusChangeReasonType"=>0
+        ]
+    );
+
+    $priavte = array(
+        "Instances"=>$instances,
+        "CurrentPage"=>1,
+        "TotalPages"=>1,
+    );
+
+    die(json_encode($priavte));
+
+    //die('{"Instances": [], "CurrentPage": 1, "TotalPages": 0 }'); 
 });
 
 $router->get('/game/getauthticket', function() {
@@ -504,6 +535,103 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
     die(json_encode($placelauncher));
 });
 
+$router->get('/Game/PlaceLauncher.ashx', function() {
+    header("Content-type: application/json");
+   $placelauncher = array(
+        "jobid"=>"null",
+        "status"=>0,
+        "joinScriptUrl"=>"null",
+        "authenticationUrl"=>"http://www.roblox.icu/Login/Negotiate.ashx",
+        "authenticationTicket"=>"null",
+        "message"=>"Hi!"
+    ); 
+    
+    //$placelauncher["jobid"] = "Test";
+    //$placelauncher["status"] = 2;
+    //$placelauncher["joinScriptUrl"] = "http://www.watrbx.xyz/Game/Join.ashx?user=watrabi&ip=127.0.0.1&id=420&port=7894&capp=1&mship=BuildersClub&PlaceId=1";
+    
+    $gameserver = new gameserver();
+
+    global $db;
+
+    if(!$gameserver->get_closest_server()){
+        http_response_code(503);
+        $placelauncher["status"] = -1;
+    }else {
+        if(isset($_GET["placeId"])){
+            global $db;
+            $auth = new authentication();
+
+            if($auth->hasaccount()){
+
+                $placeid = (int)$_GET["placeId"];
+
+                $gameinstance = $db->table("game_instances")->where("placeid", $placeid)->first();
+
+                if($gameinstance !== null){
+
+                    $func = new sitefunctions();
+                    $placelauncher["status"] = 2;
+
+                    $jobid = $gameinstance->serverguid;
+
+                    $jobinfo = $db->table("jobs")->where("jobid", $jobid)->first();
+                    $server_info = $db->table("servers")->where("server_id", $jobinfo->server)->first();
+
+                    $port = $jobinfo->port;
+                    $ip = $server_info->ip;
+                    $joincode = $func->genstring(25);
+
+                    $joinarray = array(
+                        "code"=>$joincode,
+                        "ip"=>$ip,
+                        "port"=>$port,
+                        "placeid"=>$placeid
+                    );
+                    
+                    $db->table("join_codes")->insert($joinarray);
+
+                    $placelauncher["jobid"] = $jobid;
+
+                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.xyz/Game/Join.ashx?joincode=" . $joincode;
+                    
+                } else {
+
+                    $job = $db->table("jobs")->where("assetid", $placeid)->first();
+
+                    if($job !== null){
+                        //$gameserver->request_game($placeid);
+                        $placelauncher["status"] = 1;
+                    } else {
+                        if($gameserver->request_game($placeid) !== false){
+                                $placelauncher["status"] = 0;
+                                $placelauncher["jobid"] = $job->jobid;
+                            } else {
+                                var_dump($gameserver->request_game($placeid));
+                            http_response_code(503);
+                            $placelauncher["status"] = 0;
+                            $placelauncher["jobid"] = $job->jobid;
+                            die(json_encode($placelauncher));
+                            //die("No gameservers available");
+                        }
+                        
+                    } 
+                }
+
+            } else {
+                $placelauncher["status"] = 12;
+                http_response_code(401);
+                die(json_encode($placelauncher));
+            }
+        } else {
+            http_response_code(400);
+            die(json_encode($placelauncher));
+        }
+    }
+
+    die(json_encode($placelauncher));
+});
+
 $router->get('/leaderboards/rank/json', function(){
     header("Content-type: application/json");
     die("[]");
@@ -515,7 +643,16 @@ $router->get('/leaderboards/game/json', function(){
 }); 
 
 $router->get('/Character.aspx', function(){
-    die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=7;http://www.watrbx.xyz/asset/?id=10;");
+    if(isset($_GET["ID"])){
+        if($_GET["ID"] == 2){
+            die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=7;http://www.watrbx.xyz/asset/?id=10;http://www.watrbx.xyz/asset/?id=25;");
+        } else {
+            die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=7;http://www.watrbx.xyz/asset/?id=10;");
+        }
+    } else {
+        die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=7;http://www.watrbx.xyz/asset/?id=10;");
+    }
+    
 });
 
 $router->get('/users/inventory/list-json', function(){
@@ -559,7 +696,7 @@ $router->get('/Game/Join.ashx', function() {
             "SeleniumTestMode" => false,
             "UserId" => $userinfo->id,
             "SuperSafeChat" => false,
-            "CharacterAppearance" => "https://www.watrbx.xyz/Character.aspx",
+            "CharacterAppearance" => "https://www.watrbx.xyz/Character.aspx?ID=" . $userinfo->id,
             "ClientTicket" => "",
             "GameId" => $pid,
             "PlaceId" => $pid,
@@ -572,7 +709,7 @@ $router->get('/Game/Join.ashx', function() {
             "VideoInfo" => "",
             "CreatorId" => "3333",
             "CreatorTypeEnum" => "User",
-            "MembershipType" => "None",
+            "MembershipType" => "$userinfo->membership",
             "AccountAge" => "3000000",
             "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
             "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
@@ -664,12 +801,24 @@ $router->post('/api/v1/login', function() {
         
         $result = $auth->login($username, $password);
         
-        if($result["code"] == 200){
-            create_success("Succesfully Logged In!");
-            header("Location: /home");
-            die();
+        if(isset($result["code"])){
+            if($result["code"] == 200){
+                create_success("Succesfully Logged In!");
+                header("Location: /home");
+                die();
+            } else {
+                if(isset($result["message"])){
+                    die(create_error($result["message"]));        
+                } else {
+                    die("Something went wrong.");
+                }
+            }
         } else {
-            die(create_error($result["message"]));
+            if(isset($result["message"])){
+                die(create_error($result["message"]));        
+            } else {
+                die("Something went wrong.");
+            }
         }
         
     } else {
@@ -710,13 +859,49 @@ $router->post('/api/v1/verify-captcha', function(){
     }
 });
 
+$router->post('/Membership/NotApproved.aspx', function(){
+    $auth = new authentication();
+    if(isset($_GET["ID"]) && $auth->hasaccount()){
+        $banid = (int)$_GET["ID"];
+        global $db;
+
+        $baninfo = $db->table("moderation")->where("id", $banid)->first();
+
+        if($baninfo !== null){
+            $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+            if($baninfo->userid == $userinfo->id){
+                if($baninfo->banneduntil < time()){
+                    $db->table("moderation")->where("id", $baninfo->id)->update(array("canignore"=>1));
+                    header("Location: /home");
+                    die();
+                } else {
+                    header("Location: /home");
+                    die();
+                }
+            } else {
+                header("Location: /home");
+                die();
+            }
+        } else {
+            header("Location: /home");
+            die();
+        }
+
+    } else {
+        header("Location: /home");
+        die();
+    } 
+});
+
 $router->post('/api/v1/signup', function() {
 
-    if(!$_ENV["CAN_REGISTER"]){
-        die(create_error("Register is disabled."));
+    if($_ENV["CAN_REGISTER"] == "false"){
+        http_response_code(403);
+        header("Location: /MEMBERSHIP/CREATIONDISABLED.aspx");
+        die();
     }
     
-    if( isset($_POST["username"]) && isset($_POST["password"])){
+    if(isset($_POST["username"]) && isset($_POST["password"])){
         
         global $db;
         

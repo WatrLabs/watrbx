@@ -88,14 +88,11 @@ if($userinfo->membership == "OutrageousBuildersClub"){
      class="hidden"
      data-page-heartbeat-event-intervals="[2,8,20,60]">
 </div><script type='text/javascript' src='/js/f49d858ef181e7cd401d8fcb4245e6e8.js.gzip'></script>
-<script type='text/javascript'>Roblox.config.externalResources = [];Roblox.config.paths['Pages.Catalog'] = '/js/c1d70e1b98c87fcdb85e894b5881f60c.js.gzip';Roblox.config.paths['Pages.CatalogShared'] = '/js/bd76a582ffb966eb0af3f16d61defa7f.js.gzip';Roblox.config.paths['Pages.Messages'] = '/js/b123274ceba7c65d8415d28132bb2220.js.gzip';Roblox.config.paths['Resources.Messages'] = '/js/6307f9bd9c09fa9d88c76291f3b68fda.js.gzip';Roblox.config.paths['Widgets.AvatarImage'] = '/js/64f4ed4d4cf1c0480690bc39cbb05b73.js.gzip';Roblox.config.paths['Widgets.DropdownMenu'] = '/js/5cf0eb71249768c86649bbf0c98591b0.js.gzip';Roblox.config.paths['Widgets.GroupImage'] = '/js/556af22c86bce192fb12defcd4d2121c.js.gzip';Roblox.config.paths['Widgets.HierarchicalDropdown'] = '/js/7689b2fd3f7467640cda2d19e5968409.js.gzip';Roblox.config.paths['Widgets.ItemImage'] = '/js/d689e41830fba6bc49155b15a6acd020.js.gzip';Roblox.config.paths['Widgets.PlaceImage'] = '/js/45d46dd8e2bd7f10c17b42f76795150d.js.gzip';Roblox.config.paths['Widgets.SurveyModal'] = '/js/56ad7af86ee4f8bc82af94269ed50148.js.gzip';</script><script type="text/javascript">
-    $(function () {
+<script type='text/javascript'>Roblox.config.externalResources = [];Roblox.config.paths['Pages.Catalog'] = 'https://js.rbxcdn.com/46776eac503b939a2fd9146d77d735a3.js';Roblox.config.paths['Pages.CatalogShared'] = 'https://js.rbxcdn.com/da18f3da914691fb825e5ae9f00c9e49.js';Roblox.config.paths['Pages.Messages'] = 'https://js.rbxcdn.com/e8cbac58ab4f0d8d4c707700c9f97630.js';Roblox.config.paths['Resources.Messages'] = 'https://js.rbxcdn.com/fb9cb43a34372a004b06425a1c69c9c4.js';Roblox.config.paths['Widgets.AvatarImage'] = 'https://js.rbxcdn.com/bbaeb48f3312bad4626e00c90746ffc0.js';Roblox.config.paths['Widgets.DropdownMenu'] = 'https://js.rbxcdn.com/7b436bae917789c0b84f40fdebd25d97.js';Roblox.config.paths['Widgets.GroupImage'] = 'https://js.rbxcdn.com/33d82b98045d49ec5a1f635d14cc7010.js';Roblox.config.paths['Widgets.HierarchicalDropdown'] = 'https://js.rbxcdn.com/3368571372da9b2e1713bb54ca42a65a.js';Roblox.config.paths['Widgets.ItemImage'] = 'https://js.rbxcdn.com/8babd891cf420dfe3999b3824a0154cb.js';Roblox.config.paths['Widgets.PlaceImage'] = 'https://js.rbxcdn.com/f2697119678d0851cfaa6c2270a727ed.js';Roblox.config.paths['Widgets.SurveyModal'] = 'https://js.rbxcdn.com/d6e979598c460090eafb6d38231159f6.js';</script>
+<script>$(function () {
         Roblox.JSErrorTracker.initialize({ 'suppressConsoleError': true});
     });
-</script><script type='text/javascript' src='/js/8220b4ecd0fe4da790391da3fd0b442c.js.gzip'></script>
-<script type='text/javascript' src='/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip'></script>
-<script type='text/javascript' src='/js/f3251ed8271ce1271b831073a47b65e3.js.gzip'></script>
-<script type='text/javascript' src='/js/11538f50c384b7e98cc9fdd96e55772d.js.gzip'></script>
+</script>
 
     <script type="text/javascript">
 
@@ -249,7 +246,7 @@ Roblox.Endpoints.Urls['/authentication/is-logged-in'] = '/authentication/is-logg
 <style type="text/css">
     
 </style>
-<form name="aspnetForm" method="post" action="/My/Character.aspx" id="aspnetForm" class="nav-container no-gutter-ads">
+<form name="aspnetForm" method="post" action="<?=$_SERVER['REQUEST_URI']?>" id="aspnetForm" class="nav-container no-gutter-ads">
 <div>
 <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
 <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
@@ -273,11 +270,6 @@ function __doPostBack(eventTarget, eventArgument) {
 </script>
 
 
-
-<script src="/ScriptResource.axd?d=PNxpIlDNxHhNQn8qOu3HPlzJIgROLYl7r-S2vBjZOfnwsFi0I7f5c8cbqCpQFoBqk-PMsxQr12YK88iZ3Zln99R2klscvuI7_3geHZC10UEM_pbL-jX2TFndzF1aWhx5W6x2KxNZC6j8vSGuu6LiB6EaVAsRY8xUxtE1elPTg-fwfpS9Rmmq5Ti1SDnHkC6dmJh5Ya3Ya_3-sHcAOFuU4Edi4wpVSYiUzDp7SVFcRuHpOgCTzsFVGIa50pu28mZVUul-iK5RAckd_BkPeIcySx1TBuhYGdkXhvduLZ2XxrUnRm5Nlo1Zv2ndQz2Qb8us5lZx9gWbo-hp10wSMNxBZuY1gUE2XYt_RJOL8ekvpm5kUVZg9UQ6VSSSJRp6EznSIklBAuA-ukSSw-BMELNxeHOb73N7dk18xwtfp10Tc3UjwCEu0" type="text/javascript"></script>
-<script src="/ScriptResource.axd?d=fSWNswqNUC5RkUBTfQmfzk_IzT8z0X1-ZXnjpYVgZuJnS5llRz7w7MOdqnu4lQwpfCCvsBhhqvU-GIMlb0QaZ6ow0tCQULahz6WB6uFsrHkP5c6J0&amp;t=fffffffffa029ff1" type="text/javascript"></script>
-<script src="../Thumbs/Asset.asmx/js" type="text/javascript"></script>
-<script src="../Thumbs/Avatar.asmx/js" type="text/javascript"></script>
 <div>
 
 	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="1ECBBB27" />
