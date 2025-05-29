@@ -30,7 +30,7 @@ $pagebuilder->buildheader();
               <div id="Skyscraper-Adp-Left" class="abp abp-container left-abp">
                 <iframe allowtransparency="true" frameborder="0" height="612" scrolling="no" src="/userads/2" width="160" data-js-adtype="iframead"></iframe>
               </div>
-              <div id="HomeContainer" class="row home-container" data-facebook-share="/facebook/share-character" data-update-status-url="/home/updatestatus" data-should-show-enable-two-step-verification-call-to-action=False>
+              <div id="HomeContainer" class="row home-container" data-facebook-share="/facebook/share-character" data-update-status-url="/home/updatestatus" data-should-show-enable-two-step-verification-call-to-action=True>
                 <div class="col-xs-12 home-header">
                   <a href="/User.aspx" class="home-thumbnail-bust">
                     <img alt="avatar" src="/headshot.png" />
@@ -87,173 +87,24 @@ $pagebuilder->buildheader();
                 </div>
                 <div id="recently-visited-places" class="col-xs-12 container-list home-games">
                   <div class="container-header">
-                    <h3>Recently Played</h3>
+                    <h3>Recommended Games</h3>
                     <a href="/games?sortFilter=6" class="rbx-btn-secondary-xs btn-more">See All</a>
                   </div>
                   <ul class="hlist game-list">
-                    <li class="list-item card game">
-    <a href="/games/refer?SortFilter=8&amp;TimeFilter=0&amp;GenreFilter=1&amp;PlaceId=192800&amp;Position=1&amp;PageType=Games" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="/place.png" alt="Survival The PHP The Killers"
-                     thumbnail='{"Final":true,"Url":"/place.png","RetryUrl":null}' image-retry width="140" height="140" />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Survival The PHP The Killers" ng-non-bindable>
-            Survival The PHP The Killers
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            0 Players Online
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="0"
-                     data-downvotes="0"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">0</div>
-                <div class="up-votes-count rbx-font-xs">0</div>
+                    <?php
+                        global $db;
 
-            </div>
-        </span>
-        <span class="rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/User.aspx?ID=2">watrabi</cite>
-        </span>
-    </a>
-</li>
+                        $query = $db->table("universes")->where("public", 1)->limit(6)->orderBy($db->Raw("RAND()"));
 
-                  </ul>
-                </div>
-                <div id="my-favorties-games" class="col-xs-12 container-list home-games">
-                  <div class="container-header">
-                    <h3>My Favorites</h3>
-                    <a href="/games?sortFilter=5" class="rbx-btn-secondary-xs btn-more">See All</a>
-                  </div>
-                  <ul class="hlist game-list">
-                    <li class="list-item card game">
-    <a href="/games/refer?SortFilter=8&amp;TimeFilter=0&amp;GenreFilter=1&amp;PlaceId=192800&amp;Position=1&amp;PageType=Games" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="/place.png" alt="Survival The PHP The Killers"
-                     thumbnail='{"Final":true,"Url":"/place.png","RetryUrl":null}' image-retry width="140" height="140" />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Survival The PHP The Killers" ng-non-bindable>
-            Survival The PHP The Killers
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            0 Players Online
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="0"
-                     data-downvotes="0"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">0</div>
-                <div class="up-votes-count rbx-font-xs">0</div>
+                        $allgames = $query->get();
 
-            </div>
-        </span>
-        <span class="rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/User.aspx?ID=2">watrabi</cite>
-        </span>
-    </a>
-</li>
+                        foreach($allgames as $game){ 
 
-                  </ul>
-                </div>
-                <div id="friend-activity" class="col-xs-12 container-list home-games">
-                  <div class="container-header">
-                    <h3>Friend Activity</h3>
-                    <a href="/games?sortFilter=17" class="rbx-btn-secondary-xs btn-more">See All</a>
-                  </div>
-                  <ul class="hlist game-list">
-                    <li class="list-item card game">
-    <a href="/games/refer?SortFilter=8&amp;TimeFilter=0&amp;GenreFilter=1&amp;PlaceId=192800&amp;Position=1&amp;PageType=Games" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="/place.png" alt="Survival The PHP The Killers"
-                     thumbnail='{"Final":true,"Url":"/place.png","RetryUrl":null}' image-retry width="140" height="140" />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Survival The PHP The Killers" ng-non-bindable>
-            Survival The PHP The Killers
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            0 Players Online
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="0"
-                     data-downvotes="0"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">0</div>
-                <div class="up-votes-count rbx-font-xs">0</div>
+                            echo $pagebuilder->build_component("game", ["game"=>$game]);
 
-            </div>
-        </span>
-        <span class="rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/User.aspx?ID=2">watrabi</cite>
-        </span>
-    </a>
-</li>
-
+                            
+                        }
+?>
                   </ul>
                 </div>
                 <div class="col-xs-12 col-sm-6 home-right-col">
@@ -302,6 +153,8 @@ $pagebuilder->buildheader();
                       <a type="button" class="rbx-btn-primary-sm" id="shareButton">Share</a>
                       <img id="loadingImage" class="share-login" style="display: none" alt="Sharing..." src="/images/ec4e85b0c4396cf753a06fade0a8d8af.gif" height="17" width="48" />
                     </div>
+                    <span class="rbx-icon-charactercustomizer"></span>
+                    
                     <ul class="vlist feeds">
                       <li class="list-item">
                         <a href="/My/Groups.aspx?gid=950346" class="list-header">

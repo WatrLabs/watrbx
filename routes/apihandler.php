@@ -3,6 +3,7 @@ use watrlabs\router\Routing;
 use watrlabs\watrkit\sanitize;
 use watrlabs\authentication;
 use watrbx\gameserver;
+use watrbx\catalog;
 use watrbx\sitefunctions;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
@@ -86,6 +87,250 @@ $router->get('/thumbnail/resolve-hash/{the}', function($the){
     );
 
     die(json_encode($json));
+});
+
+$router->post('/api/item.ashx', function(){
+    header("Content-type: application/json");
+    global $db;
+    $auth = new authentication();
+    $catalog = new catalog();
+
+    if($auth->hasaccount()){
+        $success = false;
+        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+
+        if(isset($_GET["rqtype"])){
+            $type = $_GET["rqtype"];
+
+            if($type == "purchase"){
+                if( 
+                    isset($_GET["productID"]) 
+                    && isset($_GET["expectedCurrency"]) 
+                    && isset($_GET["expectedPrice"]) 
+                    && isset($_GET["expectedSellerID"])
+                    ){
+                        $prodid = (int)$_GET["productID"];
+                        $expectedcurrency = (int)$_GET["expectedCurrency"];
+                        $price = (int)$_GET["expectedPrice"];
+                        $sellerid = (int)$_GET["expectedSellerID"];
+
+                        if($_ENV["CAN_PURCHASE"] == "false"){
+                            http_response_code(500);
+                            $notforsale = array(
+                                "statusCode"=>500,
+                                "showDivID"=>"TransactionFailureView",
+                                "title"=>"Purchasing Disabled",
+                                "errorMsg"=>"You cannot purchase this item currently, please try again later."
+                            );
+                            die(json_encode($notforsale));
+                        }
+
+                        $asset = $db->table("assets")->where("id", $prodid)->first();
+
+                        if($asset !== null){
+
+                            if($asset->owner != $sellerid){
+                                http_response_code(500);
+                                $notforsale = array(
+                                    "statusCode"=>500,
+                                    "showDivID"=>"TransactionFailureView",
+                                    "title"=>"Transaction Failed",
+                                    "errorMsg"=>"The seller id is invalid."
+                                );
+
+                                die(json_encode($notforsale));
+                            } else {
+                                $sellerinfo = $auth->getuserbyid($asset->owner);
+                            }
+
+                            if($asset->publicdomain !== 1){
+                                http_response_code(500);
+                                $notforsale = array(
+                                    "statusCode"=>500,
+                                    "showDivID"=>"TransactionFailureView",
+                                    "title"=>"Transaction Failed",
+                                    "errorMsg"=>"The item is no longer for sale."
+                                );
+
+                                die(json_encode($notforsale));
+                            }
+
+                            if($expectedcurrency == 1){
+                                if($asset->robux !== $price){
+                                    // assume the price changed (might in the future store price changes)
+                                    http_response_code(500); // best way to trigger this (idk if it does other status codes)
+                                    $pricechange = array(
+                                        "showDivID"=>"PriceChangedView",
+                                        "expectedPrice"=>$price,
+                                        "currentPrice"=>$asset->robux,
+                                        "expectedCurrency"=>$expectedcurrency,
+                                        "currentCurrency"=>1,
+                                        "AssetID"=>$asset->id,
+                                        "balanceAfterSale"=>$userinfo->robux - $asset->robux,
+                                        "targetSelector"=> ".PurchaseButton[data-item-id='".$asset->id."']"
+                                    );
+                                    die(json_encode($pricechange));
+                                } else {
+                                    if($asset->robux > $userinfo->robux){
+                                        http_response_code(500);
+                                        $insufficient = array(
+                                            "showDivId"=>"InsufficientFundsView",
+                                            "shortfallPrice"=>$asset->robux = $userinfo->robux,
+                                            "currentCurrency"=>1,
+                                            "source"=>"item" // idek what this does
+                                        );
+                                        die(json_encode($insufficient));
+                                    }
+
+                                    // i think its safe to go through wit da purchase
+
+                                    if($asset->limited == 1){
+                                        $result = $catalog::purchase_item($userinfo->id, $asset->id, $expectedcurrency);
+
+                                        if($result){
+                                            $success = array(
+                                                "Price"=>$asset->robux,
+                                                "Currency"=>1,
+                                                "AssetID"=>$asset->id,
+                                                "AssetName"=>$asset->name,
+                                                "AssetType"=>"Hat", // TODO: create a roblox class to handle stuff like this
+                                                "SellerName"=>$sellerinfo->username,
+                                                "TransactionVerb"=>"purchased",
+                                                "IsMultiPrivateSale"=>false ,
+                                                "AssetIsWearable"=>true // TODO: add onto the roblox class for this
+                                            );
+                                            die(json_encode($success));
+                                        }
+                                    } else {
+                                        if(!$catalog::has_asset($userinfo->id, $asset->id)){
+                                            $result = $catalog::purchase_item($userinfo->id, $asset->id, $expectedcurrency);
+
+                                            if($result){
+                                                $success = array(
+                                                    "Price"=>$asset->robux,
+                                                    "Currency"=>1,
+                                                    "AssetID"=>$asset->id,
+                                                    "AssetName"=>$asset->name,
+                                                    "AssetType"=>"Hat", // TODO: create a roblox class to handle stuff like this
+                                                    "SellerName"=>$sellerinfo->username,
+                                                    "TransactionVerb"=>"purchased",
+                                                    "IsMultiPrivateSale"=>false ,
+                                                    "AssetIsWearable"=>true // TODO: add onto the roblox class for this
+                                                );
+                                                die(json_encode($success));
+                                            }
+                                        } else {
+                                            http_response_code(500);
+                                            $alreadyowned = array(
+                                                "statusCode"=>500,
+                                                "showDivID"=>"TransactionFailureView",
+                                                "title"=>"Transaction Failed",
+                                                "errorMsg"=>"You already own this item."
+                                            );
+                                            die(json_encode($alreadyowned));
+                                        }
+                                    }
+                                }
+                            }
+                            if($expectedcurrency == 2){
+                                if($asset->tix !== $price){
+                                    // assume the price changed (might in the future store price changes)
+                                    http_response_code(500); // best way to trigger this (idk if it does other status codes)
+                                    $pricechange = array(
+                                        "showDivID"=>"PriceChangedView",
+                                        "expectedPrice"=>$price,
+                                        "currentPrice"=>$asset->tix,
+                                        "expectedCurrency"=>$expectedcurrency,
+                                        "currentCurrency"=>1,
+                                        "AssetID"=>$asset->id,
+                                        "balanceAfterSale"=>$userinfo->tix - $asset->tix,
+                                        "targetSelector"=> ".PurchaseButton[data-item-id='".$asset->id."']"
+                                    );
+                                    die(json_encode($pricechange));
+                                } else {
+                                    if($asset->robux > $userinfo->robux){
+                                        http_response_code(500);
+                                        $insufficient = array(
+                                            "showDivId"=>"InsufficientFundsView",
+                                            "shortfallPrice"=>$asset->tix = $userinfo->tix,
+                                            "currentCurrency"=>1,
+                                            "source"=>"item" // idek what this does
+                                        );
+                                        die(json_encode($insufficient));
+                                    }
+
+                                    // i think its safe to go through wit da purchase
+
+                                    if($asset->limited == 1){
+                                        $result = $catalog::purchase_item($userinfo->id, $asset->id, $expectedcurrency);
+
+                                        if($result){
+                                            $success = array(
+                                                "Price"=>$asset->robux,
+                                                "Currency"=>1,
+                                                "AssetID"=>$asset->id,
+                                                "AssetName"=>$asset->name,
+                                                "AssetType"=>"Hat", // TODO: create a roblox class to handle stuff like this
+                                                "SellerName"=>$sellerinfo->username,
+                                                "TransactionVerb"=>"purchased",
+                                                "IsMultiPrivateSale"=>false ,
+                                                "AssetIsWearable"=>true // TODO: add onto the roblox class for this
+                                            );
+                                            die(json_encode($success));
+                                        }
+                                    } else {
+                                        if(!$catalog::has_asset($userinfo->id, $asset->id)){
+                                            $result = $catalog::purchase_item($userinfo->id, $asset->id, $expectedcurrency);
+
+                                            if($result){
+                                                $success = array(
+                                                    "Price"=>$asset->robux,
+                                                    "Currency"=>1,
+                                                    "AssetID"=>$asset->id,
+                                                    "AssetName"=>$asset->name,
+                                                    "AssetType"=>"Hat", // TODO: create a roblox class to handle stuff like this
+                                                    "SellerName"=>$sellerinfo->username,
+                                                    "TransactionVerb"=>"purchased",
+                                                    "IsMultiPrivateSale"=>false ,
+                                                    "AssetIsWearable"=>true // TODO: add onto the roblox class for this
+                                                );
+                                                die(json_encode($success));
+                                            }
+                                        } else {
+                                            http_response_code(500);
+                                            $alreadyowned = array(
+                                                "statusCode"=>500,
+                                                "showDivID"=>"TransactionFailureView",
+                                                "title"=>"Transaction Failed",
+                                                "errorMsg"=>"You already own this item."
+                                            );
+                                            die(json_encode($alreadyowned));
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            http_response_code(500);
+                            $notforsale = array(
+                                "statusCode"=>500,
+                                "showDivID"=>"TransactionFailureView",
+                                "title"=>"Transaction Failed",
+                                "errorMsg"=>"This asset does not exist."
+                            );
+
+                            die(json_encode($notforsale));
+                        }
+
+                    }
+            } else {
+                http_response_code(404);
+            }
+        }
+
+    } else {
+        http_response_code(401);
+        die();
+    }
 });
 
 $router->post('/api/v1/asset-upload', function(){

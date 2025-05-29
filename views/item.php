@@ -1,972 +1,971 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
+use watrlabs\authentication;
+use watrbx\thumbnails;
+$thumbs = new thumbnails();
+$auth = new authentication();
 $pagebuilder = new pagebuilder();
 
-$pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___454963b97fe545e3b3f2aaf85eef6d4a_m.css');
+if($auth->hasaccount()){
+    $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+}
+
+$assetTypes = array(
+    'Image' => 1,
+    'TShirt' => 2,
+    'Audio' => 3,
+    'Mesh' => 4,
+    'Lua' => 5,
+    'Hat' => 8,
+    'Place' => 9,
+    'Model' => 10,
+    'Shirt' => 11,
+    'Pants' => 12,
+    'Decal' => 13,
+    'Head' => 17,
+    'Face' => 18,
+    'Gear' => 19,
+    'Badge' => 21,
+    'Animation' => 24,
+    'Torso' => 27,
+    'RightArm' => 28,
+    'LeftArm' => 29,
+    'LeftLeg' => 30,
+    'RightLeg' => 31,
+    'Package' => 32,
+    'GamePass' => 34,
+    'Plugin' => 38,
+    'MeshPart' => 40,
+    'HairAccessory' => 41,
+    'FaceAccessory' => 42,
+    'NeckAccessory' => 43,
+    'ShoulderAccessory' => 44,
+    'FrontAccessory' => 45,
+    'BackAccessory' => 46,
+    'WaistAccessory' => 47,
+    'ClimbAnimation' => 48,
+    'DeathAnimation' => 49,
+    'FallAnimation' => 50,
+    'IdleAnimation' => 51,
+    'JumpAnimation' => 52,
+    'RunAnimation' => 53,
+    'SwimAnimation' => 54,
+    'WalkAnimation' => 55
+);
+
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
-$pagebuilder->addresource('jsfiles', '/js/35442da4b07e6a0ed6b085424d1a52cb.js');
+$pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___21c026f129b626345b81a3a4d6882c7d_m.css');
+$pagebuilder->addresource('jsfiles', '/js/4eedc3a9c944bd9a29f80c2e9668dfdb.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/8220b4ecd0fe4da790391da3fd0b442c.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
-$pagebuilder->addresource('jsfiles', '/js/3f3e6c117b7e1ff6c7644a1b4048a54c.js.gzip');
-$pagebuilder->set_page_name("Trade");
-
+$pagebuilder->addresource('jsfiles', '/js/43936b3386e6514e97f2b3ae23f53404.js.gzip');
+$pagebuilder->set_page_name("Item");
+$pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
-$pagebuilder->setlegacy(true);
 
-
-?> 
-        
+?>
         <div id="BodyWrapper">
-            
-        <div id="AdvertisingLeaderboard">
-                
-
-<iframe allowtransparency="true"
-            frameborder="0"
-            height="110"
-            scrolling="no"
-            src="/userads/1"
-            width="728"
-            data-js-adtype="iframead"></iframe>
-
-
-            </div>
             
             <div id="RepositionBody">
                 <div id="Body" style='width:970px;'>
+                
+    <div id="ItemContainer" class="text ">
+        <div>
+            <div id="ctl00_cphRoblox_GearDropDown" class="SetList ItemOptions invisible" data-isdropdownhidden="False" data-isitemlimited="True" data-isitemresellable="True">
+                <a href="#" class="btn-dropdown">
                     
-    
-<style type="text/css">
-    #BodyWrapper {
-        padding: 50px;
-    }
-</style>
-<?=$pagebuilder->build_component("status", ["status"=>"confirm", "msg"=>"This page is currently not functional and is a bit broken. Please stay tuned."]);?>
-<div class="MyMoneyPage text">
-    <div class="WhiteSquareTabsContainer">
-        <ul class="SquareTabsContainer">
-            
-            <li class="SquareTabGray selected" contentid="MyTransactions_tab">
-                <span><a>My Transactions</a></span>
-            </li>
-            
-            <li class="SquareTabGray " contentid="Summary_tab">
-                <span><a>Summary</a></span>
-            </li>
-            
-            <li class="SquareTabGray " contentid="TradeCurrency_tab">
-               <span><a>Trade Currency</a></span>
-            </li>
-            
-            <li class="SquareTabGray " contentid="TradeItems_tab">
-               <span><a>Trade Items</a></span>
-            </li>
-            
-            <li class="SquareTabGray" contentid="Promotion_tab">
-                <span><a>Promotion (Beta)</a></span>
-            </li>
-            
-        </ul>
-    </div>
-    <a href=https://www.roblox.com/upgrades/robux?ctx=money class="BuyRobuxButton btn-medium btn-primary">Buy Robux</a>
-    <div class="StandardPanelContainer">
-        <div id="TabsContentContainer" class="StandardPanelWhite">
-        
-            <div id="MyTransactions_tab" class="TabContent selected uninitialized">
-                <div class="SortsAndFilters">
-                    <div class="TransactionType">
-                        <span class="form-label">Transaction Type:</span>
-                        <select class="form-select" id="MyTransactions_TransactionTypeSelect">
-                            <option value="purchase">Purchases</option>
-                            <option value="sale">Sales</option>
-                            <option value="affiliatesale">Commissions</option>
-                            
-                            <option value="grouppayout">Group Payouts</option>
-                            
-                        </select>
-                    </div>
-                    <div style="clear:both;float:none;"></div>
-                </div>
-                <div class="TransactionsContainer">
-                    <table class="table" cellpadding="0" cellspacing="0" border="0">
-                        <tr class="table-header">
-                            <th class="Date first">Date</th>
-                            <th class="Member">Member</th>
-                            <th class="Description">Description</th>
-                            <th class="Amount">Amount</th>
-                        </tr>
-                        <tr class="datarow" colspan="4">
-                            <td class="loading"></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            
-            <div id="Summary_tab" class="TabContent uninitialized">
-                <div class="SortsAndFilters">
-                    <span class="form-label">Time Period:</span>
-                    <select class="form-select" id="TimePeriod">
-                        <option value="day">Past Day</option>
-                        <option value="week">Past Week</option>
-                        <option value="month">Past Month</option>
-                        <option value="year">Past Year</option>
-                    </select>
-                </div>
-                <div class="ColumnsContainer">
-                    <div class="RobuxColumn divider-right">
-                        <div>
-                            <h2 class="light">
-                                    <span class="robux">&nbsp;</span>
-                                    <span>Robux</span>
-                                    <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="The principal currency of Robloxia, which Builders Club members receive a daily allowance of to live a comfortable life of leisure. For this and other benefits, join Builders Club! Alternately, you can purchase ROBUX using our secure payment system." />
-                            </h2>
-                            <table class="table" cellpadding="0" cellspacing="0" border="0" >
-                            <tr class="table-header">
-                                <th class="Categories first">Categories</th>
-                                <th class="Credit">Credit</th>
-                            </tr>
-                            <tr >
-                                <td class="Categories">Builders Club Stipend</td>
-                                <td class="Credit BCStipend">&nbsp;</td>
-                            </tr>
-                            <tr >
-                                <td class="Categories">Builders Club Stipend Bonus</td>
-                                <td class="Credit BCStipendBonus">&nbsp;</td>
-                            </tr>
-                            <tr >
-                                <td class="Categories">Sale of Goods</td>
-                                <td class="Credit R_SaleOfGoods">&nbsp;</td>
-                            </tr>
-                            <tr >
-                                <td class="Categories">Currency Purchase</td>
-                                <td class="Credit CurrencyPurchase">&nbsp;</td>
-                            </tr>
-                            
-                           
-                            <tr >
-                                <td class="Categories">Trade System Trades</td>
-                                <td class="Credit R_TradeSystem">&nbsp;</td>
-                            </tr> 
-                           
-                            
-                            <tr>
-                                <td class="Categories">Promoted Page Conversion Revenue</td>
-                                <td class="Credit PromotedPageConversionRevenue">&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td class="Categories">Game Page Conversion Revenue</td>
-                                <td class="Credit GamePageConversionRevenue">&nbsp;</td>
-                            </tr>
-                            
-                            <tr  >
-                                <td class="Categories">Pending Sales <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="As an anti fraud precaution, revenue from certain transactions, such as Game Pass sales, is held for a short period of time before being released to the seller." /></td>
-                                <td class="Credit R_PendingSales">&nbsp;</td>
-                            </tr> 
-                            
-                            <tr>
-                                <td class="Categories">Group Payouts</td>
-                                <td class="Credit R_GroupPayouts">&nbsp;</td>
-                            </tr>
-                            
-                            <tr class="total">
-                                <td colspan="3"><h2 class="light">TOTAL&nbsp;</h2><span class="robux money">(xxx)</span></td>
-                            </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="TicketsColumn">
-                        <div>
-                            <h2 class="light">
-                                <span class="tickets">&nbsp;</span>
-                                <span>Tickets</span>
-                                <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Similar to tickets won in an arcade - play the game, earn tickets, and get rewarded with fabulous prizes. Tickets are granted to citizens who help expand and improve Robloxia. The best way to get tickets is to attract a lot of visitors to a cool place that you create. You can also get the daily login bonus just by showing up!" />
-                            </h2>
-                            <table class="table" cellpadding="0" cellspacing="0" border="0" >
-                            <tr class="table-header">
-                                <th class="Categories first">Categories</th>
-                                <th class="Credit">Credit</th>
-                            </tr>
-                            <tr >
-                                <td class="Categories">Login Award</td>
-                                <td class="Credit LoginAward">&nbsp;</td>
-                            </tr>
-                            <tr >
-                                <td class="Categories">Place Traffic Award</td>
-                                <td class="Credit PlaceTraffic">&nbsp;</td>
-                            </tr>
-                            <tr >
-                                <td class="Categories">Sale of Goods</td>
-                                <td class="Credit T_SaleOfGoods">&nbsp;</td>
-                            </tr>
-                            
-
-                            <tr  >
-                                <td class="Categories">Pending Sales <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="As an anti fraud precaution, revenue from certain transactions, such as Game Pass sales, is held for a short period of time before being released to the seller." /></td>
-                                <td class="Credit T_PendingSales">&nbsp;</td>
-                            </tr> 
-                                
-                            
-                            <tr>
-                                <td class="Categories">Group Payouts</td>
-                                <td class="Credit T_GroupPayouts">&nbsp;</td>
-                            </tr>
-                            
-                            <tr class="total">
-                                <td colspan="3"><h2 class="light">TOTAL&nbsp;</h2><span class="tickets money">(xxx)</span></td>
-                            </tr>
-
-                            </table>
-                        </div>
-                    </div>
-                    <div style="clear:both;"></div>
-                </div>
-            </div>
-            
-            <div id="TradeCurrency_tab" class="TabContent ">
-                  
-
-<div id="TradeCurrencyContainer">
-    <div class="LeftColumn">
-        
-            
-        <div class="TradingDashboard">
-            <div class="menu-area divider-right">
-                <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_CurrencyTradePane">
-                        <a  class="btn-medium btn-primary TradeCurrencyModalBtn">Trade</a>
-                    </div>
-                
-                <div class="tab-item tab-item-selected" contentid="RobuxPositions">My <span class="robux">&nbsp;</span> Positions</div>
-                <div class="tab-item" contentid="TicketsPositions">My <span class="tickets">&nbsp;</span> Positions</div>
-                <div class="tab-item" contentid="RobuxTradeHistory"><span class="robux">&nbsp;</span> Trade History</div>
-                <div class="tab-item" contentid="TicketsTradeHistory"><span class="tickets">&nbsp;</span> Trade History</div>
-            </div>
-            <div class="content-area divider-right">
-                <div id="RobuxPositions" class="tab-content tab-content-selected">
-                    
-
-<div class="OpenOffers">
-    <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_OpenOffers_OpenOffersUpdatePanel">
-	
-            
-            
-                    <div class="NoResults">You do not have any open ROBUX trades.</div>
-                
-            <div class="FooterPager">
-                <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_OpenOffers_OpenOffersDataPager_Footer"><a disabled="disabled">First</a>&nbsp;<a disabled="disabled">Previous</a>&nbsp;<a disabled="disabled">Next</a>&nbsp;<a disabled="disabled">Last</a>&nbsp;</span>
-            </div>
-        
-</div>
-</div>
-                </div>
-                <div id="TicketsPositions" class="tab-content">
-                    
-
-<div class="OpenBids">
-    <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_OpenBids_OpenBidsUpdatePanel">
-	
-            
-            
-                    <div class="NoResults">You do not have any open Ticket trades.</div>
-                
-            <div class="FooterPager">
-                <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_OpenBids_OpenBidsDataPager_Footer"><a disabled="disabled">First</a>&nbsp;<a disabled="disabled">Previous</a>&nbsp;<a disabled="disabled">Next</a>&nbsp;<a disabled="disabled">Last</a>&nbsp;</span>
-            </div>
-        
-</div>
-</div>
-                </div>
-                <div id="RobuxTradeHistory" class="tab-content">
-                    
-
-<div class="TradeHistory">
-    <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_MyTradesOffers_MyTradesOffersUpdatePanel">
-	
-            
-            
-                    <table class="TradeHistoryContent table" cellpadding="0" cellspacing="0" border="0">
-                        <tr class="table-header">
-                            <th class="first trade">Trade</th>
-                            <th class="rate">Rate</th>
-                            <th class="date">Date</th>
-                        </tr>
-                        
-                    <tr class="TileGroup">
-                        
-                    <td class="trade">3 R$ for 56 Tx</td>
-                    <td class="rate">18.666</td>
-                    <td class="date">12/23/15</td>
-                
-                    </tr>
-                
-                    </table>
-                
-            <div class="FooterPager">
-                <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_MyTradesOffers_MyTradesOffersDataPager_Footer"><a disabled="disabled">First</a>&nbsp;<a disabled="disabled">Previous</a>&nbsp;<span>1</span>&nbsp;<a disabled="disabled">Next</a>&nbsp;<a disabled="disabled">Last</a>&nbsp;</span>
-            </div>
-        
-</div>
-</div>
-                </div>
-                <div id="TicketsTradeHistory" class="tab-content">
-                    
-
-<div class="TradeHistory">
-    <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_MyTradesBids_MyTradesBidsUpdatePanel">
-	
-            
-            
-                    <table class="TradeHistoryContent table" cellpadding="0" cellspacing="0" border="0">
-                        <tr class="table-header">
-                            <th class="first trade">Trade</th>
-                            <th class="rate">Rate</th>
-                            <th class="date">Date</th>
-                        </tr>
-                        
-                    <tr class="TileGroup">
-                        
-                    <td class="trade">180 Tx for 9 R$</td>
-                    <td class="rate">20.000</td>
-                    <td class="date">12/22/15</td>
-                
-                    </tr>
-                
-                    <tr class="TileGroup">
-                        
-                    <td class="trade">196 Tx for 10 R$</td>
-                    <td class="rate">19.600</td>
-                    <td class="date">10/3/15</td>
-                
-                    </tr>
-                
-                    </table>
-                
-            <div class="FooterPager">
-                <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_MyTradesBids_MyTradesBidsDataPager_Footer"><a disabled="disabled">First</a>&nbsp;<a disabled="disabled">Previous</a>&nbsp;<span>1</span>&nbsp;<a disabled="disabled">Next</a>&nbsp;<a disabled="disabled">Last</a>&nbsp;</span>
-            </div>
-        
-</div>
-</div>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-    <div class="RightColumn">
-        <div id="CurrencyQuotePane">
-            
-
-<div class="CurrencyQuote">
-    <div class="column">
-        <div class="form-label">Pair: </div><div>BUX/TIX</div>
-        <div class="form-label padding-top">Spread: </div><div>-1</div>
-    </div>
-    <div class="column">
-        <div class="form-label">Rate: </div><div>18.866/18.864</div>
-        <div class="form-label padding-top">High/Low: </div><div>740.00/0.0035</div>
-    </div>
-</div>
-            <div class="clear"></div>
-        </div>
-        <div id="CurrencyBidsPane">
-            
-
-<div class="CurrencyBids padding-top">
-    <span class="form-label">Available Tickets:</span>
-    
-            <div class="CurrencyBid">
-                7,339 @ 18.866:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                152,738 @ 18.861:1
-            </div>
-        
-            <div class="CurrencyBid">
-                1,886 @ 18.860:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                3,772 @ 18.860:1
-            </div>
-        
-            <div class="CurrencyBid">
-                7,128 @ 18.857:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                7,258 @ 18.851:1
-            </div>
-        
-            <div class="CurrencyBid">
-                87,157 @ 18.844:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                4,956 @ 18.844:1
-            </div>
-        
-            <div class="CurrencyBid">
-                716 @ 18.842:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                7,932 @ 18.840:1
-            </div>
-        
-            <div class="CurrencyBid">
-                339 @ 18.833:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                113 @ 18.833:1
-            </div>
-        
-            <div class="CurrencyBid">
-                113 @ 18.833:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                27,665 @ 18.832:1
-            </div>
-        
-            <div class="CurrencyBid">
-                395,760 @ 18.832:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                410,974 @ 18.828:1
-            </div>
-        
-            <div class="CurrencyBid">
-                10,600 @ 18.827:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                546 @ 18.827:1
-            </div>
-        
-            <div class="CurrencyBid">
-                5,290 @ 18.825:1
-            </div>
-        
-            <div class="AlternatingCurrencyBid">
-                371,937 @ 18.825:1
-            </div>
-        
-    
-</div>
-        </div>
-        <div id="CurrencyOffersPane">
-            
-
-<div class="CurrencyOffers padding-top">
-    <span class="form-label">Available Robux:</span>
-    
-            <div class="CurrencyOffer">
-                <span class="notranslate">6,181</span> @ 1:18.864
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">250,421</span> @ 1:18.874
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">9,086</span> @ 1:18.884
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">141</span> @ 1:18.893
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">95</span> @ 1:18.894
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">69</span> @ 1:18.898
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">10</span> @ 1:18.900
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">7,562</span> @ 1:18.989
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">1,394</span> @ 1:18.999
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">38,995</span> @ 1:18.999
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">20</span> @ 1:19.000
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">20</span> @ 1:19.000
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">20</span> @ 1:19.000
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">20</span> @ 1:19.000
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">20</span> @ 1:19.000
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">12</span> @ 1:19.000
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">11</span> @ 1:19.000
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">16</span> @ 1:19.000
-            </div>
-        
-            <div class="CurrencyOffer">
-                <span class="notranslate">3</span> @ 1:19.000
-            </div>
-        
-            <div class="AlternatingCurrencyOffer">
-                <span class="notranslate">2</span> @ 1:19.000
-            </div>
-        
-    
-</div>
-
-        </div>
-    </div>
-                    
-    <div id="TradeCurrencyModal" class="PurchaseModal text">
-        <div class="titleBar" style="text-align:center">Trade Currency</div>
-        <div class="PurchaseModalBody">
-            <div class="PurchaseModalMessage" style="height:auto;">
-                <div class="validation-summary-errors" style="display:none">
-                    Market Orders must be at least <span class="tickets">20</span>.
-                </div>
-                <div class="CurrencyTradeDetails" >
-                    <div class="CurrencyTradeDetail">
-                        <span class="form-label">Trade Type: </span>
-                        <span class="MarketOrderRadioButton"><input id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_MarketOrderRadioButton" type="radio" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$OrderType" value="MarketOrderRadioButton" checked="checked" /><label for="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_MarketOrderRadioButton">Market Order</label></span>
-                        <span class="info-tool-tip tooltip" 
-                            title="A market order is a buy or sell order to be executed immediately at current market prices. As long as there are willing sellers and buyers, a market order will be filled." >&nbsp;</span>
-                            
-                        <span class="LimitOrderRadioButton"><input id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_LimitOrderRadioButton" type="radio" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$OrderType" value="LimitOrderRadioButton" /><label for="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_LimitOrderRadioButton">Limit Order</label></span>
-                        <span class="info-tool-tip tooltip" 
-                            title="A limit order is an order to buy at no more (or sell at no less) than a specific price. This gives you some control over the price at which the trade is executed, but may prevent the order from being executed." >&nbsp;</span>
-                    </div>
-                    <div class="CurrencyTradeDetail">
-                        <span class="form-label">What I'll give:</span>
-                        <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$HaveAmountTextBoxRestyle" type="text" maxlength="9" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountTextBoxRestyle" tabindex="1" class="TradeBox HaveAmountTextBox text-box text-box-medium" autocomplete="off" />
-                        <select name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$HaveCurrencyDropDownList" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveCurrencyDropDownList" class="HaveCurrencyDropDownList form-select">
-	<option value="Tickets">Tickets</option>
-	<option value="Robux">Robux</option>
-
-</select>
-                        <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle" class="HaveAmountRequiredFieldValidator" style="color:Red;display:none;"></span>
-                        <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle" style="color:Red;visibility:hidden;"></span>&nbsp;
-                    </div>
-                    <div id="LimitOrder" class="CurrencyTradeDetail" style="display: none;">
-                        <span class="form-label">What I want:</span>
-                        <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$WantAmountTextBox" type="text" maxlength="9" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountTextBox" tabindex="2" class="TradeBox WantAmountTextBox text-box text-box-medium" autocomplete="off" />
-                            <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle" class="WantAmountRequiredFieldValidator" style="color:Red;display:none;">!</span>
-                        &nbsp;
-                        <select name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$WantCurrencyDropDownList" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantCurrencyDropDownList" class="WantCurrencyDropDownList form-select">
-	<option value="Robux">Robux</option>
-	<option value="Tickets">Tickets</option>
-
-</select>
-                    </div>
-                    <div id="SplitTrades" class="CurrencyTradeDetail" style="display: none;">
-                        <span class="form-label">Allow Split Trades: </span>
-                        <input id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_AllowSplitTradesCheckBox" type="checkbox" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$AllowSplitTradesCheckBox" checked="checked" tabindex="3" />
-                    </div>
-                    <div id="MarketOrder" class="CurrencyTradeDetail">
-                        <span class="form-label">What I'll get:</span>
-                        <span id="EstimatedTrade"></span><span class="estimated invisible">&nbsp;(estimated)</span>
-                    </div>
-                </div>
-                                        
-            </div>
-            <div class="PurchaseModalButtonContainer">
-                <a onclick="return Roblox.TradeCurrency.confirmTrade();" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_SubmitTradeButton" tabindex="4" class="btn-medium btn-primary translate" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$SubmitTradeButton&#39;,&#39;&#39;)">Trade</a>&nbsp;
-                <a class="btn-medium btn-negative" onclick="$.modal.close();">
-                    Cancel
+                    <img src="/images/ea51d75440715fc531fc3ad281c722f3.png" />
                 </a>
-            </div>
-            <div class="PurchaseModalFooter">
-                Your money will be held for safe-keeping until either the trade executes or you cancel your position.
-            </div>
-        </div>
-    </div>
+                <div class="clear"></div>
+                <div class="SetListDropDown">
+                    <div class="SetListDropDownList invisible">
+                        <div class="menu invisible">
+                            <div id="ctl00_cphRoblox_WearItemPanel">
+	
+                                <a id="ctl00_cphRoblox_btnWear" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$cphRoblox$btnWear&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Wear Item</a>
+                            
 </div>
-
-<div id="FundsPopupBux" class="modalPopup PurchaseModal trade-currency">
-    <div class="titleBar">
-        Insufficient Funds
-    </div>
-    <div class="PurchaseModalBody">
-        <div class="PurchaseModalMessage">
-            <div>
-                <p>
-                    You need
-                    
-                    more ROBUX to execute this trade.</p>
-            </div>
-        </div>
-        <div class="PurchaseModalButtonContainer">
-            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_CurrencyPurchaseButton" class="btn-medium btn-primary" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$ctl00$CurrencyPurchaseButton&#39;,&#39;&#39;)">Buy Robux</a>
-            <a class="btn-medium btn-negative" onclick="Roblox.TradeCurrency.FundsPopupBux.close()">Cancel</a>
-        </div>
-        <div class="PurchaseModalFooter"></div>
-    </div>
+                            
+                            
+                            
+                            <div id="ctl00_cphRoblox_ItemOwnershipPanel">
+	
+                                <a id="ctl00_cphRoblox_btnDelete" class="invisible" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$cphRoblox$btnDelete&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Delete from My Stuff</a>
+                            
 </div>
+                            
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h1 class="notranslate" data-se="item-name">
+                <?=$asset->name?>
+            </h1>
+            <h3>
+                ROBLOX <?=array_search($asset->prodcategory, $assetTypes)?>
                 
-<div id="FundsPopupTix" class="modalPopup PurchaseModal trade-currency">
-    <div class="titleBar">
-        Insufficient Funds
-    </div>
-    <div class="PurchaseModalBody">
-        <div class="PurchaseModalMessage">
-            <div>
-                <p>You need
-                    -66
-                    more Tickets to execute this trade.</p>
-            </div>
+            </h3>
         </div>
-        <div class="PurchaseModalButtonContainer">
-            <a class="btn-medium btn-negative" onclick="Roblox.TradeCurrency.FundsPopupBux.close()">Cancel</a>
-        </div>
-        <div class="PurchaseModalFooter"></div>
-    </div>
+        <div id="Item">
+            <div id="Details">
+                
+                        <div id="assetContainer">
+                            <div id="Thumbnail">
+                                <div id="AssetThumbnail" class="thumbnail-holder" data-reset-enabled-every-page  data-url="/thumbnail/asset?assetId=20418658&amp;thumbnailFormatId=254&amp;width=320&amp;height=320" style="width:320px; height:320px;">
+                                    <span class="thumbnail-span" ><img  class='' src='<?=$thumbs->get_asset_thumb($asset->id);?>' /></span>
+                                    <span class="enable-three-dee btn-control btn-control-small"></span>
+                                </div>
+                            </div>
+                            <span id="ThumbnailText"></span>
+                        </div>
+                    
+                <div id="Summary">
+                    <div class="SummaryDetails">
+                        <div id="Creator" class="Creator">
+                            <div class="Avatar">
+                                
+                                <a id="ctl00_cphRoblox_AvatarImage" class=" notranslate" class=" notranslate" title="ROBLOX" href="/users/1/profile" style="display:inline-block;height:70px;width:70px;cursor:pointer;"><img src="https://watrbx.xyz/images/user.png" height="70" width="70" border="0" alt="ROBLOX" class=" notranslate" /><img src="/images/icons/overlay_obcOnly.png" class="bcOverlay" align="left" style="position:relative;top:-19px;" /></a>
+                            </div>
+                        </div>
+                        <div class="item-detail">
+                            <span class="stat-label notranslate">Creator:</span>
+                            <a id="ctl00_cphRoblox_CreatorHyperLink" class="stat notranslate" href="/users/1/profile">ROBLOX</a>
+                            
+                            <div>
+                                <span class="stat-label">Created:</span>
+                                <span class="stat">
+                                    1/8/2010
+                                </span>
+                            </div>
+                            <div id="LastUpdate">
+                                <span class="stat-label">Updated:</span>
+                                <span class="stat">
+                                    5 years ago
+                                </span>
+                                </div>
+                                
+                                 
+                        </div>
+                        <div id="ctl00_cphRoblox_DescriptionPanel" class="DescriptionPanel notranslate">
+	
+                            <pre class="Description Full text"> <?=$asset->description?> </pre>
+                            <pre class="Description body text"><span class="description-content"><?=$asset->description?></span><span class="description-more-container"></span></pre>
+                        
 </div>
+                        <div class="ReportAbuse">
+                            <div id="ctl00_cphRoblox_AbuseReportButton1_AbuseReportPanel" class="ReportAbuse">
+	
+    <span class="AbuseIcon"><a id="ctl00_cphRoblox_AbuseReportButton1_ReportAbuseIconHyperLink" href="/abusereport/asset?id=20418658&amp;RedirectUrl=http%3a%2f%2fwww.roblox.com%2fitem.aspx%3fseoname%3dErr%26id%3d20418658"><img src="images/abuse.PNG?v=2" alt="Report Abuse" style="border-width:0px;" /></a></span>
+    <span class="AbuseButton"><a id="ctl00_cphRoblox_AbuseReportButton1_ReportAbuseTextHyperLink" href="/abusereport/asset?id=20418658&amp;RedirectUrl=http%3a%2f%2fwww.roblox.com%2fitem.aspx%3fseoname%3dErr%26id%3d20418658">Report Abuse</a></span>
 
+</div>
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        <div class="GearGenreContainer divider-top">
+                            <div id="GenresDiv">
+                                <div id="ctl00_cphRoblox_Genres">
+	
+                                    <div class="stat-label">
+                                        Genres:</div>
+                                    <div class="GenreInfo stat">
+                                        
+
+<div>
+    
+            <div id="ctl00_cphRoblox_GenresDisplayTest_AssetGenreRepeater_ctl00_AssetGenreRepeaterPanel" class="AssetGenreRepeater_Container">
+		
+                <div class="GamesInfoIcon All"></div>
+                <div><a href="/all-catalog">All</a></div>
+            
+	</div>  
+        
+    <div style="clear:both;"></div>
+</div>
+                                    </div>
+                                
+</div>
+                            </div>
+                            
+                            <div class="clear"></div>
+                        </div>
+                        <div class="PluginMessageContainer" style="display: none;">
+                            <p>
+                                <span class="status-confirm">A newer version is available.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="BuyPriceBoxContainer">
+                        
+                        <div class="BuyPriceBox">
+                            <div id="ctl00_cphRoblox_RobuxPurchasePanel">
+                                <div id="RobuxPurchase">
+                                    <div class="calloutParent">
+                                        Price: <span class="robux " data-se="item-priceinrobux">
+                                        <?=$asset->robux?>
+                                        </span>
+                                        
+                                    </div>
+                                    <div id="BuyWithRobux">
+                                        <div data-expected-currency="1" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton " data-se="item-buyforrobux" data-item-name="<?=$asset->name?>" data-item-id="<?=$asset->id?>" data-expected-price="<?=$asset->robux?>" data-product-id="<?=$asset->id?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="ROBLOX">
+                                             Buy with R$
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <?php
+                                if($asset->tix !== 0){ ?>
+                                    <div id="ctl00_cphRoblox_RobuxAndTicketsPurchasePanel" class="RobuxAndTicketsPurchasePanel">
+                            </div>
+                            <div id="ctl00_cphRoblox_TicketsPurchasePanel">
+                                <div id="TicketsPurchase">
+                                    <div class="calloutParent">
+                                        Price: 
+                                        <span class="tickets" data-se="item-priceintickets">
+                                            <?=$asset->tix?>
+                                        </span>
+                                        
+                                    </div>
+                                    <div id="BuyWithTickets">
+                                        <div data-expected-currency="2" data-asset-type="Shirt" class="btn-primary btn-medium PurchaseButton " data-se="item-buyfortickets" data-item-name="[RHS] Smart Shirt" data-item-id="<?=$asset->id?>" data-expected-price="<?=$asset->tix?>" data-product-id="<?=$asset->id?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="Wonuf">
+                                             Buy with Tx
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                 <? } ?>
+                            
+                            
+                            
+                            
+                            <div class="clear">
+                            </div>
+                            <div class="footnote">
+	                            
+                                
+                                <div id="ctl00_cphRoblox_Sold">
+                                    (<span data-se="item-numbersold"><?=0?></span> 
+                                    Sold)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <span>
+                                <span class="FavoriteStar" data-se="item-numberfavorited">
+                                    0
+                                </span>
+                                <span id="ctl00_cphRoblox_AddRemoveFavoriteLinkContainer">
+                                    · <a id="ctl00_cphRoblox_AddRemoveFavoriteLink" title="Add to Favorites" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$cphRoblox$AddRemoveFavoriteLink&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Favorite</a>
+                                </span>
+                        </span>
+                        
+                    </div>
+                    <div class="clear"></div>
+                    <div class="SocialMediaContainer">
+                        
+                            
+                    </div>
+                </div>
+                
+                
+                <div class="clear"></div>
+            </div>
+            
+            <div class="PrivateSales divider-top invisible" >
+                <h2>Private Sales</h2>
+                <div id="UserSalesTab" >
+                    
+                    
+                            <div class="empty">
+                                Sorry, no one is privately selling this item at the moment.
+                            </div>
+                        
+                    <div class="pgItemsForResale">
+                        <span id="ctl00_cphRoblox_pgItemsForResale"><a disabled="disabled">First</a>&nbsp;<a disabled="disabled">Previous</a>&nbsp;<a disabled="disabled">Next</a>&nbsp;<a disabled="disabled">Last</a>&nbsp;</span>
+                    </div>
+                </div>
+                
+                
+                <div class="clear"></div>
+            </div>
+            <div id="Tabs">
+                <ul id="TabHeader" class="WhiteSquareTabsContainer">
+                      
+                            <li id="RecommendationsTabHeader" contentid="RecommendationsTab" class="SquareTabGray ItemTabs selected">
+                                                <span><a id="RecommendationsLink" href="#RecommendationsTab">
+                                                    Recommendations</a></span></li>
+                      
+                      <li id="CommentaryTabHeader" contentid="CommentaryTab" class="SquareTabGray ItemTabs ">
+                                                <span><a id="CommentaryLink" href="#CommentaryTab">
+                                                    Commentary</a></span></li>
+                </ul>
+                <div class="StandardPanelContainer">
+                    <div id="RecommendationsTab" class="StandardPanelWhite TabContent selected">
+                        
+
+    <div class="AssetRecommenderContainer">
+    <table id="ctl00_cphRoblox_AssetRec_dlAssets" cellspacing="0" align="Center" border="0" style="height:175px;width:800px;border-collapse:collapse;">
+	<tr>
+		<td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-0">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl00_AssetThumbnailHyperLink" class=" notranslate" title="¬_¬" class=" notranslate" href="/unnamed-item?id=13038375" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://web.archive.org/web/20160910081545if_/https://t1.rbxcdn.com/326082be65ef7104c8e4bf8d48811888" height="110" width="110" border="0" alt="¬_¬" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl00_AssetNameHyperLinkPortrait" href="/unnamed-item?id=13038375">&#172;_&#172;</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl00_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-1">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_AssetThumbnailHyperLink" class=" notranslate" title="Uh Oh" class=" notranslate" href="/Uh-Oh-item?id=7074944" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t2.rbxcdn.com/660b2bc80ced47bd2309d35908d6b743" height="110" width="110" border="0" alt="Uh Oh" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_AssetNameHyperLinkPortrait" href="/Uh-Oh-item?id=7074944">Uh Oh</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-2">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl02_AssetThumbnailHyperLink" class=" notranslate" title="Awkward...." class=" notranslate" href="/Awkward-item?id=23932048" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t7.rbxcdn.com/ea66e1a193b92c317b31b7e050d7788d" height="110" width="110" border="0" alt="Awkward...." class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl02_AssetNameHyperLinkPortrait" href="/Awkward-item?id=23932048">Awkward....</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl02_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-3">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl03_AssetThumbnailHyperLink" class=" notranslate" title="Silence" class=" notranslate" href="/Silence-item?id=10860397" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t6.rbxcdn.com/7e2ce7acb952e67ed0ccc56b990a0fec" height="110" width="110" border="0" alt="Silence" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl03_AssetNameHyperLinkPortrait" href="/Silence-item?id=10860397">Silence</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl03_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-4">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl04_AssetThumbnailHyperLink" class=" notranslate" title="Tango" class=" notranslate" href="/Tango-item?id=16101765" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t2.rbxcdn.com/30adb85f64bb829a87a8bb0cd29d9151" height="110" width="110" border="0" alt="Tango" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl04_AssetNameHyperLinkPortrait" href="/Tango-item?id=16101765">Tango</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl04_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td>
+	</tr><tr>
+		<td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-5">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl05_AssetThumbnailHyperLink" class=" notranslate" title="I Hate Noobs" class=" notranslate" href="/I-Hate-Noobs-item?id=14030577" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t6.rbxcdn.com/8a7be72a515d6ee5eae495dd23495ed3" height="110" width="110" border="0" alt="I Hate Noobs" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl05_AssetNameHyperLinkPortrait" href="/I-Hate-Noobs-item?id=14030577">I Hate Noobs</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl05_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-6">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl06_AssetThumbnailHyperLink" class=" notranslate" title="Know-It-All Grin" class=" notranslate" href="/Know-It-All-Grin-item?id=26424808" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t6.rbxcdn.com/6a2ac71eb95ecfd31805646e7a4661f4" height="110" width="110" border="0" alt="Know-It-All Grin" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl06_AssetNameHyperLinkPortrait" href="/Know-It-All-Grin-item?id=26424808">Know-It-All Grin</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl06_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-7">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl07_AssetThumbnailHyperLink" class=" notranslate" title="Heeeeeey..." class=" notranslate" href="/Heeeeeey-item?id=21635565" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t5.rbxcdn.com/fa80912767f6eb4c931dc793dbeee223" height="110" width="110" border="0" alt="Heeeeeey..." class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl07_AssetNameHyperLinkPortrait" href="/Heeeeeey-item?id=21635565">Heeeeeey...</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl07_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-8">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl08_AssetThumbnailHyperLink" class=" notranslate" title=":3" class=" notranslate" href="/3-item?id=15432080" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t5.rbxcdn.com/f8c9fbb06fbeb1fe723ab31c2f970acc" height="110" width="110" border="0" alt=":3" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl08_AssetNameHyperLinkPortrait" href="/3-item?id=15432080">:3</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl08_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td><td>
+            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-9">
+                <div class="AssetThumbnail">
+                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl09_AssetThumbnailHyperLink" class=" notranslate" title=":P" class=" notranslate" href="/P-item?id=14861743" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t2.rbxcdn.com/879dca5951cdd65572523d009136fce8" height="110" width="110" border="0" alt=":P" class=" notranslate" /></a>
+                </div>
+                <div class="AssetDetails">
+                    <div class="AssetName noTranslate">
+                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl09_AssetNameHyperLinkPortrait" href="/P-item?id=14861743">:P</a>
+                    </div>
+                    <div class="AssetCreator">
+                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl09_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
+                    </div>
+                </div>
+            </div>
+        </td>
+	</tr>
+</table>
+    
+</div>
 
 <script type="text/javascript">
-$(function() {
-    if (typeof Roblox === "undefined") {
-	    Roblox = {};
-    }
-    if (typeof Roblox.TradeCurrency === "undefined") {
-	    Roblox.TradeCurrency = {};
-    }
-    Roblox.TradeCurrency.Resources = {
-        unableToEstimate: 'Unable to estimate at this time.'
-    };
-    
-});
-
+    $(function () {
+        var itemNames = $('.PortraitDiv .AssetDetails .AssetName a');
+        $.each(itemNames, function (index) {
+            var elem = $(itemNames[index]);
+            elem.html(fitStringToWidthSafe(elem.html(), 200));
+        });
+        var userNames = $('.PortraitDiv .AssetDetails .AssetCreator .Detail a');
+        $.each(userNames, function (index) {
+            var elem = $(userNames[index]);
+            elem.html(fitStringToWidthSafe(elem.html(), 70));
+        });
+    });
 </script>
 
-            </div>
-            
-                <div id="TradeItems_tab" class="TabContent uninitialized">
-                    <div class="status-confirm" style="display:none;"></div>   
-                    <div class="SortsAndFilters">
-                    <div class="TradeType">
-                        <span class="form-label">Trade Type:</span>
-                        <select class="form-select" id="TradeItems_TradeType">
-                            <option value="inbound">Inbound</option>
-                            <option value="outbound">Outbound</option>
-                            <option value="completed">Completed</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-						<a href="" target="_blank" id="trade-help-link" class="text-link">How do I send a trade?</a>
-                        <span class="tool-tip" style="display:none;" data-js-trade-write-disabled ><img src="/images/UI/img-tail-left.png" class="left"/>Trading is currently disabled. Trades can be viewed, but they may not be changed. Please check back later.</span>
                     </div>
-                    <div style="clear:both;float:none;"></div>
-                </div>
-                <div class="TradeItemsContainer">
-                    <table class="table" cellpadding="0" cellspacing="0" border="0">
-                        <tr class="table-header">
-                            <th class="Date first">Date</th>
-                            <th class="Expires">Expires</th>
-                            <th class="TradePartner">Trade Partner</th>
-                            <th class="Status">Status</th>
-                            <th class="Action">Action</th>
-                        </tr>
-                        <tr class="datarow" colspan="4">
-                            <td class="loading"></td>
-                        </tr>
-                    </table>
-                </div>
-                    <table class="template table">
-                        <tr class="datarow">
-                            <td class="Date" data-se="trade-date"></td>
-                            <td class="Expires" data-se="trade-expires"></td>
-                            <td class="TradePartner" data-se="trade-tradepartner"></td>
-                            <td class="Status" data-se="trade-status"></td>
-                            <td class="Action" data-se="trade-Action"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div TradeUpdater></div>
-            
-                <div id="Promotion_tab" class="TabContent uninitialized">
-                    
-
-
-<div class="info">
-    When you share a promotional link to any ROBLOX page and new players come to ROBLOX from your link, you earn 5% of every purchase they make. You can use the Share button on any place page to generate a link that includes your promoter code.<br /><br />
-    You can also create promotional links with this link generator:
-</div>
-<div>
-    <div class="form-label">ROBLOX url:</div>
-    <input type="text" id="LinkGeneratorInput" data-rbx-id="65367932" />
-</div>
-<div>
-    <div class="form-label">Promotion link:</div>
-    <div id="LinkGeneratorOutput">Please link to a page on www.roblox.com!</div>
-</div>
-<ul class="nav nav-pills">
-    <li class="active" data-rbx-time="hourly"><a>Hourly</a></li>
-    <li data-rbx-time="daily"><a>Daily</a></li>
-    <li data-rbx-time="monthly"><a>Monthly</a></li>
-</ul>
-<div id="PromotionAcquisitionsContainer">
-    <div class="separator-horizontal"></div>
-    <h2>
-        New Visitors
-        <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Number of people who clicked on your links who have never been on ROBLOX before." />
-    </h2>
-    <div class="separator-horizontal"></div>
-    
-    <div data-rbx-organic-acquisition-type="0" data-rbx-time="hourly" data-rbx-series-names='["Visitors"]' data-rbx-series-units='["Visitors"]'>
-        <div id="new-visitors-hourly" class="stats-chart loading"></div>
-        <div id="new-visitors-hourly-legend" class="stats-legend"></div>
-    </div>
-
-    <div style="display:none" data-rbx-organic-acquisition-type="0" data-rbx-time="daily" data-rbx-series-names='["Visitors"]' data-rbx-series-units='["Visitors"]'>
-        <div id="new-visitors-daily" class="stats-chart loading"></div>
-        <div id="new-visitors-daily-legend" class="stats-legend"></div>
-    </div>
-
-    <div style="display:none" data-rbx-organic-acquisition-type="0" data-rbx-time="monthly" data-rbx-series-names='["Visitors"]' data-rbx-series-units='["Visitors"]'>
-        <div id="new-visitors-monthly" class="stats-chart loading"></div>
-        <div id="new-visitors-monthly-legend" class="stats-legend"></div>
-    </div>
-</div>
-<div id="PromotionConversionsContainer">
-    <div class="separator-horizontal"></div>
-    <h2>
-        Signups
-        <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Number of new visitors from your links who signed up." />
-    </h2>
-    <div class="separator-horizontal"></div>
-
-    <div data-rbx-organic-acquisition-type="1" data-rbx-time="hourly" data-rbx-series-names='["Signups"]' data-rbx-series-units='["Signups"]'>
-        <div id="signups-hourly" class="stats-chart loading"></div>
-        <div id="signups-hourly-legend" class="stats-legend"></div>
-    </div>
-
-    <div style="display:none" data-rbx-organic-acquisition-type="1" data-rbx-time="daily" data-rbx-series-names='["Signups"]' data-rbx-series-units='["Signups"]'>
-        <div id="signups-daily" class="stats-chart loading"></div>
-        <div id="signups-daily-legend" class="stats-legend"></div>
-    </div>
-
-    <div style="display:none" data-rbx-organic-acquisition-type="1" data-rbx-time="monthly" data-rbx-series-names='["Signups"]' data-rbx-series-units='["Signups"]'>
-        <div id="signups-monthly" class="stats-chart loading"></div>
-        <div id="signups-monthly-legend" class="stats-legend"></div>
-    </div>
-</div>
-<div id="PromotionRevenueContainer">
-    <div class="separator-horizontal"></div>
-    <h2>
-        Promotional Revenue
-        <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="ROBUX earned through your promotional links." />
-    </h2>
-    <div class="separator-horizontal"></div>
-
-    <div data-rbx-organic-acquisition-type="3" data-rbx-time="hourly" data-rbx-series-names='["Revenue"]' data-rbx-series-units='["R$"]'>
-        <div id="revenue-hourly" class="stats-chart loading"></div>
-        <div id="revenue-hourly-legend" class="stats-legend"></div>
-    </div>
-
-    <div style="display:none" data-rbx-organic-acquisition-type="3" data-rbx-time="daily" data-rbx-series-names='["Revenue"]' data-rbx-series-units='["R$"]'>
-        <div id="revenue-daily" class="stats-chart loading"></div>
-        <div id="revenue-daily-legend" class="stats-legend"></div>
-    </div>
-
-    <div style="display:none" data-rbx-organic-acquisition-type="3" data-rbx-time="monthly" data-rbx-series-names='["Revenue"]' data-rbx-series-units='["R$"]'>
-        <div id="revenue-monthly" class="stats-chart loading"></div>
-        <div id="revenue-monthly-legend" class="stats-legend"></div>
-    </div>
-</div>
-<div class="separator-horizontal"></div>
-
-<table class="table" id="promotion-data-table">
-    <tr class="table-header">
-        <th class="first">Time</th>
-        <th class="acquisitions" data-rbx-organic-acquisition-type="0">New Visitors</th>
-        <th class="conversions" data-rbx-organic-acquisition-type="1">Signups</th>
-        <th class="revenue" data-rbx-organic-acquisition-type="3">Promotional Revenue (R$)</th>
-    </tr>
-</table>
-                </div>
-            
-            <div id="AdContainer" class="Ads_WideSkyscraper">
-                
-
-<div style="width: 160px; " class="abp adp-gpt-container">
-    <span id='3434323032363537' class="GPTAd skyscraper" data-js-adtype="gptAd">
-    </span>
-        <div class="ad-annotations " style="width: 160px">
-            <span class="ad-identification">
-                Advertisement
-            </span>
-                <a class="BadAdButton" href="http://www.roblox.com/Ads/ReportAd.aspx" title="click to report an offensive ad">Report</a>
-        </div>
-    <script type="text/javascript">
-        googletag.cmd.push(function () {
-            if (typeof Roblox.AdsHelper !== "undefined" && typeof Roblox.AdsHelper.toggleAdsSlot !== "undefined") {
-                Roblox.AdsHelper.toggleAdsSlot("", "3434323032363537");
-            } else {
-                googletag.display("3434323032363537");
-            }
-        });
-    </script>
-</div>
-
-
-            </div>
-            <div style="clear: both;"></div>
-        </div>
-    </div>
-
-</div>
-<div id="TradeRequest" class="modalPopup unifiedModal smallModal TraderSystemRobux" UserID="65367932" style="display:none;">
+                    <div id="CommentaryTab" class="StandardPanelWhite TabContent " >
+                        <div id="ctl00_cphRoblox_CommentsPane_CommentsUpdatePanel">
 	
-    <div style="height:38px;padding-top:2px;">
-        <span>Trade Request</span>
+        <div id="AjaxCommentsPaneData"></div>
+
+        <div class="AjaxCommentsContainer">
+            <div id="ctl00_cphRoblox_CommentsPane_Div1" class="PostACommentContainer divider-bottom">
+                <div class="Commenter">
+                    <div class="Avatar">
+                        <a id="ctl00_cphRoblox_CommentsPane_AvatarImage" class=" notranslate" title="ConnerMurphy07" class=" notranslate" href="/User.aspx?ID=62402235" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="https://t6.rbxcdn.com/dd7d4b07fbbb207b723b0daaf817a72d" height="100" width="100" border="0" alt="ConnerMurphy07" class=" notranslate" /></a>
+                    </div>
+                </div>
+                <div class="centered-error-container">
+                    <span id="commentPaneErrorMessage" class="status-error" style="display:none;"></span>
+                </div>
+                <div id="ctl00_cphRoblox_CommentsPane_PostAComment" class="PostAComment">
+                
+                    <div class="CommentText">
+                        <textarea name="ctl00$cphRoblox$CommentsPane$NewCommentTextBox" id="ctl00_cphRoblox_CommentsPane_NewCommentTextBox" class="MultilineTextBox hint-text text" rows="5" style="margin-bottom: 0px">Write a comment!</textarea>
+                        
+                        <div class="Buttons">
+                            <div id="ctl00_cphRoblox_CommentsPane_BlueCommentBtn" class="BlueCommentBtn btn-neutral btn-small roblox-comment-button">Comment</div>
+                            <p id="CharsRemaining" class="hint-text"></p>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+            <div class="Comments" data-asset-id="20418658"></div>
+            
+            <div class="CommentsItemTemplate">
+                    <div class="Comment text">
+                        <div class="Commenter">
+                            <div class="Avatar" data-user-id="%CommentAuthorID" data-image-size="small">
+                            </div>
+                        </div>
+                        <div class="PostContainer">
+                            <div class="Post">
+                                <div class="Audit">
+                                    <span class="ByLine footnote"><div class="UserOwnsAsset" title="User has this item" alt="User has this item" style="display:none;"></div>Posted %CommentCreated ago by <a href="/user.aspx?id=%CommentAuthorID">%CommentAuthor</a></span>
+                                    <div class="ReportAbuse">
+                                        <span class="AbuseButton">
+                                            <a href="/abusereport/comment?id=%CommentID&amp;redirectUrl=%PageURL">Report Abuse</a>
+                                        </span>
+                                    </div>
+                                    <div style="clear:both;"></div>
+                                </div>
+                                <div class="Content">
+                                    %CommentContent
+                                </div>
+                                <div id="Actions" class="Actions" >
+                                    <a data-comment-id="%CommentID" class="DeleteCommentButton">Delete Comment</a>
+                                </div>
+                            </div>
+                            <div class="PostBottom"></div>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
+        </div>
+
+</div>
+
+<script type="text/javascript">
+    Roblox.CommentsPane.Resources = {
+        //<sl:translate>
+        defaultMessage:         'Write a comment!',
+        noCommentsFound:		'No comments found.',
+        moreComments:			'More comments',
+        sorrySomethingWentWrong:'Sorry, something went wrong.',
+        charactersRemaining:	' characters remaining',
+        emailVerifiedABTitle:	'Verify Your Email',
+        emailVerifiedABMessage: "You must verify your email before you can comment. You can verify your email on the <a href='/my/account?confirmemail=1'>Account</a> page.",
+        linksNotAllowedTitle:   'Links Not Allowed',
+        linksNotAllowedMessage: 'Comments should be about the item or place on which you are commenting. Links are not permitted.',
+        accept:					'Verify',
+        decline:				'Cancel',
+        tooManyCharacters:		'Too many characters!',
+        tooManyNewlines:		'Too many newlines!'
+        //</sl:translate>
+       };
+
+       Roblox.CommentsPane.Limits =
+       [	{ limit: '10'
+            , character: "\n"
+            , message: Roblox.CommentsPane.Resources.tooManyNewlines
+            }
+       ,	{ limit: '200'
+            , character: undefined
+            , message: Roblox.CommentsPane.Resources.tooManyCharacters
+            }
+       ];
+
+       Roblox.CommentsPane.FilterIsEnabled = true;
+       Roblox.CommentsPane.FilterRegex = "(([a-zA-Z0-9-]+\\.[a-zA-Z]{2,4}[:\\#/\?]+)|([a-zA-Z0-9]\\.[a-zA-Z0-9-]+\\.[a-zA-Z]{2,4}))";
+       Roblox.CommentsPane.FilterCleanExistingComments = false;
+
+    Roblox.CommentsPane.initialize();
+</script>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div id="FreeGames">
+                </div>
+        </div>
+        <div class="Ads_WideSkyscraper">
+            
+
+    <iframe allowtransparency="true"
+            frameborder="0"
+            height="612"
+            scrolling="no"
+            src="/userads/2"
+            width="160"
+            data-js-adtype="iframead"></iframe>
+
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    
+    
+    
+
+<div id="ItemPurchaseAjaxData"
+        data-authenticateduser-isnull="False"
+        data-user-balance-robux="<?=$userinfo->robux?>"
+        data-user-balance-tickets="<?=$userinfo->tix?>"
+        data-user-bc="0"
+        data-continueshopping-url="/catalog"
+        data-imageurl="<?=$thumbs->get_asset_thumb($asset->id);?>" 
+        data-alerturl="/images/cbb24e0c0f1fb97381a065bd1e056fcb.png"
+        data-builderscluburl="/images/ae345c0d59b00329758518edc104d573.png"
+        data-has-currency-service-error="False"
+        data-currency-service-error-message=""></div>
+
+    <div id="ProcessingView" style="display:none">
+        <div class="ProcessingModalBody">
+            <p style="margin:0px"><img src='/images/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Processing..." /></p>
+            <p style="margin:7px 0px">Processing Transaction</p>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        //<sl:translate>
+        Roblox.ItemPurchase.strings = {
+            insufficientFundsTitle : "Insufficient Funds",
+            insufficientFundsText : "You need {0} more to purchase this item.",
+            cancelText : "Cancel",
+            okText : "OK",
+            buyText : "Buy",
+            buyTextLower : "buy",
+            tradeCurrencyText : "Trade Currency",
+            priceChangeTitle : "Item Price Has Changed",
+            priceChangeText : "While you were shopping, the price of this item changed from {0} to {1}.",
+            buyNowText : "Buy Now",
+            buyAccessText: "Buy Access",
+            buildersClubOnlyTitle : "{0} Only",
+            buildersClubOnlyText : "You need {0} to buy this item!",
+            buyItemTitle : "Buy Item",
+            buyItemText : "Would you like to {0} {5}the {1} {2} from {3} for {4}?",
+            balanceText : "Your balance after this transaction will be {0}",
+            freeText : "Free",
+            purchaseCompleteTitle : "Purchase Complete!",
+            purchaseCompleteText : "You have successfully {0} {5}the {1} {2} from {3} for {4}.",
+            continueShoppingText : "Continue Shopping",
+            customizeCharacterText : "Customize Character",
+            orText : "or",
+            rentText : "rent",
+            accessText: "access to "
+        }
+        //</sl:translate>
+    </script>
+
+
+    
+
+    
+
+    <div id="ctl00_cphRoblox_CreateSetPanelDiv" class="createSetPanelPopup">
+	
+        
+
+<div>
+    <div id="CreateSetPopupContainerDiv" class="SetsPagePopupContainer PurchaseModal">
+        <div id="simplemodal-close" class="simplemodal-close">
+            <a></a>
+        </div>
+        <div class="titleBar" style="text-align: center">
+            Create Set
+        </div>
+        <div id="create-set-dialog" class="PurchaseModalBody">
+            <div class="PurchaseModalMessage">
+                <div id="ctl00_cphRoblox_CreateSetPanel1_CreateSetInnerDIV">
+                    <div>
+                        <p>
+                            <span class="form-label">Name:  </span>
+                            <span id="NameDisplay"></span>
+                        </p>
+                        <div id="ctl00_cphRoblox_CreateSetPanel1_NameDiv">
+                            <input name="ctl00$cphRoblox$CreateSetPanel1$Name" type="text" maxlength="100" id="ctl00_cphRoblox_CreateSetPanel1_Name" onkeydown="enableButton();" onkeyup="ismaxlength(this); updateRegularNameDisplay(this);" style="width:410px;" />
+                        </div>
+                        
+                        
+                        
+                        
+                        <span id="ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity" style="color:Red;display:none;">This set name contains some improper words.</span>
+                        <p style="margin-bottom: 0px" class="form-label">Description:</p>
+                        <div style="position: relative">
+                            <textarea name="ctl00$cphRoblox$CreateSetPanel1$Description" rows="2" cols="20" id="ctl00_cphRoblox_CreateSetPanel1_Description" onkeyup="return ismaxlength(this);" style="width: 410px;height: 100px;">
+</textarea>
+                        </div>
+                        <p style="width: 40px; margin-bottom: 0px" class="form-label">Image:</p>
+                        <input type="file" name="ctl00$cphRoblox$CreateSetPanel1$Uploader" id="ctl00_cphRoblox_CreateSetPanel1_Uploader" onchange="fileUploadIsReady = true; enableButton();" style="width:350px;" />
+                        <div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="PurchaseModalButtonContainer">
+                <a onclick="return enableButton();" id="ctl00_cphRoblox_CreateSetPanel1_CreateSet" class="btn-medium btn-neutral translate" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$cphRoblox$CreateSetPanel1$CreateSet&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Create Set</a>
+            </div>
+            <div class="PurchaseModalFooter footnote"></div>
+        </div>
+
+        <script type="text/javascript" language="javascript">
+            var userName = 'ConnerMurphy07';
+            var maxAdjectives = '2';
+            var maxCategories = '2';
+            var superSafeAdjectiveListClientId = 'ctl00_cphRoblox_CreateSetPanel1_SuperSafeAdjectiveChoices';
+            var superSafeCategoryListClientId = 'ctl00_cphRoblox_CreateSetPanel1_SuperSafeCategoryChoices';
+            var superSafeNameListClientId = 'ctl00_cphRoblox_CreateSetPanel1_SuperSafeNameChoice';
+            var fileUploadIsReady = false;
+            var nameClientID = 'ctl00_cphRoblox_CreateSetPanel1_Name';
+            var createSetClientID = 'ctl00_cphRoblox_CreateSetPanel1_CreateSet';
+            var errorOnPage = false;
+            var prevSelected = [];
+            
+            if (typeof Roblox === "undefined") {
+                Roblox = {};
+            }
+            if (typeof Roblox.CreateSetPanel === "undefined") {
+                Roblox.CreateSetPanel = {};
+            }
+            Roblox.CreateSetPanel.Resources = {
+                //<sl:translate>
+                youMaySelect: "You may select a maximum of ",
+                elementsInList: " elements from this list!"
+                //</sl:translate>
+            };
+            if(typeof Roblox.FileUploadUnsupported === "undefined"){
+                Roblox.FileUploadUnsupported = {};
+            }
+            Roblox.FileUploadUnsupported.Resources = {
+                //<sl:translate>
+                notSupported: " This device does not support file upload."
+                //</sl:translate>
+            };
+            $(function () {
+                if (errorOnPage == "True") {
+                     $('#CreateSetPopupContainerDiv').modal({ appendTo: 'form', escClose: true, opacity: 80, overlayCss: { backgroundColor: '#000' }, position: [120, 0] });
+                }
+            });
+        </script>
+    </div>
+</div>
+    
+</div>
+    
+     
+
+<div class="GenericModal modalPopup unifiedModal smallModal" style="display:none;">
+    <div class="Title"></div>
+    <div class="GenericModalBody">
+        <div>
+            <div class="ImageContainer roblox-item-image"  data-image-size="small" data-no-overlays data-no-click>
+                <img class="GenericModalImage" alt="generic image" />
+            </div>
+            <div class="Message"></div>  
+            <div style="clear:both"></div>
+        </div>
+        <div class="GenericModalButtonContainer">
+            <a class="ImageButton btn-neutral btn-large roblox-ok">OK</a> 
+        </div>  
+    </div>
+</div>
+
+    
+
+<div id="BCOnlyModal" class="modalPopup unifiedModal smallModal" style="display:none;">
+ 	<div style="margin:4px 0px;">
+        <span>Builders Club Only</span>
     </div>
     <div class="simplemodal-close">
-        <a class="ImageButton closeBtnCircle_20h" data-se="trade-close"></a>
+        <a class="ImageButton closeBtnCircle_20h" style="margin-left:400px;"></a>
     </div>
-    <div class="unifiedModalContent" style="min-height:385px;width:584px; padding:5px;margin: 0 auto;" >
-        <div class="GenericModalErrorMessage status-error" style="display:none;"></div>
-        <div class="LeftContentContainer" >
-            <div class="roblox-avatar-image" data-user-id="" data-image-size="medium" data-se="trade-partner-avatar"></div>
-            <p class="TradeRequestText"></p>
-            <p class="TradeExpiration">Expires <span id="TradeRequestExpiration" data-se="trade-expire"></span></p>
+    <div class="unifiedModalContent" style="padding-top:5px; margin-bottom: 3px; margin-left: 3px; margin-right: 3px">
+        <div class="ImageContainer" >
+            <img class="GenericModalImage BCModalImage" alt="Builder's Club" src="https://images.rbxcdn.com/ae345c0d59b00329758518edc104d573.png" />
+            <div id="BCMessageDiv" class="BCMessage Message">
+                You need  to buy this item!
+            </div>
         </div>
-        <div style="padding-left: 5px; float:left;display:inline;">
-            <div class="OfferContainer" >
-                <div class="OfferList"  list-id="OfferList0">
-		            <div class="OfferHeaderWrapper">
-			            <h3 class="OfferHeader">ITEMS YOU WILL GIVE</h3>
-                        <div class="OfferValueContainer">
-                            Value: <img class="RBXImg" width="18" height="12" src="/images/Icons/img-robux.png" alt="RBX" /><span class="OfferValue" data-se="trade-give-value">0</span>
-		                </div>
-		            </div>                   
-                    <div class="OfferItems"></div>
-                </div>
-                    <img src="/images/trade_divider2.jpg" style="margin-left:-5px;" alt="" /> 
-                <div class="OfferList"  list-id="OfferList1">
-		            <div class="OfferHeaderWrapper">
-			            <h3 class="OfferHeader">ITEMS YOU WILL RECEIVE</h3>
-                        <div class="OfferValueContainer">
-                            Value: <img class="RBXImg" width="18" height="12" src="/images/Icons/img-robux.png" alt="RBX" /><span class="OfferValue" data-se="trade-receive-value">0</span>
-		                </div>
-		            </div>
-                    <div class="OfferItems"></div>  
-                    <div class="FeeNoteContainer"><div class="FeeNote" data-js="feenote" style="display:none;"><span class="Asterisk" >*</span> A  30% fee was taken from the amount.</div></div>
-		        </div> 
-	        </div> 
-            <div style="clear:both;"></div>
-        </div>  
         <div style="clear:both;"></div>
-        <div class="ActionButtonContainer"  style="height:50px;display:none">
-            <div id="ButtonAcceptTrade" class="btn-large btn-neutral" data-se="trade-accept">Accept</div>
-            <div id="ButtonCounterTrade" class="btn-large btn-neutral" data-se="trade-counter">Counter</div>
-            <div id="ButtonDeclineTrade" class="btn-large btn-negative" data-se="trade-decline">Decline</div>
-            <div style="clear:both;"></div>
-        </div>
-        <div class="ReviewButtonContainer" style="height:50px;display:none">
-            <div roblox-ok class="btn-large btn-neutral" data-se="trade-ok">OK</div>
-            <div id="ButtonCancelTrade" class="btn-large btn-negative" data-se="trade-cancel">Cancel</div>
-            <div style="clear:both;"></div>
-        </div>
-        <div class="ViewButtonContainer" style="height:50px;display:none">
-            <div roblox-ok class="btn-large btn-neutral" data-se="trade-ok">OK</div>
+        <div style="clear:both;"></div>
+        <div class="GenericModalButtonContainer" style="padding-bottom: 13px">
+            <div style="text-align:center">
+                <a id="BClink" href="/premium/membership?ctx=bc-only-item" class="btn-primary btn-large">Upgrade Now</a>
+            </div>
             <div style="clear:both;"></div>
         </div>
         <div style="clear:both;"></div>
     </div>
-    <script type="text/javascript">
-        $(function () {
-         Roblox.Trade.TradeRequestModal.initialize(4, true, 0.3);
+</div>
+
+<script type="text/javascript">
+    function showBCOnlyModal(modalId) {
+        var modalProperties = { overlayClose: true, escClose: true, opacity: 80, overlayCss: { backgroundColor: "#000" } };
+        if (typeof modalId === "undefined")
+            $("#BCOnlyModal").modal(modalProperties);
+        else
+            $("#" + modalId).modal(modalProperties);
+    }
+    $(document).ready(function () {
+        $('#NULL').click(function () {
+            showBCOnlyModal("BCOnlyModal");
+            return false;
         });
+    });
+</script>
+ 
+
+<div class="GenericModal modalPopup unifiedModal smallModal" style="display:none;">
+    <div class="Title"></div>
+    <div class="GenericModalBody">
+        <div>
+            <div class="ImageContainer roblox-item-image"  data-image-size="small" data-no-overlays data-no-click>
+                <img class="GenericModalImage" alt="generic image" />
+            </div>
+            <div class="Message"></div>  
+            <div style="clear:both"></div>
+        </div>
+        <div class="GenericModalButtonContainer">
+            <a class="ImageButton btn-neutral btn-large roblox-ok">OK</a> 
+        </div>  
+    </div>
+</div>
+
+
+    <div id="InstallingPluginView" class="processing-view" style="display:none">
+        <div class="ProcessingModalBody">
+            <p style="margin:0px"><img src='https://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Installing Plugin..." /></p>
+            <p class="processing-text" style="margin:7px 0px">Installing Plugin...</p>
+        </div>
+    </div>
+    <div id="UpdatingPluginView" class="processing-view" style="display:none">
+        <div class="ProcessingModalBody">
+            <p style="margin:0px"><img src='https://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Updating Plugin..." /></p>
+            <p class="processing-text" style="margin:7px 0px">Updating Plugin...</p>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    Roblox.Item = Roblox.Item || {};
+
+    Roblox.Item.Resources = {
+        //<sl:translate>
+        DisableBadgeTitle: 'Disable Badge'
+        , DisableBadgeMessage: 'Are you sure you want to disable this Badge?'
+        , assetGrantedModalTitle: "This item is now yours"
+        , assetGrantedModalMessage: "You just got this item courtesy of our sponsor."
+        //</sl:translate>
+    };
+</script><script type="text/javascript">
+    Roblox.Plugins = Roblox.Plugins || {};
+
+    Roblox.Plugins.Resources = {
+        //<sl:translate>
+        errorTitle: "Error Installing Plugin",
+        errorBody: "There was a problem installing this plugin. Please try again later.",
+        successTitle: "Plugin Installed",
+        successBody: " has been successfully installed! Please open a new window to begin using this plugin.",
+        ok: "OK",
+        reinstall: "Reinstall",
+        updateErrorTitle: "Error Updating Plugin",
+        updateErrorBody: "There was a problem updating this plugin. Please try again later.",
+        updateSuccessTitle: "Plugin Update",
+        updateSuccessBody: " has been successfully updated! Please open a new window for the changes to take effect.",
+        updateText: "Update",
+        //</sl:translate>
+        alertImageUrl: '/images/Icons/img-alert.png'
+    };
+</script>
+
+    <script type="text/javascript">
+        Roblox.Item = Roblox.Item || {};
+        
+        Roblox.Item.ShowAssetGrantedModal = false;
+        Roblox.Item.ForwardToUrl = "";
+        
+
+        $(function() {
+            var commentsLoaded = false;
+
+            //Tabs
+            function SwitchTabs(nextTabElem) {
+                $('.WhiteSquareTabsContainer .selected,  .TabContent.selected').removeClass('selected');
+                nextTabElem.addClass('selected');
+                $('#' + nextTabElem.attr('contentid')).addClass('selected');
+
+                var label = $.trim(nextTabElem.attr('contentid'));
+                if(label == "CommentaryTab" && !commentsLoaded) {
+                    Roblox.CommentsPane.getComments(0);
+                    commentsLoaded = true;
+                    if(Roblox.SuperSafePrivacyMode != undefined) {
+                        Roblox.SuperSafePrivacyMode.initModals();
+                    }
+                    return false;
+                }
+            }
+            
+            $('.WhiteSquareTabsContainer li').bind('click', function (event) {
+                event.preventDefault();
+                SwitchTabs($(this));
+            });
+        
+            
+            function confirmDelete() {
+                Roblox.GenericConfirmation.open({
+                    //<sl:translate>
+                    titleText: "Delete Item",
+                    bodyContent: "Are you sure you want to permanently DELETE this item from your inventory?",
+                    //</sl:translate>
+                    onAccept: function () {
+                        javascript: __doPostBack('ctl00$cphRoblox$btnDelete', '');
+                    },
+                    acceptColor: Roblox.GenericConfirmation.blue,
+                    //<sl:translate>
+                    acceptText: "OK"
+                    //</sl:translate>
+                });
+            }
+
+            function confirmSubmit() {
+                Roblox.GenericConfirmation.open({
+                    //<sl:translate>
+                    titleText: "Create New Badge Giver",
+                    bodyContent: "This will add a new badge giver model to your inventory. Are you sure you want to do this?",
+                    //</sl:translate>
+                    onAccept: function () {
+                        window.location.href = $('#ctl00_cphRoblox_btnSubmit').attr('href');
+                    },
+                    acceptColor: Roblox.GenericConfirmation.blue,
+                    //<sl:translate>
+                    acceptText: "OK"
+                    //</sl:translate>
+                });
+            }
+
+            $('#ctl00_cphRoblox_btnDelete').click(function() {
+                confirmDelete();
+                return false;
+            });
+
+            $('div.Ownership input').click(function() {
+                confirmSubmit();
+                return false;
+            });
+
+            modalProperties = { escClose: true, opacity: 80, overlayCss: { backgroundColor: "#000"} };
+        
+            // Code for Modal Popups and Plugin initialization
+            
+            $(".btn-disabled-primary").removeClass("Button").tipsy({ gravity: 's' }).attr("href", "javascript: return false;");
+        });
+        function ModalClose(popup) {
+            $.modal.close('.' + popup);
+        }
     </script>
-
-</div>
-<div id="InventoryItemTemplate" style="display:none;">
-    
-
-<div class="InventoryItemContainerOuter"  data-se="trade-item" >
-    <div fieldname="InventoryItemSize">
-		<div templateid="DefaultContent" class="InventoryItemContainerInner">
-            <div class="HeaderButtonPlaceHolder"></div>
-            <div class="InventoryNameWrapper">
-			    <a class="InventoryItemLink" href="#" target="_blank"><div class="InventoryItemName"></div></a>
-            </div>
-			<div class="ItemLinkDiv">
-				<img class="ItemImg" alt="Item Image" />
-			</div>
-			<div class="HoverContent">
-				<div><span class="ItemInfoLabel">Avg. Price:</span><img class="RBXImg" width="14" height="9" src="/images/cssspecific/rbx2/head_bux.png" alt="RBX" /><span class="ItemInfoData InventoryItemAveragePrice"></span></div>
-				<div><span class="ItemInfoLabel">Orig. Price:</span><img class="RBXImg" width="14" height="9" src="/images/cssspecific/rbx2/head_bux.png" alt="RBX"/><span class="ItemInfoData InventoryItemOriginalPrice"></span></div>
-				<div><span class="ItemInfoLabel">Serial # :&nbsp;</span><span class="InventoryItemSerial"></span><span class="ItemInfoLabel" style="margin:0 2px 0 2px;">/</span><span class="SerialNumberTotal"></span></div>
-				<div class="FooterButtonPlaceHolder"></div>
-            </div>
-            <img class="BuildersClubOverlay">
-		</div>
-	</div>	
-</div>
-
-</div>
-<div id="BlankTemplate" style="display:none;">
-    <div class="BlankItem LargeInventoryItem"  style="padding-right:4px;">
-    </div>
-</div>
-<div id="RobuxTemplate" style="display:none;">
-    <div class="RobuxTradeRequestItem" >
-        <div class="RobuxAmountWrapper" style="">
-			<div><span class="RobuxAmount" ></span><span class="RobuxItemAsterisk" >*</span> </div>
-            <div>Robux</div>
-        </div>
-		<div style="margin:auto; width:51px;">
-			<img class="ItemImg"src="/images/ROBUX.jpg" />
-        </div>
-    </div>
-</div>
-<div missing-user-asset-template style="display:none;">
-    <div class="LargeInventoryItem MissingItemContainer">
-        <div class="MissingItem " style="padding-right:4px;"></div>
-    </div>
-</div>
-<div deleted-user-asset-template style="display:none;">
-    <div class="LargeInventoryItem MissingItemContainer">
-        <div class="MissingItem Deleted" style="padding-right:4px;"></div>
-    </div>
-</div>
-
-
-    
-    
-
 
                     <div style="clear:both"></div>
                 </div>
@@ -976,19 +975,19 @@ $(function() {
         
             <div id="Footer" class="footer-container">
     <div class="FooterNav">
-        <a href="http://www.roblox.com/info/Privacy.aspx">Privacy Policy</a>
+        <a href="/info/Privacy.aspx">Privacy Policy</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.roblox.com/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
+        <a href="https://corp.roblox.com/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.roblox.com/press" class="roblox-interstitial">Press</a>
+        <a href="https://corp.roblox.com/press" class="roblox-interstitial">Press</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.roblox.com/contact-us" class="roblox-interstitial">Contact Us</a>
+        <a href="https://corp.roblox.com/contact-us" class="roblox-interstitial">Contact Us</a>
         &nbsp;|&nbsp;
-            <a href="http://corp.roblox.com/about" class="roblox-interstitial">About Us</a>
-&nbsp;|&nbsp;        <a href="http://blog.roblox.com">Blog</a>
+            <a href="https://corp.roblox.com/about" class="roblox-interstitial">About Us</a>
+&nbsp;|&nbsp;        <a href="https://blog.roblox.com">Blog</a>
         &nbsp;|&nbsp;
-            <a href="http://corp.roblox.com/careers" class="roblox-interstitial">Jobs</a>
-&nbsp;|&nbsp;        <a href="http://corp.roblox.com/parents" class="roblox-interstitial">Parents</a>
+            <a href="https://corp.roblox.com/careers" class="roblox-interstitial">Jobs</a>
+&nbsp;|&nbsp;        <a href="https://corp.roblox.com/parents" class="roblox-interstitial">Parents</a>
     </div>
     <div class="legal">
             <div class="left">
@@ -1000,9 +999,9 @@ $(function() {
             </div>
             <div class="right">
                 <p class="Legalese">
-    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="http://corp.roblox.com/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
+    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="https://corp.roblox.com/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
     ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
-    Use of this site signifies your acceptance of the <a href="http://www.roblox.com/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
+    Use of this site signifies your acceptance of the <a href="/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
 </p>
             </div>
         <div class="clear"></div>
@@ -1029,35 +1028,17 @@ $(function() {
     
 <script type="text/javascript">
 //<![CDATA[
-var Page_Validators =  new Array(document.getElementById("ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle"), document.getElementById("ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle"), document.getElementById("ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle"));
+var Page_Validators =  new Array(document.getElementById("ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity"));
 //]]>
 </script>
 
 <script type="text/javascript">
 //<![CDATA[
-var ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle = document.all ? document.all["ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle"] : document.getElementById("ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle");
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle.controltovalidate = "ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountTextBoxRestyle";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle.focusOnError = "t";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle.display = "Dynamic";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle.validationGroup = "TradeCurrencyRestyle";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle.initialvalue = "";
-var ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle = document.all ? document.all["ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle"] : document.getElementById("ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle");
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle.controltovalidate = "ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountTextBoxRestyle";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle.focusOnError = "t";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle.validationGroup = "TradeCurrencyRestyle";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle.evaluationfunction = "RangeValidatorEvaluateIsValid";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle.maximumvalue = "999999999";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle.minimumvalue = "1";
-var ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle = document.all ? document.all["ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle"] : document.getElementById("ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle");
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.controltovalidate = "ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountTextBox";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.focusOnError = "t";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.errormessage = "!";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.display = "Dynamic";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.enabled = "False";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.validationGroup = "TradeCurrencyRestyle";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
-ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle.initialvalue = "";
+var ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity = document.all ? document.all["ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity"] : document.getElementById("ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity");
+ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity.controltovalidate = "ctl00_cphRoblox_CreateSetPanel1_Name";
+ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity.errormessage = "This set name contains some improper words.";
+ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity.display = "Dynamic";
+ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity.evaluationfunction = "CustomValidatorEvaluateIsValid";
 //]]>
 </script>
 
@@ -1078,17 +1059,9 @@ function ValidatorOnSubmit() {
         return true;
     }
 }
-        WebForm_AutoFocus('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountTextBoxRestyle');
-document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle').dispose = function() {
-    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRequiredFieldValidatorRestyle'));
-}
-
-document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle').dispose = function() {
-    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_HaveAmountRangeValidatorRestyle'));
-}
-
-document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle').dispose = function() {
-    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmountRequiredFieldValidatorRestyle'));
+        
+document.getElementById('ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_cphRoblox_CreateSetPanel1_CustomValidatorSetNameProfanity'));
 }
 //]]>
 </script>
@@ -1105,7 +1078,7 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
             DialogMinimizeTemplate: "chat-dialog-minimize"
         };
         Roblox.Chat = {
-            SoundFile: "http://www.roblox.com/Chat/sound/chatsound.mp3"
+            SoundFile: "/Chat/sound/chatsound.mp3"
         };
         Roblox.Party = {};
         Roblox.Party.SetGoogleAnalyticsCallback = function () {
@@ -1127,15 +1100,15 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
      chat-data
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
-     data-userid="65367932"
+     data-userid="62402235"
      data-domain="roblox.com"
-     data-gamespagelink="http://www.roblox.com/games"
+     data-gamespagelink="/games"
      data-chatdomain="https://chat.roblox.com"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
-     data-spinner="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
+     data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
      data-notificationsdomain="https://notifications.roblox.com/"
      data-devicetype="Computer"
      data-inapp=false
@@ -1849,17 +1822,17 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
                     <div class="ph-install-step ph-installinstructions-step1-of4">
                         <h1>1</h1>
                         <p class="larger-font-size">Click RobloxPlayerLauncher.exe to run the ROBLOX installer, which just downloaded via your web browser.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/8b0052e4ff81d8e14f19faff2a22fcf7.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/8b0052e4ff81d8e14f19faff2a22fcf7.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step2-of4">
                         <h1>2</h1>
                         <p class="larger-font-size">Click <strong>Run</strong> when prompted by your computer to begin the installation process.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/4a3f96d30df0f7879abde4ed837446c6.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/4a3f96d30df0f7879abde4ed837446c6.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step3-of4">
                         <h1>3</h1>
                         <p class="larger-font-size">Click <strong>Ok</strong> once you've successfully installed ROBLOX.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/6e23e4971ee146e719fb1abcb1d67d59.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/6e23e4971ee146e719fb1abcb1d67d59.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step4-of4">
                         <h1>4</h1>
@@ -1881,7 +1854,7 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
 <div id="pluginObjDiv" style="height:1px;width:1px;visibility:hidden;position: absolute;top: 0;"></div>
 <iframe id="downloadInstallerIFrame" style="visibility:hidden;height:0;width:1px;position:absolute"></iframe>
 
-<script type='text/javascript' src='http://js.rbxcdn.com/6b9fed5e91a508780b95c302464d62ef.js.gzip'></script>
+<script type='text/javascript' src='/js/6b9fed5e91a508780b95c302464d62ef.js.gzip'></script>
 
 <script type="text/javascript">
     Roblox.Client._skip = null;
@@ -1933,7 +1906,7 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
      data-protocol-detection-enabled="true">
     <div class="modalPopup blueAndWhite PlaceLauncherModal" style="min-height: 160px">
         <div id="Spinner" class="Spinner" style="padding:20px 0;">
-            <img src="http://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
+            <img src="https://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
         </div>
         <div id="status" style="min-height:40px;text-align:center;margin:5px 20px">
             <div id="Starting" class="PlaceLauncherStatus MadStatusStarting" style="display:block">
@@ -1960,7 +1933,7 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
                 ROBLOX is now loading. Get ready to play!
             </p>
             <div class="ph-startingdialog-spinner-row">
-                <img src="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
+                <img src="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
             </div>
         </div>
     </div>
@@ -1992,7 +1965,7 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
 <div id="ProtocolHandlerClickAlwaysAllowed" class="ph-clickalwaysallowed" style="display:none;">
     <p class="larger-font-size">
         <span class="rbx-icon-moreinfo"></span>
-        Check <b>Remember my choice</b> and click <img src="http://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
+        Check <b>Remember my choice</b> and click <img src="https://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
     </p>
 </div>
 
@@ -2007,6 +1980,14 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
         <div id="videoPrerollMainDiv"></div>
         <div id="videoPrerollCompanionAd">
             
+                <script type="text/javascript">
+                    googletag.cmd.push(function () {
+                        googletag.defineSlot('/1015347/VideoPrerollUnder13', [300, 250], 'videoPrerollCompanionAd')
+                            .addService(googletag.companionAds());
+                        googletag.enableServices();
+                        googletag.display('videoPrerollCompanionAd');
+                    });
+                </script>
         </div>
         <div id="videoPrerollLoadingDiv">
             Loading <span id="videoPrerollLoadingPercent">0%</span> - <span id="videoPrerollMadStatus" class="MadStatusField">Starting game...</span><span id="videoPrerollMadStatusBackBuffer" class="MadStatusBackBuffer"></span>
@@ -2017,26 +1998,27 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
         </div>
         <div id="videoPrerollJoinBC">
             <span>Get more with Builders Club!</span>
-            <a href="https://www.roblox.com/premium/membership?ctx=preroll" target="_blank" class="btn-medium btn-primary" id="videoPrerollJoinBCButton">Join Builders Club</a>
+            <a href="/premium/membership?ctx=preroll" target="_blank" class="btn-medium btn-primary" id="videoPrerollJoinBCButton">Join Builders Club</a>
         </div>
     </div>   
+        <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
     <script type="text/javascript">
         $(function () {
             var videoPreRollDFP = Roblox.VideoPreRollDFP;
             if (videoPreRollDFP) {
                 var customTargeting = Roblox.VideoPreRollDFP.customTargeting;
-                videoPreRollDFP.showVideoPreRoll = false;
+                videoPreRollDFP.showVideoPreRoll = true;
                 videoPreRollDFP.loadingBarMaxTime = 33000;
                 videoPreRollDFP.videoLoadingTimeout = 11000;
                 videoPreRollDFP.videoPlayingTimeout = 41000;
-                videoPreRollDFP.videoLogNote = "Flooded";
+                videoPreRollDFP.videoLogNote = "";
                 videoPreRollDFP.logsEnabled = true;
                 videoPreRollDFP.excludedPlaceIds = "32373412";
-                videoPreRollDFP.adUnit = "/1015347/VideoPreroll";
+                videoPreRollDFP.adUnit = "/1015347/VideoPrerollUnder13";
                 videoPreRollDFP.adTime = 15;
                 videoPreRollDFP.isSwfPreloaderEnabled = true;
                 videoPreRollDFP.isPrerollShownEveryXMinutesEnabled = true;
-                customTargeting.userAge = "36";
+                customTargeting.userAge = "9";
                 customTargeting.userGender = "Male";
                 customTargeting.gameGenres = "";
                 customTargeting.environment = "Production";
@@ -2065,8 +2047,8 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
         <div style="clear:both; height:25px;"></div>
         <div class="RevisedFooter">
             <div style="width:200px;margin:10px auto 0 auto;">
-                <a href="http://www.roblox.com/?returnUrl=http%3A%2F%2Fwww.roblox.com%2FMy%2FMoney.aspx"><div class="RevisedCharacterSelectSignup"></div></a>
-                <a class="HaveAccount" href="https://www.roblox.com/newlogin?returnUrl=http%3A%2F%2Fwww.roblox.com%2FMy%2FMoney.aspx">I have an account</a>
+                <a href="/?returnUrl=http%3A%2F%2Fwww.roblox.com%2Fitem.aspx%3Fseoname%3DErr%26id%3D20418658"><div class="RevisedCharacterSelectSignup"></div></a>
+                <a class="HaveAccount" href="/newlogin?returnUrl=http%3A%2F%2Fwww.roblox.com%2Fitem.aspx%3Fseoname%3DErr%26id%3D20418658">I have an account</a>
             </div>
         </div>
     </div>
@@ -2151,17 +2133,17 @@ document.getElementById('ctl00_ctl00_cphRoblox_cphMyRobloxContent_ctl00_WantAmou
     </script>
     <script>
         var _comscore = _comscore || [];
-        _comscore.push({ c1: "2", c2: "6035605", c3: "", c4: "", c15: "Over13" });
+        _comscore.push({ c1: "2", c2: "6035605", c3: "", c4: "", c15: "" });
 
         (function() {
             var s = document.createElement("script"), el = document.getElementsByTagName("script")[0];
             s.async = true;
-            s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+            s.src = (document.location.protocol == "https:" ? "https://sb" : "https://b") + ".scorecardresearch.com/beacon.js";
             el.parentNode.insertBefore(s, el);
         })();
     </script>
     <noscript>
-        <img src="http://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
+        <img src="https://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
     </noscript>
 
 </body>                

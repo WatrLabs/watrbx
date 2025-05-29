@@ -38,6 +38,11 @@ class pagebuilder {
         }
     }
 
+    static function build_component($component, $data = array()){
+        extract($data);
+        require("../views/components/$component.php");
+    }
+
     public function addresource($resoucelist, $resource, $push2first = false){
         if ($push2first){
             array_unshift($this->$resoucelist, $resource);

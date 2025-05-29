@@ -1,6 +1,10 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
+use watrlabs\authentication;
+use watrbx\thumbnails;
 $pagebuilder = new pagebuilder();
+$auth = new authentication();
+$thumbs = new thumbnails();
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___693f28640f335d1c8bc50c5a11d7ad3d_m.css');
@@ -13,7 +17,10 @@ $pagebuilder->setlegacy(true);
 
 $pagebuilder->buildheader();
 
+global $db;
+$asset = $db->table("assets")->where("id", 26)->first();
 
+$assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
 
 ?>
 
@@ -144,15 +151,15 @@ $pagebuilder->buildheader();
         <h3>Legend</h3>
     </div>
     <div id="legendcontent" style="overflow: hidden; ">
-        <img src="https://images.rbxcdn.com/4fc3a98692c7ea4d17207f1630885f68.png" style="margin-left: -13px" />
+        <img src="/images/4fc3a98692c7ea4d17207f1630885f68.png" style="margin-left: -13px" />
         <div class="legendText"><b>Builders Club Only</b><br/>
         Only purchasable by Builders Club members.</div>
 
-        <img src="https://images.rbxcdn.com/793dc1fd7562307165231ca2b960b19a.png" style="margin-left: -13px" />
+        <img src="/images/793dc1fd7562307165231ca2b960b19a.png" style="margin-left: -13px" />
         <div class="legendText"><b>Limited Items</b><br/>
         Owners of these discontinued items can re-sell them to other users at any price.</div>
         
-        <img src="https://images.rbxcdn.com/d649b9c54a08dcfa76131d123e7d8acc.png" style="margin-left: -13px" />
+        <img src="/images/d649b9c54a08dcfa76131d123e7d8acc.png" style="margin-left: -13px" />
         <div class="legendText"><b>Limited Unique Items</b><br/>
         A limited supply originally sold by ROBLOX. Each unit is labeled with a serial number. Once sold out, owners can re-sell them to other users.
         </div>
@@ -165,37 +172,11 @@ $pagebuilder->buildheader();
         <h2>Featured Items on ROBLOX</h2>
         <div style="clear:both;"></div>
         
-        
-
-
-
-<div class="CatalogItemOuter BigOuter">
-<div class="SmallCatalogItemView BigView">
-<div class="CatalogItemInner BigInner">    
-        <div class="roblox-item-image image-large" data-item-id="332747438" data-image-size="large" >
-            <div class="item-image-wrapper">
-                <a href="https://www.roblox.com/Festive-Dual-Plungers-item?id=332747438">
-                    <img title="Festive Dual Plungers" alt="Festive Dual Plungers" class="original-image " src="https://watrbx.xyz/temp/07b49d720238e3b83c9c058536e212ed.png"/>
-                                            <img src="https://watrbx.xyz/temp/07b49d720238e3b83c9c058536e212ed.png" alt="Limited Unique" class="limited-overlay">
-                                                                <img src="https://images.rbxcdn.com/b84cdb8c0e7c6cbe58e91397f91b8be8.png" alt="New" />
-                </a>
-            </div>
-        </div>
-        
-    <div id="textDisplay">
-    <div class="CatalogItemName notranslate"><a class="name notranslate" href="/Festive-Dual-Plungers-item?id=332747438" title="Festive Dual Plungers">Festive Dual Plungers</a></div>
-                <div class="robux-price"><span class="SalesText">was </span><span class="robux notranslate">450</span></div>
-            <div id="PrivateSales"><span class="SalesText">now </span><span class="robux notranslate">618</span></div>
-    </div>
-        <div class="CatalogHoverContent">
-            <div><span class="CatalogItemInfoLabel">Creator:</span> <span class="HoverInfo notranslate"><a href="https://www.roblox.com/users/1/profile">ROBLOX</a></span></div>
-            <div><span class="CatalogItemInfoLabel">Updated:</span> <span class="HoverInfo">1 day ago</span></div>
-            <div><span class="CatalogItemInfoLabel">Sales:</span> <span class="HoverInfo notranslate">1225</span></div>
-            <div><span class="CatalogItemInfoLabel">Favorited:</span> <span class="HoverInfo">108 times</span></div>
-        </div>
-</div>
-</div>	
-</div>
+        <?php
+            foreach ($assets as $asset){
+                $pagebuilder->build_component("catalog_item", ["asset"=>$asset]);
+            }
+        ?>
 
 
         <div style="clear:both;padding-top: 50px;text-align:center;font-weight: bold;">

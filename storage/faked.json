@@ -1,6 +1,16 @@
 {
-    "collection": [],
-    "totalCollectionSize": 0,
-    "totalPages": 0,
-    "pageNumber": 0
-  }
+  "Collection": [
+    {
+      "Id": 2,
+      "Sender": "watrabi",
+      "Subject": "welcome to watrbx",
+      "Body": "Welcome to watrbx!<br>im too lazy to write this so have fun with ts",
+      "IsRead": true,
+      "IsSystemMessage": false,
+      "DateSent": "2025-05-27T12:34:56Z"
+    }
+  ],
+  "TotalMessages": 0,
+  "Page": 1,
+  "PageSize": 20
+}

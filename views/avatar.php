@@ -5,10 +5,11 @@ $pagebuilder = new pagebuilder();
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___7a27dc130118fdc2c185a6a1a3db1c2f_m.css');
 $pagebuilder->addresource('jsfiles', '/js/f49d858ef181e7cd401d8fcb4245e6e8.js.gzip');
-$pagebuilder->addresource('jsfiles', '/js/11538f50c384b7e98cc9fdd96e55772d.js.gzip');
-$pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
+$pagebuilder->addresource('jsfiles', '/js/8220b4ecd0fe4da790391da3fd0b442c.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip');
-//$pagebuilder->addresource('jsfiles', '/js/f49d858ef181e7cd401d8fcb4245e6e8.js.gzip');
+$pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
+$pagebuilder->addresource('jsfiles', '/js/11538f50c384b7e98cc9fdd96e55772d.js.gzip');
+$pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
 
 $pagebuilder->setlegacy(true);
 $pagebuilder->set_page_name("Avatar");
@@ -62,7 +63,7 @@ $pagebuilder->buildheader();
 
 <div id="UserAvatar" class="thumbnail-holder" data-reset-enabled-every-page data-3d-thumbs-enabled 
      data-url="/thumbnail/user-avatar?userId=65367932&amp;thumbnailFormatId=124&amp;width=352&amp;height=352" style="width:352px; height:352px;">
-    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=65367932"  data-js-files='http://js.rbxcdn.com/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='Aragorn35016' class='' src='/images/user.png' /></span>
+    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=65367932"  data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='Aragorn35016' class='' src='/images/user.png' /></span>
     <span class="enable-three-dee btn-control btn-control-small"></span>
 </div>
 
@@ -1933,22 +1934,7 @@ $pagebuilder->buildheader();
                                             
                                         <div class="TileGroup">
                                             
-                                        <div class="Asset">
-                                            <div class="AssetThumbnail">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireListView_ctrl0_ctl00_AssetThumbnailHyperLink" title="click to wear" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireListView$ctrl0$ctl00$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t5.rbxcdn.com/dec1ba97a0aa256850a45c8b788fb920" height="110" width="110" border="0" alt="click to wear" /></a>
-                                                <div style="position: absolute;right:-7px;text-align: center;top: 0px;">
-                                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireListView_ctrl0_ctl00_WearAccoutrementButton" title="click to wear" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireListView$ctrl0$ctl00$WearAccoutrementButton&#39;,&#39;&#39;)">
-                                                        Wear
-                                                    </a>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="AssetDetails">
-                                                <div class="AssetName">
-                                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireListView_ctrl0_ctl00_AssetNameHyperLink" title="click to view" class="notransalate" href="/Bloxxer-item?id=1028595">Bloxxer</a>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <?=$pagebuilder->build_component("avatar_item", ["assetid"=>5, "action"=>"Wear"]);?>
                                     
                                         </div>
                                     
@@ -2017,7 +2003,7 @@ $pagebuilder->buildheader();
     </div>
     <div id="ProcessingView" style="display:none">
 	    <div class="ProcessingModalBody">
-		    <p class="processing-indicator"><img src='http://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Processing..." /></p>
+		    <p class="processing-indicator"><img src='/images/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Processing..." /></p>
 		    <p class="processing-text">Processing...</p>
 	    </div>
     </div>
@@ -2053,187 +2039,9 @@ $pagebuilder->buildheader();
                             
                                     
                                     <div class="TileGroup">
+
+                                        <?=$pagebuilder->build_component("avatar_item", ["assetid"=>5, "action"=>"Remove"]);?>
                                         
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl00_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl00$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t6.rbxcdn.com/5b2658578ac08bca3d8703c5c462545e" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl00_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl00$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl00_AssetNameHyperLink" title="click to view" class="notranslate" href="/Man-Head-item?id=86498048">Man Head</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Head
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl01_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl01$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t5.rbxcdn.com/5648caab42cf99caafb07745d07016a4" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl01_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl01$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl01_AssetNameHyperLink" title="click to view" class="notranslate" href="/Roblox-2-0-Torso-item?id=27112025">Roblox 2.0 Torso</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Torso
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl02_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl02$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t0.rbxcdn.com/d93104e2d4cd33079121329131dc5ce7" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl02_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl02$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl02_AssetNameHyperLink" title="click to view" class="notranslate" href="/Roblox-2-0-Right-Arm-item?id=27112039">Roblox 2.0 Right Arm</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Right Arm
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl03_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl03$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t6.rbxcdn.com/23799f073ad9f1f0705dd6a38ea00fe9" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl03_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl0$ctl03$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl0_ctl03_AssetNameHyperLink" title="click to view" class="notranslate" href="/Roblox-2-0-Left-Arm-item?id=27112052">Roblox 2.0 Left Arm</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Left Arm
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    </div>
-                                
-                                    <div class="TileGroup">
-                                        
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl00_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl00$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t0.rbxcdn.com/64ff7845ca2bcd1f1110b5f5d1ab341d" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl00_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl00$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl00_AssetNameHyperLink" title="click to view" class="notranslate" href="/Roblox-2-0-Left-Leg-item?id=27112056">Roblox 2.0 Left Leg</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Left Leg
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl01_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl01$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t7.rbxcdn.com/eaba688687b31ac3a7ce0f145c15b2d4" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl01_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl01$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl01_AssetNameHyperLink" title="click to view" class="notranslate" href="/Roblox-2-0-Right-Leg-item?id=27112068">Roblox 2.0 Right Leg</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Right Leg
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl02_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl02$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t1.rbxcdn.com/7f5ca39ba708ddffc28c1ce83e93fa44" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl02_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl02$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl02_AssetNameHyperLink" title="click to view" class="notranslate" href="/Grr-item?id=19398554">Grr!</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Face
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="Asset">
-                                        <div class="AssetThumbnail">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl03_AssetThumbnailHyperLink" title="click to remove" onclick="__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl03$AssetThumbnailHyperLink&#39;,&#39;&#39;)" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="http://t4.rbxcdn.com/cccaac2b242f16e291408678048b4b51" height="110" width="110" border="0" alt="click to remove" /></a>
-                                        <div style="position: absolute;right:-7px;text-align: center;top: 0;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl03_RemoveAccoutrementButton" title="click to remove" class="btn-small btn-neutral" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AccoutrementsListView$ctrl1$ctl03$RemoveAccoutrementButton&#39;,&#39;&#39;)">    
-                                                Remove
-                                            </a>
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="AssetDetails">
-                                            <div class="AssetName">
-                                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl03_AssetNameHyperLink" title="click to view" class="notranslate" href="/Big-Hero-6-Sunglasses-item?id=209300541">Big Hero 6 Sunglasses</a>
-                                            </div>
-                                            <div class="AssetType">
-                                                <span class="Label">Type:</span> <span class="Detail">
-                                                    Hat
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
                                     </div>
                                 
                                 
@@ -2261,17 +2069,17 @@ $pagebuilder->buildheader();
     <div class="FooterNav">
         <a href="/info/Privacy.aspx">Privacy Policy</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.roblox.com/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
+        <a href="https://corp.roblox.com/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.roblox.com/press" class="roblox-interstitial">Press</a>
+        <a href="https://corp.roblox.com/press" class="roblox-interstitial">Press</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.roblox.com/contact-us" class="roblox-interstitial">Contact Us</a>
+        <a href="https://corp.roblox.com/contact-us" class="roblox-interstitial">Contact Us</a>
         &nbsp;|&nbsp;
-            <a href="http://corp.roblox.com/about" class="roblox-interstitial">About Us</a>
-&nbsp;|&nbsp;        <a href="http://blog.roblox.com">Blog</a>
+            <a href="https://corp.roblox.com/about" class="roblox-interstitial">About Us</a>
+&nbsp;|&nbsp;        <a href="https://blog.roblox.com">Blog</a>
         &nbsp;|&nbsp;
-            <a href="http://corp.roblox.com/careers" class="roblox-interstitial">Jobs</a>
-&nbsp;|&nbsp;        <a href="http://corp.roblox.com/parents" class="roblox-interstitial">Parents</a>
+            <a href="https://corp.roblox.com/careers" class="roblox-interstitial">Jobs</a>
+&nbsp;|&nbsp;        <a href="https://corp.roblox.com/parents" class="roblox-interstitial">Parents</a>
     </div>
     <div class="legal">
             <div class="left">
@@ -2283,7 +2091,7 @@ $pagebuilder->buildheader();
             </div>
             <div class="right">
                 <p class="Legalese">
-    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="http://corp.roblox.com/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
+    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="https://corp.roblox.com/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
     ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
     Use of this site signifies your acceptance of the <a href="/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
 </p>
@@ -2352,7 +2160,7 @@ $pagebuilder->buildheader();
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
-     data-spinner="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
+     data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
      data-notificationsdomain="https://notifications.roblox.com/"
      data-devicetype="Computer"
      data-inapp=false
@@ -3066,17 +2874,17 @@ $pagebuilder->buildheader();
                     <div class="ph-install-step ph-installinstructions-step1-of4">
                         <h1>1</h1>
                         <p class="larger-font-size">Click RobloxPlayerLauncher.exe to run the ROBLOX installer, which just downloaded via your web browser.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/8b0052e4ff81d8e14f19faff2a22fcf7.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/8b0052e4ff81d8e14f19faff2a22fcf7.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step2-of4">
                         <h1>2</h1>
                         <p class="larger-font-size">Click <strong>Run</strong> when prompted by your computer to begin the installation process.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/4a3f96d30df0f7879abde4ed837446c6.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/4a3f96d30df0f7879abde4ed837446c6.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step3-of4">
                         <h1>3</h1>
                         <p class="larger-font-size">Click <strong>Ok</strong> once you've successfully installed ROBLOX.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/6e23e4971ee146e719fb1abcb1d67d59.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/6e23e4971ee146e719fb1abcb1d67d59.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step4-of4">
                         <h1>4</h1>
@@ -3150,7 +2958,7 @@ $pagebuilder->buildheader();
      data-protocol-detection-enabled="true">
     <div class="modalPopup blueAndWhite PlaceLauncherModal" style="min-height: 160px">
         <div id="Spinner" class="Spinner" style="padding:20px 0;">
-            <img src="http://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
+            <img src="https://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
         </div>
         <div id="status" style="min-height:40px;text-align:center;margin:5px 20px">
             <div id="Starting" class="PlaceLauncherStatus MadStatusStarting" style="display:block">
@@ -3177,7 +2985,7 @@ $pagebuilder->buildheader();
                 ROBLOX is now loading. Get ready to play!
             </p>
             <div class="ph-startingdialog-spinner-row">
-                <img src="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
+                <img src="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
             </div>
         </div>
     </div>
@@ -3209,7 +3017,7 @@ $pagebuilder->buildheader();
 <div id="ProtocolHandlerClickAlwaysAllowed" class="ph-clickalwaysallowed" style="display:none;">
     <p class="larger-font-size">
         <span class="rbx-icon-moreinfo"></span>
-        Check <b>Remember my choice</b> and click <img src="http://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
+        Check <b>Remember my choice</b> and click <img src="https://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
     </p>
 </div>
 
@@ -3251,7 +3059,7 @@ $pagebuilder->buildheader();
             var videoPreRollDFP = Roblox.VideoPreRollDFP;
             if (videoPreRollDFP) {
                 var customTargeting = Roblox.VideoPreRollDFP.customTargeting;
-                videoPreRollDFP.showVideoPreRoll = true;
+                videoPreRollDFP.showVideoPreRoll = false;
                 videoPreRollDFP.loadingBarMaxTime = 33000;
                 videoPreRollDFP.videoLoadingTimeout = 11000;
                 videoPreRollDFP.videoPlayingTimeout = 41000;
@@ -3382,12 +3190,12 @@ $pagebuilder->buildheader();
         (function() {
             var s = document.createElement("script"), el = document.getElementsByTagName("script")[0];
             s.async = true;
-            s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+            s.src = (document.location.protocol == "https:" ? "https://sb" : "https://b") + ".scorecardresearch.com/beacon.js";
             el.parentNode.insertBefore(s, el);
         })();
     </script>
     <noscript>
-        <img src="http://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
+        <img src="https://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
     </noscript>
 
 </body>                

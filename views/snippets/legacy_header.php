@@ -18,7 +18,7 @@ if($userinfo->membership == "OutrageousBuildersClub"){
 ?>
 
 <!DOCTYPE html>
-<html xmlns:fb="http://www.facebook.com/2008/fbml">
+<html xmlns:fb="https://www.facebook.com/2008/fbml">
 <!-- MachineID: WEB109 -->
 <head id="ctl00_ctl00_Head1">
     <title><?=$config["title"] ?? "Untitled Page" ?> - <?=$_ENV["APP_NAME"]?></title>
@@ -72,7 +72,7 @@ if($userinfo->membership == "OutrageousBuildersClub"){
 			var ga = document.createElement('script');
 			ga.type = 'text/javascript';
 			ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(ga, s);
 		})();
@@ -219,7 +219,7 @@ Roblox.Endpoints.Urls['/authentication/is-logged-in'] = '/authentication/is-logg
             var e = document.createElement('script');
             e.type = 'text/javascript';
             e.async = true;
-            e.src = ('https:' === document.location.protocol ? 'https://' : 'http://') + 'cdn.siftscience.com/s.js';
+            e.src = ('https:' === document.location.protocol ? 'https://' : 'https://') + 'cdn.siftscience.com/s.js';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(e, s);
         }
@@ -279,7 +279,7 @@ function __doPostBack(eventTarget, eventArgument) {
     </div>
     <script type="text/javascript">
 //<![CDATA[
-//Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnetForm', ['tctl00$ctl00$cphRoblox$cphMyRobloxContent$CustomizeCharacterUpdatePanelAvatar','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelBodyColors','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelWardrobe','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelAccoutrements',''], [], [], 90, 'ctl00$ctl00');
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnetForm', ['tctl00$ctl00$cphRoblox$cphMyRobloxContent$CustomizeCharacterUpdatePanelAvatar','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelBodyColors','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelWardrobe','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelAccoutrements',''], [], [], 90, 'ctl00$ctl00');
 //]]>
 </script>
 
@@ -305,7 +305,7 @@ function __doPostBack(eventTarget, eventArgument) {
             <div id="rbx-continue-shopping-btn" class="btn btn-medium btn-neutral rbx-btn-secondary-xs btn-more btn-continue-shopping">Continue to Shop</div>
         </div>
         <div class="fine-print">
-            The shop is not part of ROBLOX.com and is governed by a separate <a href="http://www.myplay.com/direct/cookie-policy?origin=desktop&permalink=shoproblox">privacy policy</a>.
+            The shop is not part of ROBLOX.com and is governed by a separate <a href="https://www.myplay.com/direct/cookie-policy?origin=desktop&permalink=shoproblox">privacy policy</a>.
         </div>
     </div>
 </div>
@@ -478,12 +478,12 @@ function __doPostBack(eventTarget, eventArgument) {
                     </a>
                 </li>
                 <li>
-                    <a href="http://forum.roblox.com/forum/" id="nav-forum">
+                    <a href="https://forum.roblox.com/forum/" id="nav-forum">
                         <span class="rbx-icon-nav-forum"></span><span>Forum</span>
                     </a>
                 </li>
                 <li>
-                    <a href="http://blog.roblox.com" id="nav-blog">
+                    <a href="https://blog.roblox.com" id="nav-blog">
                         <span class="rbx-icon-nav-blog"></span><span>Blog</span>
                     </a>
                 </li>

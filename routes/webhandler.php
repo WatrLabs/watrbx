@@ -56,6 +56,28 @@ $router->get('/Membership/NotApproved.aspx', function(){
     $page::get_template("membership/notapproved");
 });
 
+$router->get('/{slug}-item', function($thing){
+    $router = new Routing();
+
+    if(isset($_GET["id"])){
+        $id = (int)$_GET["id"];
+        global $db;
+
+        $asset = $db->table("assets")->where("id", $id)->first();
+
+        if($asset !== null){
+            $page = new pagebuilder;
+            $page::get_template("item", array("asset"=>$asset));
+        } else {
+            die($router->return_status(404));
+        }
+
+    } else {
+        die($router->return_status(404));
+    }
+
+});
+
 $router->get('/Upgrades/BuildersClubMemberships.aspx', function() {
     $page = new pagebuilder;
     $page::get_template("bc");
@@ -103,7 +125,22 @@ $router->get("/games/moreresultscached", function() {
 
 $router->get("/home", function() {
     $page = new pagebuilder;
-    $page::get_template("home");
+    $page::get_template("new_home");
+});
+
+$router->post('/my/character.aspx', function(){
+    $pagebuilder = new pagebuilder();
+    $pagebuilder->build_component("avatar_item", ["assetid"=>5, "action"=>"Wear"]);
+});
+
+$router->get('/thumbnail/user-avatar', function(){ 
+    http_response_code(500);
+    die();
+});
+
+$router->get("/my/account", function() {
+    $page = new pagebuilder;
+    $page::get_template("my/account");
 });
 
 $router->get("/my/character.aspx", function() {
