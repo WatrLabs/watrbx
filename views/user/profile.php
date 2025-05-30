@@ -2,18 +2,21 @@
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\router\Routing;
 use watrlabs\authentication;
+use watrbx\relationship\friends;
+$friends = new friends();
 $pagebuilder = new pagebuilder();
 $auth = new authentication();
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___5c81dac2107fac0cca40ea7d6cfd0c89_m.css');
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
-
-
 $router = new Routing();
 
 global $db;
 
+$arefriends = false;
+$pendingrequest = 'false';
+$incomingfriendrequestid = 0;
 $userinfo = $db->table("users")->where("id", $userid)->first();
 
 if($userinfo == null){
@@ -25,6 +28,22 @@ $is_online = $auth->is_online($userid);
 if($auth->hasaccount()){
     $loggedininfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
 
+    //$userid, $friendid
+
+    $arefriends = $friends->are_friends($loggedininfo->id, $userinfo->id);
+
+    if(!$arefriends){
+        $pending = $friends->get_pending_request($loggedininfo->id, $userinfo->id);
+        if($pending !== null){
+            $incomingfriendrequestid = $pending->id;
+        } else {
+            $sendpendingrequest = $friends->get_pending_request($userinfo->id, $loggedininfo->id);
+            if($sendpendingrequest !== null){
+                $pendingrequest = "true";
+            }
+        }
+    }
+
     if($loggedininfo->id == $userinfo->id){
         $self = true;
     } else {
@@ -34,7 +53,7 @@ if($auth->hasaccount()){
 } else {
     $self = false;
 }
-
+$allfriends = $friends->get_friends($userid);
 $pagebuilder->set_page_name($userinfo->username);
 $pagebuilder->buildheader();
 
@@ -71,16 +90,20 @@ $pagebuilder->buildheader();
 <div data-userid="<?=$userinfo->id?>"
      data-profileuserid="<?=$userinfo->id?>"
      data-profileusername="<?=$userinfo->username?>"
-     data-friendscount="0"
+     data-friendscount="<?=count($allfriends)?>"
      data-followerscount="0"
      data-followingscount="0"
      data-acceptfriendrequesturl="/api/friends/acceptfriendrequest"
-     data-incomingfriendrequestid="0"
-     data-arefriends=false
-     data-friendurl="/friends.aspx"
-     data-incomingfriendrequestpending=false
-     data-maysendfriendinvitation=false
-     data-friendrequestpending=false
+     data-incomingfriendrequestid="<? if($incomingfriendrequestid !== 0 && $pendingrequest == 'true'){ echo $sendpendingrequest->id; } else { echo $incomingfriendrequestid; }?>"
+     data-arefriends=<?php if($arefriends){ echo "true"; } else { echo "false"; } ?>
+
+     data-friendurl="/users/<?=$userinfo->id?>/friends"
+     data-incomingfriendrequestpending=<?if($incomingfriendrequestid !== 0){ echo "true"; } else { echo "false"; }?>
+
+     data-maysendfriendinvitation=<?if($incomingfriendrequestid == 0 && $pendingrequest == 'false'){ echo "true"; } else { echo "false"; }?>
+
+     data-friendrequestpending=<?=$pendingrequest?>
+
      data-sendfriendrequesturl="/api/friends/sendfriendrequest"
      data-removefriendrequesturl="/api/friends/removefriend"
      data-mayfollow=<?if($self){ echo "false"; } else { echo "true"; }?>
@@ -88,13 +111,17 @@ $pagebuilder->buildheader();
      data-followurl="/user/follow"
      data-unfollowurl="/api/user/unfollow"
      data-canmessage=<?if($self){ echo "false"; } else { echo "true"; }?>
+
      data-messageurl="/messages/compose?recipientId=<?=$userinfo->id?>"
      data-canbefollowed=<?if($self){ echo "false"; } else { echo "true"; }?>
+
      data-cantrade=<?if($self){ echo "false"; } else { echo "true"; }?>
+
      data-isblockbuttonvisible=<?if($self){ echo "false"; } else { echo "true"; }?>
+
      data-getfollowscript="Roblox.GameLauncher.followPlayerIntoGame(<?=$userinfo->id?>);"
      data-ismorebtnvisible="true"
-     data-isvieweeblocked=false
+     data-isvieweeblocked=true
      data-mayimpersonate=false
      data-impersonateurl=""
      data-mayupdatestatus="<?if($self){ echo "true"; } else { echo "false"; }?>"
@@ -454,52 +481,11 @@ $pagebuilder->buildheader();
         </div>
 </div>
 
-    <div class="section home-friends">
-        <div class="container-header">
-            <h3>Friends (4)</h3>
-            <a  href="/users/<?=$userinfo->id?>/friends" class="rbx-btn-secondary-xs btn-more">See All</a>
-            
-        </div>
-        
-<ul class="hlist friend-list">
-<li class="list-item friend">
-                      <a href="/users/2/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">watrabi</span>
-                        <span class="friend-status rbx-icon-online" title="Website"></span>
-                      </a>
-                    </li>
-                    <li class="list-item friend">
-                      <a href="/users/3/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">sword</span>
-                        <span class="friend-status rbx-icon-instudio" title="In Studio"></span>
-                      </a>
-                    </li>
-                    <li class="list-item friend">
-                      <a href="/users/5/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">MugMan</span>
-                        <span class="friend-status rbx-icon-ingame" title="In Game"></span>
-                      </a>
-                    </li>
-                    <li class="list-item friend">
-                      <a href="/users/149/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">jamesniche</span>
-                      </a>
-                    </li>
-                </ul>
-
-    </div>
+    <?php
+        if(count($allfriends) !== 0){
+            $pagebuilder->build_component("friend_container", ["userid"=>$userinfo->id]);
+        }
+    ?>
     <div class="section profile-collections" ng-controller="profileCollectionsController">
         <div class="container-header">
             <h3>Collections</h3>

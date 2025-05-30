@@ -452,9 +452,9 @@ Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnet
                     </a>
                 </li>
                 <li>
-                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="0">
+                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="15">
                         <span class="rbx-icon-nav-friends"></span><span>Friends</span>
-                        <span class="rbx-highlight" title="0"></span>
+                        <span class="rbx-highlight" title="15"></span>
                     </a>
                 </li>
                 <li>

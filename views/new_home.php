@@ -1,11 +1,14 @@
 <?php
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
+use watrbx\relationship\friends;
+$friends = new friends();
 $pagebuilder = new pagebuilder();
 $auth = new authentication();
 $auth->requiresession();
 
 $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+$allfriends = $friends->get_friends($userinfo->id);
 
 if ($userinfo->membership !== "None") {
     if ($userinfo->membership == "OutrageousBuildersClub") {
@@ -56,51 +59,13 @@ $pagebuilder->buildheader();
             <? if(isset($bc)){ echo $bc; } ?>
         </div>
     </div>
-    <div class="col-xs-12 section home-friends">
-                  <div class="container-header">
-                    <h3>Friends (4)</h3>
-                    <a href="/friends.aspx#FriendsTab" class="rbx-btn-secondary-xs btn-more">See All</a>
-                  </div>
-                  <ul class="hlist friend-list">
-                    <li class="list-item friend">
-                      <a href="/users/2/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">watrabi</span>
-                        <span class="friend-status rbx-icon-online" title="Website"></span>
-                      </a>
-                    </li>
-                    <li class="list-item friend">
-                      <a href="/users/3/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">sword</span>
-                        <span class="friend-status rbx-icon-instudio" title="In Studio"></span>
-                      </a>
-                    </li>
-                    <li class="list-item friend">
-                      <a href="/users/5/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">MugMan</span>
-                        <span class="friend-status rbx-icon-ingame" title="In Game"></span>
-                      </a>
-                    </li>
-                    <li class="list-item friend">
-                      <a href="/users/149/profile" class="friend-link" title="watrabi">
-                        <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
-                        </span>
-                        <span class="friend-name rbx-text-overflow">jamesniche</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                
-                <div id="recently-visited-places" class="col-xs-12 container-list home-games">
+
+    <?php
+        if(count($allfriends) !== 0){
+            $pagebuilder->build_component("friend_container", ["userid"=>$userinfo->id, "ishome"=>true]);
+        }
+    ?>
+          <div id="recently-visited-places" class="col-xs-12 container-list home-games">
                   <div class="container-header">
                     <h3>Recommended Games</h3>
                     <a href="/games?sortFilter=6" class="rbx-btn-secondary-xs btn-more">See All</a>

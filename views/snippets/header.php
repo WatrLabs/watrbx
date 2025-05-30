@@ -448,9 +448,9 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                     </a>
                 </li>
                 <li>
-                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="0">
+                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="14">
                         <span class="rbx-icon-nav-friends"></span><span>Friends</span>
-                        <span class="rbx-highlight" title="0"></span>
+                        <span class="rbx-highlight" title="14"></span>
                     </a>
                 </li>
                 <li>

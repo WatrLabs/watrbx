@@ -5,6 +5,7 @@ use watrlabs\authentication;
 use watrbx\gameserver;
 use watrbx\catalog;
 use watrbx\sitefunctions;
+use watrbx\relationship\friends;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
@@ -388,9 +389,184 @@ $router->post('/api/v1/asset-upload', function(){
 
 $router->get('/messages/api/get-messages', function(){
     header("Content-type: application/json");
-    echo file_get_contents("../storage/faked.json");
-    die();
+
+    $response = [
+        "Collection"=>[],
+        "TotalMessages"=>0,
+        "Page"=>1,
+        "PageSize"=>20,
+    ];
+
+    $auth = new authentication();
+    global $db;
+
+    if(isset($_GET["messageTab"]) && isset($_GET["pageNumber"]) && isset($_GET["pageSize"]) && $auth->hasaccount()){
+        $messagetab = (int)$_GET["messageTab"];
+        $pagenum = (int)$_GET["pageNumber"];
+        $pagesize = (int)$_GET["pageSize"];
+
+        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        switch ($messagetab){
+            case 0:
+                $allmessages = $db->table("messages")->where("userto", $userinfo->id)->orderBy("date", "DESC")->get();
+                $msgcount = count($allmessages);
+
+                foreach ($allmessages as $message){
+                    $isread = false;
+
+                    if($message->hasread == 1){
+                        $isread = true;
+                    }
+
+                    $senderinfo = $auth->getuserbyid($message->userfrom);
+                    $response["Collection"][] = [
+                        "Id"=>$message->id,
+                        "Sender"=>$senderinfo->username,
+                        "Subject"=>$message->subject,
+                        "Body"=>$message->body,
+                        "IsRead"=>$isread,
+                        "IsSystemMessage"=>false,
+                        "DateSent"=>gmdate("Y-m-d\TH:i:s\Z", $message->date),
+                    ];
+                }
+                $response["TotalMessages"] = $msgcount;
+                die(json_encode($response));
+
+        }
+
+    } else {
+        http_response_code(400);
+        die();
+    }
 });
+
+$router->post('/api/friends/sendfriendrequest', function(){
+    $auth = new authentication();
+
+    if($auth->hasaccount()){
+        $friends = new friends();
+
+        $post = file_get_contents('php://input');
+        $decoded = json_decode($post);
+
+        if($decoded){
+            $targetUserID = $decoded->targetUserID;
+            $currentuserid = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"])->id;
+
+            //add_friend($to, $from)
+
+            $result = $friends->add_friend($targetUserID, $currentuserid);
+
+            if($result == 1){
+                die('{"success":true}');
+            } else {
+                http_response_code(400);
+                die('{"success":true}');
+            }
+
+
+        } else {
+            http_response_code(400);
+            die();
+        }
+
+    } else {
+        http_response_code(401);
+        die();
+    }
+});
+
+$router->post('/api/friends/removefriend', function(){
+    $auth = new authentication();
+
+    if($auth->hasaccount()){
+        $friends = new friends();
+
+        $post = file_get_contents('php://input');
+        $decoded = json_decode($post);
+
+        if($decoded){
+            if(isset($decoded->targetUserID)){
+                $targetUserID = $decoded->targetUserID;
+                $currentuserid = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"])->id;
+
+                global $db;
+
+                $db->table("friends")->where("userid", $targetUserID)->where("friendid", $currentuserid)->delete();
+                $db->table("friends")->where("friendid", $targetUserID)->where("userid", $currentuserid)->delete();
+                die('{"success":true}');
+            } else {
+                http_response_code(400);
+                die();
+            }
+        } else {
+            http_response_code(400);
+            die();
+        }
+
+    } else {
+        http_response_code(401);
+        die();
+    }
+});
+
+$router->post('/api/friends/acceptfriendrequest', function(){
+    $auth = new authentication();
+
+    if($auth->hasaccount()){
+        global $db;
+        $friends = new friends();
+
+        $post = file_get_contents('php://input');
+        $decoded = json_decode($post);
+
+        if($decoded){
+            if(isset($decoded->invitationID) && isset($decoded->targetUserID)){
+                $invitationID = $decoded->invitationID;
+                $targetUserID = $decoded->targetUserID;
+                $currentuserid = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"])->id;
+
+                $invitation = $db->table("friends")->where("id", $invitationID)->first();
+
+                if($invitation !== null){
+                    if($invitation->userid == $targetUserID){
+                        if($invitation->friendid == $currentuserid){
+                            $update = array(
+                                "status"=>"accepted"
+                            );
+                            $db->table("friends")->where("userid", $targetUserID)->where("friendid", $currentuserid)->update($update);
+                            die('{"success":true}');
+                        } else {
+                            http_response_code(400);
+                            die();
+                        }
+
+                    } else {
+                        http_response_code(400);
+                        die();
+                    }
+                } else {
+                    http_response_code(400);
+                    die();
+                }
+
+
+            } else {
+                http_response_code(400);
+                die();
+            }
+
+        } else {
+            http_response_code(400);
+            die();
+        }
+
+    } else {
+        http_response_code(401);
+        die();
+    }
+});
+
 
 $router->get('/notifications/api/get-notifications', function(){
     header("Content-type: application/json");
@@ -399,32 +575,102 @@ $router->get('/notifications/api/get-notifications', function(){
 });
 
 $router->get('/users/friends/list-json', function(){
-    die('{"UserId":1,"TotalFriends":1,"CurrentPage":0,"PageSize":18,"TotalPages":0,"FriendsType":"AllFriends","Friends":[{
-      "UserId": 27518438,
-      "AbsoluteURL": "/users/27518438/profile/",
-      "Username": "watrabi",
-      "AvatarUri": "https://watrbx.xyz/images/user.png",
-      "AvatarFinal": true,
-      "OnlineStatus": {
-        "LocationOrLastSeen": "Website",
-        "ImageUrl": "~/images/online.png",
-        "AlternateText": "watrabi is online."
-      },
-      "Thumbnail": {
-        "Final": true,
-        "Url": "https://watrbx.xyz/images/user.png",
-        "RetryUrl": null
-      },
-      "InvitationId": 0,
-      "LastLocation": "",
-      "PlaceId": null,
-      "AbsolutePlaceURL": null,
-      "IsOnline": true,
-      "InGame": false,
-      "InStudio": true,
-      "ItemVisible": true,
-      "FriendshipStatus": 2
-    }]}');
+
+    header("Content-type: application/json");
+    $auth = new authentication();
+    $friends = new friends();
+
+    if($auth->hasaccount()){
+        if(isset($_GET["userId"]) && isset($_GET["friendsType"])){
+
+            $userid = (int)$_GET["userId"];
+            $type = $_GET["friendsType"];
+
+            $response = array(
+                "UserId"=>$userid,
+                "TotalFriends"=>0,
+                "CurrentPage"=>0,
+                "PageSize"=>0,
+                "FriendsType"=>$type,
+                "Friends"=>[],
+            );
+            
+            switch ($type) {
+                case "AllFriends":
+                    $allfriends = $friends->get_friends($userid);
+                    foreach ($allfriends as $friend){
+                        $response["Friends"][] = [
+                            "UserId" => $friend->id,
+                            "AbsoluteURL" => "/users/$friend->id/profile/",
+                            "Username" => $friend->username,
+                            "AvatarUri" => "https://watrbx.xyz/images/user.png",
+                            "AvatarFinal" => true,
+                            "OnlineStatus" => [
+                                "LocationOrLastSeen" => "Website",
+                                "ImageUrl" => "~/images/online.png",
+                                "AlternateText" => $friend->username . " is online."
+                            ],
+                            "Thumbnail" => [
+                                "Final" => true,
+                                "Url" => "https://watrbx.xyz/images/user.png",
+                                "RetryUrl" => null
+                            ],
+                            "InvitationId" => 0,
+                            "LastLocation" => "",
+                            "PlaceId" => null,
+                            "AbsolutePlaceURL" => null,
+                            "IsOnline" => true,
+                            "InGame" => false,
+                            "InStudio" => false,
+                            "ItemVisible" => false,
+                            "FriendshipStatus" => 2,
+                        ];
+                    }
+                    $response["TotalFriends"] = count($allfriends);
+                    die(json_encode($response));
+                    break;
+
+                case "FriendRequests":
+                    $allrequests = $friends->get_requests($userid);
+                    foreach ($allrequests as $friend){
+                        $response["Friends"][] = [
+                            "UserId" => $friend->user_id,
+                            "AbsoluteURL" => "/users/$friend->user_id/profile/",
+                            "Username" => $friend->username,
+                            "AvatarUri" => "https://watrbx.xyz/images/user.png",
+                            "AvatarFinal" => true,
+                            "OnlineStatus" => [
+                                "LocationOrLastSeen" => "Website",
+                                "ImageUrl" => "~/images/online.png",
+                                "AlternateText" => $friend->username . " is online."
+                            ],
+                            "Thumbnail" => [
+                                "Final" => true,
+                                "Url" => "https://watrbx.xyz/images/user.png",
+                                "RetryUrl" => null
+                            ],
+                            "InvitationId" => $friend->invitation_id,
+                            "LastLocation" => "",
+                            "PlaceId" => null,
+                            "AbsolutePlaceURL" => null,
+                            "IsOnline" => true,
+                            "InGame" => false,
+                            "InStudio" => false,
+                            "ItemVisible" => true,
+                            "FriendshipStatus" => 0,
+                        ];
+                    }
+                    $response["TotalFriends"] = count($allrequests);
+                    die(json_encode($response));
+                    break;
+            }
+        }
+        
+    } else {
+        
+    }
+
+    die('{"UserId":1,"TotalFriends":0,"CurrentPage":0,"PageSize":0,"TotalPages":0,"FriendsType":"AllFriends","Friends":[]}');
 });
 
 $router->get('/catalog/contents', function(){
@@ -433,7 +679,24 @@ $router->get('/catalog/contents', function(){
 
 $router->get('/messages/api/get-my-unread-messages-count', function(){
     header("Content-type: application/json");
-    die('{"count":0}');
+    global $db;
+
+    $auth = new authentication();
+
+    if($auth->hasaccount()){
+        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        $count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
+
+        $thing = array(
+            "count"=>$count
+        );
+
+        die(json_encode($thing));
+    } else {
+        die('{"count":0}');
+    }
+
+    
 });
 
 $router->get('/friends/list', function() {

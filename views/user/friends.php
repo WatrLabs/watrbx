@@ -1,5 +1,6 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
+use watrlabs\authentication;
 $pagebuilder = new pagebuilder();
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css');
@@ -7,6 +8,17 @@ $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___0d3aed
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
 $pagebuilder->set_page_name("Friends");
 $pagebuilder->buildheader();
+
+$auth = new authentication();
+
+$loggedinuser = 0;
+
+if($auth->hasaccount()){
+    $loggedin = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+    $loggedinuser = $loggedin->id;
+}
+
+$thepageuser = $auth->getuserbyid($userid);
 
 ?>
 
@@ -24,15 +36,15 @@ $pagebuilder->buildheader();
 
 
 <div id="state-properties"
-     data-userid="62402235"
-     data-loggedinuserid="62402235"
+     data-userid="<?=$userid?>"
+     data-loggedinuserid="<?=$loggedinuser?>"
      data-removefriendurl="/api/friends/removefriend"
      data-acceptfriendurl="/api/friends/acceptfriendrequest"
      data-declinefriendurl="/api/friends/declinefriendrequest"
      data-declineallfriendsurl="/api/friends/declineallfriendrequests"
      data-followurl="/user/follow"
      data-unfollowurl="/api/user/unfollow"
-     data-username="ConnerMurphy07"></div>
+     data-username="<?=$thepageuser->username?>"></div>
 
 
 <div class="row page-content" ng-modules="robloxApp, ui.bootstrap, friends, robloxApp.helpers" ng-cloak ng-controller="friendsController">

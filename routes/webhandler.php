@@ -1,5 +1,6 @@
 <?php
 use watrlabs\router\Routing;
+use watrlabs\authentication;
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\watrkit\sanitize;
 
@@ -16,9 +17,64 @@ $router->get("/", function() {
     $page::get_template("index");
 });
 
+$router->get('/messages/compose', function(){
+    $page = new pagebuilder;
+    $page::get_template("compose");
+});
+
+$router->post('/messages/compose', function(){
+    if(isset($_POST["subject"]) && isset($_POST["body"]) && isset($_POST["__EVENTTARGET"])){
+        $subject = $_POST["subject"];
+        $body = $_POST["body"];
+        $userid = $_POST["__EVENTTARGET"];
+
+        $auth = new authentication();
+        $recipient = $auth->getuserbyid($userid);
+
+        if($auth->hasaccount()){
+            $currentuser = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+            if($recipient !== null){
+
+                global $db;
+
+                
+
+                $msgcount = $db->table("messages")->where("userfrom", $currentuser->id)->where("date", ">", time() - 60)->count();
+
+                if($msgcount >= 3){
+                    $page = new pagebuilder;
+                    $page::get_template("compose", ["error"=>"You're sending messages too fast!"]);
+                } else {
+                    $insert = array(
+                        "userfrom"=>$currentuser->id,
+                        "userto"=>$recipient->id,
+                        "subject"=>$subject,
+                        "body"=>$body,
+                        "date"=>time()
+                    );
+                    $db->table("messages")->insert($insert);
+                    $page = new pagebuilder;
+                    $page::get_template("compose", ["success"=>"Message sent to " . $recipient->username . "!"]);
+                }
+                
+            } else {
+                $page = new pagebuilder;
+                $page::get_template("compose", ["error"=>"Failed to send message."]);
+            }
+        } else {
+            header("Location: /");
+            die();
+        }
+
+    } else {
+        $page = new pagebuilder;
+        $page::get_template("compose", ["error"=>"Failed to send message. Are you sure you filled in everything?"]);
+    }
+});
+
 $router->get("/users/{userid}/friends", function($userid) {
     $page = new pagebuilder;
-    $page::get_template("user/friends");
+    $page::get_template("user/friends", ["userid"=>$userid]);
 });
 
 $router->get("/Games.aspx", function(){

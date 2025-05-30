@@ -3,6 +3,12 @@ use watrlabs\router\Routing;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
+$router->get('/Game/Join2014.ashx', function(){
+    header("Content-type: text/lua");
+    require("../storage/2014join.php");
+    die();
+});
+
 $router->get('/Asset/', function() {
         
     if(isset($_GET["id"])){
