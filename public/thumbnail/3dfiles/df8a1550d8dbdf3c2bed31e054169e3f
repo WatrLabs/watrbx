@@ -1,0 +1,28 @@
+newmtl Player12Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.4 0.4 0.4 
+
+d 1
+
+Ns 2295
+
+map_Ka 5ae7a3fdf5fc37a2e85aa804e0c421d8
+map_Kd 5ae7a3fdf5fc37a2e85aa804e0c421d8
+map_d 5ae7a3fdf5fc37a2e85aa804e0c421d8
+
+newmtl Player11Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.4 0.4 0.4 
+
+d 1
+
+Ns 2295
+
+map_Ka 6a3ff75896df01f986bbbe223888b704
+map_Kd 6a3ff75896df01f986bbbe223888b704
+map_d 6a3ff75896df01f986bbbe223888b704
+

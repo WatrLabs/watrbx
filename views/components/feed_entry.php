@@ -1,10 +1,22 @@
+<?php
+
+use watrlabs\authentication;
+$auth = new authentication();
+$poster = $auth->getuserbyid($feedentry->owner);
+?>
+
 <li class="list-item">
-    <a href="/My/Groups.aspx?gid=977619" class="list-header" ><img  class='header-thumb' src='http://t2.rbxcdn.com/e99c285d695363866e8bdd1de1117d98' /></a>
-        <div class="list-body">
-            <p class="list-content"><a href='/my/groups.aspx?gid=977619'>watrabi</a><div class='feedtext linkify'>"Welcome"</div></p>
-                <span class="rbx-text-notes rbx-font-sm">12/24/2015 at 7:45 AM</span>
-                    <a href="/abusereport/Feed?id=111276572">
-                        <span class="rbx-icon-report"></span>
-                </a>
-        </div>
+    <a href="/users/<?=$poster->id?>/profile" class="list-header">
+        <img class='header-thumb' src='/images/user.png' />
+    </a>
+    <div class="list-body">
+        <p class="list-content">
+            <a href='/users/<?=$poster->id?>/profile'><?=$poster->username?></a>
+            <div class='feedtext linkify'>"<?=$feedentry->content?>"</div>
+        </p>
+        <span class="rbx-text-notes rbx-font-sm"><?=date("n/j/Y \a\\t g:i A", $feedentry->date);?></span>
+        <a href="/abusereport/Feed?id=<?=$feedentry->id?>">
+            <span class="rbx-icon-report"></span>
+        </a>
+    </div>
 </li>

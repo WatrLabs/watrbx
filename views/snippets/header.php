@@ -4,6 +4,9 @@ $auth = new authentication();
 
 $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
 
+global $db;
+$count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
+
 $obc = '';
 
 if($userinfo->membership == "OutrageousBuildersClub"){
@@ -307,10 +310,11 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             <div data-behavior="nav-notification" class="rbx-nav-collapse" onselectstart="return false;">
                     <span class="rbx-icon-nav-menu"></span>
 
-                <div class="rbx-nav-notification hide rbx-font-xs"
-                     title="0">
-                    
-                </div>
+                    <?php
+                            if($count > 0){
+                                echo '<div class="rbx-nav-notification  rbx-font-xs" title="'.$count.'">'.$count.'</div>';
+                            }
+                        ?>
 
             </div>
             <div class="navbar-header">
@@ -442,9 +446,9 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                 <li><a href="/home" id="nav-home"><span class="rbx-icon-nav-home"></span><span>Home</span></a></li>
                 <li><a href="/users/<?=$userinfo->id?>/profile" id="nav-profile"><span class="rbx-icon-nav-profile"></span><span>Profile</span></a></li>
                 <li>
-                    <a href="/my/messages/#!/inbox" id="nav-message" data-count="0">
+                    <a href="/my/messages/#!/inbox" id="nav-message" data-count="<?=$count?>">
                         <span class="rbx-icon-nav-message"></span><span>Messages</span>
-                        <span class="rbx-highlight" title="0"></span>
+                        <span class="rbx-highlight" title="<?=$count?>"><? if($count > 0){ echo $count; } ?></span>
                     </a>
                 </li>
                 <li>

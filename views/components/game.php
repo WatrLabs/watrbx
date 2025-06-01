@@ -1,11 +1,16 @@
 <?php
 use Cocur\Slugify\Slugify;
+use watrbx\gameserver;
+use watrlabs\authentication;
 $slugify = new Slugify();
+$auth = new authentication();
+$gameserver = new gameserver();
 
 global $db;
-
 $upvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 1)->count();
 $downvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 0)->count();
+
+$owner = $auth->getuserbyid($game->owner);
 
 $bad = false;
 
@@ -23,7 +28,7 @@ $bad = false;
             <?=$game->title?>
         </span>
         <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            0 Players Online
+            <?=$gameserver->get_active_players($game->assetid)?> Players Online
         </span>
         <span class="rbx-votes">
             <div class="vote-bar">
@@ -33,7 +38,7 @@ $bad = false;
                 <div class="voting-container"
                      data-upvotes="<?=$upvotes?>"
                      data-downvotes="<?=$downvotes?>"
-                     data-voting-processed="<?=$bad?>">
+                     data-voting-processed="false">
                     <div class="background "></div>
                     <div class="votes"></div>
                     <div class="mask">
@@ -53,7 +58,7 @@ $bad = false;
             </div>
         </span>
         <span class="rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/2/profile">watrabi</cite>
+            by <cite class="rbx-link-sm" data-href="/users/<?=$owner->id?>/profile"><?=$owner->username?></cite>
         </span>
     </a>
 </li>

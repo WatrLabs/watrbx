@@ -8,6 +8,9 @@ $pagebuilder = new pagebuilder();
 
 if($auth->hasaccount()){
     $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+} else {
+    header("Location: /newlogin");
+    die();
 }
 
 $assetTypes = array(

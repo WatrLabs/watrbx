@@ -126,7 +126,7 @@ $pagebuilder->buildheader();
      data-impersonateurl=""
      data-mayupdatestatus="<?if($self){ echo "true"; } else { echo "false"; }?>"
      data-updatestatusurl="/home/updatestatus"
-     data-statustext='hi'
+     data-statustext='<?=$userinfo->blurb?>'
      data-editstatusmaxlength="254"
      profile-header-data
      profile-header-layout="profileHeaderLayout"

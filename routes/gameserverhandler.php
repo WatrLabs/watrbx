@@ -42,7 +42,7 @@ function validate_header(){
         }
 
     } else {
-        die(createerror("Gameserver is not authorized!", '', 401));
+        //adie(createerror("Gameserver is not authorized!", '', 401));
     }
 }
 
@@ -180,6 +180,12 @@ $router->get("/api/v1/gameserver/client-presence", function(){
                         "jobid"=>$jobid
                     );
 
+                    $visitsinsert = array(
+                        "userid"=>$userid,
+                        "universeid"=>$jobinfo->assetid // I need a better way of doing universes & assets
+                    );
+
+                    $db->table("visits")->insert($visitsinsert);
                     $db->table("activeplayers")->insert($insert);
                     
                     $log->internal_log("UserID: " . $userid . " has joined place " . $jobinfo->assetid);
@@ -278,18 +284,47 @@ $router->group('/api/v1/gameserver', function($router) {
         }
     });
 
+    $router->get('/render-queue', function(){
+        global $db;
+        header("Content-type: application/json");
+        $allofdem = $db->table('jobs')
+            ->where(function($q) {
+                $q->whereNotNull('assetid')
+                ->orWhereNotNull('userid');
+            })
+            ->where("type", 2)
+            ->get(); // fuckass sql query bro...
+
+        $success = [
+            "success"=>true,
+            "jobs"=>$allofdem
+        ];
+
+        die(json_encode($success));
+    });
+
+    $router->post('/add-render', function(){
+
+    });
+
     $router->get('/fetch-job-lua', function(){
         if(isset($_GET["jobid"])){
             $jobid = $_GET["jobid"];
+
+            $update = [
+                "status"=>1
+            ];
 
             global $db;
             $jobinfo = $db->table("jobs")->where("jobid", $jobid)->first();
 
             if($jobinfo !== null){
 
+                $db->table("jobs")->where("jobid", $jobid)->update($update);
+
                 if($jobinfo->type == 1){
                     # for gameservers
-                    header("Content-type: text/lua");
+                    
                     
                     $port = $jobinfo->port;
                     $place = $jobinfo->assetid;
@@ -297,9 +332,21 @@ $router->group('/api/v1/gameserver', function($router) {
                     $universeid = 1;
                     $apikey = $jobinfo->apikey;
                     $jobid = $jobinfo->jobid;
-                    
                     require("../storage/gameserver.php");
                     die();
+                } elseif($jobinfo->type == 2) {
+                    $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
+                    switch ($assetinfo->prodcategory){
+                        case "8":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/hat.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            die($lua);
+                            break;
+                    }
+
+                    echo "print(\"fuck\")";
+
                 }
 
             } else {

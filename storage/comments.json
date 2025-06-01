@@ -1,0 +1,18 @@
+{
+    "IsUserModerator": false,
+    "Comments": [
+        {
+            "Id": 0,
+            "PostedDate": "Dec 25, 2015 | 1:00 AM",
+            "AuthorName": "Username",
+            "AuthorId": 0,
+            "Text": "Comment Text",
+            "ShowAuthorOwnsAsset": false,
+            "Thumbnail": {
+                "Url": "https://www.watrbx.xyz/images/user.png",
+                "IsFinal": false
+            }
+        }
+    ],
+    "MaxRows": 10
+}

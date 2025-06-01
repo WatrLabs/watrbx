@@ -40,8 +40,6 @@ class gameserver {
             $serverinfo = $server;
         }
 
-        
-
         if($serverinfo == null){
             return false;
         }
@@ -252,6 +250,7 @@ class gameserver {
 
             $postdata = json_encode(array(
                 "jobid"=>$jobid,
+                "hostport"=>$jobinfo->port,
                 "port"=>$rccinstance->port
             ));
             //send_post_request($uri, $server, $data){
@@ -266,6 +265,34 @@ class gameserver {
             return false;
         }
 
+    }
+
+    static function get_active_players($placeid){
+        global $db;
+        return $db->table("activeplayers")->where("placeid", $placeid)->count();
+    }
+
+    static function get_visits($userid){
+        global $db;
+
+        $rows = $db->table("visits")
+            ->select($db->raw("MAX(id) as id"))
+            ->where("userid", $userid)
+            ->groupBy("universeid")
+            ->get();
+            
+        if(empty($rows)){
+            return false;
+        }
+
+        $unqiue = array_map(function($row) {
+            return $row->id;
+        }, $rows);
+    
+        return $db->table("visits")
+            ->whereIn("id", $unqiue)
+            ->orderBy("id", "desc")
+            ->get();
     }
 
     public function request_game($placeid){

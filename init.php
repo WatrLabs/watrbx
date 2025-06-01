@@ -32,13 +32,14 @@ try {
         'database'  => $_ENV["DB_NAME"],
         'username'  => $_ENV["DB_USER"],
         'password'  => $_ENV["DB_PASS"],
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci',
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
         'prefix'    => '', // if you have a prefix for all your tables.
     ];
 
     $connection = new Connection('mysql', $config);
     $db = $connection->getQueryBuilder(); 
 } catch (PDOException $e){
-    die("Failed to connect to the database.");
+    require("../views/really_bad_500.php");
+    die();
 }

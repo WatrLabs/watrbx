@@ -18,6 +18,11 @@ try {
 
         $auth = new authentication();
         $router = new routing();
+        
+        if($_ENV["ACTUAL_MAINTENANCE"] == "true"){
+            require("../views/really_bad_500.php");
+            die();
+        }
 
         if($_ENV["MAINTENANCE"] == "true"){
             if(isset($_COOKIE["maint_bypass"])){
@@ -83,8 +88,8 @@ try {
             $log = new discord();
             $log->internal_log($e, "Site Error!");
             ob_clean();
-            http_response_code(500);
-            die("A fatal error occured.");
+            require("../views/really_bad_500.php");
+            die();
         }
     }
 
@@ -100,7 +105,8 @@ try {
         $log->internal_log($e, "Site Error!");
         ob_clean();
         http_response_code(500);
-        die("A fatal error occured.");
+        require("../views/really_bad_500.php");
+        die();
     }
 
 }

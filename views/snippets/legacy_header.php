@@ -1,11 +1,14 @@
 <?php
 use watrlabs\authentication;
 $auth = new authentication();
-
+global $db;
 
 if($auth->hasaccount()){
     $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
 }
+
+$count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
+
 
 $obc = '';
 
@@ -317,6 +320,11 @@ Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnet
         <div class="rbx-navbar-header">
             <div data-behavior="nav-notification" class="rbx-nav-collapse" onselectstart="return false;">
                     <span class="rbx-icon-nav-menu"></span>
+                    <?php
+                            if($count > 0){
+                                echo '<div class="rbx-nav-notification  rbx-font-xs" title="'.$count.'">'.$count.'</div>';
+                            }
+                        ?>
             </div>
             <div class="navbar-header">
                 <a class="navbar-brand" href="/"><span class="logo logo-transitional"></span></a>
@@ -447,14 +455,15 @@ Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnet
                 <li><a href="/home" id="nav-home"><span class="rbx-icon-nav-home"></span><span>Home</span></a></li>
                 <li><a href="/users/<?=$userinfo->id?>/profile" id="nav-profile"><span class="rbx-icon-nav-profile"></span><span>Profile</span></a></li>
                 <li>
-                    <a href="/my/messages/#!/inbox" id="nav-message" data-count="0">
+                <a href="/my/messages/#!/inbox" id="nav-message" data-count="<?=$count?>">
                         <span class="rbx-icon-nav-message"></span><span>Messages</span>
+                        <span class="rbx-highlight" title="<?=$count?>"><? if($count > 0){ echo $count; } ?></span>
                     </a>
                 </li>
                 <li>
-                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="15">
+                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="0">
                         <span class="rbx-icon-nav-friends"></span><span>Friends</span>
-                        <span class="rbx-highlight" title="15"></span>
+                        <span class="rbx-highlight" title="0"></span>
                     </a>
                 </li>
                 <li>

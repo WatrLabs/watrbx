@@ -32,6 +32,7 @@ if($gameinfo == null){
     if($assetinfo == null){
         die("Failed to find asset!");
     }
+    $creator = $auth->getuserbyid($gameinfo->owner);
 
     $upvotes = $db->table("likes")->where("assetid", $id)->where("vote", 1)->count();
     $downvotes = $db->table("likes")->where("assetid", $id)->where("vote", 0)->count();
@@ -308,7 +309,7 @@ $pagebuilder->buildheader();
 
 
             <h1 class="rbx-para-overflow game-name" title="<?=$gameinfo->title?>"><?=$gameinfo->title?></h1>
-            <h4 class="game-creator"><span>By</span> <a class="rbx-link" href="/users/82471/profile">Dued1</a></h4>
+            <h4 class="game-creator"><span>By</span> <a class="rbx-link" href="/users/<?=$creator->id?>/profile"><?=$creator->username?></a></h4>
             <div class="game-play-buttons" data-autoplay="false">
 
 
@@ -565,7 +566,7 @@ $pagebuilder->buildheader();
     //<sl:translate>
     Roblox.PrivateServers.RenewRecurringTitle = "Renew Private Server";
     Roblox.PrivateServers.RenewRecurringBody = "Are you sure you want to enable future payments for your private VIP version of "
-    + "<?=$gameinfo->title?> by Dued1?<br><br>This VIP Server will start renewing every month at "
+    + "<?=$gameinfo->title?> by <?=$creator->username?>?<br><br>This VIP Server will start renewing every month at "
     + "<span class=\"currency CurrencyColor1\"><?=$gameinfo->privateserverprice?></span> until you cancel.";
     Roblox.PrivateServers.RenewRecurringAcceptText = "Renew Private Server";
     Roblox.PrivateServers.RenewRecurringDeclineText = "Back";
@@ -711,55 +712,24 @@ $pagebuilder->buildheader();
 
 <ul class="hlist game-list">
 
-<li class="list-item card game">
-    <a href="/games/9689581/ROBLOX-High-School" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="/Thumbs/Place.aspx" alt="ROBLOX High School"
-                     thumbnail='{"Final":true,"Url":"/Thumbs/Place.aspx","RetryUrl":null}' image-retry />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="ROBLOX High School" ng-non-bindable>
-            Place
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            0 Playing
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="0"
-                     data-downvotes="0"
-                     data-voting-processed="false">
-                    <div class="background "></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
-                    </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">0</div>
-                <div class="up-votes-count rbx-font-xs">0</div>
+<?php
+                    global $db;
 
-            </div>
-        </span>
-        <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/0/profile">nobody</cite>
-        </span>
-    </a>
-</li>
+                    $query = $db
+                        ->table("universes")
+                        ->where("public", 1)
+                        ->whereNot("id", $id)
+                        ->limit(6)
+                        ->orderBy($db->Raw("RAND()"));
 
+                    $allgames = $query->get();
+
+                    foreach ($allgames as $game) {
+                        echo $pagebuilder->build_component("game", [
+                            "game" => $game,
+                        ]);
+                    }
+                    ?>
 </ul>
                     </div>
             </div>
@@ -795,8 +765,8 @@ $pagebuilder->buildheader();
                                         data-expected-price="5"
                                         data-asset-type="Game Pass"
                                         data-bc-requirement="2"
-                                        data-expected-seller-id="82471"
-                                        data-seller-name="Dued1"
+                                        data-expected-seller-id="<?=$creator->id?>"
+                                        data-seller-name="<?=$creator->username?>"
                                         data-expected-currency="1">
                                     <span>Buy</span>
                                 </button>
@@ -1085,7 +1055,7 @@ $pagebuilder->buildheader();
     //<sl:translate>
     Roblox.PrivateServers.RenewRecurringTitle = "Renew Private Server";
     Roblox.PrivateServers.RenewRecurringBody = "Are you sure you want to enable future payments for your private VIP version of "
-    + "<?=$gameinfo->title?> by Dued1?<br><br>This VIP Server will start renewing every month at "
+    + "<?=$gameinfo->title?> by <?=$creator->username?>?<br><br>This VIP Server will start renewing every month at "
     + "<span class=\"currency CurrencyColor1\"><?=$gameinfo->privateserverprice?></span> until you cancel.";
     Roblox.PrivateServers.RenewRecurringAcceptText = "Renew Private Server";
     Roblox.PrivateServers.RenewRecurringDeclineText = "Back";

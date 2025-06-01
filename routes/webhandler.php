@@ -48,8 +48,8 @@ $router->post('/messages/compose', function(){
                     $insert = array(
                         "userfrom"=>$currentuser->id,
                         "userto"=>$recipient->id,
-                        "subject"=>$subject,
-                        "body"=>$body,
+                        "subject"=>htmlspecialchars($subject, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                        "body"=>htmlspecialchars($body, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                         "date"=>time()
                     );
                     $db->table("messages")->insert($insert);
@@ -85,6 +85,11 @@ $router->get("/Games.aspx", function(){
 $router->get("/temp/create-asset", function(){
     $page = new pagebuilder;
     $page::get_template("temp/uploadasset");
+});
+
+$router->get("/temp/universe-creator", function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/universe-creator");
 });
 
 $router->get("/users/{userid}/profile", function($userid) {

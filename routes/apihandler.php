@@ -4,8 +4,10 @@ use watrlabs\watrkit\sanitize;
 use watrlabs\authentication;
 use watrbx\gameserver;
 use watrbx\catalog;
+use Cocur\Slugify\Slugify;
 use watrbx\sitefunctions;
 use watrbx\relationship\friends;
+use asteroid\containers;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
@@ -60,6 +62,11 @@ $router->get("/avatar-thumbnail-3d/", function(){
     header("Content-type: application/json");
     
     die(file_get_contents("../storage/character.json"));
+});
+
+$router->get('/comments/get-json', function (){
+    header("Content-type: application/json");
+    die(file_get_contents("../storage/comments.json"));
 });
 
 $router->get('/avatar-thumbnail-3d/json', function(){
@@ -334,9 +341,31 @@ $router->post('/api/item.ashx', function(){
     }
 });
 
+$router->get('/container/info', function(){
+    $containers = new containers();
+    $container = $_ENV["CONTAINERID"];
+    $key = $_ENV["ASSETCONTAINERKEY"];
+    if(isset($_GET["container"])){
+        $container = $_GET["container"];
+    }
+    if(isset($_GET["key"])){
+        $key = $_GET["key"];
+    }
+    $containerinfo = $containers->get_container_files($container, $key);
+
+    $dataArray = (array) $containerinfo;
+
+    echo "<table border='1' cellpadding='5'><tr><th>Key</th><th>Value</th></tr>";
+    foreach ($dataArray as $key => $value) {
+        echo "<tr><td>{$key}</td><td>" . (is_array($value) ? json_encode($value) : $value) . "</td></tr>";
+    }
+    echo "</table>";
+});
+
 $router->post('/api/v1/asset-upload', function(){
 
     $auth = new authentication();
+    $containers = new containers();
 
     if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["product"]) && isset($_POST["robux"]) && isset($_POST["robux"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
 
@@ -368,14 +397,21 @@ $router->post('/api/v1/asset-upload', function(){
             );
 
             try {
-                
-                if(move_uploaded_file($_FILES["asset"]["tmp_name"], "../storage/assets/$md5")){
-                    $insertid = $db->table("assets")->insert($insert);
-                    die("Asset uploaded with asset id: " . $insertid);
+                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], $md5,'', $_ENV["ASSETCONTAINERID"], $_ENV["ASSETCONTAINERKEY"]);
+
+                if($response !== false){
+                    if(isset($response->error)){
+                        die($response->error);
+                    } else {
+                        $insertid = $db->table("assets")->insert($insert);
+                        die("Asset uploaded with asset id: " . $insertid);
+                    }
+                } else {
+                    die("Failed to upload asset!");
                 }
 
             } catch(ErrorException $e){
-                die("Failed to upload asset!");
+                die("Failed to upload asset! $e");
             }
 
         } else {
@@ -385,6 +421,149 @@ $router->post('/api/v1/asset-upload', function(){
     } else {
         die("Something was empty.");
     }
+});
+
+$router->post('/home/updatestatus', function(){
+    $auth = new authentication();
+    if(isset($_POST["status"]) && $auth->hasaccount()){
+        global $db;
+        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+
+        if(empty($_POST["status"])){
+            http_response_code(400);
+            die(json_encode(["success" => false, "message" => "Invalid request."]));
+        }
+
+        $msgcount = $db->table("feed")->where("owner", $userinfo->id)->where("date", ">", time() - 60)->count();
+
+        if($msgcount >= 3){
+            http_response_code(429);
+            die(json_encode(["success" => false, "message" => "You're updating your status too fast!"]));  
+        }
+
+        header("Content-type: application/json");
+        $status = htmlspecialchars($_POST["status"]);
+
+        $statusupdate = [
+            "blurb"=>$status
+        ];
+
+        $newfeed = [
+            "content"=>$status,
+            "owner"=>$userinfo->id,
+            "date"=>time()
+        ];
+
+        $db->table("users")->where("id", $userinfo->id)->update($statusupdate);
+        $db->table("feed")->insert($newfeed);
+        die(json_encode(["success"=>true, "message"=>$status]));
+
+    } else {
+        http_response_code(400);
+        die(json_encode(["success" => false, "message" => "Invalid request."]));
+    }
+});
+
+$router->post('/api/v1/universe-creator', function(){
+
+    $auth = new authentication();
+    $containers = new containers();
+
+    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
+
+        $md5 = md5_file($_FILES["asset"]["tmp_name"]);
+        global $db;
+
+        $title = htmlspecialchars($_POST["title"]);
+        $description = htmlspecialchars($_POST["description"]);
+        $prodcategory = 9;
+
+        $asset = $db->table("assets")->where("fileid", $md5)->first();
+        $info = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        $slugify = new slugify();
+        $slug = $slugify->slugify($title);
+        
+        $assetinsert = array(
+            "prodcategory"=>$prodcategory,
+            "name"=>$title,
+            "description"=>$description,
+            "robux"=>0,
+            "tix"=>0,
+            "fileid"=>$md5,
+            "created"=>time(),
+            "updated"=>time(),
+            "owner"=>$info->id
+        );
+
+        $universeinsert = array(
+            "title"=>$title,
+            "description"=>$description,
+            "owner"=>$info->id,
+            "assetid"=>0,
+            "public"=>1
+        );
+
+        if($asset == null){
+            try {
+                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], $md5,'', $_ENV["ASSETCONTAINERID"], $_ENV["ASSETCONTAINERKEY"]);
+
+                if($response !== false){
+                    if(isset($response->error)){
+                        die($response->error);
+                    } else {
+                        $insertid = $db->table("assets")->insert($assetinsert);
+                        $universeinsert["assetid"] = $insertid;
+                        $universeid = $db->table("universes")->insert($universeinsert);
+                        header("Location: /games/$universeid/$slug");
+                        die();
+                    }
+                } else {
+                    die("Failed to create universe!");
+                }
+
+            } catch(ErrorException $e){
+                die("Failed to create universe $e");
+            }
+
+        } else {
+            $insertid = $db->table("assets")->insert($assetinsert);
+            $universeinsert["assetid"] = $insertid;
+            $universeid = $db->table("universes")->insert($universeinsert);
+            header("Location: /games/$universeid/$slug");
+            die();
+        }
+
+    } else {
+        die("Something was empty.");
+    }
+});
+
+
+$router->post('/messages/api/mark-messages-read', function(){
+    $post = file_get_contents('php://input');
+    $decoded = json_decode($post);
+
+    if($decoded){
+
+        if(isset($decoded->messageIds)){
+            global $db;
+            $update = array(
+                "hasread"=>1,
+            );
+            foreach($decoded->messageIds as $messageid){
+                $db->table("messages")->where("id", $messageid)->update($update);
+            }
+            die('{"success":true}');
+        } else {
+            http_response_code(400);
+            die();
+        }
+
+    } else {
+        http_response_code(400);
+        die();
+    }
+
 });
 
 $router->get('/messages/api/get-messages', function(){
@@ -421,12 +600,52 @@ $router->get('/messages/api/get-messages', function(){
                     $senderinfo = $auth->getuserbyid($message->userfrom);
                     $response["Collection"][] = [
                         "Id"=>$message->id,
-                        "Sender"=>$senderinfo->username,
+                        "Sender"=>[
+                            "UserId"=>$senderinfo->id,
+                            "UserName"=>$senderinfo->username,
+                        ],
+                        "SenderThumbnail"=>[
+                            "Url"=>"/images/user.png",
+                            "Final"=>true,
+                        ],
                         "Subject"=>$message->subject,
-                        "Body"=>$message->body,
+                        "Body"=>nl2br($message->body),
                         "IsRead"=>$isread,
                         "IsSystemMessage"=>false,
-                        "DateSent"=>gmdate("Y-m-d\TH:i:s\Z", $message->date),
+                        "IsArchived"=>false,
+                        "Created"=>gmdate("Y-m-d\TH:i:s\Z", $message->date),
+                    ];
+                }
+                $response["TotalMessages"] = $msgcount;
+                die(json_encode($response));
+            case 1:
+                $allmessages = $db->table("messages")->where("userfrom", $userinfo->id)->orderBy("date", "DESC")->get();
+                $msgcount = count($allmessages);
+
+                foreach ($allmessages as $message){
+                    $isread = false;
+
+                    if($message->hasread == 1){
+                        $isread = true;
+                    }
+
+                    $senderinfo = $auth->getuserbyid($message->userfrom);
+                    $response["Collection"][] = [
+                        "id"=>$message->id,
+                        "Sender"=>[
+                            "UserId"=>$senderinfo->id,
+                            "UserName"=>$senderinfo->username,
+                        ],
+                        "SenderThumbnail"=>[
+                            "Url"=>"/images/user.png",
+                            "Final"=>true,
+                        ],
+                        "Subject"=>$message->subject,
+                        "Body"=>nl2br($message->body),
+                        "IsRead"=>$isread,
+                        "IsSystemMessage"=>false,
+                        "IsArchived"=>false,
+                        "Created"=>gmdate("Y-m-d\TH:i:s\Z", $message->date),
                     ];
                 }
                 $response["TotalMessages"] = $msgcount;
@@ -1290,6 +1509,11 @@ $router->get("/UserCheck/checkifinvalidusernameforsignup", function() {
 });
 
 $router->post('/api/v1/login', function() {
+
+    if($_ENV["CAN_LOGIN"] == "false"){
+        die(create_error("Login is currently disabled."));
+    }
+
     if(isset($_POST["username"]) && isset($_POST["password"]) || isset($_POST["Username"]) && isset($_POST["Password"])){
         if(isset($_POST["username"]) && isset($_POST["password"])){
             $username = $_POST["username"];

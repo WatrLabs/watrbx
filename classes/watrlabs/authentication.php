@@ -52,7 +52,7 @@ class authentication {
             $ip = $func->encrypt($ip);
         }
         
-        $session = $func->genstring(25);
+        $session = $func->genstring(250);
         
         if($author == 0){
             

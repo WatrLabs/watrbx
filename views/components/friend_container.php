@@ -13,7 +13,7 @@
 <div class="<? if(isset($ishome)){if($ishome){echo 'col-xs-12'; }}?> section home-friends">
   <div class="container-header">
     <h3>Friends (<?=$friendcount?>)</h3>
-    <a href="/friends.aspx#FriendsTab" class="rbx-btn-secondary-xs btn-more">See All</a>
+    <a href="/users/<?=$userid?>/friends" class="rbx-btn-secondary-xs btn-more">See All</a>
   </div>
   <ul class="hlist friend-list">
     <?php

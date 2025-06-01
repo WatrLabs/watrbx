@@ -1,7 +1,11 @@
 <?php
+global $db;
+
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrbx\relationship\friends;
+use watrbx\gameserver;
+$gameserver = new gameserver();
 $friends = new friends();
 $pagebuilder = new pagebuilder();
 $auth = new authentication();
@@ -22,6 +26,10 @@ if ($userinfo->membership !== "None") {
     $bc = null;
 }
 
+$recentlyvisited = $gameserver->get_visits($userinfo->id);
+if($recentlyvisited){
+    $recentlyvisited = array_slice($recentlyvisited, 0, 6);
+}
 $pagebuilder->addresource("cssfiles", "/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css");
 $pagebuilder->addresource("cssfiles","/CSS/Base/CSS/FetchCSS?path=page___47b79e13014f607f8bba2a5bcaeef6d8_m.css");
 $pagebuilder->addresource("jsfiles","/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip");
@@ -65,6 +73,28 @@ $pagebuilder->buildheader();
             $pagebuilder->build_component("friend_container", ["userid"=>$userinfo->id, "ishome"=>true]);
         }
     ?>
+
+    
+        <? if(!empty($recentlyvisited)){ ?>
+
+        <div id="recently-visited-places" class="col-xs-12 container-list home-games">
+            <div class="container-header">
+                <h3>Recently Played</h3>
+                <a href="/games?sortFilter=6" class="rbx-btn-secondary-xs btn-more">See All</a>
+            </div>
+            <ul class="hlist game-list">
+
+            
+            <?  foreach($recentlyvisited as $visit){
+                $universeinfo = $db->table("universes")->where("id", $visit->universeid)->first();
+                $pagebuilder->build_component("game", ["game" => $universeinfo]);
+            } ?>
+
+            </ul>
+        </div>
+
+        <? } ?>
+
           <div id="recently-visited-places" class="col-xs-12 container-list home-games">
                   <div class="container-header">
                     <h3>Recommended Games</h3>
@@ -72,7 +102,7 @@ $pagebuilder->buildheader();
                   </div>
                   <ul class="hlist game-list">
                     <?php
-                    global $db;
+                    
 
                     $query = $db
                         ->table("universes")
@@ -83,9 +113,7 @@ $pagebuilder->buildheader();
                     $allgames = $query->get();
 
                     foreach ($allgames as $game) {
-                        echo $pagebuilder->build_component("game", [
-                            "game" => $game,
-                        ]);
+                        echo $pagebuilder->build_component("game", ["game" => $game]);
                     }
                     ?>
                   </ul>
@@ -130,22 +158,22 @@ $pagebuilder->buildheader();
             
 
 <ul class="vlist feeds">
+<?php
+                    global $db;
 
-<li class="list-item">
-    <a href="/My/Groups.aspx?gid=950346" class="list-header">
-        <img class='header-thumb' src='/images/user.png' />
-    </a>
-    <div class="list-body">
-        <p class="list-content">
-            <a href='/users/2/profile'>watrabi</a>
-            <div class='feedtext linkify'>"hi"</div>
-        </p>
-        <span class="rbx-text-notes rbx-font-sm">9/6/2015 at 2:30 PM</span>
-        <a href="/abusereport/Feed?id=0">
-            <span class="rbx-icon-report"></span>
-        </a>
-    </div>
-</li>
+                    $query = $db
+                        ->table("feed")
+                        ->limit(10)
+                        ->orderBy("date", "DESC");
+
+                    $feed = $query->get();
+
+                    foreach ($feed as $feedentry) {
+                        echo $pagebuilder->build_component("feed_entry", [
+                            "feedentry" => $feedentry,
+                        ]);
+                    }
+                    ?>
         
 </ul>
         </div>
