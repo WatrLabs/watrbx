@@ -2,6 +2,8 @@
 use Cocur\Slugify\Slugify;
 use watrbx\gameserver;
 use watrlabs\authentication;
+use watrbx\thumbnails;
+$thumbs = new thumbnails();
 $slugify = new Slugify();
 $auth = new authentication();
 $gameserver = new gameserver();
@@ -10,6 +12,7 @@ global $db;
 $upvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 1)->count();
 $downvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 0)->count();
 
+$url = $thumbs->get_asset_thumb($game->assetid);
 $owner = $auth->getuserbyid($game->owner);
 
 $bad = false;
@@ -20,8 +23,8 @@ $bad = false;
         <span class="card-thumb-content game-thumb-content">
             <span class="card-thumb-wrapper game-thumb-wrapper"
                   >
-                <img class="card-thumb game-thumb" src="/Thumbs/Place.aspx" alt="<?=$game->title?>"
-                     thumbnail='{"Final":true,"Url":"/Thumbs/Place.aspx","RetryUrl":null}' image-retry />
+                <img class="card-thumb game-thumb" src="<?=$url?>" alt="<?=$game->title?>"
+                     thumbnail='{"Final":true,"Url":"<?=$url?>","RetryUrl":null}' image-retry />
             </span>
         </span>
         <span class="rbx-text-overflow rbx-game-title card-title" title="<?=$game->title?>" ng-non-bindable>

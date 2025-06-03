@@ -25,8 +25,7 @@ $router->get('/Asset/', function() {
         $asset = $db->table("assets")->where("id", $id)->first();
 
         if($asset !== null){
-            header("Content-type: application/octet-stream");
-            echo file_get_contents("../storage/assets/" . $asset->fileid);
+            header("Location: http://c0.watrbx.xyz/" . $asset->fileid);
             die();
         } else {
             $ch = curl_init("https://assetdelivery.roblox.com/v2/asset/?id=" . urlencode($id) . "&version=" . $version);
@@ -77,8 +76,7 @@ $router->get('/asset/', function() {
         $asset = $db->table("assets")->where("id", $id)->first();
 
         if($asset !== null){
-            header("Content-type: application/octet-stream");
-            echo file_get_contents("../storage/assets/" . $asset->fileid);
+            header("Location: http://c0.watrbx.xyz/" . $asset->fileid);
             die();
         } else {
             $ch = curl_init("https://assetdelivery.roblox.com/v2/asset/?id=" . urlencode($id) . "&version=" . $version);

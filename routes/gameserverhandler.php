@@ -2,6 +2,8 @@
 use watrlabs\router\Routing;
 use watrlabs\logging\discord;
 use watrbx\gameserver;
+use asteroid\containers;
+
 global $router; // IMPORTANT: KEEP THIS HERE!
 
 function createerror($error, $otherstuff = array(), $code = 400){
@@ -293,6 +295,7 @@ $router->group('/api/v1/gameserver', function($router) {
                 ->orWhereNotNull('userid');
             })
             ->where("type", 2)
+            //->where("status", 0)
             ->get(); // fuckass sql query bro...
 
         $success = [
@@ -304,27 +307,74 @@ $router->group('/api/v1/gameserver', function($router) {
     });
 
     $router->post('/add-render', function(){
+        if(isset($_POST["jobid"]) && isset($_POST["response"])){
+            $jobid = $_POST["jobid"];
+            $response = $_POST["response"];
 
+            global $db;
+            $jobinfo = $db->table("jobs")->where("jobid", $jobid)->first();
+
+            if($jobinfo !== null){
+                $halfcleaned = str_replace('<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://watrbx.xyz/RCCServiceSoap" xmlns:ns1="http://watrbx.xyz/" xmlns:ns3="http://watrbx.xyz/RCCServiceSoap12"><SOAP-ENV:Body><ns1:OpenJobExResponse><ns1:OpenJobExResult><ns1:LuaValue><ns1:type>LUA_TSTRING</ns1:type><ns1:value>', '', $response);
+                $cleaned = str_replace('</ns1:value></ns1:LuaValue></ns1:OpenJobExResult></ns1:OpenJobExResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>', '', $halfcleaned);
+
+                $img = base64_decode($cleaned);
+                if($img){
+
+                    $md5 = md5($img);
+
+                    $containers = new containers();
+
+                    $isuploaded = $containers->upload_file('', $cleaned, $md5,'');
+                    if(isset($isuploaded->success)){
+                        if($isuploaded->success == true){
+                            $insert = [
+                                "dimensions"=>$jobinfo->dimensions,
+                                "file"=>$md5
+                            ];
+        
+                            if(isset($jobinfo->userid)){
+                                $insert["userid"] = $jobinfo->userid;
+                            }
+        
+                            if(isset($jobinfo->assetid)){
+                                $insert["assetid"] = $jobinfo->assetid;
+                            }
+        
+                            $insertid = $db->table("thumbnails")->insert($insert);
+                            $update = [
+                                "status"=>1
+                            ];
+                            $db->table("jobs")->where("jobid", $jobinfo->jobid)->update($update);
+                            die(createsuccess('it worked.'));
+                        } else {
+                            die(createerror("Something went wrong."));
+                        }   
+                    }
+
+                }
+
+            } else {
+                die(createerror("Failed to find job.", '', 404));    
+            }
+
+        } else {
+            die(createerror("Bad Request!", '', 400));    
+        }
     });
 
     $router->get('/fetch-job-lua', function(){
         if(isset($_GET["jobid"])){
             $jobid = $_GET["jobid"];
 
-            $update = [
-                "status"=>1
-            ];
-
             global $db;
             $jobinfo = $db->table("jobs")->where("jobid", $jobid)->first();
 
             if($jobinfo !== null){
 
-                $db->table("jobs")->where("jobid", $jobid)->update($update);
-
                 if($jobinfo->type == 1){
                     # for gameservers
-                    
                     
                     $port = $jobinfo->port;
                     $place = $jobinfo->assetid;
@@ -343,10 +393,37 @@ $router->group('/api/v1/gameserver', function($router) {
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
                             die($lua);
                             break;
+                        case "9":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/place.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            die($lua);
+                            break;
+                        case "11":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/shirt.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            die($lua);
+                            break;
+                        case "12":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/pant.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            die($lua);
+                            break;
+                        case "17":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/head.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            die($lua);
+                            break;
+                        case "13":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/decal.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            die($lua);
+                            break;
                     }
-
-                    echo "print(\"fuck\")";
-
                 }
 
             } else {

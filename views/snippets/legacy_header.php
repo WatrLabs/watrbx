@@ -45,6 +45,13 @@ if($userinfo->membership == "OutrageousBuildersClub"){
     <script type="text/javascript" src="<?= $url ?>"></script>
     <?php }} ?>
     <?=$obc?>
+
+    <style>
+        .original-image {
+            height: 100px;
+            width: 100px;
+        }
+    </style>
     
 	<script type="text/javascript">
 

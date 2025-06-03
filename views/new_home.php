@@ -58,7 +58,7 @@ $pagebuilder->buildheader();
 
     <div class="col-xs-12 home-header">
         <a href="/users/<?= $userinfo->id ?>/profile" class="home-thumbnail-bust" >
-            <img alt="avatar" src="/headshot.png" />
+            <img alt="avatar" src="/images/defaultimage.png" />
         </a>
         <div class="home-header-content">
             <h1>

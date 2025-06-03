@@ -278,13 +278,7 @@ $pagebuilder->buildheader();
 
 
             <div class="item active">
-<span ><img  class='CarouselThumb' src='/temp/6142862bec7e76846e1affab21bff7a6.png' /></span>                    <div class="carousel-caption">
-                    </div>
-
-
-            </div>
-            <div class="item ">
-<span ><img  class='CarouselThumb' src='/temp/ca55b25de082481da278890c605fdf2c.png' /></span>                    <div class="carousel-caption">
+<span ><img  class='CarouselThumb' src='/images/defaultwide.png' /></span>                    <div class="carousel-caption">
                     </div>
 
 

@@ -9,6 +9,7 @@ $pagebuilder->addresource('jsfiles', '/js/8220b4ecd0fe4da790391da3fd0b442c.js.gz
 $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/ec43bbe2464c7dead5f4c5f723965c3a.js.gzip');
+$pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
 
 //$pagebuilder->addresource('jsfiles', '/js/4eedc3a9c944bd9a29f80c2e9668dfdb.js.gzip');
 $pagebuilder->setlegacy(true);
@@ -87,7 +88,7 @@ $pagebuilder->buildheader();
      data-is-invitation-pending="False"
      data-group-id="1"
      data-is-in-other-clan="False"
-     data-group-name="Watrbx Fan Club"></div>
+     data-group-name="watrbx fan club"></div>
 
             <div id="left-column">
 <!--                <div class="GroupListContainer StandardBox">
@@ -116,15 +117,15 @@ $pagebuilder->buildheader();
                 
                 <div class="GroupListItemContainer selected">
                     <div class="GroupListImageContainer notranslate">                                                
-                        <a id="ctl00_cphRoblox_MyGroupsPane_SmallGroupThumbnails_ctrl0_ctl00_AssetImage1" title="Watrbx Fan Club" href="/My/Groups.aspx?gid=1" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="/headshot.png" height="42" width="42" border="0" alt="Watrbx Fan Club" /></a>
+                        <a id="ctl00_cphRoblox_MyGroupsPane_SmallGroupThumbnails_ctrl0_ctl00_AssetImage1" title="watrbx fan club" href="/My/Groups.aspx?gid=1" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="/images/defaultimage.png" height="42" width="42" border="0" alt="watrbx fan club" /></a>
                     </div>
-                    <div class="GroupListName notranslate">Watrbx Fan Club</div>
+                    <div class="GroupListName notranslate">watrbx fan club</div>
                     <div style="clear:both;"></div>
                 </div>
             
                 <div class="GroupListItemContainer ">
                     <div class="GroupListImageContainer notranslate">                                                
-                        <a id="ctl00_cphRoblox_MyGroupsPane_SmallGroupThumbnails_ctrl0_ctl01_AssetImage1" title="Watrbx Admin Group" href="/My/Groups.aspx?gid=2" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="http://t4.rbxcdn.com/f09c3e21f07cf4b5c0d76f8f6a41848e" height="42" width="42" border="0" alt="Watrbx Admin Group" /></a>
+                        <a id="ctl00_cphRoblox_MyGroupsPane_SmallGroupThumbnails_ctrl0_ctl01_AssetImage1" title="Watrbx Admin Group" href="/My/Groups.aspx?gid=2" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="/images/defaultimage.png" height="42" width="42" border="0" alt="Watrbx Admin Group" /></a>
                     </div>
                     <div class="GroupListName notranslate">Watrbx Admin Group</div>
                     <div style="clear:both;"></div>
@@ -169,7 +170,7 @@ $pagebuilder->buildheader();
                     <div class="GroupPanelContainer">
                         <div class="left-col">
                             <div class="GroupThumbnail">
-                                <a id="ctl00_cphRoblox_GroupDescriptionEmblem" title="Watrbx Fan Club" onclick="__doPostBack(&#39;ctl00$cphRoblox$GroupDescriptionEmblem&#39;,&#39;&#39;)" style="display:inline-block;cursor:pointer;"><img src="/headshot.png" height="150" width="150" border="0" alt="Watrbx Fan Club" /></a>
+                                <a id="ctl00_cphRoblox_GroupDescriptionEmblem" title="watrbx fan club" onclick="__doPostBack(&#39;ctl00$cphRoblox$GroupDescriptionEmblem&#39;,&#39;&#39;)" style="display:inline-block;cursor:pointer;"><img src="/images/defaultimage.png" height="150" width="150" border="0" alt="watrbx fan club" /></a>
                             </div>
                             <div class="GroupOwner">
                                 
@@ -186,12 +187,12 @@ $pagebuilder->buildheader();
                             </div>
                         </div>
                         <div class="right-col">
-                            <h2 class="notranslate">Watrbx Fan Club</h2>
+                            <h2 class="notranslate">watrbx fan club</h2>
                             <div id="GroupDescP" class="linkify">
-                                <pre class="notranslate">Welcome To The Watrbx Fan Club
+                                <pre class="notranslate">Welcome To The watrbx fan club
 </pre>
                             </div>
-                            <input type="hidden" id="GroupDesc_Full" class="notranslate" value="Welcome To The Watrbx Fan Club" />
+                            <input type="hidden" id="GroupDesc_Full" class="notranslate" value="Welcome To The watrbx fan club" />
                             <div id="ctl00_cphRoblox_AbuseReportButton_AbuseReportPanel" class="ReportAbuse">
   
     <span class="AbuseIcon"><a id="ctl00_cphRoblox_AbuseReportButton_ReportAbuseIconHyperLink" href="/abusereport/group?id=1&amp;RedirectUrl=http%3a%2f%2f%2fmy%2fgroups.aspx"><img src="../images/abuse.PNG?v=2" alt="Report Abuse" style="border-width:0px;" /></a></span>
@@ -251,7 +252,7 @@ $pagebuilder->buildheader();
                                 
 <div class="results-container" data-page="1" data-group-id="1">
         <div class="GroupPlace">
-                <div><a href="/games/1/work-at-a-pizza-place"><img src="http://t5.rbxcdn.com/f90baa8a4ecabbccee1db18f88a77158" data-retry-url="" title="Work At A Pizza Place!"></a></div>
+                <div><a href="/games/1/work-at-a-pizza-place"><img src="/images/defaultimage.png" data-retry-url="" title="Work At A Pizza Place!"></a></div>
             <div class="PlaceName">
                     <a class="NameText" href="/games/1/work-at-a-pizza-place">Work At A Pizza Place!</a>
             </div>
@@ -493,7 +494,7 @@ $pagebuilder->buildheader();
                         
                         <div class="AlternatingItemTemplateOdd">
                             <div class="RepeaterImage" >
-                                <a id="ctl00_cphRoblox_GroupWallPane_GroupWall_ctrl0_hlAvatar" class=" notranslate" title="ROBLOX" class=" notranslate" href="/users/1/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="http://t0.rbxcdn.com/065347c3a7d88bfdc66f4a50c2c4bd1b" height="100" width="100" border="0" alt="ROBLOX" class=" notranslate" /><img src="/images/icons/overlay_bcOnly.png" class="bcOverlay" align="left" style="position:relative;top:-19px;" /></a>                   
+                                <a id="ctl00_cphRoblox_GroupWallPane_GroupWall_ctrl0_hlAvatar" class=" notranslate" title="ROBLOX" class=" notranslate" href="/users/1/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="/images/defaultimage.png" height="100" width="100" border="0" alt="ROBLOX" class=" notranslate" /><img src="/images/icons/overlay_bcOnly.png" class="bcOverlay" align="left" style="position:relative;top:-19px;" /></a>                   
                             </div>
                             <div class="RepeaterText" >
                                 <div class="GroupWall_PostContainer notranslate linkify">
@@ -530,7 +531,7 @@ $pagebuilder->buildheader();
                     
                         <div class="AlternatingItemTemplateEven">
                             <div class="RepeaterImage" >
-                                <a id="ctl00_cphRoblox_GroupWallPane_GroupWall_ctrl1_hlAvatar" class=" notranslate" title="watrabi" class=" notranslate" href="/users/2/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="http://t3.rbxcdn.com/6b38c7f780f30987df76731aba370b16" height="100" width="100" border="0" alt="watrabi" class=" notranslate" /></a>                 
+                                <a id="ctl00_cphRoblox_GroupWallPane_GroupWall_ctrl1_hlAvatar" class=" notranslate" title="watrabi" class=" notranslate" href="/users/2/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="/images/defaultimage.png" height="100" width="100" border="0" alt="watrabi" class=" notranslate" /></a>                 
                             </div>
                             <div class="RepeaterText" >
                                 <div class="GroupWall_PostContainer notranslate linkify">
@@ -658,7 +659,7 @@ $pagebuilder->buildheader();
             <div>
                 <p>Creating a group requires a Builders Club membership.</p>
                 <div style="text-align: center; margin: 5px 10px 0px 0px">
-                    <a class="btn-neutral btn-medium" style="cursor: pointer" href="https:///premium/membership"><span>Get BC!</span></a>
+                    <a class="btn-neutral btn-medium" style="cursor: pointer" href="/premium/membership"><span>Get BC!</span></a>
                     <a class="btn-negative btn-medium" onclick="GetBC.close();return false;" style="cursor: pointer"><span>Cancel</span></a>
                 </div>
             </div>

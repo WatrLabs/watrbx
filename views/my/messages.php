@@ -19,18 +19,6 @@ $pagebuilder->buildheader();
 
 ?>
 
-<script type='text/javascript' src='https://js.rbxcdn.com/0392919e76186a11f81ea25aa97bf5b7.js.gzip'></script>
-
-<script type='text/javascript' src='https://js.rbxcdn.com/56323c0f48e307896413a398ca63f18c.js.gzip'></script>
-
-<script type='text/javascript'>Roblox.config.externalResources = [];Roblox.config.paths['Pages.Catalog'] = 'http://js.rbxcdn.com/c1d70e1b98c87fcdb85e894b5881f60c.js.gzip';Roblox.config.paths['Pages.CatalogShared'] = 'http://js.rbxcdn.com/bd76a582ffb966eb0af3f16d61defa7f.js.gzip';Roblox.config.paths['Pages.Messages'] = 'http://js.rbxcdn.com/b123274ceba7c65d8415d28132bb2220.js.gzip';Roblox.config.paths['Resources.Messages'] = 'http://js.rbxcdn.com/6307f9bd9c09fa9d88c76291f3b68fda.js.gzip';Roblox.config.paths['Widgets.AvatarImage'] = 'http://js.rbxcdn.com/64f4ed4d4cf1c0480690bc39cbb05b73.js.gzip';Roblox.config.paths['Widgets.DropdownMenu'] = 'http://js.rbxcdn.com/5cf0eb71249768c86649bbf0c98591b0.js.gzip';Roblox.config.paths['Widgets.GroupImage'] = 'http://js.rbxcdn.com/556af22c86bce192fb12defcd4d2121c.js.gzip';Roblox.config.paths['Widgets.HierarchicalDropdown'] = 'http://js.rbxcdn.com/7689b2fd3f7467640cda2d19e5968409.js.gzip';Roblox.config.paths['Widgets.ItemImage'] = 'http://js.rbxcdn.com/d689e41830fba6bc49155b15a6acd020.js.gzip';Roblox.config.paths['Widgets.PlaceImage'] = 'http://js.rbxcdn.com/45d46dd8e2bd7f10c17b42f76795150d.js.gzip';Roblox.config.paths['Widgets.SurveyModal'] = 'http://js.rbxcdn.com/56ad7af86ee4f8bc82af94269ed50148.js.gzip';</script>
-
-<script type='text/javascript' src='https://js.rbxcdn.com/6385cae49dc708a8f2f93167ad17466d.js.gzip'></script>
-<script type='text/javascript' src='https://js.rbxcdn.com/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip'></script>
-<script type='text/javascript' src='https://js.rbxcdn.com/f3251ed8271ce1271b831073a47b65e3.js.gzip'></script>
-<script type='text/javascript' src='https://js.rbxcdn.com/77026e0e8875389783edcd7224c6e72b.js.gzip'></script>
-
-
 <div id="AdvertisingLeaderboard">
                 
 
@@ -47,7 +35,7 @@ $pagebuilder->buildheader();
         var Roblox = Roblox || {};
         Roblox.messagesModel = {};
         Roblox.messagesModel = {
-            totalAnnouncements : "1",
+            totalAnnouncements : "0",
             maxPrivateMessageLength : "9000",
             minimumAdRefreshInterval: "1000",
             lastAdRefresh: new Date()
@@ -83,7 +71,7 @@ $pagebuilder->buildheader();
     Roblox.messageDefaults = {
         robloxUserId: 1,
         robloxUserName: "ROBLOX",
-        robloxUserThumbnail: "/images/user.png",
+        robloxUserThumbnail: "/images/defaultimage.png",
         robloxUserAbsoluteUrl: "/users/1/profile/"
     };
     </script>

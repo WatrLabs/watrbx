@@ -7,7 +7,7 @@ $poster = $auth->getuserbyid($feedentry->owner);
 
 <li class="list-item">
     <a href="/users/<?=$poster->id?>/profile" class="list-header">
-        <img class='header-thumb' src='/images/user.png' />
+        <img class='header-thumb' src='/images/defaultimage.png' />
     </a>
     <div class="list-body">
         <p class="list-content">

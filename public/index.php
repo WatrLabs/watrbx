@@ -88,6 +88,7 @@ try {
             $log = new discord();
             $log->internal_log($e, "Site Error!");
             ob_clean();
+            echo $e;
             require("../views/really_bad_500.php");
             die();
         }
@@ -105,6 +106,7 @@ try {
         $log->internal_log($e, "Site Error!");
         ob_clean();
         http_response_code(500);
+        echo $e;
         require("../views/really_bad_500.php");
         die();
     }

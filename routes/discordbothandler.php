@@ -38,7 +38,7 @@ $router->group('/api/v1/discord-bot', function($router) {
                 $auth = new authentication();
                 $online = $auth->is_online($userinfo->id);
                 $userdata = array(
-                    "render"=>"https://www.watrbx.xyz/images/user.png",
+                    "render"=>"https://www.watrbx.xyz/images/defaultimage.png",
                     "id"=>$userinfo->id,
                     "username"=>$userinfo->username,
                     "regtime"=>$userinfo->regtime,

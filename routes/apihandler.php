@@ -1,4 +1,5 @@
 <?php
+use watrbx\thumbnails;
 use watrlabs\router\Routing;
 use watrlabs\watrkit\sanitize;
 use watrlabs\authentication;
@@ -397,14 +398,16 @@ $router->post('/api/v1/asset-upload', function(){
             );
 
             try {
-                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], $md5,'', $_ENV["ASSETCONTAINERID"], $_ENV["ASSETCONTAINERKEY"]);
+                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], '', $md5,'');
 
                 if($response !== false){
-                    if(isset($response->error)){
-                        die($response->error);
-                    } else {
-                        $insertid = $db->table("assets")->insert($insert);
-                        die("Asset uploaded with asset id: " . $insertid);
+                    if(isset($response->success)){
+                        if($response->success == true){
+                            $insertid = $db->table("assets")->insert($insert);
+                            die("Asset uploaded with asset id: " . $insertid);
+                        } else {
+                            die("Failed to upload asset!");
+                        }
                     }
                 } else {
                     die("Failed to upload asset!");
@@ -462,6 +465,58 @@ $router->post('/home/updatestatus', function(){
         http_response_code(400);
         die(json_encode(["success" => false, "message" => "Invalid request."]));
     }
+});
+
+$router->get('/item-thumbnails', function(){
+    //var_dump($_GET);
+
+    if(isset($_GET["jsoncallback"]) && isset($_GET["params"])){
+        $jsoncallback = $_GET["jsoncallback"];
+        $params = $_GET["params"];
+
+        $decoded = @json_decode($params);
+
+        if($decoded){
+            global $db;
+            $thumbs = new thumbnails();
+            $allthumbs = [
+
+            ];
+            foreach ($decoded as $thumbnail){
+                if(isset($thumbnail->assetId)){
+                    $url = $thumbs->get_asset_thumb($thumbnail->assetId);
+                    $assetinfo = $db->table("assets")->where("id", $thumbnail->assetId)->first();
+
+                    $allthumbs[] = [
+                        "id"=>$thumbnail->assetId,
+                        "name"=>$assetinfo->name,
+                        "url"=>"theitem-item?id=" . $thumbnail->assetId,
+                        "thumbnailFinal"=>true,
+                        "thumbnailUrl"=>$url,
+                        "bcOverlayUrl"=>null,
+                        "limitedOverlayUrl"=>null,
+                        "deadlineOverlayUrl"=>null,
+                        "limitedAltText"=>null,
+                        "newOverlayUrl"=>null,
+                        "imageSize"=>"large",
+                        "saleOverlayUrl"=>null,
+                        "iosOverlayUrl"=>null,
+                        "transparentBackground"=>true
+                    ];
+
+                    die("$jsoncallback(".json_encode($allthumbs).")");
+                }
+            }
+        } else {
+            http_response_code(400);
+            die();
+        }
+    } else {
+        http_response_code(400);
+        die();
+    }
+
+    die(); 
 });
 
 $router->post('/api/v1/universe-creator', function(){
@@ -605,7 +660,7 @@ $router->get('/messages/api/get-messages', function(){
                             "UserName"=>$senderinfo->username,
                         ],
                         "SenderThumbnail"=>[
-                            "Url"=>"/images/user.png",
+                            "Url"=>"/images/defaultimage.png",
                             "Final"=>true,
                         ],
                         "Subject"=>$message->subject,
@@ -637,7 +692,7 @@ $router->get('/messages/api/get-messages', function(){
                             "UserName"=>$senderinfo->username,
                         ],
                         "SenderThumbnail"=>[
-                            "Url"=>"/images/user.png",
+                            "Url"=>"/images/defaultimage.png",
                             "Final"=>true,
                         ],
                         "Subject"=>$message->subject,
@@ -822,7 +877,7 @@ $router->get('/users/friends/list-json', function(){
                             "UserId" => $friend->id,
                             "AbsoluteURL" => "/users/$friend->id/profile/",
                             "Username" => $friend->username,
-                            "AvatarUri" => "https://watrbx.xyz/images/user.png",
+                            "AvatarUri" => "https://watrbx.xyz/images/defaultimage.png",
                             "AvatarFinal" => true,
                             "OnlineStatus" => [
                                 "LocationOrLastSeen" => "Website",
@@ -831,7 +886,7 @@ $router->get('/users/friends/list-json', function(){
                             ],
                             "Thumbnail" => [
                                 "Final" => true,
-                                "Url" => "https://watrbx.xyz/images/user.png",
+                                "Url" => "https://watrbx.xyz/images/defaultimage.png",
                                 "RetryUrl" => null
                             ],
                             "InvitationId" => 0,
@@ -856,7 +911,7 @@ $router->get('/users/friends/list-json', function(){
                             "UserId" => $friend->user_id,
                             "AbsoluteURL" => "/users/$friend->user_id/profile/",
                             "Username" => $friend->username,
-                            "AvatarUri" => "https://watrbx.xyz/images/user.png",
+                            "AvatarUri" => "https://watrbx.xyz/images/defaultimage.png",
                             "AvatarFinal" => true,
                             "OnlineStatus" => [
                                 "LocationOrLastSeen" => "Website",
@@ -865,7 +920,7 @@ $router->get('/users/friends/list-json', function(){
                             ],
                             "Thumbnail" => [
                                 "Final" => true,
-                                "Url" => "https://watrbx.xyz/images/user.png",
+                                "Url" => "https://watrbx.xyz/images/defaultimage.png",
                                 "RetryUrl" => null
                             ],
                             "InvitationId" => $friend->invitation_id,

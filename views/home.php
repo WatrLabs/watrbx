@@ -33,7 +33,7 @@ $pagebuilder->buildheader();
               <div id="HomeContainer" class="row home-container" data-facebook-share="/facebook/share-character" data-update-status-url="/home/updatestatus" data-should-show-enable-two-step-verification-call-to-action=True>
                 <div class="col-xs-12 home-header">
                   <a href="/User.aspx" class="home-thumbnail-bust">
-                    <img alt="avatar" src="/headshot.png" />
+                    <img alt="avatar" src="/images/defaultimage.png" />
                   </a>
                   <div class="home-header-content ">
                     <h1>
@@ -51,7 +51,7 @@ $pagebuilder->buildheader();
                     <li class="list-item friend">
                       <a href="/users/2/profile" class="friend-link" title="watrabi">
                         <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
+                          <img alt='watrabi' class='' src='/images/defaultimage.png' />
                         </span>
                         <span class="friend-name rbx-text-overflow">watrabi</span>
                         <span class="friend-status rbx-icon-online" title="Website"></span>
@@ -60,7 +60,7 @@ $pagebuilder->buildheader();
                     <li class="list-item friend">
                       <a href="/users/3/profile" class="friend-link" title="watrabi">
                         <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
+                          <img alt='watrabi' class='' src='/images/defaultimage.png' />
                         </span>
                         <span class="friend-name rbx-text-overflow">sword</span>
                         <span class="friend-status rbx-icon-instudio" title="In Studio"></span>
@@ -69,7 +69,7 @@ $pagebuilder->buildheader();
                     <li class="list-item friend">
                       <a href="/users/5/profile" class="friend-link" title="watrabi">
                         <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
+                          <img alt='watrabi' class='' src='/images/defaultimage.png' />
                         </span>
                         <span class="friend-name rbx-text-overflow">MugMan</span>
                         <span class="friend-status rbx-icon-ingame" title="In Game"></span>
@@ -78,7 +78,7 @@ $pagebuilder->buildheader();
                     <li class="list-item friend">
                       <a href="/users/149/profile" class="friend-link" title="watrabi">
                         <span class="friend-avatar" data-3d-url="/avatar-thumbnail-3d/json?userId=72230447" data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip'>
-                          <img alt='watrabi' class='' src='/images/user.png' />
+                          <img alt='watrabi' class='' src='/images/defaultimage.png' />
                         </span>
                         <span class="friend-name rbx-text-overflow">jamesniche</span>
                       </a>
@@ -158,7 +158,7 @@ $pagebuilder->buildheader();
                     <ul class="vlist feeds">
                       <li class="list-item">
                         <a href="/My/Groups.aspx?gid=950346" class="list-header">
-                          <img class='header-thumb' src='/images/user.png' />
+                          <img class='header-thumb' src='/images/defaultimage.png' />
                         </a>
                         <div class="list-body">
                           <p class="list-content">

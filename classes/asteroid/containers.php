@@ -8,25 +8,34 @@ class containers {
 
     private $containerurl = 0;
     private $containerport = 0;
-    private $containerid = "";
+    private $containeradminkey = "";
     private $containerkey = "";
 
     function __construct(){
-        if($_ENV["CONTAINERURL"]){
-            $this->containerurl = $_ENV["CONTAINERURL"];
-        }
+        $this->containerurl = $_ENV["CONTAINERURL"];
+        $this->containerport = $_ENV["CONTAINERPORT"];
+        $this->containeradminkey = $_ENV["CONTAINERADMINKEY"];
 
-        if($_ENV["CONTAINERPORT"]){
-            $this->containerport = $_ENV["CONTAINERPORT"];
-        }
+        $post_data = [
+            "role"=>"site",
+            "adminKey"=>$this->containeradminkey,
+        ];
 
-        if($_ENV["CONTAINERID"]){
-            $this->containerid = $_ENV["CONTAINERID"];
-        }
+        $url = $this->compile_url('/api/auth/request-token');
 
-        if($_ENV["CONTAINERKEY"]){
-            $this->containerkey = $_ENV["CONTAINERKEY"];
+        $newkey = $this->send_post_request($url, json_encode($post_data));
+        $decoded = json_decode($newkey);
+
+        if(!empty($decoded)){
+            if(isset($decoded->token)){
+                $this->containerkey = $decoded->token;
+            } else {
+                throw new \ErrorException("Failed to fetch storage token");
+            }
+        } else {
+            throw new \ErrorException("Failed to fetch storage token");
         }
+        
     }
 
     public function send_get_request($url){
@@ -36,7 +45,7 @@ class containers {
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            "Container-Key: " . $this->containerkey,
+            "Authorization: " . $this->containerkey,
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
@@ -57,7 +66,8 @@ class containers {
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            "Container-Key: " . $this->containerkey,
+            "Content-type: application/json",
+            "Authorization: " . $this->containerkey,
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
@@ -69,9 +79,6 @@ class containers {
         }
     }
 
-
-
-
     public function compile_url($uri){
         $url = $this->containerurl . ":" . $this->containerport . $uri;
         return $url;
@@ -82,16 +89,8 @@ class containers {
         return;
     }
 
-    public function get_container_files($container = null, $key = null){
-        if($container == null && $key == null){
-            $container = $this->containerid;
-            $key = $this->containerkey;
-        } else {
-            $this->set_container_key($key);
-        }
-
-        $urlcontainer = urlencode($container);
-        $allfilesurl = $this->compile_url("/api/containers/$urlcontainer/files");
+    public function get_container_files($container = null){
+        $allfilesurl = $this->compile_url("/api/files/list");
         $response = $this->send_get_request($allfilesurl);
 
         if($response){
@@ -102,16 +101,8 @@ class containers {
 
     }
 
-    public function get_container_info($container = null, $key = null){
-        if($container == null && $key == null){
-            $container = $this->containerid;
-            $key = $this->containerkey;
-        } else {
-            $this->set_container_key($key);
-        }
-
-        $urlcontainer = urlencode($container);
-        $allfilesurl = $this->compile_url("/api/containers/$urlcontainer/info");
+    public function get_container_info($container = null){
+        $allfilesurl = $this->compile_url("/api/about-instance");
         $response = $this->send_get_request($allfilesurl);
 
         if($response){
@@ -123,42 +114,34 @@ class containers {
 
     // TODO: Add the ability for multiple files
 
-    public function upload_file($filepath, $filename = '', $location = '', $container = null, $key = null){
-        if($container == null && $key == null){
-            $container = $this->containerid;
-            $key = $this->containerkey;
-        } else {
-            $this->set_container_key($key);
-        }
+    public function upload_file($filepath = '', $base64 = '', $filename = '', $location = ''){
 
         if($filename == ''){
             $filename = basename($filepath);
         }
 
+        $location = $location . $filename;
+        if($base64 == ''){
+            $rawfile = file_get_contents($filepath);
+            $base64 = base64_encode($rawfile);
+        }
+
         $upload = [
-            "location"=>$location,
-            "files"=> new \CURLFile(
-                $filepath,
-                mime_content_type($filepath),
-                $filename
-            )
+            "file"=>$base64,
+            "path"=>$location
         ];
 
-        $urlcontainer = urlencode($container);
-        $allfilesurl = $this->compile_url("/api/containers/$urlcontainer/files/new");
-        $response = $this->send_post_request($allfilesurl, $upload);
+        $allfilesurl = $this->compile_url("/api/files/upload");
+        $response = $this->send_post_request($allfilesurl, json_encode($upload));
+        var_dump($response);
 
         if($response){
             return json_decode($response);
         } else {
+            var_dump($response);
+            die();
             return false;
         }
-
-    }
-
-    public function does_file_exist($file, $container = null, $key = null){
-
-        // TODO: Implement.
 
     }
 

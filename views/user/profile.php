@@ -134,7 +134,7 @@ $pagebuilder->buildheader();
     <div class="profile-header-top">
         <div class="profile-avatar-image" ng-non-bindable>
             <span class="avatar-image-link">
-                    <img alt="<?=$userinfo->username?>" class="profile-avatar-thumb" src="/headshot.png">
+                    <img alt="<?=$userinfo->username?>" class="profile-avatar-thumb" src="/images/defaultimage.png">
                 </span>
             <script type="text/javascript">
                 $("img.profile-avatar-thumb").on('load', function() {
@@ -187,7 +187,7 @@ $pagebuilder->buildheader();
                  class="header-userstatus-share-progress"
                  ng-show="profileHeaderLayout.statusFormSending"
                  alt="Sharing..."
-                 src="http://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif" />
+                 src="/images/ec4e85b0c4396cf753a06fade0a8d8af.gif" />
         </div>
 </div>        <div class="header-details">
             <ul class="details-info">
@@ -411,7 +411,7 @@ $pagebuilder->buildheader();
            truncate
            layout-content="layoutContent">
            
-            <span class="profile-about-content-text" ng-non-bindable><i>This user has not written anything about them!</i></span>
+            <span class="profile-about-content-text" ng-non-bindable></span>
         </p>
         <span class="rbx-font-bold show-more-link"
               ng-show="layoutContent.hasMoreContent"
@@ -438,7 +438,7 @@ $pagebuilder->buildheader();
 
 <div id="UserAvatar" class="thumbnail-holder" data-reset-enabled-every-page data-3d-thumbs-enabled 
      data-url="/thumbnail/user-avatar?userId=<?=$userinfo->id?>&amp;thumbnailFormatId=124&amp;width=300&amp;height=300" style="width:300px; height:300px;">
-    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=<?=$userinfo->id?>"  data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='<?=$userinfo->username?>' class='' src='https://watrbx.xyz/images/user.png' /></span>
+    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=<?=$userinfo->id?>"  data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='<?=$userinfo->username?>' class='' src='https://watrbx.xyz/images/defaultimage.png' /></span>
     <span class="enable-three-dee btn-control btn-control-small"></span>
 </div>
 
@@ -459,8 +459,8 @@ $pagebuilder->buildheader();
          profile-accoutrements-layout="profileAccoutrementsLayout">
                     <ul class="accoutrement-items-container">
                 <li class="accoutrement-item" ng-non-bindable>
-                    <a href="/Roblox-2-0-Torso-item?id=27112025">
-                        <img title="Roblox 2.0 Torso" alt="Roblox 2.0 Torso" class="accoutrement-image" src="/temp/b6ab5001a3a8a56a89ef4fbeb663b131.png" />
+                    <a href="/roblox-039-r-039-baseball-cap-item?id=8">
+                        <img title="Roblox 'R' Baseball Cap" alt="Roblox 'R' Baseball Cap" class="accoutrement-image" src="/images/defaultimage.png" style="width: 100px; height: 100px;" width="100" height="100" />
                     </a>
                 </li>
                     </ul>
@@ -496,7 +496,7 @@ $pagebuilder->buildheader();
                 <ul class="hlist collections-list item-list">
                     <li class="list-item asset-item collections-item">
                         <a href="/Festive-DJ-item?id=329806124" class="collections-link" title="Festive DJ">
-                            <img src="/temp/22060a5f3c3b2f0be95e81a9993af406.png" alt="Festive DJ" thumbnail='{"Final":true,"Url":"http://t7.rbxcdn.com/22060a5f3c3b2f0be95e81a9993af406","RetryUrl":null}' image-retry />
+                            <img src="/images/defaultimage.png" alt="Festive DJ" thumbnail='{"Final":true,"Url":"/images/defaultimage.png","RetryUrl":null}' image-retry />
                             <span class="item-name rbx-text-overflow">Festive DJ</span>
                         </a>
             
@@ -529,7 +529,7 @@ $pagebuilder->buildheader();
     <a href="/groups/group.aspx?gid=1" class="card-item group-item">
         <span class="card-thumb-content">
             <span class="card-thumb-wrapper">
-                <img class="card-thumb group-thumb" data-src="/headshot.png" alt="watrbx fan club" />
+                <img class="card-thumb group-thumb" data-src="/images/defaultimage.png" alt="watrbx fan club" />
             </span>
         </span>
         <span class="rbx-text-overflow card-title" title="watrbx fan club" ng-non-bindable>
@@ -559,7 +559,7 @@ $pagebuilder->buildheader();
                         <div class="col-sm-6 profile-slide-item-left">
                             <div class="slide-item-emblem-container">
                                 <a href="/groups/group.aspx?gid=1">
-                                        <img class="group-item-image" src="https://watrbx.xyz/headshot.png" data-src="https://watrbx.xyz/headshot.png" data-emblem-id="1" />
+                                        <img class="group-item-image" src="https://watrbx.xyz/images/defaultimage.png" data-src="https://watrbx.xyz/images/defaultimage.png" data-emblem-id="1" />
 
 
                                 </a>

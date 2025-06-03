@@ -63,11 +63,19 @@ $pagebuilder->addresource('jsfiles', '/js/8220b4ecd0fe4da790391da3fd0b442c.js.gz
 $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/43936b3386e6514e97f2b3ae23f53404.js.gzip');
+$pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
 $pagebuilder->set_page_name("Item");
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
 
+
+if($asset->prodcategory == 1)
+{
+    $thumb = "//c0.watrbx.xyz/" . $asset->fileid;
+} else {
+    $thumb = $thumbs->get_asset_thumb($asset->id);
+}
 ?>
         <div id="BodyWrapper">
             
@@ -120,7 +128,7 @@ $pagebuilder->buildheader();
                         <div id="assetContainer">
                             <div id="Thumbnail">
                                 <div id="AssetThumbnail" class="thumbnail-holder" data-reset-enabled-every-page  data-url="/thumbnail/asset?assetId=20418658&amp;thumbnailFormatId=254&amp;width=320&amp;height=320" style="width:320px; height:320px;">
-                                    <span class="thumbnail-span" ><img  class='' src='<?=$thumbs->get_asset_thumb($asset->id);?>' /></span>
+                                    <span class="thumbnail-span" ><img  class='' src='<?=$thumb?>' /></span>
                                     <span class="enable-three-dee btn-control btn-control-small"></span>
                                 </div>
                             </div>
@@ -132,7 +140,7 @@ $pagebuilder->buildheader();
                         <div id="Creator" class="Creator">
                             <div class="Avatar">
                                 
-                                <a id="ctl00_cphRoblox_AvatarImage" class=" notranslate" class=" notranslate" title="ROBLOX" href="/users/1/profile" style="display:inline-block;height:70px;width:70px;cursor:pointer;"><img src="https://watrbx.xyz/images/user.png" height="70" width="70" border="0" alt="ROBLOX" class=" notranslate" /><img src="/images/icons/overlay_obcOnly.png" class="bcOverlay" align="left" style="position:relative;top:-19px;" /></a>
+                                <a id="ctl00_cphRoblox_AvatarImage" class=" notranslate" class=" notranslate" title="ROBLOX" href="/users/1/profile" style="display:inline-block;height:70px;width:70px;cursor:pointer;"><img src="https://watrbx.xyz/images/defaultimage.png" height="70" width="70" border="0" alt="ROBLOX" class=" notranslate" /><img src="/images/icons/overlay_obcOnly.png" class="bcOverlay" align="left" style="position:relative;top:-19px;" /></a>
                             </div>
                         </div>
                         <div class="item-detail">
