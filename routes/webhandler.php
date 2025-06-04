@@ -17,6 +17,11 @@ $router->get("/", function() {
     $page::get_template("index");
 });
 
+$router->get("/temp/cdn-upload", function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/cdn-upload");
+});
+
 $router->get('/messages/compose', function(){
     $page = new pagebuilder;
     $page::get_template("compose");

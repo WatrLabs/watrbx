@@ -467,6 +467,11 @@ $router->post('/home/updatestatus', function(){
     }
 });
 
+$router->get('/api/comments.ashx', function(){
+    header("Content-Type: application/json");
+    die('{"isMod":true,"totalCount":2,"data":[{"ID":1,"Date":"1 day","Author":"watrabi","AuthorID":2,"Content":"nice model","AuthorOwnsAsset":true},{"ID":1,"Date":"1 day","Author":"shedletsky","AuthorID":3,"Content":"im too poor","AuthorOwnsAsset":false}]}');
+});
+
 $router->get('/item-thumbnails', function(){
     //var_dump($_GET);
 
@@ -519,6 +524,28 @@ $router->get('/item-thumbnails', function(){
     die(); 
 });
 
+$router->post('/api/v1/cdn-upload', function(){
+    if(isset($_POST["path"]) && isset($_FILES["file"])){
+        $containers = new containers();
+
+        $path = $_POST["path"];
+        $file = $_FILES["file"];
+        $path = $path . $file["name"];
+        $response = $containers->upload_file($_FILES["file"]["tmp_name"],'', $file["name"], '', '');
+
+        if($response !== false){
+            if(isset($response->error)){
+                die($response->error);
+            } else {
+                die("Uploaded at path: " . $path);
+            }
+        } else {
+            die("Failed to create universe!");
+        }
+
+    }
+});
+
 $router->post('/api/v1/universe-creator', function(){
 
     $auth = new authentication();
@@ -560,7 +587,7 @@ $router->post('/api/v1/universe-creator', function(){
 
         if($asset == null){
             try {
-                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], $md5,'', $_ENV["ASSETCONTAINERID"], $_ENV["ASSETCONTAINERKEY"]);
+                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], '', $md5, '');
 
                 if($response !== false){
                     if(isset($response->error)){

@@ -45,21 +45,7 @@ class friends {
 
     public function get_requests($userid) {
         global $db;
-        $requests1 = $db->table("friends")
-            ->select([
-                'friends.id'      => 'invitation_id',
-                'friends.userid',
-                'friends.friendid',
-                'friends.status',
-                'users.id'        => 'user_id',
-                'users.username',
-            ])
-            ->where("userid", $userid)
-            ->where("status", "pending")
-            ->join('users', 'users.id', '=', 'friends.friendid')
-            ->get();
-
-        $requests2 = $db->table("friends")
+        $requests = $db->table("friends")
             ->select([
                 'friends.id'      => 'invitation_id',
                 'friends.userid',
@@ -73,8 +59,6 @@ class friends {
             ->join('users', 'users.id', '=', 'friends.userid')
             ->get();
 
-
-        $requests = array_merge($requests1, $requests2);
         return $requests;
     }
 
