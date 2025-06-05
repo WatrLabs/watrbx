@@ -75,8 +75,8 @@ $assetTypes = array(
              
         <? } ?>
         </select><br><br>
-        <input type="int" name="robux" placeholder="robux, put 0 for free" /><br><br>
-        <input type="int" name="tix" placeholder="tix, put 0 for free" /><br><br>
+        <input type="int" name="robux" placeholder="Robux, put 0 for free" /><br><br>
+        <input type="int" name="tix" placeholder="Tix, put 0 for free" /><br><br>
         <input type="file" name="asset" /><br><br>
         <button>Create Asset</button>
     </form>
