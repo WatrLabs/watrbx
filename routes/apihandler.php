@@ -524,25 +524,51 @@ $router->get('/item-thumbnails', function(){
     die(); 
 });
 
-$router->post('/api/v1/cdn-upload', function(){
-    if(isset($_POST["path"]) && isset($_FILES["file"])){
+$router->post('/api/v1/cdn-upload', function () {
+    $auth = new authentication();
+    if (!$auth->hasaccount()) {
+        http_response_code(401);
+        die("Unauthorized.");
+    }
+
+    if (isset($_POST["path"], $_FILES["file"])) {
         $containers = new containers();
 
-        $path = $_POST["path"];
-        $file = $_FILES["file"];
-        $path = $path . $file["name"];
-        $response = $containers->upload_file($_FILES["file"]["tmp_name"],'', $file["name"], '', '');
+        $filename = basename($_FILES["file"]["name"]);
+        $filepath = $_POST["path"] . $filename;
 
-        if($response !== false){
-            if(isset($response->error)){
-                die($response->error);
-            } else {
-                die("Uploaded at path: " . $path);
-            }
-        } else {
-            die("Failed to create universe!");
+        $allowedMimeTypes = ['application/xml', 'application/octet-stream'];
+        $maxFileSize = 10 * 1024 * 1024;
+
+        if (!in_array($_FILES["file"]["type"], $allowedMimeTypes)) {
+            die("File type not allowed.");
         }
 
+        if ($_FILES["file"]["size"] > $maxFileSize) {
+            die("File too large.");
+        }
+
+        $safeFilename = preg_replace("/[^a-zA-Z0-9\._-]/", "", $filename);
+
+        $response = $containers->upload_file(
+            $_FILES["file"]["tmp_name"],
+            '',
+            $safeFilename,
+            '',
+            ''
+        );
+
+        if ($response !== false) {
+            if (isset($response->error)) {
+                die("Upload error: " . htmlspecialchars($response->error));
+            } else {
+                die("Uploaded at path: " . htmlspecialchars($filepath));
+            }
+        } else {
+            die("Failed to upload file.");
+        }
+    } else {
+        die("Missing required fields.");
     }
 });
 
