@@ -368,52 +368,52 @@ $router->post('/api/v1/asset-upload', function(){
     $auth = new authentication();
     $containers = new containers();
 
-    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["product"]) && isset($_POST["robux"]) && isset($_POST["robux"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
-
+    if (
+        isset($_POST["title"]) &&
+        isset($_POST["description"]) &&
+        isset($_POST["product"]) &&
+        isset($_POST["robux"]) &&
+        isset($_FILES["asset"])
+    ) {
         $md5 = md5_file($_FILES["asset"]["tmp_name"]);
         global $db;
 
         $title = htmlspecialchars($_POST["title"]);
         $description = htmlspecialchars($_POST["description"]);
         $robux = (int)$_POST["robux"];
-        $tix = (int)$_POST["tix"];
+        $tix = isset($_POST["tix"]) ? (int)$_POST["tix"] : 0;
         $prodcategory = $_POST["product"];
 
         $asset = $db->table("assets")->where("fileid", $md5)->first();
 
-        if($asset == null){
+        if ($asset === null) {
 
-            $info = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+            $accountId = $auth->hasaccount() ? $auth->hasaccount() : 1;
+            $info = $auth->getuserbyid($accountId);
 
             $insert = array(
-                "prodcategory"=>$prodcategory,
-                "name"=>$title,
-                "description"=>$description,
-                "robux"=>$robux,
-                "tix"=>$robux,
-                "fileid"=>$md5,
-                "created"=>time(),
-                "updated"=>time(),
-                "owner"=>$info->id
+                "prodcategory" => $prodcategory,
+                "name" => $title,
+                "description" => $description,
+                "robux" => $robux,
+                "tix" => $tix,
+                "fileid" => $md5,
+                "created" => time(),
+                "updated" => time(),
+                "owner" => $info->id
             );
 
             try {
-                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], '', $md5,'');
+                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], '', $md5, '');
 
-                if($response !== false){
-                    if(isset($response->success)){
-                        if($response->success == true){
-                            $insertid = $db->table("assets")->insert($insert);
-                            die("Asset uploaded with asset id: " . $insertid);
-                        } else {
-                            die("Failed to upload asset!");
-                        }
-                    }
+                if ($response !== false && isset($response->success) && $response->success === true) {
+                    $insertid = $db->table("assets")->insert($insert);
+                    die("Asset uploaded with asset id: " . $insertid);
                 } else {
                     die("Failed to upload asset!");
                 }
 
-            } catch(ErrorException $e){
+            } catch (ErrorException $e) {
                 die("Failed to upload asset! $e");
             }
 
