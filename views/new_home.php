@@ -30,6 +30,7 @@ $recentlyvisited = $gameserver->get_visits($userinfo->id);
 if($recentlyvisited){
     $recentlyvisited = array_slice($recentlyvisited, 0, 6);
 }
+
 $pagebuilder->addresource("cssfiles", "/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css");
 $pagebuilder->addresource("cssfiles","/CSS/Base/CSS/FetchCSS?path=page___47b79e13014f607f8bba2a5bcaeef6d8_m.css");
 $pagebuilder->addresource("jsfiles","/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip");
@@ -86,7 +87,8 @@ $pagebuilder->buildheader();
 
             
             <?  foreach($recentlyvisited as $visit){
-                $universeinfo = $db->table("universes")->where("id", $visit->universeid)->first();
+                
+                $universeinfo = $db->table("universes")->where("assetid", $visit->universeid)->first();
                 $pagebuilder->build_component("game", ["game" => $universeinfo]);
             } ?>
 

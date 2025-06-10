@@ -950,7 +950,7 @@ $router->get('/users/friends/list-json', function(){
                                 "Url" => "https://watrbx.xyz/images/defaultimage.png",
                                 "RetryUrl" => null
                             ],
-                            "InvitationId" => $friend->invitation_id,
+                            "incomingfriendrequestid" => $friend->invitation_id,
                             "LastLocation" => "",
                             "PlaceId" => null,
                             "AbsolutePlaceURL" => null,
@@ -1452,16 +1452,7 @@ $router->get('/leaderboards/game/json', function(){
 }); 
 
 $router->get('/Character.aspx', function(){
-    if(isset($_GET["ID"])){
-        if($_GET["ID"] == 2){
-            die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=7;http://www.watrbx.xyz/asset/?id=10;http://www.watrbx.xyz/asset/?id=25;");
-        } else {
-            die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=7;http://www.watrbx.xyz/asset/?id=10;");
-        }
-    } else {
-        die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=7;http://www.watrbx.xyz/asset/?id=10;");
-    }
-    
+    die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=8;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=3;");
 });
 
 $router->get('/users/inventory/list-json', function(){

@@ -10,7 +10,7 @@ $count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread"
 $obc = '';
 
 if($userinfo->membership == "OutrageousBuildersClub"){
-    $obc = '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC.css">';
+    $obc = '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC3.css">';
 } else {
     $obc = '';
 }
@@ -485,12 +485,12 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                     </a>
                 </li>
                 <li>
-                    <a href="https://forum.roblox.com/forum/" id="nav-forum">
+                    <a href="/forum/" id="nav-forum">
                         <span class="rbx-icon-nav-forum"></span><span>Forum</span>
                     </a>
                 </li>
                 <li>
-                    <a href="https://blog.roblox.com" id="nav-blog">
+                    <a href="#" id="nav-blog">
                         <span class="rbx-icon-nav-blog"></span><span>Blog</span>
                     </a>
                 </li>

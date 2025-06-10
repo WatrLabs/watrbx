@@ -7,6 +7,10 @@
         background-image: url(/images/Logo/img-robloxlogo-obc2.png);
     }
 
+    .footer-note {
+        color: black;
+    }
+
     #header .nav.rbx-navbar a:hover,
     .open .input-dropdown-btn,
     .input-group-btn .input-dropdown-btn:hover,
