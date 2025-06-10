@@ -138,13 +138,13 @@ $router->post('/game/validate-machine', function(){
 
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
-    die('{"data":[0.235.0pcplayer","0.235.0pcplayer","INTERNALiosapp","0.450.0pcplayer","0.205.0pcplayer"]}');
+    die('{"data":["0.235.0pcplayer","0.1.0pcplayer","0.235.0pcplayer","INTERNALiosapp","0.450.0pcplayer","0.205.0pcplayer"]}');
 });
 
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["f9fa78c9fc7dd435a3fa3b115732f65d", "39dbf64192e20ffc90c76934ccd6b797"]}');
+    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){

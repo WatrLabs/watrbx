@@ -53,6 +53,20 @@ if($auth->hasaccount()){
 } else {
     $self = false;
 }
+
+if ($userinfo->membership !== "None") {
+    if ($userinfo->membership == "OutrageousBuildersClub") {
+        $bc = '<span class="rbx-icon-obc"></span>';
+    } elseif ($userinfo->membership == "TurboBuildersClub") {
+        $bc = '<span class="rbx-icon-tbc"></span>';
+    } else {
+        $bc = '<span class="rbx-icon-bc"></span>';
+    }
+} else {
+    $bc = null;
+}
+
+
 $allfriends = $friends->get_friends($userid);
 $pagebuilder->set_page_name($userinfo->username);
 $pagebuilder->buildheader();
@@ -151,6 +165,7 @@ $pagebuilder->buildheader();
         </div>
         <div class="header-title">
             <h1><?=$userinfo->username?></h1>
+            <?=$bc?>
         </div>
 <div class="header-userstatus">
     <div class="header-userstatus-text"

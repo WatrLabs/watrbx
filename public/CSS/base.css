@@ -1,4 +1,5 @@
 body {
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
     padding: 0px;
     margin: 0px;
     width: 100%;
@@ -6,8 +7,32 @@ body {
     flex-direction: column;
     background-color: #393939;
     color: white;
+    min-height: 100vh;
 }
 
 #main {
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
     display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: white;
+}
+
+button {
+    cursor: pointer;
+    color: white;
+    background-color: #378db8;
+    padding: 9px;
+    border: none;
+    border-radius: 0.2em;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #ffffff;
+    color: black;
 }

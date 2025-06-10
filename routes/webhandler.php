@@ -14,7 +14,16 @@ global $router; // IMPORTANT: KEEP THIS HERE!
 
 $router->get("/", function() {
     $page = new pagebuilder;
-    $page::get_template("index");
+    if(isset($_COOKIE["has_read"])){
+        $page::get_template("index");
+    } else {
+        $page::get_template("notrobloxindex");
+    }
+});
+
+$router->get('/agree', function(){
+    setcookie('has_read', 1, time() + 999999999, '', '.watrbx.xyz');
+    header("Location: /");
 });
 
 $router->get("/temp/cdn-upload", function(){
@@ -26,6 +35,7 @@ $router->get('/messages/compose', function(){
     $page = new pagebuilder;
     $page::get_template("compose");
 });
+
 
 $router->post('/messages/compose', function(){
     if(isset($_POST["subject"]) && isset($_POST["body"]) && isset($_POST["__EVENTTARGET"])){
@@ -194,11 +204,18 @@ $router->get("/home", function() {
     $page::get_template("new_home");
 });
 
-$router->post('/my/character.aspx', function(){
-    $pagebuilder = new pagebuilder();
-    $pagebuilder->build_component("avatar_item", ["assetid"=>5, "action"=>"Wear"]);
-});
+$router->post('/my/character.aspx', function() {
+    //fuckass ajax bro
+    //header("Content-type: application/json");
+    //die("{}");
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Cache-Control: no-cache, no-store');
+    header('Pragma: no-cache');
+    header('X-AspNet-Version: 4.0.30319');
+    header('X-Powered-By: ASP.NET');
 
+    die('1|updatePanel|ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdatePanelAccoutrements|<div id=\'ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdatePanelAccoutrements\'><p>fuckass asp.net response</p></div>|');
+});
 $router->get('/thumbnail/user-avatar', function(){ 
     http_response_code(500);
     die();

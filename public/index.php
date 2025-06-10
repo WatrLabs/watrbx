@@ -18,6 +18,8 @@ try {
 
         $auth = new authentication();
         $router = new routing();
+
+        
         
         if($_ENV["ACTUAL_MAINTENANCE"] == "true"){
             require("../views/really_bad_500.php");
@@ -70,6 +72,7 @@ try {
         $router->addrouter('mobilehandler');
         $router->addrouter('discordbothandler');
         $router->addrouter('bootstraphandler');
+        $router->addrouter('forumhandler');
 
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];

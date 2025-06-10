@@ -1451,7 +1451,7 @@ $thepageuser = $auth->getuserbyid($userid);
 </script>
 
     
-    <script type='text/javascript' src='https://js.rbxcdn.com/702296b30d708d56d479a05168ca9f4e.js.gzip'></script>
+    <script type='text/javascript' src='/js/702296b30d708d56d479a05168ca9f4e.js.gzip'></script>
 
 
 

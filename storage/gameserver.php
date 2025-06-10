@@ -127,8 +127,8 @@ function onChatted(msg, speaker)
     -- Note: This one is NOT caps sensitive
 
     if msg == ";ec" then
-	local sound = Instance.new("Sound")
-    	sound.SoundId = "http://www.watrbx.xyz/asset/?id=47"
+		local sound = Instance.new("Sound")
+    	sound.SoundId = "http://www.watrbx.xyz/asset/?id=17"
     	sound.Parent = speaker.Character.Torso
     	sound.Volume = 0.5
     	sound:Play()

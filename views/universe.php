@@ -26,7 +26,7 @@ if($gameinfo == null){
     die($router->return_status(404));
 
 } else {
-    $query = $db->table("assets")->where("id", $id);
+    $query = $db->table("assets")->where("id", $gameinfo->assetid);
     $assetinfo = $query->first();
 
     if($assetinfo == null){
@@ -312,9 +312,9 @@ $pagebuilder->buildheader();
                 
             <?php
                 if($ismobile){
-                    echo '<a class="rbx-btn-primary-lg" onclick="location.href=\'games/start?placeid='.$id.'\'">Play</a>';
+                    echo '<a class="rbx-btn-primary-lg" onclick="location.href=\'games/start?placeid='.$gameinfo->assetid.'\'">Play</a>';
                 } else {
-                    echo '<div id="MultiplayerVisitButton" class="VisitButton VisitButtonPlayPH" placeid="'.$id.'" data-action="play" data-is-membership-level-ok="true"><a class="rbx-btn-primary-lg">Play</a> </div>';        
+                    echo '<div id="MultiplayerVisitButton" class="VisitButton VisitButtonPlayPH" placeid="'.$gameinfo->assetid.'" data-action="play" data-is-membership-level-ok="true"><a class="rbx-btn-primary-lg">Play</a> </div>';        
                 }
             ?>
            

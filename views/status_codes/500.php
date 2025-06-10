@@ -54,7 +54,7 @@ $pagebuilder->buildheader();
             <div class="left">
                 <div id="a15b1695-1a5a-49a9-94f0-9cd25ae6c3b2">
     <a href="https://privacy.truste.com/privacy-seal/Roblox-Corporation/validation?rid=2428aa2a-f278-4b6d-9095-98c4a2954215" title="TRUSTe Children privacy certification" target="_blank">
-        <img style="border: none" src="https://privacy-policy.truste.com/privacy-seal/Roblox-Corporation/seal?rid=2428aa2a-f278-4b6d-9095-98c4a2954215" width="133" height="45" alt="TRUSTe Children privacy certification"/>
+        <img style="border: none" src="https:/images/seal.png" width="133" height="45" alt="TRUSTe Children privacy certification"/>
     </a>
 </div>
             </div>

@@ -58,6 +58,7 @@ class gameserver {
         if($response){
             return $response;
         } else {
+            echo curl_error($curl);
             return false;
         }
     }
@@ -84,6 +85,7 @@ class gameserver {
         if($response){
             return $response;
         } else {
+            echo curl_error($curl);
             return false;
         }
     }
@@ -158,6 +160,12 @@ class gameserver {
             foreach ($all_servers as $server){
                 $auth = new authentication();
                 $serverlocate = $auth->geolocateip($server->ip);
+
+
+                if(!isset($this->connecting_user["latitude"]) || !isset($this->connecting_user["longitude"])){
+                    $this->connecting_user["longitude"] = 0;
+                    $this->connecting_user["latitude"] = 0;
+                }
 
                 $user_lat = $this->connecting_user["latitude"];
                 $user_lon = $this->connecting_user["longitude"];

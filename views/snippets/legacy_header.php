@@ -13,7 +13,7 @@ $count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread"
 $obc = '';
 
 if($userinfo->membership == "OutrageousBuildersClub"){
-    $obc = '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC.css">';
+    $obc = '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC3.css">';
 } else {
     $obc = '';
 }
@@ -290,6 +290,17 @@ function __doPostBack(eventTarget, eventArgument) {
     <script type="text/javascript">
 //<![CDATA[
 Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnetForm', ['tctl00$ctl00$cphRoblox$cphMyRobloxContent$CustomizeCharacterUpdatePanelAvatar','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelBodyColors','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelWardrobe','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelAccoutrements',''], [], [], 90, 'ctl00$ctl00');
+
+var prm = Sys.WebForms.PageRequestManager.getInstance();
+
+prm.add_endRequest(function(sender, args) {
+  if (args.get_error()) {
+    console.error("Server error during UpdatePanel postback:", args.get_error().message);
+    args.set_errorHandled(true); 
+  } else {
+    console.log("UpdatePanel postback succeeded");
+  }
+});
 //]]>
 </script>
 
@@ -494,12 +505,12 @@ Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnet
                     </a>
                 </li>
                 <li>
-                    <a href="https://forum.roblox.com/forum/" id="nav-forum">
+                    <a href="/forum/" id="nav-forum">
                         <span class="rbx-icon-nav-forum"></span><span>Forum</span>
                     </a>
                 </li>
                 <li>
-                    <a href="https://blog.roblox.com" id="nav-blog">
+                    <a href="#" id="nav-blog">
                         <span class="rbx-icon-nav-blog"></span><span>Blog</span>
                     </a>
                 </li>

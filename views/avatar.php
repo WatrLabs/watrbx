@@ -15,7 +15,10 @@ $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gz
 $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/11538f50c384b7e98cc9fdd96e55772d.js.gzip');
 $pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
-
+$pagebuilder->addresource('jsfiles', '/js/MicrosoftAjaxWebForms.js');
+$pagebuilder->addresource('jsfiles', '/js/MicrosoftAjaxTimer.js');
+$pagebuilder->addresource('jsfiles', 'https://ajax.aspnetcdn.com/ajax/4.5.2/1/WebForms.js');
+$pagebuilder->addresource('jsfiles', 'https://ajax.aspnetcdn.com/ajax/4.5.2/1/Focus.js');
 $pagebuilder->setlegacy(true);
 $pagebuilder->set_page_name("Avatar");
 $pagebuilder->buildheader();
@@ -2105,7 +2108,7 @@ $pagebuilder->buildheader();
             <div class="left">
                 <div id="a15b1695-1a5a-49a9-94f0-9cd25ae6c3b2">
     <a href="//privacy.truste.com/privacy-seal/Roblox-Corporation/validation?rid=2428aa2a-f278-4b6d-9095-98c4a2954215" title="TRUSTe Children privacy certification" target="_blank">
-        <img style="border: none" src="//privacy-policy.truste.com/privacy-seal/Roblox-Corporation/seal?rid=2428aa2a-f278-4b6d-9095-98c4a2954215" width="133" height="45" alt="TRUSTe Children privacy certification"/>
+        <img style="border: none" src="/images/seal.png" width="133" height="45" alt="TRUSTe Children privacy certification"/>
     </a>
 </div>
             </div>
