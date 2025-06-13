@@ -20,8 +20,12 @@ class pagebuilder {
     public array $jsfiles = [];
     
     function __construct() {
-        $auth = new authentication();
-        $this->authed = $auth->hasaccount();
+        global $currentuser;
+        if($currentuser !== null){
+            $this->authed = true;
+        } else {
+            $this->authed = false;
+        }
     }
     
     function setlegacy($value){

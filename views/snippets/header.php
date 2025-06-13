@@ -1,8 +1,8 @@
 <?php
 use watrlabs\authentication;
 $auth = new authentication();
-
-$userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+global $currentuser;
+$userinfo = $currentuser;
 
 global $db;
 $count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();

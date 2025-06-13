@@ -13,6 +13,7 @@ $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gz
 $router = new Routing();
 
 global $db;
+global $currentuser;
 
 $arefriends = false;
 $pendingrequest = 'false';
@@ -26,7 +27,7 @@ if($userinfo == null){
 $is_online = $auth->is_online($userid);
 
 if($auth->hasaccount()){
-    $loggedininfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+    $loggedininfo = $currentuser;
 
     //$userid, $friendid
 

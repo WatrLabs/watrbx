@@ -10,6 +10,7 @@ require_once '../init.php';
 try {
 
     try {
+
         
         global $db;
         global $router;

@@ -3,7 +3,7 @@ use watrlabs\watrkit\pagebuilder;
 $pagebuilder = new pagebuilder();
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___52c69b42777a376ab8c76204ed8e75e2_m.css');
-$pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___c7d63abcc3de510b8a7b8ab6d435f9b6_m.css');
+$pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___f6e33d41f2d5a62b5a238c0bbdc70438_m.css');
 $pagebuilder->addresource('cssfiles', '/Forum/skins/default/style/default.css');
 $pagebuilder->addresource('jsfiles', '/js/92d454a11b2b7266829922801d327151.js');
 $pagebuilder->addresource('jsfiles', '/js/16994b0cbe9c1d943e0de0fade860343.js');
@@ -20,7 +20,7 @@ $pagebuilder->buildheader();
                 frameborder="0"
                 height="110"
                 scrolling="no"
-                src="http://www.roblox.com/userads/1"
+                src="/userads/1"
                 width="728"
                 data-js-adtype="iframead"></iframe>
         
@@ -111,9 +111,9 @@ $pagebuilder->buildheader();
             </tr><tr class="forum-post">
                 <td class="forum-content-background" valign="top" style="width:150px;white-space:nowrap;"><table border="0">
                     <tr>
-                        <td><img src="/Forum/skins/default/images/user_IsOffline.gif" alt="MajorTom4321 is not online." style="border-width:0px;" />&nbsp;<a class="normalTextSmallBold notranslate" href="http://www.roblox.com/users/1113299/profile">MajorTom4321</a><br></td>
+                        <td><img src="/Forum/skins/default/images/user_IsOffline.gif" alt="MajorTom4321 is not online." style="border-width:0px;" />&nbsp;<a class="normalTextSmallBold notranslate" href="/users/1113299/profile">MajorTom4321</a><br></td>
                     </tr><tr>
-                        <td><a href="http://www.roblox.com/users/1113299/profile" style="width:100px;height:100px;position:relative;"><img src="http://assetgame.roblox.com/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=MajorTom4321" style="border-width:0px;width:100px;height:100px;" /><img src="http://www.roblox.com/Thumbs/BCOverlay.ashx?username=MajorTom4321" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
+                        <td><a href="/users/1113299/profile" style="width:100px;height:100px;position:relative;"><img src="http://assetgame.roblox.com/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=MajorTom4321" style="border-width:0px;width:100px;height:100px;" /><img src="/Thumbs/BCOverlay.ashx?username=MajorTom4321" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
                     </tr><tr>
                         <td><img src="/Forum/skins/default/images/users_moderator.gif" alt="Forum Moderator" style="border-width:0px;" /></td>
                     </tr><tr>
@@ -133,7 +133,7 @@ $pagebuilder->buildheader();
                     </tr><tr>
                         <td style="height:2px;"></td>
                     </tr><tr>
-                        <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><span class="ReportAbuse"><span class="AbuseButton"><a href="http://www.roblox.com/AbuseReport/ForumPost.aspx?PostID=112156401&amp;RedirectUrl=http%3a%2f%2fforum.roblox.com%2fForum%2fShowPost.aspx%3fPostID%3d112156401">Report Abuse</a></span></span></span></td>
+                        <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=112156401&amp;RedirectUrl=http%3a%2f%2fforum.roblox.com%2fForum%2fShowPost.aspx%3fPostID%3d112156401">Report Abuse</a></span></span></span></td>
                     </tr>
                 </table></td>
             </tr><tr>
@@ -199,7 +199,7 @@ $pagebuilder->buildheader();
                 frameborder="0"
                 height="612"
                 scrolling="no"
-                src="http://www.roblox.com/userads/2"
+                src="/userads/2"
                 width="160"
                 data-js-adtype="iframead"></iframe>
         
@@ -212,7 +212,7 @@ $pagebuilder->buildheader();
             
             <script type="text/javascript">
                 var users = [];
-                var groupPagePath = 'http://www.roblox.com/Groups/Group.aspx';
+                var groupPagePath = '/Groups/Group.aspx';
         
                 $(".primaryGroupInfo").each(function (index, element) {
                     var name = $(element).attr("username");
@@ -299,7 +299,7 @@ $pagebuilder->buildheader();
                         </a>
                     </li>
                     <li class="col-4 col-xs-2 footer-link">
-                        <a href="http://www.roblox.com/Info/Privacy.aspx" class="text-footer-nav" target="_blank">
+                        <a href="/Info/Privacy.aspx" class="text-footer-nav" target="_blank">
                             Privacy
                         </a>
                     </li>
@@ -317,7 +317,7 @@ $pagebuilder->buildheader();
                 <p class="text-footer footer-note">
                     ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="http://corp.roblox.com" class="text-link roblox-interstitial">ROBLOX Corporation</a>, ©2016.
                     Patents pending. ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
-                    Use of this site signifies your acceptance of the <a href="http://www.roblox.com/info/terms-of-service" target="_blank" class="text-link">Terms and Conditions</a>.
+                    Use of this site signifies your acceptance of the <a href="/info/terms-of-service" target="_blank" class="text-link">Terms and Conditions</a>.
                 </p>
             </div>
         </footer>
@@ -549,7 +549,7 @@ $pagebuilder->buildheader();
                 <div style="clear:both; height:25px;"></div>
                 <div class="RevisedFooter">
                     <div style="width:200px;margin:10px auto 0 auto;">
-                        <a href="http://www.roblox.com/?returnUrl=http%3A%2F%2Fforum.roblox.com%2FForum%2FShowPost.aspx%3FPostID%3D112156401"><div class="RevisedCharacterSelectSignup"></div></a>
+                        <a href="/?returnUrl=http%3A%2F%2Fforum.roblox.com%2FForum%2FShowPost.aspx%3FPostID%3D112156401"><div class="RevisedCharacterSelectSignup"></div></a>
                         <a class="HaveAccount" href="https://www.roblox.com/newlogin?returnUrl=http%3A%2F%2Fforum.roblox.com%2FForum%2FShowPost.aspx%3FPostID%3D112156401">I have an account</a>
                     </div>
                 </div>

@@ -5,7 +5,8 @@ $auth = new authentication();
 $pagebuilder = new pagebuilder();
 
 $auth->requiresession();
-$userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+global $currentuser;
+$userinfo = $currentuser;
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___7a27dc130118fdc2c185a6a1a3db1c2f_m.css');

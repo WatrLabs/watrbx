@@ -2,9 +2,10 @@
 use watrlabs\authentication;
 $auth = new authentication();
 global $db;
+global $currentuser;
 
 if($auth->hasaccount()){
-    $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+    $userinfo = $currentuser;
 }
 
 $count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();

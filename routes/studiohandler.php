@@ -11,7 +11,8 @@ $router->get("/game/GetCurrentUser.ashx", function() {
     die();
 
     if($auth->hasaccount()){
-        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        global $currentuser;
+        $userinfo = $auth->$currentuser;
 
         if($userinfo !== null){
             echo $userinfo->id;

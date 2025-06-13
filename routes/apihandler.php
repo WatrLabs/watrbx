@@ -106,7 +106,8 @@ $router->post('/api/item.ashx', function(){
 
     if($auth->hasaccount()){
         $success = false;
-        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        global $currentuser;
+        $userinfo = $currentuser;
 
         if(isset($_GET["rqtype"])){
             $type = $_GET["rqtype"];
@@ -383,7 +384,9 @@ $router->post('/api/v1/asset-upload', function(){
 
         if($asset == null){
 
-            $info = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+            global $currentuser;
+
+            $info = $currentuser;
 
             $insert = array(
                 "prodcategory"=>$prodcategory,
@@ -430,7 +433,8 @@ $router->post('/home/updatestatus', function(){
     $auth = new authentication();
     if(isset($_POST["status"]) && $auth->hasaccount()){
         global $db;
-        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        global $currentuser;
+        $userinfo = $currentuser;
 
         if(empty($_POST["status"])){
             http_response_code(400);
@@ -553,6 +557,8 @@ $router->post('/api/v1/universe-creator', function(){
 
     if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
 
+        global $currentuser;
+
         $md5 = md5_file($_FILES["asset"]["tmp_name"]);
         global $db;
 
@@ -561,7 +567,7 @@ $router->post('/api/v1/universe-creator', function(){
         $prodcategory = 9;
 
         $asset = $db->table("assets")->where("fileid", $md5)->first();
-        $info = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        $info = $currentuser;
         $slugify = new slugify();
         $slug = $slugify->slugify($title);
         
@@ -666,7 +672,9 @@ $router->get('/messages/api/get-messages', function(){
         $pagenum = (int)$_GET["pageNumber"];
         $pagesize = (int)$_GET["pageSize"];
 
-        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        global $currentuser;
+
+        $userinfo = $currentuser;
         switch ($messagetab){
             case 0:
                 $allmessages = $db->table("messages")->where("userto", $userinfo->id)->orderBy("date", "DESC")->get();
@@ -690,6 +698,8 @@ $router->get('/messages/api/get-messages', function(){
                             "Url"=>"/images/defaultimage.png",
                             "Final"=>true,
                         ],
+                        "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
+                        "IsReportAbuseDisplayed"=>True,
                         "Subject"=>$message->subject,
                         "Body"=>nl2br($message->body),
                         "IsRead"=>$isread,
@@ -713,7 +723,7 @@ $router->get('/messages/api/get-messages', function(){
 
                     $senderinfo = $auth->getuserbyid($message->userfrom);
                     $response["Collection"][] = [
-                        "id"=>$message->id,
+                        "Id"=>$message->id,
                         "Sender"=>[
                             "UserId"=>$senderinfo->id,
                             "UserName"=>$senderinfo->username,
@@ -722,6 +732,8 @@ $router->get('/messages/api/get-messages', function(){
                             "Url"=>"/images/defaultimage.png",
                             "Final"=>true,
                         ],
+                        "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
+                        "IsReportAbuseDisplayed"=>True,
                         "Subject"=>$message->subject,
                         "Body"=>nl2br($message->body),
                         "IsRead"=>$isread,
@@ -743,6 +755,7 @@ $router->get('/messages/api/get-messages', function(){
 
 $router->post('/api/friends/sendfriendrequest', function(){
     $auth = new authentication();
+    global $currentuser;
 
     if($auth->hasaccount()){
         $friends = new friends();
@@ -752,7 +765,7 @@ $router->post('/api/friends/sendfriendrequest', function(){
 
         if($decoded){
             $targetUserID = $decoded->targetUserID;
-            $currentuserid = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"])->id;
+            $currentuserid = $currentuser->id;
 
             //add_friend($to, $from)
 
@@ -780,6 +793,8 @@ $router->post('/api/friends/sendfriendrequest', function(){
 $router->post('/api/friends/removefriend', function(){
     $auth = new authentication();
 
+    global $currentuser;
+
     if($auth->hasaccount()){
         $friends = new friends();
 
@@ -789,7 +804,7 @@ $router->post('/api/friends/removefriend', function(){
         if($decoded){
             if(isset($decoded->targetUserID)){
                 $targetUserID = $decoded->targetUserID;
-                $currentuserid = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"])->id;
+                $currentuserid = $currentuser->id;
 
                 global $db;
 
@@ -813,6 +828,7 @@ $router->post('/api/friends/removefriend', function(){
 
 $router->post('/api/friends/acceptfriendrequest', function(){
     $auth = new authentication();
+    global $currentuser;
 
     if($auth->hasaccount()){
         global $db;
@@ -825,7 +841,7 @@ $router->post('/api/friends/acceptfriendrequest', function(){
             if(isset($decoded->invitationID) && isset($decoded->targetUserID)){
                 $invitationID = $decoded->invitationID;
                 $targetUserID = $decoded->targetUserID;
-                $currentuserid = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"])->id;
+                $currentuserid = $currentuser->id;
 
                 $invitation = $db->table("friends")->where("id", $invitationID)->first();
 
@@ -984,8 +1000,10 @@ $router->get('/messages/api/get-my-unread-messages-count', function(){
 
     $auth = new authentication();
 
+    global $currentuser;
+
     if($auth->hasaccount()){
-        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        $userinfo = $currentuser;
         $count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
 
         $thing = array(
@@ -1020,7 +1038,9 @@ $router->post('/game-instances/shutdown', function(){
         $placeid = $_POST["placeId"];
         $jobid = $_POST["gameId"];
 
-        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]); // TODO: Check for group access as well ( Implement $auth->hasperm($userid, $assetid) )
+        global $currentuser;
+
+        $userinfo = $currentuser; // TODO: Check for group access as well ( Implement $auth->hasperm($userid, $assetid) )
         $assetinfo = $db->table("assets")->where("id", $placeid)->first();
 
         if($userinfo->id == $assetinfo->owner){
@@ -1117,6 +1137,9 @@ $router->post('/voting/vote', function(){
     $auth = new authentication();
 
     if(isset($_GET["assetId"]) && isset($_GET["vote"])){
+
+        global $currentuser;
+
         $assetid = $_GET["assetId"];
         $vote = $_GET["vote"];
 
@@ -1130,7 +1153,7 @@ $router->post('/voting/vote', function(){
         ];
             
         if($auth->hasaccount()){
-            $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+            $userinfo = $currentuser;
             
             if($vote == "null"){
                 $db->table("likes")->where("assetid", $assetid)->where("user", $userinfo->id)->delete();
@@ -1469,13 +1492,14 @@ $router->get('/Game/Join.ashx', function() {
 
     $auth = new authentication();
     global $db;
+    global $currentuser;
     
     if(isset($_GET["joincode"]) && $auth->hasaccount()){
 
         $code = $_GET["joincode"];
         $joincode = $db->table("join_codes")->where("code", $code)->first();
 
-        $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+        $userinfo = $currentuser;
 
         $ip = $joincode->ip;
         if($ip == "192.168.1.221"){
@@ -1666,6 +1690,7 @@ $router->post('/api/v1/verify-captcha', function(){
 
 $router->post('/Membership/NotApproved.aspx', function(){
     $auth = new authentication();
+    global $currentuser;
     if(isset($_GET["ID"]) && $auth->hasaccount()){
         $banid = (int)$_GET["ID"];
         global $db;
@@ -1673,7 +1698,7 @@ $router->post('/Membership/NotApproved.aspx', function(){
         $baninfo = $db->table("moderation")->where("id", $banid)->first();
 
         if($baninfo !== null){
-            $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+            $userinfo = $auth->$currentuser;
             if($baninfo->userid == $userinfo->id){
                 if($baninfo->banneduntil < time()){
                     $db->table("moderation")->where("id", $baninfo->id)->update(array("canignore"=>1));

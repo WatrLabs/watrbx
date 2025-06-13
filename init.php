@@ -1,8 +1,10 @@
 <?php
 use Pixie\Connection;
 use Pixie\QueryBuilder\QueryBuilderHandler;
+use watrlabs\authentication;
 global $dotenv;
 global $db;
+global $currentuser;
 
 spl_autoload_register(function ($class_name) {
     $directory = '../classes/';
@@ -39,6 +41,14 @@ try {
 
     $connection = new Connection('mysql', $config);
     $db = $connection->getQueryBuilder(); 
+
+    $auth = new authentication();
+    if($auth->hasaccount()){
+        $currentuser = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+    } else {
+        $currentuser = null;
+    }
+    
 } catch (PDOException $e){
     require("../views/really_bad_500.php");
     die();

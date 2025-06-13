@@ -88,7 +88,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Does your security lift?
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=majortom4321"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=majortom4321"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				majortom4321
 			</div>
@@ -100,7 +100,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Forum Rules for RT
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=reesemcblox"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=reesemcblox"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				reesemcblox
 			</div>
@@ -112,7 +112,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				post for my legit opinion of you
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706795&amp;PageIndex=1">1</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706795&amp;PageIndex=2">2</a></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=MENTALZERO"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706795&amp;PageIndex=1">1</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706795&amp;PageIndex=2">2</a></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=MENTALZERO"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				MENTALZERO
 			</div>
@@ -124,7 +124,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				RT party
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=1">1</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=2">2</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=3">3</a><span class="normalTextSmall"> ... </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=6">6</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=7">7</a></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=rotgutt"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=1">1</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=2">2</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=3">3</a><span class="normalTextSmall"> ... </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=6">6</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179701316&amp;PageIndex=7">7</a></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=rotgutt"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				rotgutt
 			</div>
@@ -136,7 +136,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				since today is my birthday 
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=domoman33"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=domoman33"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				domoman33
 			</div>
@@ -148,7 +148,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				post to enter 4th RT Hunger Games
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=TheBeafyOne"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=TheBeafyOne"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				TheBeafyOne
 			</div>
@@ -160,7 +160,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Did anyone ever play this game?
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=SpaceNightrider"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=SpaceNightrider"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				SpaceNightrider
 			</div>
@@ -172,7 +172,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				[ Content Deleted ]
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706141&amp;PageIndex=1">1</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706141&amp;PageIndex=2">2</a></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=AnimusVerm"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706141&amp;PageIndex=1">1</a><span class="normalTextSmall">, </span><a class="linkSmall" href="/Forum/ShowPost.aspx?PostID=179706141&amp;PageIndex=2">2</a></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=AnimusVerm"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				AnimusVerm
 			</div>
@@ -184,7 +184,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Forgive me. 
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=NRGH2BF9AC"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=NRGH2BF9AC"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				NRGH2BF9AC
 			</div>
@@ -196,7 +196,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				L2D=Chance I will get banned for posting this
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=u6ny564b"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=u6ny564b"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				u6ny564b
 			</div>
@@ -208,7 +208,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				rt is so slow rn
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=murcury57"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=murcury57"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				murcury57
 			</div>
@@ -220,7 +220,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				OH GOOD ANOTHER FIRE EMBLEM CHARACTER
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=DDude642"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=DDude642"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				DDude642
 			</div>
@@ -232,7 +232,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Post a link of to a model of yourself and...
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=coolcoolzombiedude"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=coolcoolzombiedude"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				coolcoolzombiedude
 			</div>
@@ -244,7 +244,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				RT what do i do
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=Callabero20"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=Callabero20"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				Callabero20
 			</div>
@@ -256,7 +256,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				how many fire emblem characters do we need
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=twilightwizard"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=twilightwizard"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				twilightwizard
 			</div>
@@ -268,7 +268,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Murcury57 is a big noob head
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=puppyeyes15"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=puppyeyes15"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				puppyeyes15
 			</div>
@@ -280,7 +280,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Hey guys, like what rotgutt is doing?
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=DZPK7KQHQI"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=DZPK7KQHQI"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				DZPK7KQHQI
 			</div>
@@ -292,7 +292,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				mja&#39;s thread of radical tunes
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=SheogorathTheInsane"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=SheogorathTheInsane"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				SheogorathTheInsane
 			</div>
@@ -304,7 +304,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Is this a good way to make robux?
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=Xarkos"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=Xarkos"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				Xarkos
 			</div>
@@ -316,7 +316,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				I am depressed
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=kingk4hack"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=kingk4hack"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				kingk4hack
 			</div>
@@ -328,7 +328,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				The Pre-Rights final boss is finished
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=Honeytata"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=Honeytata"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				Honeytata
 			</div>
@@ -340,7 +340,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				CORRIN SMASHS IN
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=hiimcool34"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=hiimcool34"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				hiimcool34
 			</div>
@@ -352,7 +352,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Quote of the Year
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=Luptat67"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=Luptat67"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				Luptat67
 			</div>
@@ -364,7 +364,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				What does RAP mean
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=killmehere"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=killmehere"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				killmehere
 			</div>
@@ -376,7 +376,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				this is bringing crap videos to a new level
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=MENTALZERO"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=MENTALZERO"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				MENTALZERO
 			</div>
@@ -388,7 +388,7 @@ $pagebuilder->buildheader();
 			<div class="thread-link-container notranslate">
 				Minor problem and do you like my new outfit?
 			</div>
-		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="http://www.roblox.com/User.aspx?UserName=masterchiefy"><div class="thread-link-outer-wrapper">
+		</div></a></td><td class="notranslate" style="width:80px;width:90px;padding-right:12px;"></td><td align="left" style="width:100px;"><a class="post-list-author notranslate" href="/User.aspx?UserName=masterchiefy"><div class="thread-link-outer-wrapper">
 			<div class="normalTextSmaller thread-link-container">
 				masterchiefy
 			</div>
@@ -469,7 +469,7 @@ $pagebuilder->buildheader();
             frameborder="0"
             height="612"
             scrolling="no"
-            src="http://www.roblox.com/userads/2"
+            src="/userads/2"
             width="160"
             data-js-adtype="iframead"></iframe>
 
@@ -487,7 +487,7 @@ $pagebuilder->buildheader();
         
             <div id="Footer" class="footer-container">
     <div class="FooterNav">
-        <a href="http://www.roblox.com/info/Privacy.aspx">Privacy Policy</a>
+        <a href="/info/Privacy.aspx">Privacy Policy</a>
         &nbsp;|&nbsp;
         <a href="http://corp.roblox.com/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
         &nbsp;|&nbsp;
@@ -513,7 +513,7 @@ $pagebuilder->buildheader();
                 <p class="Legalese">
     ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="http://corp.roblox.com/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
     ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
-    Use of this site signifies your acceptance of the <a href="http://www.roblox.com/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
+    Use of this site signifies your acceptance of the <a href="/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
 </p>
             </div>
         <div class="clear"></div>
@@ -765,7 +765,7 @@ $(function() { RobloxEventManager.triggerEvent('rbx_evt_newuser', {}); });//]]>
         <div style="clear:both; height:25px;"></div>
         <div class="RevisedFooter">
             <div style="width:200px;margin:10px auto 0 auto;">
-                <a href="http://www.roblox.com/?returnUrl=http%3A%2F%2Fforum.roblox.com%2FForum%2FShowForum.aspx%3FForumID%3D13"><div class="RevisedCharacterSelectSignup"></div></a>
+                <a href="/?returnUrl=http%3A%2F%2Fforum.roblox.com%2FForum%2FShowForum.aspx%3FForumID%3D13"><div class="RevisedCharacterSelectSignup"></div></a>
                 <a class="HaveAccount" href="https://www.roblox.com/newlogin?returnUrl=http%3A%2F%2Fforum.roblox.com%2FForum%2FShowForum.aspx%3FForumID%3D13">I have an account</a>
             </div>
         </div>
