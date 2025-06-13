@@ -135,6 +135,15 @@ function onChatted(msg, speaker)
         speaker.Character.Humanoid.Health = 0
     end
 
+	if msg == ";raymonf" then
+		local sound = Instance.new("Sound")
+    	sound.SoundId = "http://www.watrbx.xyz/asset/?id=19"
+    	sound.Parent = speaker.Character.Torso
+    	sound.Volume = 0.5
+    	sound:Play()
+        speaker.Character.Humanoid.Health = 0
+    end
+
     if msg == ";kick" then
 	    speaker:Kick("GET OUT!!!!!!!!")
     end

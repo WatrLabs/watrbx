@@ -44,7 +44,8 @@ $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gz
 $pagebuilder->set_page_name($gameinfo->title);
 
 if(isset($_COOKIE["_ROBLOSECURITY"]) && $auth->hasaccount()){
-    $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+    global $currentuser;
+    $userinfo = $currentuser;
 }
 
 $pagebuilder->buildheader();

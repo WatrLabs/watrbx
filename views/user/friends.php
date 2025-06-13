@@ -10,11 +10,11 @@ $pagebuilder->set_page_name("Friends");
 $pagebuilder->buildheader();
 
 $auth = new authentication();
-
+global $currentuser;
 $loggedinuser = 0;
 
 if($auth->hasaccount()){
-    $loggedin = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+    $loggedin = $currentuser;
     $loggedinuser = $loggedin->id;
 }
 

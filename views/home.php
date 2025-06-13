@@ -5,7 +5,9 @@ $pagebuilder = new pagebuilder();
 $auth = new authentication();
 $auth->requiresession();
 
-$userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+global $currentuser;
+
+$userinfo = $currentuser;
 
 if($userinfo->membership !== "None"){
     if($userinfo->membership == "OutrageousBuildersClub"){

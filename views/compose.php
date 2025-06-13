@@ -6,7 +6,10 @@ $auth = new authentication();
 
 $auth->requiresession();
 
-$userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+global $currentuser;
+
+$userinfo = $currentuser;
+
 if(isset($_GET["recipientId"])){
     $recipient = (int)$_GET["recipientId"];
 

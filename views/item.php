@@ -7,7 +7,8 @@ $auth = new authentication();
 $pagebuilder = new pagebuilder();
 
 if($auth->hasaccount()){
-    $userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+    global $currentuser;
+    $userinfo = $currentuser;
 } else {
     header("Location: /newlogin");
     die();

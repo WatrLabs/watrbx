@@ -11,7 +11,9 @@ $pagebuilder = new pagebuilder();
 $auth = new authentication();
 $auth->requiresession();
 
-$userinfo = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
+global $currentuser;
+
+$userinfo = $currentuser;
 $allfriends = $friends->get_friends($userinfo->id);
 
 if ($userinfo->membership !== "None") {

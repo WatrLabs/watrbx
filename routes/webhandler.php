@@ -44,10 +44,10 @@ $router->post('/messages/compose', function(){
         $userid = $_POST["__EVENTTARGET"];
 
         $auth = new authentication();
+        global $currentuser;
         $recipient = $auth->getuserbyid($userid);
 
         if($auth->hasaccount()){
-            $currentuser = $auth->getuserinfo($_COOKIE["_ROBLOSECURITY"]);
             if($recipient !== null){
 
                 global $db;
