@@ -2,10 +2,14 @@
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\router\Routing;
 use watrlabs\authentication;
+use watrbx\thumbnails;
 
+$thumbs = new thumbnails();
 $router = new Routing();
 $auth = new authentication();
 $pagebuilder = new pagebuilder();
+
+
 
 $ismobile = false;
 
@@ -24,8 +28,8 @@ $gameinfo = $query->first();
 
 if($gameinfo == null){
     die($router->return_status(404));
-
 } else {
+    $url = $thumbs->get_asset_thumb($gameinfo->assetid);
     $query = $db->table("assets")->where("id", $gameinfo->assetid);
     $assetinfo = $query->first();
 
@@ -272,14 +276,14 @@ $pagebuilder->buildheader();
     <ol class="carousel-indicators">
 
             <li data-target="#rbx-carousel" data-slide-to="0" class="active"></li>
-            <li data-target="#rbx-carousel" data-slide-to="1" class=""></li>
+            <!-- <li data-target="#rbx-carousel" data-slide-to="1" class=""></li> -->
     </ol>
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
 
 
             <div class="item active">
-<span ><img  class='CarouselThumb' src='/images/defaultwide.png' /></span>                    <div class="carousel-caption">
+<span ><img  class='CarouselThumb' src='<?=$url?>' /></span>                    <div class="carousel-caption">
                     </div>
 
 

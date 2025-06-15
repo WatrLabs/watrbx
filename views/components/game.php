@@ -12,7 +12,7 @@ $asseinfo = $db->table("assets")->where("id", $game->assetid);
 $upvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 1)->count();
 $downvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 0)->count();
 
-$url = $thumbs->get_asset_thumb($game->assetid);
+$url = "/images/defaultimage.png";
 $owner = $auth->getuserbyid($game->owner);
 
 $bad = false;

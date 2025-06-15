@@ -29,6 +29,12 @@ $router->get("/game/GetCurrentUser.ashx", function() {
 
 });
 
+$router->get('/game/visit.ashx', function(){
+    header("Content-type: text/lua");
+    http_response_code(200);
+    die(include("../storage/visit.php"));
+});
+
 $router->get('/IDE/Upload.aspx', function() {
     $pagebuilder = new pagebuilder;
     $pagebuilder::get_template("ide/upload");
