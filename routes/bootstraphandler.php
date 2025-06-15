@@ -4,22 +4,26 @@ use watrlabs\router\Routing;
 global $router; // IMPORTANT: KEEP THIS HERE!
 
 $router->get("/version", function() {
-    echo "version-e87f106b2af5b4920";
+    echo "version-2niqaerqcb6351zx7";
 });
 
 $router->get('/versionQTStudio', function(){
-    echo "version-e87f106b2af5b4920";
+    echo "version-2niqaerqcb6351zx7";
 });
 
-$router->get('/version-e87f106b2af5b4920-RobloxVersion.txt', function(){
+$router->get('/version-2niqaerqcb6351zx7-RobloxVersion.txt', function(){
     echo "1, 6, 3, 61076";
+});
+
+$router->get('/install/setup.ashx', function(){
+    header("Location: /watrbxbootstrapper.exe");
 });
 
 $router->get('/cdn.txt', function(){
     echo "watrbx.xyz";
 });
 
-$router->get('/version-e87f106b2af5b4920-rbxManifest.txt', function(){
+$router->get('/version-2niqaerqcb6351zx7-rbxManifest.txt', function(){
     die('ReflectionMetadata.xml
 0cd06977fd944f542b332015964682a1
 RobloxPlayerBeta.exe

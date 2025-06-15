@@ -385,3 +385,4 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 
                 <div>
                                                             <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
+                                                            <div class="SystemAlert"><div class="rbx-alert-info" role="alert"><b>Notice:</b> Site is still in development! Expect issues, incomplete features and bugs!</div></div>

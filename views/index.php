@@ -229,8 +229,10 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
         width: calc(33.333333% - 10px);
     }
 </style>
+
 <div class="navbar navbar-landing navbar-fixed-top" role="navigation" 
      >
+     <div class="SystemAlert"><div class="rbx-alert-info" role="alert"><b>Notice:</b> Site is still in development! Expect issues, incomplete features and bugs!</div></div>
     <div class="container">
         <div class="row">
             <div class="navbar-header col-md-6">
