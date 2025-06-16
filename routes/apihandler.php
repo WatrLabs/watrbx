@@ -1698,7 +1698,7 @@ $router->post('/Membership/NotApproved.aspx', function(){
         $baninfo = $db->table("moderation")->where("id", $banid)->first();
 
         if($baninfo !== null){
-            $userinfo = $auth->$currentuser;
+            $userinfo = $currentuser;
             if($baninfo->userid == $userinfo->id){
                 if($baninfo->banneduntil < time()){
                     $db->table("moderation")->where("id", $baninfo->id)->update(array("canignore"=>1));
