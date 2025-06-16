@@ -10,10 +10,10 @@ $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gz
 $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/3f3e6c117b7e1ff6c7644a1b4048a54c.js.gzip');
 $pagebuilder->set_page_name("Trade");
-
+$pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
-$pagebuilder->setlegacy(true);
+
 
 
 ?> 

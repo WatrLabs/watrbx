@@ -6,7 +6,7 @@ $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___cda0cc
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___52c69b42777a376ab8c76204ed8e75e2_m.css');
 $pagebuilder->addresource('jsfiles', '/js/9e04c92d86597a105fe0712ce1f1ab60.js');
 $pagebuilder->set_page_name("Error");
-
+$pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
 

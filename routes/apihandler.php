@@ -344,6 +344,16 @@ $router->post('/api/item.ashx', function(){
 });
 
 $router->get('/container/info', function(){
+    $router = new Routing();
+    global $currentuser;
+
+    if($currentuser !== null){
+        if($currentuser->is_admin !== 1){
+            die($router->return_status(403));
+        }
+    } else {
+        die($router->return_status(403));
+    }
     $containers = new containers();
     $container = $_ENV["CONTAINERID"];
     $key = $_ENV["ASSETCONTAINERKEY"];
@@ -365,6 +375,16 @@ $router->get('/container/info', function(){
 });
 
 $router->post('/api/v1/asset-upload', function(){
+    $router = new Routing();
+    global $currentuser;
+
+    if($currentuser !== null){
+        if($currentuser->is_admin !== 1){
+            die($router->return_status(403));
+        }
+    } else {
+        die($router->return_status(403));
+    }
 
     $auth = new authentication();
     $containers = new containers();
@@ -529,6 +549,16 @@ $router->get('/item-thumbnails', function(){
 });
 
 $router->post('/api/v1/cdn-upload', function(){
+    $router = new Routing();
+    global $currentuser;
+
+    if($currentuser !== null){
+        if($currentuser->is_admin !== 1){
+            die($router->return_status(403));
+        }
+    } else {
+        die($router->return_status(403));
+    }
     if(isset($_POST["path"]) && isset($_FILES["file"])){
         $containers = new containers();
 
