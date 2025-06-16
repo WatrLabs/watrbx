@@ -144,7 +144,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae", "d587ab8b913640c24c31af5f7af7a6e2", "80c29590071c7921143c6a14151c804f"]}');
+    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae", "d587ab8b913640c24c31af5f7af7a6e2", "67621ff6cb93314c9d82fe34ca5bf24c", "b19ccc849b1944456fffd958845da868"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){

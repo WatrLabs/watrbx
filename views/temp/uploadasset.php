@@ -1,6 +1,18 @@
 
 <?php
 
+use watrlabs\router\Routing;
+    $router = new Routing();
+    global $currentuser;
+
+    if($currentuser !== null){
+        if($currentuser->is_admin !== 1){
+            die($router->return_status(403));
+        }
+    } else {
+        die($router->return_status(403));
+    }
+
 $assetTypes = array(
     'Image' => 1,
     'TShirt' => 2,
