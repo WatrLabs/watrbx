@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 03, 2025 at 11:26 PM
+-- Generation Time: Jun 16, 2025 at 11:40 AM
 -- Server version: 8.4.0
 -- PHP Version: 8.3.15
 
@@ -127,6 +127,32 @@ CREATE TABLE `feed` (
   `content` text COLLATE utf8mb4_bin NOT NULL,
   `owner` int NOT NULL,
   `date` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum`
+--
+
+CREATE TABLE `forum` (
+  `id` int NOT NULL,
+  `name` text COLLATE utf8mb4_bin NOT NULL,
+  `description` text COLLATE utf8mb4_bin NOT NULL,
+  `parent` int NOT NULL,
+  `priority` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum-header`
+--
+
+CREATE TABLE `forum-header` (
+  `id` int NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `priority` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -283,10 +309,12 @@ CREATE TABLE `moderation` (
   `userid` int NOT NULL,
   `type` enum('reminder','warning','days','deleted') COLLATE utf8mb4_bin NOT NULL DEFAULT 'reminder',
   `reviewed` int NOT NULL,
-  `banneduntil` int NOT NULL,
+  `banneduntil` bigint NOT NULL,
+  `moderator` int NOT NULL,
   `moderatornote` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `offensiveitem` int DEFAULT NULL,
   `days` int DEFAULT NULL,
+  `internalnote` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `canignore` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -360,6 +388,18 @@ CREATE TABLE `sessions` (
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `expiration` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_config`
+--
+
+CREATE TABLE `site_config` (
+  `id` int NOT NULL,
+  `thekey` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
