@@ -389,8 +389,8 @@ $pagebuilder->buildheader();
         <li class="favorite-button-container rbx-tooltip" data-toggle="tooltip" title="" data-original-title="Add this game to favorites">
             <a>
                 
-                <span class="rbx-icon-favorite " data-toggle-url="/favorite/toggle" data-assetid="<?=$id?>" data-isguest="False"
-                      data-signin-url="/newlogin?returnUrl=%2Fgames%2F<?=$id?>%2FWork-at-a-Pizza-Place">
+                <span class="rbx-icon-favorite " data-toggle-url="/favorite/toggle" data-assetid="<?=$assetinfo->id?>" data-isguest="False"
+                      data-signin-url="/newlogin">
                     
                 </span>
                 <span title="0" class="favoriteCount 0" id="result">0</span>
@@ -399,7 +399,7 @@ $pagebuilder->buildheader();
  
                 
         <li class="voting-panel body"
-             data-asset-id="<?=$id?>"
+             data-asset-id="<?=$assetinfo->id?>"
              data-total-up-votes="<?=$upvotes?>"
              data-total-down-votes="<?=$downvotes?>"
              data-vote-modal=""
@@ -457,8 +457,8 @@ $pagebuilder->buildheader();
             unknownProblemMessage: "There was an unknown problem voting. Please try again.",
 
             guestUserTitle: "Login to Vote",
-            guestUserMessage: "<div>You must login to vote.</div> <div>Please <a href='/newlogin?returnUrl=%2Fgames%2F<?=$id?>%2FWork-at-a-Pizza-Place'>login or register</a> to continue.</div>",
-            returnUrl: '/newlogin?returnUrl=%2Fgames%2F<?=$id?>%2FWork-at-a-Pizza-Place',
+            guestUserMessage: "<div>You must login to vote.</div> <div>Please <a href='/newlogin?returnUrl=%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place'>login or register</a> to continue.</div>",
+            returnUrl: '/newlogin?returnUrl=%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place',
 
             accountUnderOneDayTitle: "Voter Feedback",
             accountUnderOneDayMessage: "You will be able to vote on Games and Studio Models later, after you've had a chance to experience ROBLOX a bit more. Come back to this page in a couple days.",
@@ -480,7 +480,7 @@ $pagebuilder->buildheader();
     </div>
 
     <div class="col-xs-12 rbx-tabs-horizontal"
-         data-place-id="<?=$id?>">
+         data-place-id="<?=$assetinfo->id?>">
         <ul id="horizontal-tabs" class="nav nav-tabs" role="tablist">
             <li id="tab-about" class="rbx-tab tab-about active">
                 <a class="rbx-tab-heading" href="#about">
@@ -545,7 +545,7 @@ $pagebuilder->buildheader();
                     <div class="game-stat-footer">
                                 <span class="game-copylocked-footnote">This game is copylocked</span>
 
-                        <span class="game-report-abuse"><a class="rbx-text-danger" href="/abusereport/asset?id=<?=$id?>&amp;RedirectUrl=%2fgames%2f<?=$id?>%2fWork-at-a-Pizza-Place">Report Abuse</a></span>
+                        <span class="game-report-abuse"><a class="rbx-text-danger" href="/abusereport/asset?id=<?=$assetinfo->id?>&amp;RedirectUrl=%2fgames%2f<?=$assetinfo->id?>%2fWork-at-a-Pizza-Place">Report Abuse</a></span>
                     </div>
                 </div>
 
@@ -612,10 +612,10 @@ $pagebuilder->buildheader();
                 
 <div class="section">
     <div id="AjaxCommentsContainer" class="comments-container"
-         data-asset-id="<?=$id?>"
+         data-asset-id="<?=$assetinfo->id?>"
          data-total-collection-size=""
          data-is-user-authenticated="True"
-         data-signin-url="https://www.watrbx.xyz/newlogin?returnUrl=%2Fgames%2F<?=$id?>%2FWork-at-a-Pizza-Place">
+         data-signin-url="https://www.watrbx.xyz/newlogin?returnUrl=%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">
         <h3>Comments</h3>
         <div class="AddAComment">
             <div class="comment-form">
@@ -784,7 +784,7 @@ $pagebuilder->buildheader();
 <script>
     $(function () {
         Roblox.GamePassJSData = { };
-        Roblox.GamePassJSData.PlaceID = <?=$id?>;
+        Roblox.GamePassJSData.PlaceID = <?=$assetinfo->id?>;
 
         var purchaseConfirmationCallback = function (obj) {
             var originalContainer = $('.PurchaseButton[data-item-id=' + obj.AssetID + ']').parent('.rbx-caption');
@@ -836,7 +836,7 @@ $pagebuilder->buildheader();
             
         };
         Roblox.PlaceProductPromotionItemPurchase = new Roblox.ItemPurchase(purchaseConfirmationCallback);
-        Roblox.PlaceProductPromotion.PlaceID = <?=$id?>;
+        Roblox.PlaceProductPromotion.PlaceID = <?=$assetinfo->id?>;
 
         $("#store").on("click", ".rbx-icon-delete", function(e) {
             var promoId = $(this).data('delete-promotion-id');
@@ -1063,7 +1063,7 @@ $pagebuilder->buildheader();
 </script>
 
     
-    <div id="rbx-running-games" class="container-list" data-placeid="<?=$id?>" data-showshutdown>
+    <div id="rbx-running-games" class="container-list" data-placeid="<?=$assetinfo->id?>" data-showshutdown>
         <div class="container-header">
             <h3>Running Games</h3>
             <span class="rbx-btn-secondary-xs btn-more rbx-running-games-refresh">Refresh</span>
@@ -1130,7 +1130,7 @@ $pagebuilder->buildheader();
      data-user-balance-robux="<?=$userinfo->robux?>"
      data-user-balance-tickets="<?=$userinfo->tix?>"
      data-user-bc="0"
-     data-continueshopping-url="/games/<?=$id?>/Work-at-a-Pizza-Place"
+     data-continueshopping-url="/games/<?=$assetinfo->id?>/Work-at-a-Pizza-Place"
      data-imageurl ="/temp/6142862bec7e76846e1affab21bff7a6.png"
      data-alerturl ="/images/cbb24e0c0f1fb97381a065bd1e056fcb.png"
      data-builderscluburl ="/images/ae345c0d59b00329758518edc104d573.png"
@@ -2557,8 +2557,8 @@ $pagebuilder->buildheader();
         <div style="clear:both; height:25px;"></div>
         <div class="RevisedFooter">
             <div style="width:200px;margin:10px auto 0 auto;">
-                <a href="/?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fgames%2F<?=$id?>%2FWork-at-a-Pizza-Place"><div class="RevisedCharacterSelectSignup"></div></a>
-                <a class="HaveAccount" href="https://www.watrbx.xyz/newlogin?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fgames%2F<?=$id?>%2FWork-at-a-Pizza-Place">I have an account</a>
+                <a href="/?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place"><div class="RevisedCharacterSelectSignup"></div></a>
+                <a class="HaveAccount" href="https://www.watrbx.xyz/newlogin?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">I have an account</a>
             </div>
         </div>
     </div>

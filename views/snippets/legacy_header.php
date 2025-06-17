@@ -1,15 +1,21 @@
 <?php
 use watrlabs\authentication;
+use watrbx\relationship\friends;
+$friends = new friends();
+
 $auth = new authentication();
 global $db;
 global $currentuser;
+
+$pendingfq = count($friends->get_requests($currentuser->id));
 
 if($auth->hasaccount()){
     $userinfo = $currentuser;
 }
 
-$count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
+$msgcount = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
 
+$count = $pendingfq + $msgcount;
 
 $obc = '';
 
@@ -464,7 +470,7 @@ prm.add_endRequest(function(sender, args) {
     <div id="navigation" class="rbx-left-col" data-behavior="left-col">
         <ul>
             <li class="rbx-lead">
-                <a href="/User.aspx"><?=$userinfo->username?></a>
+                <a href="/users/<?= $userinfo->id ?>/profile"><?=$userinfo->username?></a>
             </li>
             <li class="rbx-divider"></li>
         </ul>
@@ -474,15 +480,15 @@ prm.add_endRequest(function(sender, args) {
                 <li><a href="/home" id="nav-home"><span class="rbx-icon-nav-home"></span><span>Home</span></a></li>
                 <li><a href="/users/<?=$userinfo->id?>/profile" id="nav-profile"><span class="rbx-icon-nav-profile"></span><span>Profile</span></a></li>
                 <li>
-                <a href="/my/messages/#!/inbox" id="nav-message" data-count="<?=$count?>">
+                <a href="/my/messages/#!/inbox" id="nav-message" data-count="<?=$msgcount?>">
                         <span class="rbx-icon-nav-message"></span><span>Messages</span>
-                        <span class="rbx-highlight" title="<?=$count?>"><? if($count > 0){ echo $count; } ?></span>
+                        <span class="rbx-highlight" title="<?=$msgcount?>"><? if($msgcount > 0){ echo $msgcount; } ?></span>
                     </a>
                 </li>
                 <li>
-                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="0">
+                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="<?=$pendingfq?>">
                         <span class="rbx-icon-nav-friends"></span><span>Friends</span>
-                        <span class="rbx-highlight" title="0"></span>
+                        <span class="rbx-highlight" title="<?=$pendingfq?>"><? if($pendingfq > 0){ echo $pendingfq; } ?></span>
                     </a>
                 </li>
                 <li>
