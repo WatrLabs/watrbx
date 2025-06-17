@@ -2,6 +2,7 @@
 use watrlabs\router\Routing;
 use watrlabs\authentication;
 use watrlabs\watrkit\pagebuilder;
+use watrbx\thumbnails;
 use watrlabs\watrkit\sanitize;
 
 
@@ -34,6 +35,20 @@ $router->get("/temp/cdn-upload", function(){
 $router->get('/messages/compose', function(){
     $page = new pagebuilder;
     $page::get_template("compose");
+});
+
+$router->get('/Thumbs/Asset.ashx', function(){
+    if(isset($_GET["assetId"])){
+        $assetid = (int)$_GET["assetId"];
+
+        $thumbs = new thumbnails();
+
+        $thumbnailurl = $thumbs->get_asset_thumb($assetid);
+
+        Header("Location: $thumbnailurl");
+        die();
+
+    }
 });
 
 

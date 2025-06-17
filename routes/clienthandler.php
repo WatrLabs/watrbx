@@ -1,5 +1,6 @@
 <?php
 use watrlabs\router\Routing;
+use watrlabs\authentication;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -136,6 +137,59 @@ $router->post('/game/validate-machine', function(){
     die();
 });
 
+$router->get('/marketplace/productinfo', function(){
+    header("Content-type: application/json");
+    if(isset($_GET["assetId"])){
+        $auth = new authentication();
+        $assetid = (int)$_GET["assetId"];
+        global $db;
+        $productinfo = [
+            "Name"=>"",
+            "Description"=>"",
+            "Created"=>"",
+            "Updated"=>"",
+            "PriceInRobux"=>0,
+            "PriceInTickets"=>0,
+            "Creator"=>[
+                "Id"=>0,
+                "Name"=>"ROBLOX",
+                "CreatorType"=>"User",
+                "CreatorTargetId"=>1
+            ],
+        ];
+        $assetinfo = $db->table("assets")->where("id", $assetid)->first();
+
+        if($assetinfo !== null){
+
+            $creatorinfo = $auth->getuserbyid($assetinfo->owner);
+
+            $productinfo["Name"] = $assetinfo->name;
+            $productinfo["Description"] = $assetinfo->description;
+            $productinfo["Created"] = date('c', $assetinfo->created);
+            $productinfo["Updated"] = date('c', $assetinfo->updated);
+            $productinfo["PriceInRobux"] = $assetinfo->robux;
+            $productinfo["PriceInTickets"] = $assetinfo->tix;
+
+            $productinfo["Creator"]["Id"] = $creatorinfo->id;
+            $productinfo["Creator"]["Name"] = $creatorinfo->username;
+            $productinfo["Creator"]["CreatorTargetId"] = $creatorinfo->id;
+
+            die(json_encode($productinfo));
+
+        } else {
+            http_response_code(404);
+            echo json_encode(array("success"=>false));
+            die();
+        }
+        
+
+    } else {
+        header("Content-type: application/json");
+        echo json_encode(array("success"=>false));
+        die();
+    }
+});
+
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
     die('{"data":["0.235.0pcplayer","0.1.0pcplayer","0.235.0pcplayer","INTERNALiosapp","0.450.0pcplayer","0.205.0pcplayer"]}');
@@ -144,7 +198,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae", "d587ab8b913640c24c31af5f7af7a6e2", "67621ff6cb93314c9d82fe34ca5bf24c", "b19ccc849b1944456fffd958845da868"]}');
+    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae", "d587ab8b913640c24c31af5f7af7a6e2", "67621ff6cb93314c9d82fe34ca5bf24c", "e364091d488ccd881c63a83be45cf23b"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){

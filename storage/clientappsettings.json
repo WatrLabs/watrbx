@@ -813,6 +813,8 @@
     "DFIntExpireMarketPlaceServiceCacheSeconds": "60",
     "DFFlagEnableMarketPlaceServiceCaching": "True",
     "DFFlagUseNewAnalyticsApi": "True",
+    "DFFlagUserUseLuaVehicleController": "False",
+    "DFFlagSmootherVehicleSeatControlSystem": "False",
     "DFFlagHandleAdornmentEnabled": "True",
     "DFFlagGetTouchingPartsEnabled": "True",
     "DFFlagJoinUnjoinFromOthersEnabled": "True",

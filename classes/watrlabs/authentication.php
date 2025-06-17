@@ -262,19 +262,19 @@ class authentication {
 
             if($baninfo !== null){
                 if($baninfo->canignore == 0){
-                    $url = $_SERVER['REQUEST_URI'];
+                    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-                    if($url !== "/Membership/NotApproved.aspx?ID=" . $baninfo->id){
+                    $allowedurls = [
+                        "/Membership/NotApproved.aspx",
+                        "/CSS/Base/CSS/FetchCSS"
+                    ];
+
+                    if(!in_array($uri, $allowedurls)){
                         header("Location: /Membership/NotApproved.aspx?ID=" . $baninfo->id);
                     }
                 }
             }
-
-
-
         }
-
-        
     
         return $userinfo;
     }

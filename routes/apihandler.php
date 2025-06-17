@@ -548,6 +548,64 @@ $router->get('/item-thumbnails', function(){
     die(); 
 });
 
+$router->get("/user/following-exists", function(){
+    header("Content-type: application/json");
+    die('{"success": true, "isFollowing": false}');
+});
+
+$router->post('/user/request-friendship', function(){
+    if(isset($_GET["recipientUserId"])){
+        global $currentuser;
+        $recipient = (int)$_GET["recipientUserId"];
+        if($currentuser !== null){
+            $senderid = $currentuser->id;
+            $friends = new friends();
+            $result = $friends->add_friend($recipient, $senderid);
+
+            if($result == 1){
+                die('{"success":true}');
+            } else {
+                die('{"success":false}');
+            }
+        }
+        
+    } else {
+        http_response_code(400);
+        die('{"success": false}');
+    }
+});
+
+$router->get("/user/get-friendship-count", function(){
+    header("Content-type: application/json");
+
+    if(isset($_GET["userId"])){
+        $friends = new friends();
+        $userId = (int)$_GET["userId"];
+
+        $friendcount = count($friends->get_friends($userId));
+
+        $response = [
+            "success"=>true,
+            "count"=>$friendcount
+        ];
+
+        die(json_encode($response));
+
+    } else {
+        http_response_code(400);
+        die('{"success": false}');
+    }
+
+    
+});
+
+
+$router->post('/user/multi-following-exists', function(){
+    // TODO
+    header("Content-type: application/json");
+    die('{"followings": []}');
+});
+
 $router->post('/api/v1/cdn-upload', function(){
     $router = new Routing();
     global $currentuser;

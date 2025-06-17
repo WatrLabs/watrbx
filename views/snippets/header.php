@@ -1,11 +1,15 @@
 <?php
 use watrlabs\authentication;
+use watrbx\relationship\friends;
+$friends = new friends();
 $auth = new authentication();
 global $currentuser;
 $userinfo = $currentuser;
-
+$pendingfq = count($friends->get_requests($currentuser->id));
 global $db;
-$count = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
+$msgcount = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
+
+$count = $pendingfq + $msgcount;
 
 $obc = '';
 
@@ -443,7 +447,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     <div id="navigation" class="rbx-left-col" data-behavior="left-col">
         <ul>
             <li class="rbx-lead">
-                <a href="/User.aspx"><?=$userinfo->username?></a>
+                <a href="/users/<?= $userinfo->id ?>/profile"><?=$userinfo->username?></a>
             </li>
             <li class="rbx-divider"></li>
         </ul>
@@ -455,13 +459,13 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                 <li>
                     <a href="/my/messages/#!/inbox" id="nav-message" data-count="<?=$count?>">
                         <span class="rbx-icon-nav-message"></span><span>Messages</span>
-                        <span class="rbx-highlight" title="<?=$count?>"><? if($count > 0){ echo $count; } ?></span>
+                        <span class="rbx-highlight" title="<?=$msgcount?>"><? if($msgcount > 0){ echo $msgcount; } ?></span>
                     </a>
                 </li>
                 <li>
-                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="14">
+                    <a href="/users/<?=$userinfo->id?>/friends" id="nav-friends" data-count="<?=$pendingfq?>">
                         <span class="rbx-icon-nav-friends"></span><span>Friends</span>
-                        <span class="rbx-highlight" title="14"></span>
+                        <span class="rbx-highlight" title="<?=$pendingfq?>"><? if($pendingfq > 0){ echo $pendingfq; } ?></span>
                     </a>
                 </li>
                 <li>
