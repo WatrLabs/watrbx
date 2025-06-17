@@ -9,7 +9,7 @@
 	  <link rel="stylesheet" href="/CSS/Pages/gamesEdit.css">
       <link rel="stylesheet" href="/CSS/Pages/upload.css">
 	  <link rel='stylesheet' href='/CSS/Pages/StyleGuide2.css' />
-	  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	  <script type="text/javascript" src="//code.jquery.com/jquery-1.7.2.min.js"></script>
    </head>
    <body>
 		<div class="boxed-body">

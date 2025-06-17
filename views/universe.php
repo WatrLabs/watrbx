@@ -38,8 +38,8 @@ if($gameinfo == null){
     }
     $creator = $auth->getuserbyid($gameinfo->owner);
 
-    $upvotes = $db->table("likes")->where("assetid", $id)->where("vote", 1)->count();
-    $downvotes = $db->table("likes")->where("assetid", $id)->where("vote", 0)->count();
+    $upvotes = $db->table("likes")->where("assetid", $gameinfo->assetid)->where("vote", 1)->count();
+    $downvotes = $db->table("likes")->where("assetid", $gameinfo->assetid)->where("vote", 0)->count();
 }
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css');
