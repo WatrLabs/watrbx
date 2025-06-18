@@ -3,6 +3,7 @@ use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrlabs\router\Routing;
 global $db;
+global $currentuser;
 $pagebuilder = new pagebuilder();
 
 $router = new Routing();
@@ -14,6 +15,10 @@ if(isset($_GET["ID"])){
     $baninfo = $db->table("moderation")->where("id", $banid)->first();
     $canreactivate = false;
     if($baninfo !== null){
+
+        if($baninfo->userid !== $currentuser->id){
+            header("Location: /home");
+        }
 
         if($baninfo->canignore == "1"){
             header("Location: /home");
@@ -42,7 +47,9 @@ if(isset($_GET["ID"])){
                 break;
         }
     } else {
-        die($router->return_status(404));
+        header("Location: /home");
+        die();
+        //die($router->return_status(404));
     }
 
 } else {
@@ -69,7 +76,7 @@ $pagebuilder->buildheader();
     <div style="margin: 150px auto 150px auto; width: 500px; border: black thin solid;
         padding: 22px;">
         <h2><?=$header?></h2>
-        <p>Our content monitors have determined that your behavior at ROBLOX has been in violation of our Terms of Service. We will terminate your account if you do not abide by the rules.</p>
+        <p>Our content monitors have determined that your behavior at ROBLOX has been in violation of our Terms of Service. <? if($baninfo->banneduntil !== null){ echo "We will terminate your account if you do not abide by the rules."; } ?></p>
         <p>Reviewed: <span style="font-weight: bold"><?=date('n/j/Y g:i:s A', $baninfo->reviewed);?></span></p>
         <p>Moderator Note: <span style="font-weight: bold"><?=$baninfo->moderatornote?></span></p>
         <!--<div style="width: auto; border: black thin solid; text-align: left;">
@@ -83,9 +90,10 @@ $pagebuilder->buildheader();
             </p>
         </div>
         -->
-        <p>Please abide by the ROBLOX Community Guidelines so that ROBLOX can be fun for users of all ages.</p>
+        
         <?php
             if($canreactivate){ ?>
+                <p>Please abide by the ROBLOX Community Guidelines so that ROBLOX can be fun for users of all ages.</p>
                 <p>You may re-activate your account by agreeing to our <a href="#">Terms of Service</a></p>
                 <div style="text-align: center;">
                     <form method="POST" action="/api/v1/reactivate?ID=<?=$banid?>">
@@ -95,10 +103,15 @@ $pagebuilder->buildheader();
                         <button onclick="logout()">Logout</button><br><br>
                     </form>
                 </div>
-            <? } else { ?>
+            <? } elseif($baninfo->banneduntil !== null) { ?>
                 <p>Your account has been disabled. You may re-activate it after <?=date('n/j/Y g:i:s A', $baninfo->banneduntil);?></p>
                 <p>If you wish to appeal, please contact us via the <a href="#">Support Forum</a></p>
-            <? } ?>
+            <? } else { ?>
+                <p>Your account has been terminated.</p>
+                <p>If you wish to appeal, please contact us via the <a href="#">Support Forum</a></p>
+            <?}?>
+
+            
         
     </div>
 
