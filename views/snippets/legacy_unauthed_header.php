@@ -34,13 +34,13 @@
 		    _gaq.push(['_setCampSourceKey', 'rbx_source']);
 		    _gaq.push(['_setCampMediumKey', 'rbx_medium']);
 		    _gaq.push(['_setCampContentKey', 'rbx_campaign']);
-		        _gaq.push(['_setDomainName', 'roblox.com']);
+		        _gaq.push(['_setDomainName', 'watrbx.xyz']);
 		_gaq.push(['b._setAccount', 'UA-486632-1']);
 		_gaq.push(['b._setCampSourceKey', 'rbx_source']);
 		_gaq.push(['b._setCampMediumKey', 'rbx_medium']);
 		_gaq.push(['b._setCampContentKey', 'rbx_campaign']);
 
-		_gaq.push(['b._setDomainName', 'roblox.com']);
+		_gaq.push(['b._setDomainName', 'watrbx.xyz']);
         
             _gaq.push(['b._setCustomVar', 1, 'Visitor', 'Anonymous', 2]);
             _gaq.push(['b._trackPageview']);    
@@ -49,7 +49,7 @@
         
 
 		_gaq.push(['c._setAccount', 'UA-26810151-2']);
-		_gaq.push(['c._setDomainName', 'roblox.com']);
+		_gaq.push(['c._setDomainName', 'watrbx.xyz']);
 
 		(function() {
 			var ga = document.createElement('script');
@@ -100,24 +100,24 @@
             });
         </script>
             <div id="EventStreamData"
-             data-default-url="//ecsv2.roblox.com/www/e.png"
-             data-www-url="//ecsv2.roblox.com/www/e.png"
-             data-studio-url="//ecsv2.roblox.com/pe?t=studio"></div>
+             data-default-url="//ecsv2.watrbx.xyz/www/e.png"
+             data-www-url="//ecsv2.watrbx.xyz/www/e.png"
+             data-studio-url="//ecsv2.watrbx.xyz/pe?t=studio"></div>
 
     <script type="text/javascript">
 if (typeof(Roblox) === "undefined") { Roblox = {}; }
 Roblox.Endpoints = Roblox.Endpoints || {};
 Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
-Roblox.Endpoints.Urls['/asset/'] = 'https://assetgame.roblox.com/asset/';
+Roblox.Endpoints.Urls['/asset/'] = 'https://assetgame.watrbx.xyz/asset/';
 Roblox.Endpoints.Urls['/client-status/set'] = '/client-status/set';
 Roblox.Endpoints.Urls['/client-status'] = '/client-status';
-Roblox.Endpoints.Urls['/game/'] = 'https://assetgame.roblox.com/game/';
-Roblox.Endpoints.Urls['/game/edit.ashx'] = 'https://assetgame.roblox.com/game/edit.ashx';
-Roblox.Endpoints.Urls['/game/getauthticket'] = 'https://assetgame.roblox.com/game/getauthticket';
-Roblox.Endpoints.Urls['/game/placelauncher.ashx'] = 'https://assetgame.roblox.com/game/placelauncher.ashx';
-Roblox.Endpoints.Urls['/game/report-stats'] = 'https://assetgame.roblox.com/game/report-stats';
-Roblox.Endpoints.Urls['/game/report-event'] = 'https://assetgame.roblox.com/game/report-event';
-Roblox.Endpoints.Urls['/chat/chat'] = 'http://misc.roblox.com/chat/chat';
+Roblox.Endpoints.Urls['/game/'] = 'https://assetgame.watrbx.xyz/game/';
+Roblox.Endpoints.Urls['/game/edit.ashx'] = 'https://assetgame.watrbx.xyz/game/edit.ashx';
+Roblox.Endpoints.Urls['/game/getauthticket'] = 'https://assetgame.watrbx.xyz/game/getauthticket';
+Roblox.Endpoints.Urls['/game/placelauncher.ashx'] = 'https://assetgame.watrbx.xyz/game/placelauncher.ashx';
+Roblox.Endpoints.Urls['/game/report-stats'] = 'https://assetgame.watrbx.xyz/game/report-stats';
+Roblox.Endpoints.Urls['/game/report-event'] = 'https://assetgame.watrbx.xyz/game/report-event';
+Roblox.Endpoints.Urls['/chat/chat'] = 'http://misc.watrbx.xyz/chat/chat';
 Roblox.Endpoints.Urls['/presence/users'] = '/presence/users';
 Roblox.Endpoints.Urls['/presence/user'] = '/presence/user';
 Roblox.Endpoints.Urls['/friends/list'] = '/friends/list';
@@ -203,7 +203,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             <div id="rbx-continue-shopping-btn" class="btn btn-medium btn-neutral rbx-btn-secondary-xs btn-more btn-continue-shopping">Continue to Shop</div>
         </div>
         <div class="fine-print">
-            The shop is not part of ROBLOX.com and is governed by a separate <a href="http://www.myplay.com/direct/cookie-policy?origin=desktop&permalink=shoproblox">privacy policy</a>.
+            The shop is not part of watrbx.xyz and is governed by a separate <a href="http://www.myplay.com/direct/cookie-policy?origin=desktop&permalink=shoproblox">privacy policy</a>.
         </div>
     </div>
 </div>
@@ -273,7 +273,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                         <a id="header-login" class="rbx-navbar-login" data-behavior="login" data-toggle="popover" data-bind="popover-login" data-viewport="#header">Log In</a>
                     </li>
                     <div id="iFrameLogin" class="rbx-popover-content" data-toggle="popover-login" role="menu">
-                        <iframe id="iframe-login" class="rbx-navbar-login-iframe" src="/Login/iFrameLogin.aspx?loginRedirect=False&amp;parentUrl=https%3a%2f%2fwww.roblox.com%2fNewLogin" scrolling="no" frameborder="0" width="320"></iframe>
+                        <iframe id="iframe-login" class="rbx-navbar-login-iframe" src="/Login/iFrameLogin.aspx?loginRedirect=False&amp;parentUrl=https%3a%2f%2fwww.watrbx.xyz%2fNewLogin" scrolling="no" frameborder="0" width="320"></iframe>
                     </div>
                     <li>
                         <a class="rbx-navbar-signup" href="/newlogin?returnUrl=%2FNewLogin">Sign Up</a>

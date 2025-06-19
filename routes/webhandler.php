@@ -251,6 +251,20 @@ $router->get("/my/groups.aspx", function() {
     $page::get_template("groups/default");
 });
 
+$router->get("/search/users", function() {
+    $page = new pagebuilder;
+    $page::get_template("search/users");
+});
+
+$router->get("/My/Groups.aspx", function() {
+    $page = new pagebuilder;
+    $page::get_template("groups/default");
+});
+
+$router->post("/My/Groups.aspx", function() {
+    var_dump($_POST);
+});
+
 $router->get("/my/money.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("my/money");

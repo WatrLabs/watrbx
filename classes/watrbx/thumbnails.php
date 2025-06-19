@@ -19,19 +19,19 @@ class thumbnails {
         if($thumb !== null){
             return "//c0.watrbx.xyz/" . $thumb->file;
         } else {
-            $this->request_asset_thumbnail($id);
+            $this->request_asset_thumbnail($id, $size);
             return "/images/defaultimage.png";
         }
 
     }
 
-    public function request_asset_thumbnail($assetid){
+    public function request_asset_thumbnail($assetid, $dimensions = "300x300"){
         global $db;
         $iconrequest = $db->table("jobs")->where("assetid", $assetid)->where("type", 2)->first();
         if($iconrequest == null){
             $func = new sitefunctions();
             $jobid = $func->createjobid();
-            $db->table("jobs")->insert(["status"=>"0", "type"=>2, "assetid"=>$assetid, "jobid"=>$jobid, "dimensions"=>"300x300"]);
+            $db->table("jobs")->insert(["status"=>"0", "type"=>2, "assetid"=>$assetid, "jobid"=>$jobid, "dimensions"=>$dimensions]);
         }
     }
 

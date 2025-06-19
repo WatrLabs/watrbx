@@ -343,10 +343,7 @@ $router->group('/api/v1/gameserver', function($router) {
                             }
         
                             $insertid = $db->table("thumbnails")->insert($insert);
-                            $update = [
-                                "status"=>1
-                            ];
-                            $db->table("jobs")->where("jobid", $jobinfo->jobid)->update($update);
+                            $db->table("jobs")->where("jobid", $jobinfo->jobid)->delete();
                             die(createsuccess('it worked.'));
                         } else {
                             die(createerror("Something went wrong."));
@@ -378,7 +375,6 @@ $router->group('/api/v1/gameserver', function($router) {
                     
                     $port = $jobinfo->port;
                     $place = $jobinfo->assetid;
-                    $apikey = "urmom";
                     $universeid = 1;
                     $apikey = $jobinfo->apikey;
                     $jobid = $jobinfo->jobid;
@@ -391,36 +387,54 @@ $router->group('/api/v1/gameserver', function($router) {
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/hat.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
                             die($lua);
                             break;
                         case "9":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/place.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
                             die($lua);
                             break;
                         case "11":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/shirt.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
                             die($lua);
                             break;
                         case "12":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/pant.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
                             die($lua);
                             break;
                         case "17":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/head.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
                             die($lua);
                             break;
                         case "13":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/decal.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
                             die($lua);
                             break;
                     }

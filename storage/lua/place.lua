@@ -3,8 +3,10 @@
 local assetUrl = "rbxassetid://%assetid%"
 local baseUrl = "http://www.watrbx.xyz/"
 local fileExtension = "PNG"
-local x, y = 581, 327
+local x, y = %x%, %y%
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")
+print("X is ", x)
+print("Y is ", y)
 
 
 pcall(function() game:GetService("ContentProvider"):SetBaseUrl(baseUrl) end)

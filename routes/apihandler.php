@@ -1418,6 +1418,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
                         "code"=>$joincode,
                         "ip"=>$ip,
                         "port"=>$port,
+                        "jobid"=>$jobid,
                         "placeid"=>$placeid
                     );
                     
@@ -1512,6 +1513,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                         "code"=>$joincode,
                         "ip"=>$ip,
                         "port"=>$port,
+                        "jobid"=>$jobid,
                         "placeid"=>$placeid
                     );
                     
@@ -1585,6 +1587,7 @@ $router->get('/users/inventory/recommended-json', function(){
 $router->get('/Game/Join.ashx', function() {
 
     $auth = new authentication();
+    $func = new sitefunctions();
     global $db;
     global $currentuser;
     
@@ -1601,6 +1604,8 @@ $router->get('/Game/Join.ashx', function() {
         }
         $port = $joincode->port;
         $pid = $joincode->placeid;
+        $placeinfo = $db->table("assets")->where("id", $joincode->placeid)->first();
+        $clientticket = $func->generateClientTicket($currentuser->id, $currentuser->username,"https://www.watrbx.xyz/Character.aspx?ID=" . $userinfo->id, $joincode->jobid, file_get_contents("../storage/PrivateNut.pem"));
 
         header("Content-Type: application/json");
         // Construct joinscript
@@ -1615,7 +1620,7 @@ $router->get('/Game/Join.ashx', function() {
             "UserId" => $userinfo->id,
             "SuperSafeChat" => false,
             "CharacterAppearance" => "https://www.watrbx.xyz/Character.aspx?ID=" . $userinfo->id,
-            "ClientTicket" => "",
+            "ClientTicket" => $clientticket,
             "GameId" => $pid,
             "PlaceId" => $pid,
             "MeasurementUrl" => "", // No telemetry here :)
@@ -1625,7 +1630,7 @@ $router->get('/Game/Join.ashx', function() {
             "VendorId" => "0",
             "ScreenShotInfo" => "",
             "VideoInfo" => "",
-            "CreatorId" => "3333",
+            "CreatorId" => $placeinfo->owner,
             "CreatorTypeEnum" => "User",
             "MembershipType" => "$userinfo->membership",
             "AccountAge" => "3000000",
