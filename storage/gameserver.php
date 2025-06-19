@@ -81,7 +81,7 @@ if url~=nil then
 	--		end)
 end
 
-pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(false) end)
+pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 settings().Diagnostics.LuaRamLimit = 0
 --settings().Network:SetThroughputSensitivity(0.08, 0.01)
 --settings().Network.SendRate = 35

@@ -18,6 +18,7 @@ class pagebuilder {
     public array $cssfiles = [];
     public array $metatags = [];
     public array $jsfiles = [];
+    public array $footerjsfiles = [];
     
     function __construct() {
         global $currentuser;
@@ -68,6 +69,18 @@ class pagebuilder {
     static function get_snippet($file, $data = []){
         extract($data);
         require("../views/snippets/$file.php");
+    }
+
+    public function build_footer(){
+        if($this->legacy){
+            $this::get_snippet('trustefooter', [
+                'footerjsfiles' => $this->footerjsfiles,
+            ]);
+        } else {
+            $this::get_snippet('newfooter', [
+                'footerjsfiles' => $this->footerjsfiles,
+            ]);
+        }
     }
 
     public function buildheader() {

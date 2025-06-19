@@ -29,7 +29,7 @@ $gameinfo = $query->first();
 if($gameinfo == null){
     die($router->return_status(404));
 } else {
-    $url = $thumbs->get_asset_thumb($gameinfo->assetid);
+    $url = $thumbs->get_asset_thumb($gameinfo->assetid, "500x500");
     $query = $db->table("assets")->where("id", $gameinfo->assetid);
     $assetinfo = $query->first();
 
