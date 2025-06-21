@@ -26,10 +26,13 @@ global $db;
 $query = $db->table("universes")->where("id", $id);
 $gameinfo = $query->first();
 
+
+
 if($gameinfo == null){
     die($router->return_status(404));
 } else {
-    $url = $thumbs->get_asset_thumb($gameinfo->assetid, "500x500");
+    $visits = count($db->table("visits")->where("universeid",$gameinfo->assetid)->get());
+    $url = $thumbs->get_asset_thumb($gameinfo->assetid, "1280x720");
     $query = $db->table("assets")->where("id", $gameinfo->assetid);
     $assetinfo = $query->first();
 
@@ -513,7 +516,7 @@ $pagebuilder->buildheader();
                     <ul class="game-stats-container">
                         <li class="game-stat">
                             <p class="stat-title">Visits</p>
-                            <p class="rbx-lead" title="0">0</p>
+                            <p class="rbx-lead" title="0"><?=$visits?></p>
                         </li>
                         <li class="game-stat">
                             <p class="stat-title">Created</p>

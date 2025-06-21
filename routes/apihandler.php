@@ -1003,8 +1003,8 @@ $router->get('/users/friends/list-json', function(){
             $response = array(
                 "UserId"=>$userid,
                 "TotalFriends"=>0,
-                "CurrentPage"=>0,
-                "PageSize"=>0,
+                "CurrentPage"=>1,
+                "PageSize"=>18,
                 "FriendsType"=>$type,
                 "Friends"=>[],
             );
