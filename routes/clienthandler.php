@@ -29,34 +29,9 @@ $router->get('/Asset/', function() {
             header("Location: http://c0.watrbx.xyz/" . $asset->fileid);
             die();
         } else {
-            $ch = curl_init("https://assetdelivery.roblox.com/v2/asset/?id=" . urlencode($id) . "&version=" . $version);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "Cookie:.ROBLOSECURITY=" . $_ENV["ROBLOSECURITY"],
-                "User-Agent: Roblox/WinInet"
-            ]);
-            curl_setopt_array($ch, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_USERAGENT => "Roblox/WinInet",
-            ]);
-
-            $response = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            $data = json_decode($response, true);
-
-            if($http_code == 200){
-                if (isset($data['locations'][0]['location'])) {
-                    header("Location: " . $data['locations'][0]['location'], true, 307);
-                    exit;
-                } else {
-                    http_response_code(500);
-                }
-            } else {
-                die(500);
-            }
+            $queryparams = http_build_query($_GET);
+            header("Location: https://assetdelivery.ttblox.mom/v1/asset/?$queryparams");
+            die();
         }
     }
 });
@@ -80,36 +55,35 @@ $router->get('/asset/', function() {
             header("Location: http://c0.watrbx.xyz/" . $asset->fileid);
             die();
         } else {
-            $ch = curl_init("https://assetdelivery.roblox.com/v2/asset/?id=" . urlencode($id) . "&version=" . $version);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "Cookie:.ROBLOSECURITY=" . $_ENV["ROBLOSECURITY"],
-                "User-Agent: Roblox/WinInet"
-            ]);
-            curl_setopt_array($ch, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_USERAGENT => "Roblox/WinInet",
-            ]);
-
-            $response = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            $data = json_decode($response, true);
-
-            if($http_code == 200){
-                if (isset($data['locations'][0]['location'])) {
-                    header("Location: " . $data['locations'][0]['location'], true, 307); // or 307 for temporary redirect
-                    exit;
-                } else {
-                    http_response_code(500);
-                }
-            } else {
-                die(500);
-            }
+            $queryparams = http_build_query($_GET);
+            header("Location: https://assetdelivery.ttblox.mom/v1/asset/?$queryparams");
+            die();
         }
     }
+});
+
+$router->get('/Game/Tools/InsertAsset.ashx', function(){
+
+    $queryparams = http_build_query($_GET);
+
+    header("Location: https://sets.pizzaboxer.xyz/Game/Tools/InsertAsset.ashx?$queryparams");
+    die();
+});
+
+$router->get('/Game/Tools/ThumbnailAsset.ashx', function(){
+
+    //https://roblox.com/Game/Tools/ThumbnailAsset.ashx?fmt=png&wd=420&ht=420&aid=67572213
+
+    $queryparams = http_build_query($_GET);
+
+    $assetid = $_GET['aid'];
+    if(isset($_GET['aid'])){
+        $jsonstuff = json_decode(file_get_contents('https://thumbnails.roblox.com/v1/assets?assetids='.$assetid.'&size=420x420&format=Png&isCircular=false'));
+        foreach ($jsonstuff->data as $jsonsthing) {
+            header("Location: $jsonsthing->imageUrl");
+        }
+}
+
 });
 
 $router->get("/Asset/BodyColors.ashx", function(){
@@ -198,7 +172,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae", "d587ab8b913640c24c31af5f7af7a6e2", "67621ff6cb93314c9d82fe34ca5bf24c", "0792dee3a41fd48dc6507eefb2c527e8"]}');
+    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae", "d587ab8b913640c24c31af5f7af7a6e2", "67621ff6cb93314c9d82fe34ca5bf24c", "3cfe30722cca6dd0ffc0d2e59c26e4b5"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){
