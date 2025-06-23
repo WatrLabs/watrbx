@@ -16,10 +16,10 @@
     $thumbnailurl = $thumbs->get_asset_thumb($asset->id);
 ?>
 
-<div class="CatalogItemOuter BigOuter">
-<div class="SmallCatalogItemView BigView">
-<div class="CatalogItemInner BigInner">    
-        <div class="roblox-item-image image-large" data-item-id="<?=$asset->id?>" data-image-size="large">
+<div class="CatalogItemOuter SmallOuter">
+<div class="SmallCatalogItemView SmallView">
+<div class="CatalogItemInner SmallInner">    
+        <div class="roblox-item-image image-small" data-item-id="<?=$asset->id?>" data-image-size="small">
             <div class="item-image-wrapper">
                 <a href="/<?=$slugify->slugify($asset->name);?>-item?id=<?=$asset->id?>">
                     <img title="<?=$asset->name?>" alt="<?=$asset->name?>" class="original-image " src="<?=$thumbnailurl?>">

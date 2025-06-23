@@ -4,7 +4,7 @@
 local assetUrl = "rbxassetid://%assetid%"
 local baseUrl = "%url%"
 local fileExtension = "PNG"
-local x, y = 300, 300
+local x, y = %x%, %y%
 
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")
 
