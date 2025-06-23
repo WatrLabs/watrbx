@@ -219,18 +219,6 @@ $router->get("/home", function() {
     $page::get_template("new_home");
 });
 
-$router->post('/my/character.aspx', function() {
-    //fuckass ajax bro
-    //header("Content-type: application/json");
-    //die("{}");
-    header('Content-Type: text/plain; charset=utf-8');
-    header('Cache-Control: no-cache, no-store');
-    header('Pragma: no-cache');
-    header('X-AspNet-Version: 4.0.30319');
-    header('X-Powered-By: ASP.NET');
-
-    die('1|updatePanel|ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdatePanelAccoutrements|<div id=\'ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdatePanelAccoutrements\'><p>fuckass asp.net response</p></div>|');
-});
 $router->get('/thumbnail/user-avatar', function(){ 
     http_response_code(500);
     die();
@@ -241,9 +229,81 @@ $router->get("/my/account", function() {
     $page::get_template("my/account");
 });
 
+$router->get('/temp/shirt-uploader', function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/shirt-creator");
+});
+
+$router->get('/temp/pants-uploader', function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/pants-uploader");
+});
+
 $router->get("/my/character.aspx", function() {
     $page = new pagebuilder;
-    $page::get_template("avatar");
+    $page::get_template("avatar", ["currentcategory"=>2]);
+});
+
+$router->post('/my/character.aspx', function() {
+    $page = new pagebuilder;
+
+    global $db;
+    global $currentuser;
+
+    if(isset($_POST["__EVENTTARGET"])){
+        $event = $_POST["__EVENTTARGET"];
+
+        switch ($event){
+            case "viewheads":
+                $page::get_template("avatar", ["currentcategory"=>17]);
+                die();
+            case "viewfaces":
+                $page::get_template("avatar", ["currentcategory"=>18]);
+                die();
+            case "viewhats":
+                $page::get_template("avatar", ["currentcategory"=>8]);
+                die();
+            case "viewhats":
+                $page::get_template("avatar", ["currentcategory"=>8]);
+                die();
+            case "viewtshirts":
+                $page::get_template("avatar", ["currentcategory"=>2]);
+                die();
+            case "viewshirts":
+                $page::get_template("avatar", ["currentcategory"=>11]);
+                die();
+            case "viewpants":
+                die($page::get_template("avatar", ["currentcategory"=>12]));
+            case "viewgear":
+                die($page::get_template("avatar", ["currentcategory"=>19]));
+            default:
+                if(str_contains($event, "Wear")){
+                    $exploded = explode("|", $event);
+
+                    if(isset($exploded[1])){
+                        $assetid = (int)$exploded[1];
+                        $db->table("wearingitems")->insert(["itemid"=>$assetid, "userid"=>$currentuser->id]);
+                        $page::get_template("avatar", ["currentcategory"=>2]);
+                        die();
+                    }
+                }
+
+                if(str_contains($event, "Remove")){
+                    $exploded = explode("|", $event);
+                    if(isset($exploded[1])){
+                        $assetid = (int)$exploded[1];
+                        $db->table("wearingitems")->where("userid", $currentuser->id)->where("itemid", $assetid)->delete();
+                        $page::get_template("avatar", ["currentcategory"=>2]);
+                        die();
+                    }
+                }
+                
+        }
+
+    }
+    
+    $page::get_template("avatar", ["currentcategory"=>2]);
+    die();
 });
 
 $router->get("/my/groups.aspx", function() {

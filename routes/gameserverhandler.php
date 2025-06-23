@@ -392,6 +392,15 @@ $router->group('/api/v1/gameserver', function($router) {
                             $lua = str_replace("%y%", $dimensions[1], $lua);
                             die($lua);
                             break;
+                        case "19":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/gear.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
+                            die($lua);
+                            break;
                         case "9":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/place.lua");

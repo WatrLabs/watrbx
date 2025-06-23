@@ -1,4 +1,9 @@
-
+<?php
+use watrlabs\watrkit\pagebuilder;
+$pagebuilder = new pagebuilder();
+    global $db;
+    $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
+?>
 
 
 <style type="text/css">
@@ -286,34 +291,11 @@
 
 
 
-        <div class="CatalogItemOuter BigOuter">
-            <div class="SmallCatalogItemView BigView">
-            <div class="CatalogItemInner BigInner">    
-                    <div class="roblox-item-image image-large" data-item-id="332747438" data-image-size="large">
-                        <div class="item-image-wrapper">
-                            <a href="https://www.roblox.com/Festive-Dual-Plungers-item?id=332747438">
-                                <img title="Festive Dual Plungers" alt="Festive Dual Plungers" class="original-image " src="https://watrbx.xyz/temp/07b49d720238e3b83c9c058536e212ed.png">
-                                                        <img src="https://watrbx.xyz/temp/07b49d720238e3b83c9c058536e212ed.png" alt="Limited Unique" class="limited-overlay">
-                                                                            <img src="https://images.rbxcdn.com/b84cdb8c0e7c6cbe58e91397f91b8be8.png" alt="New">
-                            </a>
-                        </div>
-                    </div>
-                    
-                <div id="textDisplay">
-                <div class="CatalogItemName notranslate"><a class="name notranslate" href="/Festive-Dual-Plungers-item?id=332747438" title="Festive Dual Plungers">Festive Dual Plungers</a></div>
-                            <div class="robux-price"><span class="SalesText">was </span><span class="robux notranslate">450</span></div>
-                        <div id="PrivateSales"><span class="SalesText">now </span><span class="robux notranslate">618</span></div>
-                </div>
-                    <div class="CatalogHoverContent">
-                        <div><span class="CatalogItemInfoLabel">Creator:</span> <span class="HoverInfo notranslate"><a href="https://www.roblox.com/users/1/profile">ROBLOX</a></span></div>
-                        <div><span class="CatalogItemInfoLabel">Updated:</span> <span class="HoverInfo">1 day ago</span></div>
-                        <div><span class="CatalogItemInfoLabel">Sales:</span> <span class="HoverInfo notranslate">1225</span></div>
-                        <div><span class="CatalogItemInfoLabel">Favorited:</span> <span class="HoverInfo">108 times</span></div>
-                    </div>
-            </div>
-            </div>	
-            </div>
-
+        <?php
+            foreach ($assets as $asset){
+                $pagebuilder->build_component("catalog_item", ["asset"=>$asset]);
+            }
+        ?>
 
             <div class="PagingContainerDivTop">
                 <span class="pager previous" id="pagingprevious"></span>

@@ -294,28 +294,6 @@ function __doPostBack(eventTarget, eventArgument) {
 </div>
     <div id="fb-root">
     </div>
-    <script type="text/javascript">
-//<![CDATA[
-Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$ScriptManager', 'aspnetForm', ['tctl00$ctl00$cphRoblox$cphMyRobloxContent$CustomizeCharacterUpdatePanelAvatar','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelBodyColors','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelWardrobe','','tctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdatePanelAccoutrements',''], [], [], 90, 'ctl00$ctl00');
-
-var prm = Sys.WebForms.PageRequestManager.getInstance();
-
-prm.add_endRequest(function(sender, args) {
-  if (args.get_error()) {
-    console.error("Server error during UpdatePanel postback:", args.get_error().message);
-    args.set_errorHandled(true); 
-  } else {
-    console.log("UpdatePanel postback succeeded");
-  }
-});
-//]]>
-</script>
-
-    
-         
-    
-    
-    
 
 <div class="modalPopup unifiedModal smallModal shop-modal shop-modal-item" data-modal-handle="shop-confirmation" style="display: none;">
     <div class="shop-modal-item-right">

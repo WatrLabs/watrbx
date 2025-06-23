@@ -178,7 +178,7 @@ game:GetService("RunService"):Run()
 pcall(function() print(game:HttpGet(url .. "/api/v1/gameserver/mark-active?jobid=" .. jobid .. "=" .. apikey))() end)
 
 
-
+game:GetService("ScriptContext"):AddStarterScript(124885177)
 
 end
 

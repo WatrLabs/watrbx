@@ -8,6 +8,50 @@ $auth->requiresession();
 global $currentuser;
 $userinfo = $currentuser;
 
+$assetTypes = array(
+    'Image' => 1,
+    'TShirt' => 2,
+    'Audio' => 3,
+    'Mesh' => 4,
+    'Lua' => 5,
+    'Hat' => 8,
+    'Place' => 9,
+    'Model' => 10,
+    'Shirt' => 11,
+    'Pants' => 12,
+    'Decal' => 13,
+    'Head' => 17,
+    'Face' => 18,
+    'Gear' => 19,
+    'Badge' => 21,
+    'Animation' => 24,
+    'Torso' => 27,
+    'RightArm' => 28,
+    'LeftArm' => 29,
+    'LeftLeg' => 30,
+    'RightLeg' => 31,
+    'Package' => 32,
+    'GamePass' => 34,
+    'Plugin' => 38,
+    'MeshPart' => 40,
+    'HairAccessory' => 41,
+    'FaceAccessory' => 42,
+    'NeckAccessory' => 43,
+    'ShoulderAccessory' => 44,
+    'FrontAccessory' => 45,
+    'BackAccessory' => 46,
+    'WaistAccessory' => 47,
+    'ClimbAnimation' => 48,
+    'DeathAnimation' => 49,
+    'FallAnimation' => 50,
+    'IdleAnimation' => 51,
+    'JumpAnimation' => 52,
+    'RunAnimation' => 53,
+    'SwimAnimation' => 54,
+    'WalkAnimation' => 55
+);
+
+
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___7a27dc130118fdc2c185a6a1a3db1c2f_m.css');
 $pagebuilder->addresource('jsfiles', '/js/f49d858ef181e7cd401d8fcb4245e6e8.js.gzip');
@@ -16,10 +60,7 @@ $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gz
 $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/11538f50c384b7e98cc9fdd96e55772d.js.gzip');
 $pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
-$pagebuilder->addresource('jsfiles', '/js/MicrosoftAjaxWebForms.js');
-$pagebuilder->addresource('jsfiles', '/js/MicrosoftAjaxTimer.js');
-$pagebuilder->addresource('jsfiles', 'https://ajax.aspnetcdn.com/ajax/4.5.2/1/WebForms.js');
-$pagebuilder->addresource('jsfiles', 'https://ajax.aspnetcdn.com/ajax/4.5.2/1/Focus.js');
+
 $pagebuilder->setlegacy(true);
 $pagebuilder->set_page_name("Avatar");
 $pagebuilder->buildheader();
@@ -1881,35 +1922,35 @@ $pagebuilder->buildheader();
 
                                 <div class="AttireCategory" style="text-align:center">
                                     
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl00_AttireCategorySelector" class="AttireCategorySelector" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireCategoryRepeater$ctl00$AttireCategorySelector&#39;,&#39;&#39;)">Heads</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl00_AttireCategorySelector" <?php if($currentcategory == 17) { echo 'class="AttireCategorySelector_Selected"'; } else { echo 'class="AttireCategorySelector"'; } ?> href="javascript:__doPostBack('viewheads',&#39;&#39;)">Heads</a>
                                         
                                             &nbsp;|&nbsp;
                                         
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl02_AttireCategorySelector" class="AttireCategorySelector" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireCategoryRepeater$ctl02$AttireCategorySelector&#39;,&#39;&#39;)">Faces</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl02_AttireCategorySelector" <?php if($currentcategory == 18) { echo 'class="AttireCategorySelector_Selected"'; } else { echo 'class="AttireCategorySelector"'; } ?>  href="javascript:__doPostBack('viewfaces',&#39;&#39;)">Faces</a>
                                         
                                             &nbsp;|&nbsp;
                                         
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl04_AttireCategorySelector" class="AttireCategorySelector" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireCategoryRepeater$ctl04$AttireCategorySelector&#39;,&#39;&#39;)">Hats</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl04_AttireCategorySelector" <?php if($currentcategory == 8) { echo 'class="AttireCategorySelector_Selected"'; } else { echo 'class="AttireCategorySelector"'; } ?> href="javascript:__doPostBack('viewhats',&#39;&#39;)">Hats</a>
                                         
                                             &nbsp;|&nbsp;
                                         
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl06_AttireCategorySelector" class="AttireCategorySelector_Selected" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireCategoryRepeater$ctl06$AttireCategorySelector&#39;,&#39;&#39;)">T-Shirts</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl06_AttireCategorySelector" <?php if($currentcategory == 2) { echo 'class="AttireCategorySelector_Selected"'; } else { echo 'class="AttireCategorySelector"'; } ?> href="javascript:__doPostBack('viewtshirts',&#39;&#39;)">T-Shirts</a>
                                         
                                             &nbsp;|&nbsp;
                                         
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl08_AttireCategorySelector" class="AttireCategorySelector" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireCategoryRepeater$ctl08$AttireCategorySelector&#39;,&#39;&#39;)">Shirts</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl08_AttireCategorySelector" <?php if($currentcategory == 11) { echo 'class="AttireCategorySelector_Selected"'; } else { echo 'class="AttireCategorySelector"'; } ?> href="javascript:__doPostBack('viewshirts',&#39;&#39;)">Shirts</a>
                                         
                                             &nbsp;|&nbsp;
                                         
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl10_AttireCategorySelector" class="AttireCategorySelector" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireCategoryRepeater$ctl10$AttireCategorySelector&#39;,&#39;&#39;)">Pants</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl10_AttireCategorySelector" <?php if($currentcategory == 12) { echo 'class="AttireCategorySelector_Selected"'; } else { echo 'class="AttireCategorySelector"'; } ?> href="javascript:__doPostBack('viewpants',&#39;&#39;)">Pants</a>
                                         
                                             &nbsp;|&nbsp;
                                         
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl12_AttireCategorySelector" class="AttireCategorySelector" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AttireCategoryRepeater$ctl12$AttireCategorySelector&#39;,&#39;&#39;)">Gear</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireCategoryRepeater_ctl12_AttireCategorySelector" <?php if($currentcategory == 19) { echo 'class="AttireCategorySelector_Selected"'; } else { echo 'class="AttireCategorySelector"'; } ?> href="javascript:__doPostBack('viewgear',&#39;&#39;)">Gear</a>
                                         
                                     <br />
                                     
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_BodyPartCategoryRepeater_ctl00_LinkButton1" class="AttireCategorySelector" href="javascript:__doPostBack(&#39;ctl00$ctl00$cphRoblox$cphMyRobloxContent$BodyPartCategoryRepeater$ctl00$LinkButton1&#39;,&#39;&#39;)">Torsos</a>
+                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_BodyPartCategoryRepeater_ctl00_LinkButton1" class="AttireCategorySelector" href="javascript:__doPostBack('viewtorsos',&#39;&#39;)">Torsos</a>
                                         
                                             &nbsp;|&nbsp;
                                         
@@ -1950,10 +1991,15 @@ $pagebuilder->buildheader();
                                             $ownedassets = $db->table("ownedassets")->where("userid", $userinfo->id)->get();
 
                                             foreach ($ownedassets as $assetid){
-                                                $assetinfo = $db->table("assets")->where("id", $assetid->assetid)->where("prodcategory", 2)->first();
+                                                $assetinfo = $db->table("assets")->where("id", $assetid->assetid)->where("prodcategory", $currentcategory)->first();
+                                                $iswearing = $db->table("wearingitems")->where("itemid", $assetid->assetid)->where("userid", $currentuser->id)->first();
 
                                                 if($assetinfo !== null){
-                                                    $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                    if($iswearing == null){
+                                                        $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                    } else {
+                                                        $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                    }
                                                 }
 
                                             }
@@ -2064,7 +2110,22 @@ $pagebuilder->buildheader();
                                     
                                     <div class="TileGroup">
 
-                                        <?=$pagebuilder->build_component("avatar_item", ["assetid"=>5, "action"=>"Remove"]);?>
+                                    <?php
+
+                                        global $db;
+
+                                        $ownedassets = $db->table("wearingitems")->where("userid", $userinfo->id)->get();
+
+                                        foreach ($ownedassets as $assetid){
+                                            $assetinfo = $db->table("assets")->where("id", $assetid->itemid)->first();
+
+                                            if($assetinfo !== null){
+                                                $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                            }
+
+                                        }
+
+                                    ?>
                                         
                                     </div>
                                 

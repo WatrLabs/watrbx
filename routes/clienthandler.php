@@ -147,7 +147,7 @@ $router->get('/marketplace/productinfo', function(){
             $productinfo["Creator"]["Id"] = $creatorinfo->id;
             $productinfo["Creator"]["Name"] = $creatorinfo->username;
             $productinfo["Creator"]["CreatorTargetId"] = $creatorinfo->id;
-
+            ob_clean();
             die(json_encode($productinfo));
 
         } else {

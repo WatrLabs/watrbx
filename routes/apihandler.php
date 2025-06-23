@@ -43,6 +43,25 @@ function get_signature($script)
         openssl_sign($script, $signature, file_get_contents("../storage/PrivateNut.pem"), OPENSSL_ALGO_SHA1);
         return base64_encode($signature);
     }
+
+$router->get('/api/v1/get-players', function(){
+    $func = new sitefunctions();
+    global $db;
+
+    $ip = $func->getip(true);
+    $apireqcount = $db->table("apireq")->where("apiname", "getusers")->where("ip", $ip)->where("time", ">", time() - 60)->count();
+    if($apireqcount >= 60){
+        ob_clean();
+        die(create_error("Too many requests!", [], 429));
+    }
+    $db->table("apireq")->insert(["apiname"=>"getusers", "ip"=>$ip, "time"=>time()]);
+
+    header("Content-type: application/json");
+    
+    $playercount = $db->table("activeplayers")->count();
+    ob_clean();
+    die(create_success("Succesfully got players!", ["players"=>$playercount]));
+});
  
 $router->get('/Login/Negotiate.ashx', function() {
     $auth = $_GET["suggest"] ?? 0;
@@ -185,7 +204,7 @@ $router->post('/api/item.ashx', function(){
                                         http_response_code(500);
                                         $insufficient = array(
                                             "showDivId"=>"InsufficientFundsView",
-                                            "shortfallPrice"=>$asset->robux = $userinfo->robux,
+                                            "shortfallPrice"=>$userinfo->robux - $asset->robux,
                                             "currentCurrency"=>1,
                                             "source"=>"item" // idek what this does
                                         );
@@ -251,19 +270,19 @@ $router->post('/api/item.ashx', function(){
                                         "expectedPrice"=>$price,
                                         "currentPrice"=>$asset->tix,
                                         "expectedCurrency"=>$expectedcurrency,
-                                        "currentCurrency"=>1,
+                                        "currentCurrency"=>2,
                                         "AssetID"=>$asset->id,
                                         "balanceAfterSale"=>$userinfo->tix - $asset->tix,
                                         "targetSelector"=> ".PurchaseButton[data-item-id='".$asset->id."']"
                                     );
                                     die(json_encode($pricechange));
                                 } else {
-                                    if($asset->robux > $userinfo->robux){
+                                    if($asset->tix > $userinfo->tix){
                                         http_response_code(500);
                                         $insufficient = array(
                                             "showDivId"=>"InsufficientFundsView",
-                                            "shortfallPrice"=>$asset->tix = $userinfo->tix,
-                                            "currentCurrency"=>1,
+                                            "shortfallPrice"=>$asset->tix - $userinfo->tix,
+                                            "currentCurrency"=>2,
                                             "source"=>"item" // idek what this does
                                         );
                                         die(json_encode($insufficient));
@@ -276,7 +295,7 @@ $router->post('/api/item.ashx', function(){
 
                                         if($result){
                                             $success = array(
-                                                "Price"=>$asset->robux,
+                                                "Price"=>$asset->tix,
                                                 "Currency"=>1,
                                                 "AssetID"=>$asset->id,
                                                 "AssetName"=>$asset->name,
@@ -294,8 +313,8 @@ $router->post('/api/item.ashx', function(){
 
                                             if($result){
                                                 $success = array(
-                                                    "Price"=>$asset->robux,
-                                                    "Currency"=>1,
+                                                    "Price"=>$asset->tix,
+                                                    "Currency"=>2,
                                                     "AssetID"=>$asset->id,
                                                     "AssetName"=>$asset->name,
                                                     "AssetType"=>"Hat", // TODO: create a roblox class to handle stuff like this
@@ -374,8 +393,10 @@ $router->get('/container/info', function(){
     echo "</table>";
 });
 
-$router->post('/api/v1/asset-upload', function(){
+$router->post('/api/v1/shirt-creator', function(){
+
     $router = new Routing();
+    $containers = new containers();
     global $currentuser;
 
     if($currentuser !== null){
@@ -386,10 +407,222 @@ $router->post('/api/v1/asset-upload', function(){
         die($router->return_status(403));
     }
 
+    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["robux"]) && isset($_POST["tix"]) && isset($_FILES["shirt"])){
+        
+        global $db;
+
+        $title = $_POST["title"];
+        $description = $_POST["description"];
+        $robux = (int)$_POST["robux"];
+        $tix = (int)$_POST["tix"];
+        $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
+
+
+        if($tix < 0 || $robux < 0){
+            die("Price cannot be negative");
+        }
+
+        $insert = array(
+            "prodcategory"=>1,
+            "name"=>$title,
+            "description"=>"Image",
+            "robux"=>$robux,
+            "tix"=>$tix,
+            "fileid"=>$md5,
+            "created"=>time(),
+            "updated"=>time(),
+            "owner"=>$currentuser->id
+        );
+        
+        $response = $containers->upload_file($_FILES["shirt"]["tmp_name"], '', $md5,'');
+
+        if($response !== false){
+            if(isset($response->success)){
+                if($response->success == true){
+                    $insertid = $db->table("assets")->insert($insert);
+
+                    $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+                                    <External>null</External>
+                                    <External>nil</External>
+                                    <Item class="Shirt" referent="RBX0">
+                                        <Properties>
+                                        <Content name="ShirtTemplate">
+                                            <url>http://www.watrbx.xyz/asset/?id='.$insertid.'</url>
+                                        </Content>
+                                        <string name="Name">Shirt</string>
+                                        <bool name="archivable">true</bool>
+                                        </Properties>
+                                    </Item>
+                                </roblox>';
+
+                    $shirtmd5 = md5($shirtxml);
+                    $shirtbase64 = base64_encode($shirtxml);
+
+                    $response = $containers->upload_file('', $shirtbase64, $shirtmd5,'');
+
+                    if($response !== false){
+                        if(isset($response->success)){
+
+                            if($response->success == true){
+                                $insert2 = array(
+                                    "prodcategory"=>11,
+                                    "name"=>$title,
+                                    "description"=>$description,
+                                    "robux"=>$robux,
+                                    "tix"=>$tix,
+                                    "fileid"=>$shirtmd5,
+                                    "created"=>time(),
+                                    "updated"=>time(),
+                                    "publicdomain"=>1,
+                                    "featured"=>1,
+                                    "owner"=>$currentuser->id
+                                );
+    
+                                $insertid = $db->table("assets")->insert($insert2);
+    
+                                header("Location: /catalog");
+                                die("Shirt uploaded!");
+                            } else {
+                                die("Failed to upload 1.");
+                            }
+                        } else {
+                            die("Failed to upload 2.");
+                        }
+                    } else {
+                        die("Failed to upload 3.");
+                    }
+
+                    die("Asset uploaded with asset id: " . $insertid);
+                } else {
+                    die("Failed to upload asset!");
+                }
+            }
+        } else {
+            die("Failed to upload asset!");
+        }
+
+    }
+});
+
+$router->post('/api/v1/pants-creator', function(){
+
+    $router = new Routing();
+    $containers = new containers();
+    global $currentuser;
+
+    if($currentuser !== null){
+        if($currentuser->is_admin !== 1){
+            die($router->return_status(403));
+        }
+    } else {
+        die($router->return_status(403));
+    }
+
+    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["robux"]) && isset($_POST["tix"]) && isset($_FILES["shirt"])){
+        
+        global $db;
+
+        $title = $_POST["title"];
+        $description = $_POST["description"];
+        $robux = (int)$_POST["robux"];
+        $tix = (int)$_POST["tix"];
+        $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
+
+
+        if($tix < 0 || $robux < 0){
+            die("Price cannot be negative");
+        }
+
+        $insert = array(
+            "prodcategory"=>1,
+            "name"=>$title,
+            "description"=>"Image",
+            "robux"=>$robux,
+            "tix"=>$tix,
+            "fileid"=>$md5,
+            "created"=>time(),
+            "updated"=>time(),
+            "owner"=>$currentuser->id
+        );
+        
+        $response = $containers->upload_file($_FILES["shirt"]["tmp_name"], '', $md5,'');
+
+        if($response !== false){
+            if(isset($response->success)){
+                if($response->success == true){
+                    $insertid = $db->table("assets")->insert($insert);
+
+                    $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+                                <External>null</External>
+                                <External>nil</External>
+                                <Item class="Pants" referent="RBX0">
+                                    <Properties>
+                                    <Content name="PantsTemplate">
+                                        <url>http://www.roblox.com/asset/?id='.$insertid.'</url>
+                                    </Content>
+                                    <string name="Name">Pants</string>
+                                    <bool name="archivable">true</bool>
+                                    </Properties>
+                                </Item>
+                                </roblox>';
+
+                    $shirtmd5 = md5($shirtxml);
+                    $shirtbase64 = base64_encode($shirtxml);
+
+                    $response = $containers->upload_file('', $shirtbase64, $shirtmd5,'');
+
+                    if($response !== false){
+                        if(isset($response->success)){
+
+                            if($response->success == true){
+                                $insert2 = array(
+                                    "prodcategory"=>12,
+                                    "name"=>$title,
+                                    "description"=>$description,
+                                    "robux"=>$robux,
+                                    "tix"=>$tix,
+                                    "fileid"=>$shirtmd5,
+                                    "created"=>time(),
+                                    "updated"=>time(),
+                                    "publicdomain"=>1,
+                                    "featured"=>1,
+                                    "owner"=>$currentuser->id
+                                );
+    
+                                $insertid = $db->table("assets")->insert($insert2);
+    
+                                header("Location: /catalog");
+                                die("Shirt uploaded!");
+                            } else {
+                                die("Failed to upload 1.");
+                            }
+                        } else {
+                            die("Failed to upload 2.");
+                        }
+                    } else {
+                        die("Failed to upload 3.");
+                    }
+
+                    die("Asset uploaded with asset id: " . $insertid);
+                } else {
+                    die("Failed to upload asset!");
+                }
+            }
+        } else {
+            die("Failed to upload asset!");
+        }
+
+    }
+});
+
+$router->post('/api/v1/asset-upload', function(){
+    $router = new Routing();
+    global $currentuser;
+
     $auth = new authentication();
     $containers = new containers();
 
-    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["product"]) && isset($_POST["robux"]) && isset($_POST["robux"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
+    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["product"]) && isset($_POST["robux"]) && isset($_POST["tix"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
 
         $md5 = md5_file($_FILES["asset"]["tmp_name"]);
         global $db;
@@ -797,6 +1030,7 @@ $router->get('/messages/api/get-messages', function(){
                         ],
                         "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
                         "IsReportAbuseDisplayed"=>True,
+                        "AbuseReportAbsoluteUrl"=>"/abusereport/message?id=$message->id",
                         "Subject"=>$message->subject,
                         "Body"=>nl2br($message->body),
                         "IsRead"=>$isread,
@@ -819,6 +1053,7 @@ $router->get('/messages/api/get-messages', function(){
                     }
 
                     $senderinfo = $auth->getuserbyid($message->userfrom);
+                    $recipientinfo = $auth->getuserbyid($message->userto);
                     $response["Collection"][] = [
                         "Id"=>$message->id,
                         "Sender"=>[
@@ -829,8 +1064,16 @@ $router->get('/messages/api/get-messages', function(){
                             "Url"=>"/images/defaultimage.png",
                             "Final"=>true,
                         ],
+                        "RecipientThumbnail"=>[
+                            "Url"=>"/images/defaultimage.png",
+                            "Final"=>true,
+                        ],
+                        "Recipient"=>[
+                            "UserId"=>$recipientinfo->id,
+                            "UserName"=>$recipientinfo->username,
+                        ],
                         "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
-                        "IsReportAbuseDisplayed"=>True,
+                        "IsReportAbuseDisplayed"=>False,
                         "Subject"=>$message->subject,
                         "Body"=>nl2br($message->body),
                         "IsRead"=>$isread,
@@ -1088,7 +1331,8 @@ $router->get('/users/friends/list-json', function(){
 });
 
 $router->get('/catalog/contents', function(){
-    die(file_get_contents("../storage/library.html"));
+    require("../storage/catalog.php");
+    die();
 });
 
 $router->get('/messages/api/get-my-unread-messages-count', function(){
@@ -1570,8 +1814,21 @@ $router->get('/leaderboards/game/json', function(){
     die('[]');
 }); 
 
-$router->get('/Character.aspx', function(){
-    die("http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;http://www.watrbx.xyz/asset/?id=8;http://www.watrbx.xyz/asset/?id=5;http://www.watrbx.xyz/asset/?id=3;");
+$router->get('/CharacterFetch.aspx', function(){
+
+    $charapp = "http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;";
+
+    if(isset($_GET["Id"])){
+        global $db;
+        $id = (int)$_GET["Id"];
+
+        $allitems = $db->table("wearingitems")->where("userid", $id)->get();
+        foreach ($allitems as $item){
+            $charapp .= "http://www.watrbx.xyz/asset/?id=". $item->itemid .";";
+        }
+    }
+
+    die($charapp);
 });
 
 $router->get('/users/inventory/list-json', function(){
@@ -1602,10 +1859,11 @@ $router->get('/Game/Join.ashx', function() {
         if($ip == "192.168.1.221"){
             $ip = "70.228.127.12";
         }
+        $charappurl = "http://www.watrbx.xyz/CharacterFetch.aspx?Id=" . $currentuser->id;
         $port = $joincode->port;
         $pid = $joincode->placeid;
         $placeinfo = $db->table("assets")->where("id", $joincode->placeid)->first();
-        $clientticket = $func->generateClientTicket($currentuser->id, $currentuser->username,"https://www.watrbx.xyz/Character.aspx?ID=" . $userinfo->id, $joincode->jobid, file_get_contents("../storage/PrivateNut.pem"));
+        $clientticket = $func->generateClientTicket($currentuser->id, $currentuser->username,$charappurl, $joincode->jobid, file_get_contents("../storage/PrivateNut.pem"));
 
         header("Content-Type: application/json");
         // Construct joinscript
@@ -1619,7 +1877,7 @@ $router->get('/Game/Join.ashx', function() {
             "SeleniumTestMode" => false,
             "UserId" => $userinfo->id,
             "SuperSafeChat" => false,
-            "CharacterAppearance" => "https://www.watrbx.xyz/Character.aspx?ID=" . $userinfo->id,
+            "CharacterAppearance" => $charappurl,
             "ClientTicket" => $clientticket,
             "GameId" => $pid,
             "PlaceId" => $pid,
