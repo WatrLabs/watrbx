@@ -86,7 +86,53 @@ $router->get("/avatar-thumbnail-3d/", function(){
 });
 
 $router->get('/comments/get-json', function (){
-    header("Content-type: application/json");
+    global $currentuser;
+    global $db;
+
+    $auth = new authentication();
+    $thumbs = new thumbnails();
+
+    if(isset($_GET{"assetId"})){
+        $assetId = (int)$_GET["assetId"];
+        $offset = 0;
+
+        if(isset($_GET["startindex"])){
+            $offset = (int)$_GET["startindex"];
+        }
+
+        header("Content-type: application/json");
+        $ismoderator = $currentuser->is_admin == 1;
+        $commentarray = [
+            "IsUserModerator"=>$ismoderator,
+            "Comments"=>[],
+            "MaxRows"=>10
+        ];
+
+        $allcomments = $db->table("comments")->where("assetid", $assetId)->limit(10)->offset($offset)->orderBy("id", "desc")->get();
+        $assetcreator = $db->table("assets")->where("id", $assetId)->first();
+
+        foreach ($allcomments as $comment){
+            $authorinfo = $auth->getuserbyid($comment->userid); 
+            $commentarray["Comments"][] = [
+                "Id"=>$comment->id,
+                "PostedDate"=>"Yesterday",
+                "AuthorName"=>$authorinfo->username,
+                "AuthorId"=>$authorinfo->id,
+                "Text"=>$comment->content,
+                "ShowAuthorOwnsAsset"=>$assetcreator->owner == $comment->userid,
+                "AuthorThumbnail"=>[
+                    "AssetId"=> $assetId,
+                    "AssetHash"=>null,
+                    "AssetTypeId"=> 0,
+                    "Url"=>$thumbs->get_user_thumb($comment->userid, "250x250"),
+                    "IsFinal"=>false
+                ]
+            ];
+        }
+
+        die(json_encode($commentarray));
+    }
+
     die(file_get_contents("../storage/comments.json"));
 });
 
@@ -969,6 +1015,53 @@ $router->get('/item-thumbnails', function(){
 
     die(); 
 });
+
+$router->get('/avatar-thumbnails', function(){
+    //var_dump($_GET);
+
+    if(isset($_GET["jsoncallback"]) && isset($_GET["params"])){
+        $jsoncallback = $_GET["jsoncallback"];
+        $params = $_GET["params"];
+
+        $decoded = @json_decode($params);
+
+        if($decoded){
+            global $db;
+            $thumbs = new thumbnails();
+            $auth = new authentication();
+            $allthumbs = [
+
+            ];
+            foreach ($decoded as $thumbnail){
+                if(isset($thumbnail->userId)){
+                    $url = $thumbs->get_user_thumb($thumbnail->userId, "100x100");
+                    $assetinfo = $db->table("users")->where("id", $thumbnail->userId)->first();
+
+                    $allthumbs[] = [
+                        "id"=>$thumbnail->userId,
+                        "name"=>$assetinfo->username,
+                        "url"=>"/users/$thumbnail->userId/profile",
+                        "thumbnailFinal"=>true,
+                        "thumbnailUrl"=>$url,
+                        "bcOverlayUrl"=>$auth->get_bc_overlay($thumbnail->userId),
+                        "substitutionType"=>0
+                    ];
+
+                    die("$jsoncallback(".json_encode($allthumbs).")");
+                }
+            }
+        } else {
+            http_response_code(400);
+            die();
+        }
+    } else {
+        http_response_code(400);
+        die();
+    }
+
+    die(); 
+});
+
 
 $router->get("/user/following-exists", function(){
     header("Content-type: application/json");
