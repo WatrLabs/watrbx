@@ -2,7 +2,157 @@
 use watrlabs\watrkit\pagebuilder;
 $pagebuilder = new pagebuilder();
     global $db;
+
+    $limit = 42;
+
+    $assetTypes = array(
+    'Image' => 1,
+    'TShirt' => 2,
+    'Audio' => 3,
+    'Mesh' => 4,
+    'Lua' => 5,
+    'Hat' => 8,
+    'Place' => 9,
+    'Model' => 10,
+    'Shirt' => 11,
+    'Pants' => 12,
+    'Decal' => 13,
+    'Head' => 17,
+    'Face' => 18,
+    'Gear' => 19,
+    'Badge' => 21,
+    'Animation' => 24,
+    'Torso' => 27,
+    'RightArm' => 28,
+    'LeftArm' => 29,
+    'LeftLeg' => 30,
+    'RightLeg' => 31,
+    'Package' => 32,
+    'GamePass' => 34,
+    'Plugin' => 38,
+    'MeshPart' => 40,
+    'HairAccessory' => 41,
+    'FaceAccessory' => 42,
+    'NeckAccessory' => 43,
+    'ShoulderAccessory' => 44,
+    'FrontAccessory' => 45,
+    'BackAccessory' => 46,
+    'WaistAccessory' => 47,
+    'ClimbAnimation' => 48,
+    'DeathAnimation' => 49,
+    'FallAnimation' => 50,
+    'IdleAnimation' => 51,
+    'JumpAnimation' => 52,
+    'RunAnimation' => 53,
+    'SwimAnimation' => 54,
+    'WalkAnimation' => 55
+);
+    $alltext = "ALL CATEGORIES";
     $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
+
+    $page = 1;
+
+    if(isset($_GET["Category"])){
+        $category = (int)$_GET["Category"];
+        $subcategory = 0;
+
+        if(isset($_GET["Subcategory"])){
+            $subcategory = (int)$_GET["Subcategory"];
+        }
+
+        if(isset($_GET["PageNumber"])){
+            $page = (int)$_GET["PageNumber"];
+        }
+
+        
+        if($category == 1){
+            // All Categories
+            
+            $alltext = "ALL CATEGORIES";
+            $assets = $db->table("assets")->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
+        } elseif($category == 4){
+          
+            // Body Parts
+
+            $alltext = "All Body Parts";
+            $assets = $db->table("assets")->whereIn("prodcategory", [17, 18, 32])->orderBy("created", "DESC")->get();
+
+            if($subcategory == 15){
+                // Heads
+                $alltext = "All Heads";
+                $assets = $db->table("assets")->whereIn("prodcategory", [17])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 10){
+                // Faces
+                $alltext = "All Faces";
+                $assets = $db->table("assets")->whereIn("prodcategory", [18])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 10){
+                // Faces
+                $alltext = "All Faces";
+                $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [18])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 11){
+                // Packages
+                $alltext = "All Packages";
+                $assets = $db->table("assets")->whereIn("prodcategory", [32])->orderBy("created", "DESC")->get();
+            }
+            
+        } elseif($category == 3){
+            // All Clothing
+
+            $alltext = "All Clothing";
+            $assets = $db->table("assets")->whereIn("prodcategory", [2, 8, 11, 12, 32])->orderBy("created", "DESC")->get();
+
+            // Hats, Shirts, T-Shirts, Pants, Packages
+            if($subcategory == 3){
+                $alltext = "All Clothing";
+                $assets = $db->table("assets")->whereIn("prodcategory", [2, 8, 11, 12, 32])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 9){
+                // Hats
+                $alltext = "All Hats";
+                $assets = $db->table("assets")->whereIn("prodcategory", [8])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 11){
+                // Packages
+                $alltext = "All Packages";
+                $assets = $db->table("assets")->whereIn("prodcategory", [32])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 12){
+                // Shirts
+                $alltext = "All Shirts";
+                $assets = $db->table("assets")->whereIn("prodcategory", [11])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 13){
+                // T-Shirts
+                $alltext = "All T-Shirts";
+                $assets = $db->table("assets")->whereIn("prodcategory", [2])->orderBy("created", "DESC")->get();
+            } elseif($subcategory == 14){
+                // Pants
+                $alltext = "All Pants";
+                $assets = $db->table("assets")->whereIn("prodcategory", [12])->orderBy("created", "DESC")->get();
+            } 
+        } elseif($category == 5){
+                // All Gears
+
+                $alltext = "All Gears";
+                $assets = $db->table("assets")->whereIn("prodcategory", [19])->orderBy("created", "DESC")->get();
+        } elseif($category == 6){
+                // All Models
+
+                $alltext = "All Models";
+                $assets = $db->table("assets")->whereIn("prodcategory", [10])->orderBy("created", "DESC")->get();
+        } elseif($category == 8){
+                // All Decals
+
+                $alltext = "All Decals";
+                $assets = $db->table("assets")->whereIn("prodcategory", [13])->orderBy("created", "DESC")->get();
+        }elseif($category == 9){
+                // All Audio
+
+                $alltext = "All Audios";
+                $assets = $db->table("assets")->whereIn("prodcategory", [3])->orderBy("created", "DESC")->get();
+        }
+
+
+    }
+
+    
+
 ?>
 
 
@@ -14,7 +164,7 @@ $pagebuilder = new pagebuilder();
 <div id="catalog" data-empty-search-enabled="true" style="font-size: 12px;">
 <div class="header" style="height:60px;">
         <div style="float:left;">
-            <h1><a href="http://www.roblox.com/catalog" id="CatalogLink">Catalog</a></h1>
+            <h1><a href="/catalog" id="CatalogLink">Catalog</a></h1>
         </div>
     <div class="CatalogSearchBar">
         <input id="keywordTextbox" name="name" type="text" class="translate text-box text-box-small" />
@@ -258,11 +408,11 @@ $pagebuilder = new pagebuilder();
 </div>                               </div>
 
     <div class="right-content divider-left">
-<a href="#breadcrumbs=category" class="breadCrumbFilter bolded selected" data-filter="category">All Categories</a>
+<a href="#breadcrumbs=category" class="breadCrumbFilter bolded selected" data-filter="category"><?=$alltext?></a>
         <div id="secondRow">
             <div style="float:left;padding-top:5px">
 
-                    <span>Showing <span class="notranslate">1</span> - <span class="notranslate">42</span> of <span class="notranslate">12,420,445</span> results</span>
+                    <span>Showing <span class="notranslate">1</span> - <span class="notranslate"><?=count($assets)?></span> of <span class="notranslate"><?=count($assets)?></span> results</span>
             </div>
 
             <div id="SortOptions">
@@ -300,7 +450,7 @@ $pagebuilder = new pagebuilder();
             <div class="PagingContainerDivTop">
                 <span class="pager previous" id="pagingprevious"></span>
                 <span class="page text">
-                    Page <input class="Paging_Input translate" type="text" value="1"/> of 295,725
+                    Page <input class="Paging_Input translate" type="text" value="1"/> of 1
                     <span class="paging_pagenums_container"></span>
                 </span>
                 <span class="pager next" id="pagingnext"></span>

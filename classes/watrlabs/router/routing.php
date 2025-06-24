@@ -23,7 +23,7 @@ class Routing {
             };
         }
 
-        $this->routes['GET'][$fullUri] = $callback;
+        $this->routes['GET'][strtolower($fullUri)] = $callback;
     }
 
     public function post(string $uri, callable $callback) {
@@ -39,7 +39,7 @@ class Routing {
             };
         }
 
-        $this->routes['POST'][$fullUri] = $callback;
+        $this->routes['POST'][strtolower($fullUri)] = $callback;
     }
     
     public function put(string $uri, callable $callback) {
@@ -55,7 +55,7 @@ class Routing {
             };
         }
 
-        $this->routes['PUT'][$fullUri] = $callback;
+        $this->routes['PUT'][strtolower($fullUri)] = $callback;
     }
     
     public function del(string $uri, callable $callback) {
@@ -71,7 +71,7 @@ class Routing {
             };
         }
 
-        $this->routes['DELETE'][$fullUri] = $callback;
+        $this->routes['DELETE'][strtolower($fullUri)] = $callback;
     }
     
     public function connect(string $uri, callable $callback) {
@@ -87,7 +87,7 @@ class Routing {
             };
         }
 
-        $this->routes['CONNECT'][$fullUri] = $callback;
+        $this->routes['CONNECT'][strtolower($fullUri)] = $callback;
     }
     
     public function options(string $uri, callable $callback) {
@@ -103,7 +103,7 @@ class Routing {
             };
         }
 
-        $this->routes['OPTIONS'][$fullUri] = $callback;
+        $this->routes['OPTIONS'][strtolower($fullUri)] = $callback;
     }
     
     public function trace(string $uri, callable $callback) {
@@ -119,7 +119,7 @@ class Routing {
             };
         }
 
-        $this->routes['TRACE'][$fullUri] = $callback;
+        $this->routes['TRACE'][strtolower($fullUri)] = $callback;
     }
     
     public function patch(string $uri, callable $callback) {
@@ -135,7 +135,7 @@ class Routing {
             };
         }
 
-        $this->routes['PATCH'][$fullUri] = $callback;
+        $this->routes['PATCH'][strtolower($fullUri)] = $callback;
     }
     
     public function group($prefix, $routes, $middleware = null) {

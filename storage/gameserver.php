@@ -63,6 +63,10 @@ if url~=nil then
 	--pcall(function() game:GetService("Players"):SetChatFilterUrl(url .. "/Game/ChatFilter.ashx") end)
 	pcall(function() game:GetService("Players"):SetSysStatsUrl(url .. "/report/systats/?apikey=" .. apikey) end)
 
+	game:GetService("FriendService"):SetMakeFriendUrl(url .. "/Game/CreateFriend?firstUserId=%d&secondUserId=%d")
+	game:GetService("FriendService"):SetBreakFriendUrl(url .. "/Game/BreakFriend?firstUserId=%d&secondUserId=%d")
+	game:GetService("FriendService"):SetGetFriendsUrl(url .. "/Game/AreFriends?userId=%d")
+
 	game:GetService("BadgeService"):SetPlaceId(placeId)
 
 	game:GetService("BadgeService"):SetIsBadgeLegalUrl("")
@@ -176,9 +180,6 @@ end)
 -- StartGame -- 
 game:GetService("RunService"):Run()
 pcall(function() print(game:HttpGet(url .. "/api/v1/gameserver/mark-active?jobid=" .. jobid .. "=" .. apikey))() end)
-
-
-game:GetService("ScriptContext"):AddStarterScript(124885177)
 
 end
 

@@ -151,9 +151,23 @@ $router->get('/marketplace/productinfo', function(){
             die(json_encode($productinfo));
 
         } else {
-            http_response_code(404);
-            echo json_encode(array("success"=>false));
-            die();
+
+            $assetinfo = $db->table("assets")->where("id", 1)->first();
+
+            $creatorinfo = $auth->getuserbyid($assetinfo->owner);
+
+            $productinfo["Name"] = $assetinfo->name;
+            $productinfo["Description"] = $assetinfo->description;
+            $productinfo["Created"] = date('c', $assetinfo->created);
+            $productinfo["Updated"] = date('c', $assetinfo->updated);
+            $productinfo["PriceInRobux"] = $assetinfo->robux;
+            $productinfo["PriceInTickets"] = $assetinfo->tix;
+
+            $productinfo["Creator"]["Id"] = $creatorinfo->id;
+            $productinfo["Creator"]["Name"] = $creatorinfo->username;
+            $productinfo["Creator"]["CreatorTargetId"] = $creatorinfo->id;
+            ob_clean();
+            die(json_encode($productinfo));
         }
         
 

@@ -28,6 +28,22 @@ class authentication {
         $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            
         $this->mail->Port       = 465;   
     }
+
+    public function get_bc_overlay($userid){
+        $userinfo = $this->getuserbyid($userid);
+
+        if($userinfo->membership == "None"){
+            return null;
+        } elseif($userinfo->membership == "BuildersClub"){
+            return "/images/icons/overlay_bcOnly.png";
+        } elseif($userinfo->membership == "TurboBuildersClub"){
+            return "/images/icons/overlay_tbcOnly.png";
+        } elseif($userinfo->membership == "OutrageousBuildersClub"){
+            return "/images/icons/overlay_obcOnly.png";
+        } else {
+            return null;
+        }
+    }
     
     public function createsession($author = 0) {
         
