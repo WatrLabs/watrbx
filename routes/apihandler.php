@@ -9,6 +9,7 @@ use Cocur\Slugify\Slugify;
 use watrbx\sitefunctions;
 use watrbx\relationship\friends;
 use asteroid\containers;
+use Carbon\Carbon;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
@@ -116,6 +117,107 @@ $router->get('/thumbnail/resolve-hash/{the}', function($the){
 
     die(json_encode($json));
 });
+
+$router->get('/Game/AreFriends', function() {
+    header("Cache-Control: no-cache, no-store");
+    header("Pragma: no-cache");
+    header("Expires: -1");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+
+    $users = "";
+
+    if (isset($_GET["userId"])) {
+        $userId = (int)$_GET["userId"];
+
+        $queryString = $_SERVER['QUERY_STRING'];
+        preg_match_all('/otherUserIds=([^&]+)/', $queryString, $matches);
+        $otherUserIds = array_map('intval', $matches[1]);
+
+        $friends = new friends(); 
+        $friendIds = [];
+
+        foreach ($otherUserIds as $id) {
+            if ($friends->are_friends($userId, $id)) {
+                $friendIds[] = $id;
+            }
+        }
+
+        $users = implode(",", $friendIds);
+    }
+
+    echo $users;
+});
+
+$router->get('/Thumbs/Avatar.ashx', function(){
+
+        $thumbs = new thumbnails();
+
+        if(isset($_GET["x"]) && isset($_GET["y"]) && isset($_GET["userId"])){
+            $x = (int)$_GET["x"];
+            $y = (int)$_GET["y"];
+            $userid = (int)$_GET["userId"];
+            $dimensions = $x . "x" . $y;
+
+            if($x > 3000 || $y > 3000){
+                http_response_code(400);
+                die("We don't allow user thumbnails bigger than 3000x3000!");
+            }   
+
+            global $db;
+
+            $userinfo = $db->table("users")->where("id", $userid)->first();
+
+            if($userinfo !== null){
+
+                $thumb = $thumbs->get_user_thumb($userid, $dimensions, "full");
+
+                header("Location: $thumb");
+                die($thumb);
+            } else {
+                http_response_code(400);
+                die("User does not exist!"); 
+            }
+        } else {
+            http_response_code(400);
+            die("Something was empty!"); 
+        }
+});
+
+$router->get('/thumbs/avatar.ashx', function(){
+
+    $thumbs = new thumbnails();
+
+    if(isset($_GET["x"]) && isset($_GET["y"]) && isset($_GET["userId"])){
+        $x = (int)$_GET["x"];
+        $y = (int)$_GET["y"];
+        $userid = (int)$_GET["userId"];
+        $dimensions = $x . "x" . $y;
+
+        if($x > 3000 || $y > 3000){
+            http_response_code(400);
+            die("We don't allow user thumbnails bigger than 3000x3000!");
+        }   
+
+        global $db;
+
+        $userinfo = $db->table("users")->where("id", $userid)->first();
+
+        if($userinfo !== null){
+
+            $thumb = $thumbs->get_user_thumb($userid, $dimensions, "full");
+
+            header("Location: $thumb");
+            die($thumb);
+        } else {
+            http_response_code(400);
+            die("User does not exist!"); 
+        }
+    } else {
+        http_response_code(400);
+        die("Something was empty!"); 
+    }
+});
+
 
 $router->post('/api/item.ashx', function(){
     header("Content-type: application/json");
@@ -726,7 +828,94 @@ $router->post('/home/updatestatus', function(){
 
 $router->get('/api/comments.ashx', function(){
     header("Content-Type: application/json");
+
+    if(isset($_GET["rqtype"]) && isset($_GET["assetID"])){
+        $assetid = (int)$_GET["assetID"];
+        $rqtype = $_GET["rqtype"];
+
+        if($rqtype == "getComments"){
+            $commentarray = [
+                "isMod"=>false,
+                "totalCount"=>0,
+                "data"=>[],
+            ];
+
+            global $db;
+
+            $allcomments = $db->table("comments")->where("assetid", $assetid)->orderBy("id", "DESC")->get();
+            $assetinfo = $db->table("assets")->where("id", $assetid)->first();
+
+            foreach ($allcomments as $comment){
+
+                $doesown = false;
+                $auth = new authentication();
+                $commentor = $auth->getuserbyid($comment->userid);
+                if($assetinfo->owner == $comment->userid){
+                    $doesown = true;
+                } else {
+                    $doesown = false;
+                }
+                $commentarray["data"][] = [
+                    "ID"=>$comment->id,
+                    "Date"=>Carbon::createFromTimestamp($comment->date)->diffForHumans(),
+                    "Author"=>$commentor->username,
+                    "AuthorID"=>$commentor->id,
+                    "Content"=>$comment->content,
+                    "AuthorOwnsAsset"=>$doesown
+                ];
+            }
+
+            $commentarray["totalCount"] = count($allcomments);
+
+            die(json_encode($commentarray));
+        }
+    }
+
     die('{"isMod":true,"totalCount":2,"data":[{"ID":1,"Date":"1 day","Author":"watrabi","AuthorID":2,"Content":"nice model","AuthorOwnsAsset":true},{"ID":1,"Date":"1 day","Author":"shedletsky","AuthorID":3,"Content":"im too poor","AuthorOwnsAsset":false}]}');
+});
+
+$router->post('/api/comments.ashx', function(){
+
+    global $db;
+
+    if(isset($_GET["rqtype"]) && isset($_GET["assetID"])){
+        $assetid = (int)$_GET["assetID"];
+        $rqtype = $_GET["rqtype"];
+
+        global $currentuser;
+
+        if($currentuser == null){
+            header("Location: /newlogin");
+            die("Please login.");
+        }
+
+        if($rqtype == "makeComment"){
+            $comment = file_get_contents('php://input');
+
+            if(!empty($comment)){
+                $comment = htmlspecialchars($comment);
+
+                $insert = [
+                    "content"=>$comment,
+                    "date"=>time(),
+                    "userid"=>$currentuser->id,
+                    "assetid"=>$assetid
+                ];
+
+                $db->table("comments")->insert($insert);
+                die($comment);
+
+            } else {
+                http_response_code(400);
+                die("Comment cannot be empty.");
+            }
+        }
+
+    } else {
+        http_response_code(400);
+        die("Bad Request");
+    }
+
 });
 
 $router->get('/item-thumbnails', function(){
@@ -986,6 +1175,7 @@ $router->get('/messages/api/get-messages', function(){
     ];
 
     $auth = new authentication();
+    $thumbs = new thumbnails();
     global $db;
 
     if(isset($_GET["messageTab"]) && isset($_GET["pageNumber"]) && isset($_GET["pageSize"]) && $auth->hasaccount()){
@@ -1025,7 +1215,7 @@ $router->get('/messages/api/get-messages', function(){
                             "UserName"=>$senderinfo->username,
                         ],
                         "SenderThumbnail"=>[
-                            "Url"=>"/images/defaultimage.png",
+                            "Url"=>$thumbs->get_user_thumb($senderinfo->id, "512x512", "headshot"),
                             "Final"=>true,
                         ],
                         "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
@@ -1061,11 +1251,11 @@ $router->get('/messages/api/get-messages', function(){
                             "UserName"=>$senderinfo->username,
                         ],
                         "SenderThumbnail"=>[
-                            "Url"=>"/images/defaultimage.png",
+                            "Url"=>$thumbs->get_user_thumb($senderinfo->id, "512x512", "headshot"),
                             "Final"=>true,
                         ],
                         "RecipientThumbnail"=>[
-                            "Url"=>"/images/defaultimage.png",
+                            "Url"=>$thumbs->get_user_thumb($recipientinfo->id, "512x512", "headshot"),
                             "Final"=>true,
                         ],
                         "Recipient"=>[
@@ -1235,6 +1425,7 @@ $router->get('/users/friends/list-json', function(){
 
     header("Content-type: application/json");
     $auth = new authentication();
+    $thumbs = new thumbnails();
     $friends = new friends();
 
     if($auth->hasaccount()){
@@ -1260,7 +1451,7 @@ $router->get('/users/friends/list-json', function(){
                             "UserId" => $friend->id,
                             "AbsoluteURL" => "/users/$friend->id/profile/",
                             "Username" => $friend->username,
-                            "AvatarUri" => "https://watrbx.xyz/images/defaultimage.png",
+                            "AvatarUri" => $thumbs->get_user_thumb($friend->id, "512x512", "headshot"),
                             "AvatarFinal" => true,
                             "OnlineStatus" => [
                                 "LocationOrLastSeen" => "Website",
@@ -1415,6 +1606,7 @@ $router->get('/games/getgameinstancesjson', function() {
     if(isset($_GET["placeId"])){
         $placeid = (int)$_GET["placeId"];
         $auth = new authentication();
+        $thumbs = new thumbnails();
 
         global $db;
         $allservers = $db->table("game_instances")->where("placeid", $placeid)->get();
@@ -1442,7 +1634,7 @@ $router->get('/games/getgameinstancesjson', function() {
                         "rowId" => 0,
                         "rowHash" => null,
                         "rowTypeId" => 0,
-                        "Url" => "http://www.watrbx.xyz/usersmall.png",
+                        "Url" => $thumbs->get_user_thumb($userinfo->id, "85x85", "full"),
                         "IsFinal" => false
                     )
                 );
@@ -1809,6 +2001,41 @@ $router->get('/leaderboards/rank/json', function(){
     die("[]");
 });
 
+$router->get('/Game/GamePass/GamePassHandler.ashx', function(){
+    die("<Error>Unknown method</Error>");
+});
+
+$router->get('/ownership/hasAsset', function(){
+    die("true");
+});
+
+$router->get('/ownership/hasasset', function(){
+    die("true");
+});
+
+$router->get('/currency/balance', function(){
+        header("Content-type: application/json");
+        global $currentuser;
+
+        $array = [
+            "robux"=>$currentuser->robux,
+            "tix"=>$currentuser->tix
+        ];
+
+        die(json_encode($array));
+    
+});
+
+$router->get('/marketplace/productDetails', function(){
+    ob_clean();
+    header("Content-type: application/json");
+    die('{"TargetId":0,"ProductType":null,"AssetId":19024608,"ProductId":0,"Name":"[ Content Deleted ]","Description":"T-Shirt","AssetTypeId":2,"Creator":{"Id":5536913,"Name":"chowder99999","CreatorType":"User","CreatorTargetId":5536913,"HasVerifiedBadge":false},"IconImageAssetId":0,"Created":"2009-12-09T19:20:08.09Z","Updated":"2009-12-09T19:20:08.09Z","PriceInRobux":0,"PriceInTickets":2,"Sales":0,"IsNew":false,"IsForSale":true,"IsPublicDomain":false,"IsLimited":false,"IsLimitedUnique":false,"Remaining":null,"MinimumMembershipLevel":0,"ContentRatingTypeId":0,"SaleAvailabilityLocations":null,"SaleLocation":null,"CollectibleItemId":null,"CollectibleProductId":null,"CollectiblesItemDetails":null}');
+});
+
+$router->get('/Game/LuaWebService/HandleSocialRequest.ashx', function(){
+    die("<Error>Unknown method</Error>");
+});
+
 $router->get('/leaderboards/game/json', function(){
     header("Content-type: application/json");
     die('[]');
@@ -1816,13 +2043,18 @@ $router->get('/leaderboards/game/json', function(){
 
 $router->get('/CharacterFetch.aspx', function(){
 
-    $charapp = "http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;";
+    $charapp = "";
 
     if(isset($_GET["Id"])){
         global $db;
         $id = (int)$_GET["Id"];
 
         $allitems = $db->table("wearingitems")->where("userid", $id)->get();
+
+        if(!empty($allitems)){
+            $charapp = "http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;";
+        }
+
         foreach ($allitems as $item){
             $charapp .= "http://www.watrbx.xyz/asset/?id=". $item->itemid .";";
         }

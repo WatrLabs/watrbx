@@ -336,6 +336,7 @@ $router->group('/api/v1/gameserver', function($router) {
         
                             if(isset($jobinfo->userid)){
                                 $insert["userid"] = $jobinfo->userid;
+                                $insert["mode"] = $jobinfo->jobtype;
                             }
         
                             if(isset($jobinfo->assetid)){
@@ -381,11 +382,41 @@ $router->group('/api/v1/gameserver', function($router) {
                     require("../storage/gameserver.php");
                     die();
                 } elseif($jobinfo->type == 2) {
+
+                    if($jobinfo->userid !== null){
+                        if($jobinfo->jobtype == "full"){
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/user.lua");
+                            $lua = str_replace("%userId%", $jobinfo->userid, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
+                            die($lua);
+                        } elseif ($jobinfo->jobtype == "headshot"){
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/user_headshot.lua");
+                            $lua = str_replace("%userId%", $jobinfo->userid, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
+                            die($lua);
+                        } 
+                    }
+
                     $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
                     switch ($assetinfo->prodcategory){
                         case "8":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/hat.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
+                            die($lua);
+                            break;
+                        case "10":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/model.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
                             $dimensions = explode("x", $jobinfo->dimensions);
                             $lua = str_replace("%x%", $dimensions[0], $lua);

@@ -1,13 +1,16 @@
 <?php
 
 use watrlabs\authentication;
+use watrbx\thumbnails;
+$thumbs = new thumbnails();
 $auth = new authentication();
 $poster = $auth->getuserbyid($feedentry->owner);
+$headshot = $thumbs->get_user_thumb($feedentry->owner, "512x512", "headshot");
 ?>
 
 <li class="list-item">
     <a href="/users/<?=$poster->id?>/profile" class="list-header">
-        <img class='header-thumb' src='/images/defaultimage.png' />
+        <img class='header-thumb' src='<?=$headshot?>' />
     </a>
     <div class="list-body">
         <p class="list-content">

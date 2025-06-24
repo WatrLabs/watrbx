@@ -2,12 +2,30 @@
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrbx\thumbnails;
+use Carbon\Carbon;
+global $currentuser;
 $thumbs = new thumbnails();
 $auth = new authentication();
 $pagebuilder = new pagebuilder();
 
+global $db;
+
+$doesown = $db->table("ownedassets")->where("assetid", $asset->id)->where("userid", $currentuser->id)->first();
+$boughtamount = $db->table("ownedassets")->where("assetid", $asset->id)->count();
+
+$assetidbackup = $asset->id;
+
+$query = $db->table("assets")->where("publicdomain", 1)->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->limit(10)->orderBy($db->Raw("RAND()"));
+$randomitems = $query->get();
+
+$randomitems1 = array_slice($randomitems, 0, 5);
+$randomitems2 = array_slice($randomitems, 5);
+
+
+
+
 if($auth->hasaccount()){
-    global $currentuser;
+
     $userinfo = $currentuser;
 } else {
     header("Location: /newlogin");
@@ -65,10 +83,9 @@ $pagebuilder->addresource('jsfiles', '/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gz
 $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
 $pagebuilder->addresource('jsfiles', '/js/43936b3386e6514e97f2b3ae23f53404.js.gzip');
 $pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
-$pagebuilder->set_page_name("Item");
+$pagebuilder->set_page_name($asset->name);
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
-
 
 
 if($asset->prodcategory == 1)
@@ -77,6 +94,14 @@ if($asset->prodcategory == 1)
 } else {
     $thumb = $thumbs->get_asset_thumb($asset->id);
 }
+
+$creatorinfo = $auth->getuserbyid($asset->owner);
+
+$overlay = $auth->get_bc_overlay($creatorinfo->id);
+
+$ownerthumb = $thumbs->get_user_thumb($asset->owner, "250x250");
+$currentthumb = $thumbs->get_user_thumb($currentuser->id, "250x250");
+
 ?>
         <div id="BodyWrapper">
             
@@ -85,7 +110,7 @@ if($asset->prodcategory == 1)
                 
     <div id="ItemContainer" class="text ">
         <div>
-            <div id="ctl00_cphRoblox_GearDropDown" class="SetList ItemOptions invisible" data-isdropdownhidden="False" data-isitemlimited="True" data-isitemresellable="True">
+            <div id="ctl00_cphRoblox_GearDropDown" class="SetList ItemOptions" data-isdropdownhidden="False" data-isitemlimited="True" data-isitemresellable="True">
                 <a href="#" class="btn-dropdown">
                     
                     <img src="/images/ea51d75440715fc531fc3ad281c722f3.png" />
@@ -128,7 +153,7 @@ if($asset->prodcategory == 1)
                 
                         <div id="assetContainer">
                             <div id="Thumbnail">
-                                <div id="AssetThumbnail" class="thumbnail-holder" data-reset-enabled-every-page  data-url="/thumbnail/asset?assetId=20418658&amp;thumbnailFormatId=254&amp;width=320&amp;height=320" style="width:320px; height:320px;">
+                                <div id="AssetThumbnail" class="thumbnail-holder" data-reset-enabled-every-page  data-url="/thumbnail/asset?assetId=<?=$assetidbackup?>&amp;thumbnailFormatId=254&amp;width=320&amp;height=320" style="width:320px; height:320px;">
                                     <span class="thumbnail-span" ><img  class='' src='<?=$thumb?>' /></span>
                                     <span class="enable-three-dee btn-control btn-control-small"></span>
                                 </div>
@@ -141,23 +166,27 @@ if($asset->prodcategory == 1)
                         <div id="Creator" class="Creator">
                             <div class="Avatar">
                                 
-                                <a id="ctl00_cphRoblox_AvatarImage" class=" notranslate" class=" notranslate" title="ROBLOX" href="/users/1/profile" style="display:inline-block;height:70px;width:70px;cursor:pointer;"><img src="https://watrbx.xyz/images/defaultimage.png" height="70" width="70" border="0" alt="ROBLOX" class=" notranslate" /><img src="/images/icons/overlay_obcOnly.png" class="bcOverlay" align="left" style="position:relative;top:-19px;" /></a>
+                                <a id="ctl00_cphRoblox_AvatarImage" class=" notranslate" class=" notranslate" title="<?=$creatorinfo->username?>" href="/users/<?=$creatorinfo->id?>/profile" style="display:inline-block;height:70px;width:70px;cursor:pointer;"><img src="<?=$ownerthumb?>" height="70" width="70" border="0" alt="<?=$creatorinfo->username?>" class=" notranslate" />
+                                    <? if($overlay !== null){
+                                        echo '<img src="'.$overlay.'" class="bcOverlay" align="left" style="position:relative;top:-19px;" />';
+                                    } ?>
+                                </a>
                             </div>
                         </div>
                         <div class="item-detail">
                             <span class="stat-label notranslate">Creator:</span>
-                            <a id="ctl00_cphRoblox_CreatorHyperLink" class="stat notranslate" href="/users/1/profile">ROBLOX</a>
+                            <a id="ctl00_cphRoblox_CreatorHyperLink" class="stat notranslate" href="/users/<?=$creatorinfo->id?>/profile"><?=$creatorinfo->username?></a>
                             
                             <div>
                                 <span class="stat-label">Created:</span>
                                 <span class="stat">
-                                    1/8/2010
+                                    <?=Carbon::createFromTimestamp($asset->created)->diffForHumans();?>
                                 </span>
                             </div>
                             <div id="LastUpdate">
                                 <span class="stat-label">Updated:</span>
                                 <span class="stat">
-                                    5 years ago
+                                    <?=Carbon::createFromTimestamp($asset->updated)->diffForHumans();?>
                                 </span>
                                 </div>
                                 
@@ -172,8 +201,8 @@ if($asset->prodcategory == 1)
                         <div class="ReportAbuse">
                             <div id="ctl00_cphRoblox_AbuseReportButton1_AbuseReportPanel" class="ReportAbuse">
 	
-    <span class="AbuseIcon"><a id="ctl00_cphRoblox_AbuseReportButton1_ReportAbuseIconHyperLink" href="/abusereport/asset?id=20418658&amp;RedirectUrl=http%3a%2f%2fwww.roblox.com%2fitem.aspx%3fseoname%3dErr%26id%3d20418658"><img src="images/abuse.PNG?v=2" alt="Report Abuse" style="border-width:0px;" /></a></span>
-    <span class="AbuseButton"><a id="ctl00_cphRoblox_AbuseReportButton1_ReportAbuseTextHyperLink" href="/abusereport/asset?id=20418658&amp;RedirectUrl=http%3a%2f%2fwww.roblox.com%2fitem.aspx%3fseoname%3dErr%26id%3d20418658">Report Abuse</a></span>
+    <span class="AbuseIcon"><a id="ctl00_cphRoblox_AbuseReportButton1_ReportAbuseIconHyperLink" href="/abusereport/asset?id=<?=$assetidbackup?>&amp;RedirectUrl=http%3a%2f%2fwww.roblox.com%2fitem.aspx%3fseoname%3dErr%26id%3d<?=$assetidbackup?>"><img src="images/abuse.PNG?v=2" alt="Report Abuse" style="border-width:0px;" /></a></span>
+    <span class="AbuseButton"><a id="ctl00_cphRoblox_AbuseReportButton1_ReportAbuseTextHyperLink" href="/abusereport/asset?id=<?=$assetidbackup?>&amp;RedirectUrl=http%3a%2f%2fwww.roblox.com%2fitem.aspx%3fseoname%3dErr%26id%3d<?=$assetidbackup?>">Report Abuse</a></span>
 
 </div>
                         </div>
@@ -227,7 +256,7 @@ if($asset->prodcategory == 1)
                                         
                                     </div>
                                     <div id="BuyWithRobux">
-                                        <div data-expected-currency="1" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton " data-se="item-buyforrobux" data-item-name="<?=$asset->name?>" data-item-id="<?=$asset->id?>" data-expected-price="<?=$asset->robux?>" data-product-id="<?=$asset->id?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="ROBLOX">
+                                        <div data-expected-currency="1" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton <? if($doesown !== null){ echo 'btn-disabled-primary'; } ?>" <? if($doesown !== null){ echo 'original-title="You already own this item."'; } ?> data-se="item-buyforrobux" data-item-name="<?=$asset->name?>" data-item-id="<?=$assetidbackup?>" data-expected-price="<?=$asset->robux?>" data-product-id="<?=$assetidbackup?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="<?=$creatorinfo->username?>">
                                              Buy with R$
                                         </div>
                                         
@@ -249,7 +278,7 @@ if($asset->prodcategory == 1)
                                         
                                     </div>
                                     <div id="BuyWithTickets">
-                                        <div data-expected-currency="2" data-asset-type="Shirt" class="btn-primary btn-medium PurchaseButton " data-se="item-buyfortickets" data-item-name="[RHS] Smart Shirt" data-item-id="<?=$asset->id?>" data-expected-price="<?=$asset->tix?>" data-product-id="<?=$asset->id?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="Wonuf">
+                                        <div data-expected-currency="2" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton <? if($doesown !== null){ echo 'btn-disabled-primary'; } ?>" <? if($doesown !== null){ echo 'original-title="You already own this item."'; } ?> data-se="item-buyforrobux" data-item-name="<?=$asset->name?>" data-item-id="<?=$assetidbackup?>" data-expected-price="<?=$asset->robux?>" data-product-id="<?=$assetidbackup?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="<?=$creatorinfo->username?>">
                                              Buy with Tx
                                         </div>
                                         
@@ -268,7 +297,7 @@ if($asset->prodcategory == 1)
 	                            
                                 
                                 <div id="ctl00_cphRoblox_Sold">
-                                    (<span data-se="item-numbersold"><?=0?></span> 
+                                    (<span data-se="item-numbersold"><?=$boughtamount?></span> 
                                     Sold)
                                 </div>
                             </div>
@@ -330,149 +359,14 @@ if($asset->prodcategory == 1)
     <div class="AssetRecommenderContainer">
     <table id="ctl00_cphRoblox_AssetRec_dlAssets" cellspacing="0" align="Center" border="0" style="height:175px;width:800px;border-collapse:collapse;">
 	<tr>
-		<td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-0">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl00_AssetThumbnailHyperLink" class=" notranslate" title="¬_¬" class=" notranslate" href="/unnamed-item?id=13038375" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://web.archive.org/web/20160910081545if_/https://t1.rbxcdn.com/326082be65ef7104c8e4bf8d48811888" height="110" width="110" border="0" alt="¬_¬" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl00_AssetNameHyperLinkPortrait" href="/unnamed-item?id=13038375">&#172;_&#172;</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl00_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-1">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_AssetThumbnailHyperLink" class=" notranslate" title="Uh Oh" class=" notranslate" href="/Uh-Oh-item?id=7074944" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t2.rbxcdn.com/660b2bc80ced47bd2309d35908d6b743" height="110" width="110" border="0" alt="Uh Oh" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_AssetNameHyperLinkPortrait" href="/Uh-Oh-item?id=7074944">Uh Oh</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-2">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl02_AssetThumbnailHyperLink" class=" notranslate" title="Awkward...." class=" notranslate" href="/Awkward-item?id=23932048" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t7.rbxcdn.com/ea66e1a193b92c317b31b7e050d7788d" height="110" width="110" border="0" alt="Awkward...." class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl02_AssetNameHyperLinkPortrait" href="/Awkward-item?id=23932048">Awkward....</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl02_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-3">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl03_AssetThumbnailHyperLink" class=" notranslate" title="Silence" class=" notranslate" href="/Silence-item?id=10860397" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t6.rbxcdn.com/7e2ce7acb952e67ed0ccc56b990a0fec" height="110" width="110" border="0" alt="Silence" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl03_AssetNameHyperLinkPortrait" href="/Silence-item?id=10860397">Silence</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl03_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-4">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl04_AssetThumbnailHyperLink" class=" notranslate" title="Tango" class=" notranslate" href="/Tango-item?id=16101765" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t2.rbxcdn.com/30adb85f64bb829a87a8bb0cd29d9151" height="110" width="110" border="0" alt="Tango" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl04_AssetNameHyperLinkPortrait" href="/Tango-item?id=16101765">Tango</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl04_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td>
+
+		<? foreach ($randomitems1 as $asset) {
+            echo $pagebuilder->build_component("asset_recommend", ["asset" => $asset]);
+        } ?>
 	</tr><tr>
-		<td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-5">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl05_AssetThumbnailHyperLink" class=" notranslate" title="I Hate Noobs" class=" notranslate" href="/I-Hate-Noobs-item?id=14030577" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t6.rbxcdn.com/8a7be72a515d6ee5eae495dd23495ed3" height="110" width="110" border="0" alt="I Hate Noobs" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl05_AssetNameHyperLinkPortrait" href="/I-Hate-Noobs-item?id=14030577">I Hate Noobs</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl05_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-6">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl06_AssetThumbnailHyperLink" class=" notranslate" title="Know-It-All Grin" class=" notranslate" href="/Know-It-All-Grin-item?id=26424808" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t6.rbxcdn.com/6a2ac71eb95ecfd31805646e7a4661f4" height="110" width="110" border="0" alt="Know-It-All Grin" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl06_AssetNameHyperLinkPortrait" href="/Know-It-All-Grin-item?id=26424808">Know-It-All Grin</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl06_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-7">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl07_AssetThumbnailHyperLink" class=" notranslate" title="Heeeeeey..." class=" notranslate" href="/Heeeeeey-item?id=21635565" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t5.rbxcdn.com/fa80912767f6eb4c931dc793dbeee223" height="110" width="110" border="0" alt="Heeeeeey..." class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl07_AssetNameHyperLinkPortrait" href="/Heeeeeey-item?id=21635565">Heeeeeey...</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl07_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-8">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl08_AssetThumbnailHyperLink" class=" notranslate" title=":3" class=" notranslate" href="/3-item?id=15432080" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t5.rbxcdn.com/f8c9fbb06fbeb1fe723ab31c2f970acc" height="110" width="110" border="0" alt=":3" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl08_AssetNameHyperLinkPortrait" href="/3-item?id=15432080">:3</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl08_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td><td>
-            <div class="PortraitDiv" style="width: 140px;overflow: hidden;margin:auto;" visible="True" data-se="recommended-items-9">
-                <div class="AssetThumbnail">
-                    <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl09_AssetThumbnailHyperLink" class=" notranslate" title=":P" class=" notranslate" href="/P-item?id=14861743" style="display:inline-block;height:110px;width:110px;cursor:pointer;"><img src="https://t2.rbxcdn.com/879dca5951cdd65572523d009136fce8" height="110" width="110" border="0" alt=":P" class=" notranslate" /></a>
-                </div>
-                <div class="AssetDetails">
-                    <div class="AssetName noTranslate">
-                        <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl09_AssetNameHyperLinkPortrait" href="/P-item?id=14861743">:P</a>
-                    </div>
-                    <div class="AssetCreator">
-                        <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl09_CreatorHyperLinkPortrait" class="notranslate" href="/users/1/profile">ROBLOX</a></span>
-                    </div>
-                </div>
-            </div>
-        </td>
+		<? foreach ($randomitems2 as $asset) {
+            echo $pagebuilder->build_component("asset_recommend", ["asset" => $asset]);
+        } ?>
 	</tr>
 </table>
     
@@ -503,7 +397,7 @@ if($asset->prodcategory == 1)
             <div id="ctl00_cphRoblox_CommentsPane_Div1" class="PostACommentContainer divider-bottom">
                 <div class="Commenter">
                     <div class="Avatar">
-                        <a id="ctl00_cphRoblox_CommentsPane_AvatarImage" class=" notranslate" title="ConnerMurphy07" class=" notranslate" href="/User.aspx?ID=62402235" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="https://t6.rbxcdn.com/dd7d4b07fbbb207b723b0daaf817a72d" height="100" width="100" border="0" alt="ConnerMurphy07" class=" notranslate" /></a>
+                        <a id="ctl00_cphRoblox_CommentsPane_AvatarImage" class=" notranslate" title="<?=$currentuser->username?>" class=" notranslate" href="/users/<?=$currentuser->id?>/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="<?=$currentthumb?>" height="100" width="100" border="0" alt="<?=$currentuser->username?>" class=" notranslate" /></a>
                     </div>
                 </div>
                 <div class="centered-error-container">
@@ -523,7 +417,7 @@ if($asset->prodcategory == 1)
                 </div>
                 <div style="clear:both;"></div>
             </div>
-            <div class="Comments" data-asset-id="20418658"></div>
+            <div class="Comments" data-asset-id="<?=$assetidbackup?>"></div>
             
             <div class="CommentsItemTemplate">
                     <div class="Comment text">

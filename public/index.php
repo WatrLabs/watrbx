@@ -75,8 +75,11 @@ try {
         $router->addrouter('bootstraphandler');
         $router->addrouter('forumhandler');
         $router->addrouter('chathandler');
+        $router->addrouter('pbshandler');
+        $router->addrouter('datapershandler');
 
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = strtolower($uri);
         $method = $_SERVER['REQUEST_METHOD'];
         $router->dispatch($uri, $method);
 
@@ -88,12 +91,14 @@ try {
             $log->internal_log($e, "Site Error!");
             ob_clean();
             http_response_code(500);
+            file_put_contents("errorlog.log", $e . "\n\n", FILE_APPEND);
             require("../views/status_codes/500.php");
         } catch(ErrorException $e){
             $log = new discord();
             $log->internal_log($e, "Site Error!");
             ob_clean();
             echo $e;
+            file_put_contents("errorlog.log", $e . "\n\n", FILE_APPEND);
             require("../views/really_bad_500.php");
             die();
         }
@@ -105,6 +110,7 @@ try {
     try {
         $log->internal_log($e, "Site Error!");
         ob_clean();
+        file_put_contents("errorlog.log", $e . "\n\n", FILE_APPEND);
         http_response_code(500);
         require("../views/status_codes/500.php");
     } catch(ErrorException $e){
@@ -112,6 +118,7 @@ try {
         ob_clean();
         http_response_code(500);
         echo $e;
+        file_put_contents("errorlog.log", $e . "\n\n", FILE_APPEND);
         require("../views/really_bad_500.php");
         die();
     }

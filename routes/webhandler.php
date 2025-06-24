@@ -38,15 +38,35 @@ $router->get('/messages/compose', function(){
 });
 
 $router->get('/Thumbs/Asset.ashx', function(){
-    if(isset($_GET["assetId"])){
-        $assetid = (int)$_GET["assetId"];
+    if(isset($_GET["AssetID"])){
 
-        $thumbs = new thumbnails();
+        $assetid = (int)$_GET["AssetID"];
 
-        $thumbnailurl = $thumbs->get_asset_thumb($assetid);
+        global $db;
 
-        Header("Location: $thumbnailurl");
-        die();
+        $thumb = $db->table("thumbnails")->where("assetid", $assetid)->first();
+
+        if($thumb !== null){
+            $thumbs = new thumbnails();
+
+            $thumbnailurl = $thumbs->get_asset_thumb($assetid);
+
+            Header("Location: $thumbnailurl");
+            die();
+        } else {
+            $url = "https://thumbnails.roblox.com/v1/assets?assetIds=$assetid&format=PNG&size=512x512";
+            $robloxapi = file_get_contents($url);
+
+            if($robloxapi){
+                $decoded = json_decode($robloxapi, true);
+                $robloxthumb = $decoded["data"][0]["imageUrl"];
+                header("Location: $robloxthumb");
+                die();
+            } else {
+                die($robloxapi);
+            }
+
+        }
 
     }
 });
@@ -281,6 +301,7 @@ $router->post('/my/character.aspx', function() {
                     $exploded = explode("|", $event);
 
                     if(isset($exploded[1])){
+                        $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
                         $assetid = (int)$exploded[1];
                         $db->table("wearingitems")->insert(["itemid"=>$assetid, "userid"=>$currentuser->id]);
                         $page::get_template("avatar", ["currentcategory"=>2]);
@@ -291,6 +312,7 @@ $router->post('/my/character.aspx', function() {
                 if(str_contains($event, "Remove")){
                     $exploded = explode("|", $event);
                     if(isset($exploded[1])){
+                        $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
                         $assetid = (int)$exploded[1];
                         $db->table("wearingitems")->where("userid", $currentuser->id)->where("itemid", $assetid)->delete();
                         $page::get_template("avatar", ["currentcategory"=>2]);

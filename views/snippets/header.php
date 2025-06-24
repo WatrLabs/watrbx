@@ -66,6 +66,11 @@ if($userinfo->membership == "OutrageousBuildersClub"){
             height: 100px;
             width: 100px;
         }
+
+        .player-avatar a img {
+            height: 85px;
+            width: 85px;
+        }
     </style>
     
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />

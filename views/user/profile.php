@@ -3,6 +3,8 @@ use watrlabs\watrkit\pagebuilder;
 use watrlabs\router\Routing;
 use watrlabs\authentication;
 use watrbx\relationship\friends;
+use watrbx\thumbnails;
+$thumbs = new thumbnails();
 $friends = new friends();
 $pagebuilder = new pagebuilder();
 $auth = new authentication();
@@ -67,6 +69,8 @@ if ($userinfo->membership !== "None") {
     $bc = null;
 }
 
+$headshot = $thumbs->get_user_thumb($userinfo->id, "512x512", "headshot");
+$full = $thumbs->get_user_thumb($userinfo->id, "1024x1024", "full");
 
 $allfriends = $friends->get_friends($userid);
 $pagebuilder->set_page_name($userinfo->username);
@@ -149,7 +153,7 @@ $pagebuilder->buildheader();
     <div class="profile-header-top">
         <div class="profile-avatar-image" ng-non-bindable>
             <span class="avatar-image-link">
-                    <img alt="<?=$userinfo->username?>" class="profile-avatar-thumb" src="/images/defaultimage.png">
+                    <img alt="<?=$userinfo->username?>" class="profile-avatar-thumb" src="<?=$headshot?>">
                 </span>
             <script type="text/javascript">
                 $("img.profile-avatar-thumb").on('load', function() {
@@ -454,7 +458,7 @@ $pagebuilder->buildheader();
 
 <div id="UserAvatar" class="thumbnail-holder" data-reset-enabled-every-page data-3d-thumbs-enabled 
      data-url="/thumbnail/user-avatar?userId=<?=$userinfo->id?>&amp;thumbnailFormatId=124&amp;width=300&amp;height=300" style="width:300px; height:300px;">
-    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=<?=$userinfo->id?>"  data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='<?=$userinfo->username?>' class='' src='https://watrbx.xyz/images/defaultimage.png' /></span>
+    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=<?=$userinfo->id?>"  data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='<?=$userinfo->username?>' class='' src='<?=$full?>' /></span>
     <span class="enable-three-dee btn-control btn-control-small"></span>
 </div>
 

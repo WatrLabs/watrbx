@@ -5,6 +5,9 @@ use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrbx\relationship\friends;
 use watrbx\gameserver;
+    use watrbx\thumbnails;
+    $thumbs = new thumbnails();
+    
 $gameserver = new gameserver();
 $friends = new friends();
 $pagebuilder = new pagebuilder();
@@ -12,6 +15,8 @@ $auth = new authentication();
 $auth->requiresession();
 
 global $currentuser;
+
+$character = $thumbs->get_user_thumb($currentuser->id, "512x512", "headshot");
 
 $userinfo = $currentuser;
 $allfriends = $friends->get_friends($userinfo->id);
@@ -61,7 +66,7 @@ $pagebuilder->buildheader();
 
     <div class="col-xs-12 home-header">
         <a href="/users/<?= $userinfo->id ?>/profile" class="home-thumbnail-bust" >
-            <img alt="avatar" src="/images/defaultimage.png" />
+            <img alt="avatar" src="<?=$character?>" />
         </a>
         <div class="home-header-content">
             <h1>
