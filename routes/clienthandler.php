@@ -88,21 +88,34 @@ $router->get('/Game/Tools/ThumbnailAsset.ashx', function(){
 
 $router->get("/Asset/BodyColors.ashx", function(){
     header("Content-type: application/xml");
+
+    $userid = 1;
+
+    if(isset($_GET["Id"])){
+        $userid = $_GET["Id"];
+        
+    }
+
+
+
+    $auth = new authentication();
+    $bodycolors = $auth->get_body_colors($userid);
+
     die('<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.watrbx.xyz/roblox.xsd" version="4">
-            <External>null</External>
-            <External>nil</External>
-            <Item class="BodyColors" referent="RBX2DC0258909A9441E8A72097F024F5FC7">
-                <Properties>
-                    <int name="HeadColor">1030</int>
-                    <int name="LeftArmColor">1030</int>
-                    <int name="LeftLegColor">1030</int>
-                    <string name="Name">Body Colors</string>
-                    <int name="RightArmColor">1030</int>
-                    <int name="RightLegColor">1030</int>
-                    <int name="TorsoColor">1030</int>
-                </Properties>
-            </Item>
-        </roblox>');
+<External>null</External>
+<External>nil</External>
+<Item class="BodyColors" referent="RBX2DC0258909A9441E8A72097F024F5FC7">
+    <Properties>
+        <string name="Name">Body Colors</string>
+        <int name="HeadColor">'.$bodycolors["Head"].'</int>
+        <int name="LeftArmColor">'.$bodycolors["LeftArm"].'</int>
+        <int name="LeftLegColor">'.$bodycolors["LeftLeg"].'</int>
+        <int name="RightArmColor">'.$bodycolors["RightArm"].'</int>
+        <int name="RightLegColor">'.$bodycolors["RightLeg"].'</int>
+        <int name="TorsoColor">'.$bodycolors["Torso"].'</int>
+    </Properties>
+</Item>
+</roblox>');
 });
 
 $router->post('/game/validate-machine', function(){

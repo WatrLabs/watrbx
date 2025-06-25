@@ -1,5 +1,9 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
+use watrlabs\authentication;
+use watrbx\thumbnails;
+$auth = new authentication();
+$auth->requiresession();
 $pagebuilder = new pagebuilder();
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___52c69b42777a376ab8c76204ed8e75e2_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___cda0cc7c6f454f40a6342985b7a289e6_m.css');
@@ -11,6 +15,10 @@ $pagebuilder->addresource('cssfiles', '/CSS/Pages/Build/Navigation.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Pages/Build/StudioWidget.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Pages/Build/Upload.css');
 $pagebuilder->addresource('jsfiles', '/js/c5827143734572fa7bd8fcc79c3c126b.js.gzip');
+$pagebuilder->addresource('jsfiles', '/js/22f5b93b0e23b69d9c48f68ea3c65fe3.js.gzip');
+$pagebuilder->addresource('jsfiles', '/js/6385cae49dc708a8f2f93167ad17466d.js.gzip');
+$pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gzip');
+$pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
 $pagebuilder->set_page_name("Develop");
 
 $pagebuilder->setlegacy(true);
@@ -138,21 +146,33 @@ $pagebuilder->buildheader();
                       </script>
                       <span id="verifiedEmail" style="display:none"></span>
                       <span id="assetLinks" style="display:none" data-asset-links-enabled="True"></span>
-                      <table class="item-table" data-item-id="995100333" data-type="game" data-universeid="413094703">
+                      <?php
+                        global $db;
+                        global $currentuser;
+
+                        $thumbs = new thumbnails();
+
+                        $allgames = $db->table("assets")->where("owner", $currentuser->id)->where("prodcategory", 9)->get();
+
+                        foreach ($allgames as $game){ 
+                          $thumbnail = $thumbs->get_asset_thumb($game->id, "200x200");
+                        ?>
+
+                        <table class="item-table" data-item-id="<?=$game->id?>" data-type="game" data-universeid="0">
                         <tbody>
                           <tr>
                             <td class="image-col">
-                              <a href="/games/995100333/New-Robloxia-City-v1-00-ALPHA" class="game-image">
-                                <img src="https://t0.rbxcdn.com/98786c298dcd5cfb085e34fee04ae531" alt="New Robloxia City v1.00 ALPHA">
+                              <a href="/games/3/roblox" class="game-image">
+                                <img src="<?=$thumbnail?>" alt="<?=$game->name?>" width="70" height="70">
                               </a>
                             </td>
                             <td class="name-col">
-                              <a class="title notranslate" href="/games/995100333/New-Robloxia-City-v1-00-ALPHA">New Robloxia City v1.00 ALPHA</a>
+                              <a class="title notranslate" href="/games/995100333/New-Robloxia-City-v1-00-ALPHA"><?=$game->name?></a>
                               <table class="details-table">
                                 <tbody>
                                   <tr>
                                     <td class="item-date">
-                                      <span>Updated:</span>8/21/2017
+                                      <span>Updated:</span><?=date("n/j/Y", $game->updated)?>
                                     </td>
                                   </tr>
                                 </tbody>
@@ -175,8 +195,11 @@ $pagebuilder->buildheader();
                           </tr>
                         </tbody>
                       </table>
+<div class="separator"></div>
+                        <? } ?>
                       
-                      <div class="separator"></div>
+                      
+                      
                     </div>
                     <div class="build-loading-container" style="display:none">
                       <div class="buildpage-loading-container">
@@ -245,28 +268,14 @@ $pagebuilder->buildheader();
             </script>
           </div>
           <div class="Ads_WideSkyscraper">
-            <div style="width:160px" class="abp adp-gpt-container">
-              <span id="3134373334333238" class="GPTAd skyscraper" data-js-adtype="gptAd" data-ad-slot="Roblox_Build_Right_160x600"></span>
-              <div class="ad-annotations" style="width:160px">
-                <span class="ad-identification">
-                  <span class="ad-identification-text">
-                    <span class="ad-identification-text">Advertisement</span>
-                  </span>
-                </span>
-                <a class="BadAdButton" href="/Ads/ReportAd.aspx" title="click to report an offensive ad">Report</a>
-              </div>
-              <script>
-                $(function() {
-                  googletag.cmd.push(function() {
-                    if (typeof Roblox.AdsHelper !== "undefined" && typeof Roblox.AdsHelper.toggleAdsSlot !== "undefined") {
-                      Roblox.AdsHelper.toggleAdsSlot("", "3134373334333238");
-                    } else {
-                      googletag.display("3134373334333238");
-                    }
-                  });
-                });
-              </script>
-            </div>
+             <iframe allowtransparency="true"
+            frameborder="0"
+            height="612"
+            scrolling="no"
+            src="/userads/2"
+            width="160"
+            data-js-adtype="iframead"></iframe>
+
           </div>
           <script>
             if (typeof Roblox === "undefined") {
@@ -1762,28 +1771,18 @@ $pagebuilder->buildheader();
             </script>
           </div>
           <div class="Ads_WideSkyscraper">
-            <div style="width:160px" class="abp adp-gpt-container">
-              <span id="32353430393432" class="GPTAd skyscraper" data-js-adtype="gptAd" data-ad-slot="Roblox_Build_Right_160x600"></span>
-              <div class="ad-annotations" style="width:160px">
-                <span class="ad-identification">
-                  <span class="ad-identification-text">
-                    <span class="ad-identification-text">Advertisement</span>
-                  </span>
-                </span>
-                <a class="BadAdButton" href="/Ads/ReportAd.aspx" title="click to report an offensive ad">Report</a>
-              </div>
-              <script>
-                $(function() {
-                  googletag.cmd.push(function() {
-                    if (typeof Roblox.AdsHelper !== "undefined" && typeof Roblox.AdsHelper.toggleAdsSlot !== "undefined") {
-                      Roblox.AdsHelper.toggleAdsSlot("", "32353430393432");
-                    } else {
-                      googletag.display("32353430393432");
-                    }
-                  });
-                });
-              </script>
-            </div>
+            <div id="Skyscraper-Adp-Right" class="abp abp-container right-abp">
+                    
+
+    <iframe allowtransparency="true"
+            frameborder="0"
+            height="612"
+            scrolling="no"
+            src="/userads/2"
+            width="160"
+            data-js-adtype="iframead"></iframe>
+
+                </div>
           </div>
           <script>
             if (typeof Roblox === "undefined") {

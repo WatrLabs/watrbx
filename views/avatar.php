@@ -9,7 +9,10 @@ $pagebuilder = new pagebuilder();
 
 
 $auth->requiresession();
+
 global $currentuser;
+
+$bodycolors = $auth->get_body_colors($currentuser->id);
 $userinfo = $currentuser;
 
 $body = $thumbs->get_user_thumb($currentuser->id, "1024x1024", "full");
@@ -155,37 +158,37 @@ $pagebuilder->buildheader();
 		
                                 <div style="position: relative; margin: 11px 4px; height: 1%;">
                                     <div style="position: absolute; left: 72px; top: 0px; cursor: pointer" onclick="HeadOpen()">
-                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_HeadSelector" class="ColorChooserRegion" style="background-color:#FFCC99;height:44px;width:44px;">
+                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_HeadSelector" class="ColorChooserRegion" style="background-color:<?=$auth->convert_body_color($bodycolors["Head"])?>;height:44px;width:44px;">
 			
                                         
 		</div>
                                     </div>
                                     <div style="position: absolute; left: 0px; top: 52px; cursor: pointer" onclick="RightArmOpen()">
-                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_RightArmSelector" class="ColorChooserRegion" style="background-color:#FFCC99;height:88px;width:40px;">
+                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_RightArmSelector" class="ColorChooserRegion" style="background-color:<?=$auth->convert_body_color($bodycolors["RightArm"])?>;height:88px;width:40px;">
 			
                                         
 		</div>
                                     </div>
                                     <div style="position: absolute; left: 48px; top: 52px; cursor: pointer" onclick="TorsoOpen()">
-                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_TorsoSelector" class="ColorChooserRegion" style="background-color:#FFCC99;height:88px;width:88px;">
+                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_TorsoSelector" class="ColorChooserRegion" style="background-color:<?=$auth->convert_body_color($bodycolors["Torso"])?>;height:88px;width:88px;">
 			
                                         
 		</div>
                                     </div>
                                     <div style="position: absolute; left: 144px; top: 52px; cursor: pointer" onclick="LeftArmOpen()">
-                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_LeftArmSelector" class="ColorChooserRegion" style="background-color:#FFCC99;height:88px;width:40px;">
+                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_LeftArmSelector" class="ColorChooserRegion" style="background-color:<?=$auth->convert_body_color($bodycolors["LeftArm"])?>;height:88px;width:40px;">
 			
                                         
 		</div>
                                     </div>
                                     <div style="position: absolute; left: 48px; top: 146px; cursor: pointer" onclick="RightLegOpen()">
-                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_RightLegSelector" class="ColorChooserRegion" style="background-color:#FFCC99;height:88px;width:40px;">
+                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_RightLegSelector" class="ColorChooserRegion" style="background-color:<?=$auth->convert_body_color($bodycolors["RightLeg"])?>;height:88px;width:40px;">
 			
                                         
 		</div>
                                     </div>
                                     <div style="position: absolute; left: 96px; top: 146px; cursor: pointer" onclick="LeftLegOpen()">
-                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_LeftLegSelector" class="ColorChooserRegion" style="background-color:#FFCC99;height:88px;width:40px;">
+                                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_LeftLegSelector" class="ColorChooserRegion" style="background-color:<?=$auth->convert_body_color($bodycolors["LeftLeg"])?>;height:88px;width:40px;">
 			
                                         
 		</div>

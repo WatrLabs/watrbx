@@ -21,6 +21,31 @@ class sitefunctions {
         $decrypted = openssl_decrypt($text, $this->method, $this->key, 0, $this->iv);
         return $decrypted;
     }
+
+    public function format_number($int){
+
+        if($int >= 1000000000){
+            $formated = number_format($int / 1000000000, 1);
+            $suffix = "B+";
+        } elseif($int >= 1000000){
+            $formated = number_format($int / 1000000, 1);
+            $suffix = "M+";
+        } elseif ($int >= 1000){
+            $formated = number_format($int / 1000, 1);
+            $suffix = "K+";
+        } else {
+            $formated = $int;
+            $suffix = "";
+        }
+
+        if (substr($formated, -2) === '.0') {
+            $formated = substr($formated, 0, -2);
+        } else {
+        }
+
+        return $formated . $suffix;
+
+    }
     
     public function getip($encrypt = false) {
         

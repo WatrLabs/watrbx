@@ -1,8 +1,10 @@
 <?php
 use watrlabs\authentication;
 use watrbx\relationship\friends;
+use watrbx\sitefunctions;
 $friends = new friends();
 $auth = new authentication();
+$sitefunctions = new sitefunctions();
 global $currentuser;
 $userinfo = $currentuser;
 $pendingfq = count($friends->get_requests($currentuser->id));
@@ -403,11 +405,11 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     <li>
         <a class="rbx-menu-item" data-toggle="popover" data-bind="popover-tix" data-viewport="#header">
             <span class="rbx-icon-nav-tix" id="nav-tix"></span>
-            <span class="rbx-text-navbar-right" id="nav-tix-amount"><?=$userinfo->tix?></span>
+            <span class="rbx-text-navbar-right" id="nav-tix-amount"><?=$sitefunctions->format_number($userinfo->tix)?></span>
         </a>
         <div class="rbx-popover-content" data-toggle="popover-tix">
             <ul class="rbx-dropdown-menu" role="menu">
-                <li><a href="/My/Money.aspx#/#Summary_tab" id="nav-tix-balance"><?=$userinfo->tix?> Tickets</a></li>
+                <li><a href="/My/Money.aspx#/#Summary_tab" id="nav-tix-balance"><?=number_format($userinfo->tix)?> Tickets</a></li>
                 <li><a href="/my/money.aspx?tab=TradeCurrency">Trade Currency</a></li>
             </ul>
         </div>
@@ -415,11 +417,11 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     <li>
         <a id="nav-robux-icon" class="rbx-menu-item" data-toggle="popover" data-bind="popover-robux">
             <span class="rbx-icon-nav-robux" id="nav-robux"></span>
-            <span class="rbx-text-navbar-right" id="nav-robux-amount"><?=$userinfo->robux?></span>
+            <span class="rbx-text-navbar-right" id="nav-robux-amount"><?=$sitefunctions->format_number($userinfo->robux)?></span>
         </a>
         <div class="rbx-popover-content" data-toggle="popover-robux">
             <ul class="rbx-dropdown-menu" role="menu">
-                <li><a href="/My/Money.aspx#/#Summary_tab" id="nav-robux-balance"><?=$userinfo->robux?> ROBUX</a></li>
+                <li><a href="/My/Money.aspx#/#Summary_tab" id="nav-robux-balance"><?=number_format($userinfo->robux)?> ROBUX</a></li>
                 <li><a href="/upgrades/robux?ctx=navpopover">Buy ROBUX</a></li>
             </ul>
         </div>
