@@ -9,8 +9,8 @@ $auth = new authentication();
 $gameserver = new gameserver();
 global $db;
 $asseinfo = $db->table("assets")->where("id", $game->assetid);
-$upvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 1)->count();
-$downvotes = $db->table("likes")->where("assetid", $game->id)->where("vote", 0)->count();
+$upvotes = $db->table("likes")->where("assetid", $game->assetid)->where("vote", 1)->count();
+$downvotes = $db->table("likes")->where("assetid", $game->assetid)->where("vote", 0)->count();
 
 $url = $thumbs->get_asset_thumb($game->assetid, "200x200");
 $owner = $auth->getuserbyid($game->owner);

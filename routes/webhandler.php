@@ -259,6 +259,11 @@ $router->get('/temp/pants-uploader', function(){
     $page::get_template("temp/pants-uploader");
 });
 
+$router->get('/places/create', function(){
+    $page = new pagebuilder;
+    $page::get_template("places/create");
+});
+
 $router->get("/my/character.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("avatar", ["currentcategory"=>2]);
@@ -317,6 +322,34 @@ $router->post('/my/character.aspx', function() {
                         $db->table("wearingitems")->where("userid", $currentuser->id)->where("itemid", $assetid)->delete();
                         $page::get_template("avatar", ["currentcategory"=>2]);
                         die();
+                    }
+                }
+
+                if(str_contains($event, 'ctl00$ctl00$cphRoblox$cphMyRobloxContent$ColorChooser')){
+                    $exploded = explode("$", $event);
+
+                    if(isset($exploded[4]) && isset($_POST["__EVENTARGUMENT"])){
+                        $color = (int)$_POST["__EVENTARGUMENT"];
+                        $bodypart = $exploded[4];
+
+                        $bodycolor = $db->table("bodycolors")->where("userid", $currentuser->id)->where("part", $bodypart)->first();
+
+                        if($bodycolor !== null){
+                            $update = [
+                                "color"=>$color
+                            ];
+                            $db->table("bodycolors")->where("userid", $currentuser->id)->where("part", $bodypart)->update($update);
+                            $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
+                        } else {
+                            $insert = [
+                                "part"=>$bodypart,
+                                "color"=>$color,
+                                "userid"=>$currentuser->id
+                            ];
+
+                            $db->table("bodycolors")->insert($insert);
+                            $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
+                        }
                     }
                 }
                 

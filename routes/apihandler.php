@@ -191,7 +191,7 @@ $router->get('/Game/AreFriends', function() {
         $users = implode(",", $friendIds);
     }
 
-    echo $users;
+    echo "," . $users;
 });
 
 $router->get('/Thumbs/Avatar.ashx', function(){
@@ -2145,7 +2145,7 @@ $router->get('/CharacterFetch.aspx', function(){
         $allitems = $db->table("wearingitems")->where("userid", $id)->get();
 
         if(!empty($allitems)){
-            $charapp = "http://www.watrbx.xyz/Asset/BodyColors.ashx?userid=1;";
+            $charapp = "http://www.watrbx.xyz/Asset/BodyColors.ashx?Id=$id;";
         }
 
         foreach ($allitems as $item){
