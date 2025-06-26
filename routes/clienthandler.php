@@ -26,7 +26,7 @@ $router->get('/Asset/', function() {
         $asset = $db->table("assets")->where("id", $id)->first();
 
         if($asset !== null){
-            header("Location: http://c0.watrbx.xyz/" . $asset->fileid);
+            header("Location: http://cdn.watrbx.xyz/" . $asset->fileid);
             die();
         } else {
             $queryparams = http_build_query($_GET);
@@ -52,7 +52,7 @@ $router->get('/asset/', function() {
         $asset = $db->table("assets")->where("id", $id)->first();
 
         if($asset !== null){
-            header("Location: http://c0.watrbx.xyz/" . $asset->fileid);
+            header("Location: http://cdn.watrbx.xyz/" . $asset->fileid);
             die();
         } else {
             $queryparams = http_build_query($_GET);

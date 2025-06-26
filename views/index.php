@@ -232,7 +232,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 
 <div class="navbar navbar-landing navbar-fixed-top" role="navigation" 
      >
-     <div class="SystemAlert"><div class="rbx-alert-info" role="alert"><b>Notice:</b> Site is still in development! Expect issues, incomplete features and bugs!</div></div>
+     <div class="SystemAlert"><div class="rbx-alert-info" role="alert"><b>Notice:</b> The CDN has been moved to a different provider. If you have any issues, <a href="https://www.watrbx.xyz/users/2/profile" style="text-decoration: underline; color:white;">message me.</a></div></div>
     <div class="container">
         <div class="row">
             <div class="navbar-header col-md-6">

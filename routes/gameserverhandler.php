@@ -2,7 +2,6 @@
 use watrlabs\router\Routing;
 use watrlabs\logging\discord;
 use watrbx\gameserver;
-use asteroid\containers;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -187,12 +186,24 @@ $router->get("/api/v1/gameserver/client-presence", function(){
                         "universeid"=>$jobinfo->assetid // I need a better way of doing universes & assets
                     );
 
+                    $update = [
+                        "active_where"=>"Game"
+                    ];
+
+
+                    $db->table("users")->where("id", $userid)->update($update);
                     $db->table("visits")->insert($visitsinsert);
                     $db->table("activeplayers")->insert($insert);
                     
                     $log->internal_log("UserID: " . $userid . " has joined place " . $jobinfo->assetid);
                     die("Success.");
                 } elseif($action == "disconnect"){
+                    $update = [
+                        "active_where"=>"Website"
+                    ];
+
+
+                    $db->table("users")->where("id", $userid)->update($update);
                     $db->table("activeplayers")->where("userid", $userid)->where("jobid", $jobid)->delete();
                     $log->internal_log("UserID: " . $userid . " has left place " . $jobinfo->assetid);
                     die("Success.");
@@ -324,32 +335,36 @@ $router->group('/api/v1/gameserver', function($router) {
 
                     $md5 = md5($img);
 
-                    $containers = new containers();
-
-                    $isuploaded = $containers->upload_file('', $cleaned, $md5,'');
-                    if(isset($isuploaded->success)){
-                        if($isuploaded->success == true){
-                            $insert = [
-                                "dimensions"=>$jobinfo->dimensions,
-                                "file"=>$md5
-                            ];
-        
-                            if(isset($jobinfo->userid)){
-                                $insert["userid"] = $jobinfo->userid;
-                                $insert["mode"] = $jobinfo->jobtype;
-                            }
-        
-                            if(isset($jobinfo->assetid)){
-                                $insert["assetid"] = $jobinfo->assetid;
-                            }
-        
-                            $insertid = $db->table("thumbnails")->insert($insert);
-                            $db->table("jobs")->where("jobid", $jobinfo->jobid)->delete();
-                            die(createsuccess('it worked.'));
-                        } else {
-                            die(createerror("Something went wrong."));
-                        }   
+                    try {
+                        global $s3_client;
+                        $cleaned = base64_decode($cleaned);
+                        $s3_client->putObject([
+                            'Bucket' => $_ENV["R2_BUCKET"],
+                            'Key' => $md5,
+                            'Body' => $cleaned,
+                        ]);
+                    } catch(Exception $e){
+                        http_response_code(500);
+                        die(createerror("Something went wrong.", ["Error"=>$e->getMessage()]));
                     }
+
+                    $insert = [
+                        "dimensions"=>$jobinfo->dimensions,
+                        "file"=>$md5
+                    ];
+
+                    if(isset($jobinfo->userid)){
+                        $insert["userid"] = $jobinfo->userid;
+                        $insert["mode"] = $jobinfo->jobtype;
+                    }
+
+                    if(isset($jobinfo->assetid)){
+                        $insert["assetid"] = $jobinfo->assetid;
+                    }
+
+                    $insertid = $db->table("thumbnails")->insert($insert);
+                    $db->table("jobs")->where("jobid", $jobinfo->jobid)->delete();
+                    die(createsuccess('it worked.'));
 
                 }
 

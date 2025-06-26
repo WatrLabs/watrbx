@@ -595,4 +595,4 @@ function __doPostBack(eventTarget, eventArgument) {
         
         
         <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
-        <div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText"><b>Notice:</b> Site is still in development! Expect issues, incomplete features and bugs!</div></div>
+        <div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText"><b>Notice:</b> The CDN has been moved to a different provider. If you have any issues, <a href="https://www.watrbx.xyz/users/2/profile" style="text-decoration: underline; color:white;">message me.</a></div></div>

@@ -10,7 +10,12 @@ $pagebuilder = new pagebuilder();
 
 global $db;
 
-$doesown = $db->table("ownedassets")->where("assetid", $asset->id)->where("userid", $currentuser->id)->first();
+if($currentuser !== null){
+    $doesown = $db->table("ownedassets")->where("assetid", $asset->id)->where("userid", $currentuser->id)->first();
+} else {
+    $doesown = null;
+}
+
 $boughtamount = $db->table("ownedassets")->where("assetid", $asset->id)->count();
 
 $assetidbackup = $asset->id;
@@ -27,9 +32,6 @@ $randomitems2 = array_slice($randomitems, 5);
 if($auth->hasaccount()){
 
     $userinfo = $currentuser;
-} else {
-    header("Location: /newlogin");
-    die();
 }
 
 $assetTypes = array(
@@ -90,7 +92,7 @@ $pagebuilder->buildheader();
 
 if($asset->prodcategory == 1)
 {
-    $thumb = "//c0.watrbx.xyz/" . $asset->fileid;
+    $thumb = "//cdn.watrbx.xyz/" . $asset->fileid;
 } else {
     $thumb = $thumbs->get_asset_thumb($asset->id);
 }
@@ -100,7 +102,11 @@ $creatorinfo = $auth->getuserbyid($asset->owner);
 $overlay = $auth->get_bc_overlay($creatorinfo->id);
 
 $ownerthumb = $thumbs->get_user_thumb($asset->owner, "250x250");
-$currentthumb = $thumbs->get_user_thumb($currentuser->id, "250x250");
+if($currentuser !== null){
+    $currentthumb = $thumbs->get_user_thumb($currentuser->id, "250x250");
+} else {
+    $currentthumb = "";
+}
 
 ?>
         <div id="BodyWrapper">
@@ -394,7 +400,9 @@ $currentthumb = $thumbs->get_user_thumb($currentuser->id, "250x250");
         <div id="AjaxCommentsPaneData"></div>
 
         <div class="AjaxCommentsContainer">
-            <div id="ctl00_cphRoblox_CommentsPane_Div1" class="PostACommentContainer divider-bottom">
+            <?php 
+                if($currentuser !== null){ ?>
+                <div id="ctl00_cphRoblox_CommentsPane_Div1" class="PostACommentContainer divider-bottom">
                 <div class="Commenter">
                     <div class="Avatar">
                         <a id="ctl00_cphRoblox_CommentsPane_AvatarImage" class=" notranslate" title="<?=$currentuser->username?>" class=" notranslate" href="/users/<?=$currentuser->id?>/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="<?=$currentthumb?>" height="100" width="100" border="0" alt="<?=$currentuser->username?>" class=" notranslate" /></a>
@@ -417,6 +425,7 @@ $currentthumb = $thumbs->get_user_thumb($currentuser->id, "250x250");
                 </div>
                 <div style="clear:both;"></div>
             </div>
+                <? } ?>
             <div class="Comments" data-asset-id="<?=$assetidbackup?>"></div>
             
             <div class="CommentsItemTemplate">
@@ -515,7 +524,10 @@ $currentthumb = $thumbs->get_user_thumb($currentuser->id, "250x250");
     
     
 
-<div id="ItemPurchaseAjaxData"
+<?php
+    if($currentuser !== null){ ?>
+
+    <div id="ItemPurchaseAjaxData"
         data-authenticateduser-isnull="False"
         data-user-balance-robux="<?=$userinfo->robux?>"
         data-user-balance-tickets="<?=$userinfo->tix?>"
@@ -526,7 +538,19 @@ $currentthumb = $thumbs->get_user_thumb($currentuser->id, "250x250");
         data-builderscluburl="/images/ae345c0d59b00329758518edc104d573.png"
         data-has-currency-service-error="False"
         data-currency-service-error-message=""></div>
+        
+    <? } else {?>
 
+        <div id="ItemPurchaseAjaxData"
+        data-authenticateduser-isnull="True"
+        data-continueshopping-url="/catalog"
+        data-imageurl="<?=$thumbs->get_asset_thumb($asset->id);?>" 
+        data-alerturl="/images/cbb24e0c0f1fb97381a065bd1e056fcb.png"
+        data-builderscluburl="/images/ae345c0d59b00329758518edc104d573.png"
+        data-has-currency-service-error="False"
+        data-currency-service-error-message=""></div>
+
+        <? } ?>
     <div id="ProcessingView" style="display:none">
         <div class="ProcessingModalBody">
             <p style="margin:0px"><img src='/images/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Processing..." /></p>

@@ -366,6 +366,42 @@ class authentication {
 	    return false;
     }
 
+    public function is_ingame($userid){
+
+        global $db;
+
+        $userinfo = $db->table("users")->where("id", $userid)->first();
+        if($userinfo->active_where == "Game"){
+            $isingame = $db->table("activeplayers")->where("userid", $userid);
+
+            if($isingame !== null){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+     public function is_online($userid){
+        global $db;
+        $currenttime = time();
+        $twominbefore = $currenttime - 120;
+        $query = $db->table("logs")->where("user", $userid)->where("time", ">", $twominbefore);
+        $logs = $query->first();
+
+        if($logs !== null){
+            //echo "online";
+            return true;
+        } else {
+            //echo "offline";
+            return false;
+        }
+
+        return false;
+    }
+
     public function getuserinfo($session = null) {
         global $db;
     
@@ -388,6 +424,15 @@ class authentication {
                 "ip"=>$ip
             );
 
+            $update = [
+                "last_visit"=>time()
+            ];
+
+            if($userinfo->active_where == "None" || $userinfo->active_where == "Website"){
+                $update["active_where"] = "Website";
+            }
+
+            $db->table("users")->where("id", $userinfo->id)->update($update);
             $db->table("logs")->insert($insert);
 
             $baninfo = $db->table("moderation")->where("userid", $userinfo->id)->orderBy("id", "DESC")->first();
@@ -409,24 +454,6 @@ class authentication {
         }
     
         return $userinfo;
-    }
-
-    public function is_online($userid){
-        global $db;
-        $currenttime = time();
-        $twominbefore = $currenttime - 120;
-        $query = $db->table("logs")->where("user", $userid)->where("time", ">", $twominbefore);
-        $logs = $query->first();
-
-        if($logs !== null){
-            //echo "online";
-            return true;
-        } else {
-            //echo "offline";
-            return false;
-        }
-
-        return false;
     }
 
     public function get_data($session = null){

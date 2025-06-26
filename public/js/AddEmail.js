@@ -60,7 +60,7 @@ if (typeof Roblox.AddEmail === "undefined") {
                 "</span></div><table style='margin: auto'><tr><td><label class='form-label'>" + emailText +
                 "</label></td><td><input id='EmailTextBox' class='text-box text-box-large emailInput emailChangeMonitor' /></td></tr><tr><td><label class='form-label'>" +
                 passwordText + "</label></td><td><input id='PasswordTextBox' type='password' class='text-box text-box-large emailInput emailChangeMonitor' /></td></tr></table>" +
-                "<div id='Processing' style='display:none;margin-bottom: 10px;'><img src='/images/Accounts/ProgressIndicator.gif' alt='" + processingText + "'/></div>";
+                "<div id='Processing' style='display:none;margin-bottom: 10px;'><img src='/images/Accounts/ProgressIndicator.gif?t=1' alt='" + processingText + "'/></div>";
 
             var validate = function () {
                 resetWarnings();
