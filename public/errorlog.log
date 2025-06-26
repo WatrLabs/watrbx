@@ -20725,3 +20725,429 @@ Stack trace:
 #3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
 #4 {main}
 
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Undefined array key "aid" in /www/wwwroot/watrbx.xyz/routes/clienthandler.php:79
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/clienthandler.php(79): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Attempt to read property "is_admin" on null in /www/wwwroot/watrbx.xyz/routes/apihandler.php:104
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/apihandler.php(104): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Failed to include class sitefunctions in /www/wwwroot/watrbx.xyz/init.php:19
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/routes/webhandler.php(87): {closure}()
+#1 [internal function]: watrlabs\router\Routing->{closure}()
+#2 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#3 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#4 {main}
+
+ErrorException: Failed to include class thumbnails in /www/wwwroot/watrbx.xyz/init.php:19
+Stack trace:
+#0 /www/wwwroot/watrbx.xyz/views/search/users.php(49): {closure}()
+#1 /www/wwwroot/watrbx.xyz/classes/watrlabs/watrkit/pagebuilder.php(66): require('...')
+#2 /www/wwwroot/watrbx.xyz/routes/webhandler.php(399): watrlabs\watrkit\pagebuilder::get_template()
+#3 [internal function]: watrlabs\router\Routing->{closure}()
+#4 /www/wwwroot/watrbx.xyz/classes/watrlabs/router/routing.php(159): call_user_func()
+#5 /www/wwwroot/watrbx.xyz/public/index.php(84): watrlabs\router\Routing->dispatch()
+#6 {main}
+

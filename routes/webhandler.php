@@ -4,6 +4,7 @@ use watrlabs\authentication;
 use watrlabs\watrkit\pagebuilder;
 use watrbx\thumbnails;
 use watrlabs\watrkit\sanitize;
+use watrbx\sitefunctions;
 
 
 
@@ -35,6 +36,11 @@ $router->get("/temp/cdn-upload", function(){
 $router->get('/messages/compose', function(){
     $page = new pagebuilder;
     $page::get_template("compose");
+});
+
+$router->get('/download/thankyou', function(){
+    $page = new pagebuilder;
+    $page::get_template("download/thankyou");
 });
 
 $router->get('/Thumbs/Asset.ashx', function(){
@@ -79,6 +85,7 @@ $router->post('/messages/compose', function(){
         $userid = $_POST["__EVENTTARGET"];
 
         $auth = new authentication();
+        $func = new sitefunctions();
         global $currentuser;
         $recipient = $auth->getuserbyid($userid);
 
@@ -95,11 +102,17 @@ $router->post('/messages/compose', function(){
                     $page = new pagebuilder;
                     $page::get_template("compose", ["error"=>"You're sending messages too fast!"]);
                 } else {
+                    $subject = htmlspecialchars($subject, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $body = htmlspecialchars($body, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                    $subject = $func::filter_text($subject);
+                    $body = $func::filter_text($body);
+
                     $insert = array(
                         "userfrom"=>$currentuser->id,
                         "userto"=>$recipient->id,
-                        "subject"=>htmlspecialchars($subject, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
-                        "body"=>htmlspecialchars($body, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                        "subject"=>$subject,
+                        "body"=>$body,
                         "date"=>time()
                     );
                     $db->table("messages")->insert($insert);

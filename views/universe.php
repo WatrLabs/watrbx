@@ -618,7 +618,7 @@ $pagebuilder->buildheader();
     <div id="AjaxCommentsContainer" class="comments-container"
          data-asset-id="<?=$assetinfo->id?>"
          data-total-collection-size=""
-         data-is-user-authenticated="<? if($currentuser == null){ echo "true"; } else { echo "false"; } ?>"
+         data-is-user-authenticated="<? if($currentuser == null){ echo "false"; } else { echo "true"; } ?>"
          data-signin-url="https://www.watrbx.xyz/newlogin?returnUrl=%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">
         <h3>Comments</h3>
         <div class="AddAComment">

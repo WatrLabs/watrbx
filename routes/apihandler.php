@@ -115,7 +115,7 @@ $router->get('/comments/get-json', function (){
             $authorinfo = $auth->getuserbyid($comment->userid); 
             $commentarray["Comments"][] = [
                 "Id"=>$comment->id,
-                "PostedDate"=>"Yesterday",
+                "PostedDate"=>Carbon::createFromTimestamp($comment->date)->diffForHumans(),
                 "AuthorName"=>$authorinfo->username,
                 "AuthorId"=>$authorinfo->id,
                 "Text"=>$comment->content,
@@ -804,6 +804,9 @@ $router->post('/home/updatestatus', function(){
 
         header("Content-type: application/json");
         $status = htmlspecialchars($_POST["status"]);
+        $func = new sitefunctions();
+
+        $status = $func::filter_text($status);
 
         $statusupdate = [
             "blurb"=>$status
@@ -893,6 +896,9 @@ $router->post('/api/comments.ashx', function(){
 
             if(!empty($comment)){
                 $comment = htmlspecialchars($comment);
+                $func = new sitefunctions();
+
+                $comment = $func::filter_text($comment);
 
                 $insert = [
                     "content"=>$comment,
@@ -901,8 +907,18 @@ $router->post('/api/comments.ashx', function(){
                     "assetid"=>$assetid
                 ];
 
-                $db->table("comments")->insert($insert);
-                die($comment);
+                $insertid = $db->table("comments")->insert($insert);
+                // {"ID":3712,"Date":"Just now","Content":"hi","Author":"watrabi","AuthorID":128}
+
+                $returnjson = [
+                    "ID"=>$insertid,
+                    "Date"=>"Just Now",
+                    "Content"=>$comment,
+                    "Author"=>$currentuser->username,
+                    "AuthorID"=>$currentuser->id
+                ];
+                header("Content-type: application/json");
+                die(json_encode($returnjson));
 
             } else {
                 http_response_code(400);
@@ -985,24 +1001,24 @@ $router->get('/avatar-thumbnails', function(){
             $allthumbs = [
 
             ];
-            foreach ($decoded as $thumbnail){
-                if(isset($thumbnail->userId)){
+            foreach ($decoded as $thumbnail) {
+                if (isset($thumbnail->userId)) {
                     $url = $thumbs->get_user_thumb($thumbnail->userId, "100x100");
                     $assetinfo = $db->table("users")->where("id", $thumbnail->userId)->first();
 
                     $allthumbs[] = [
-                        "id"=>$thumbnail->userId,
-                        "name"=>$assetinfo->username,
-                        "url"=>"/users/$thumbnail->userId/profile",
-                        "thumbnailFinal"=>true,
-                        "thumbnailUrl"=>$url,
-                        "bcOverlayUrl"=>$auth->get_bc_overlay($thumbnail->userId),
-                        "substitutionType"=>0
+                        "id" => $thumbnail->userId,
+                        "name" => $assetinfo->username,
+                        "url" => "/users/$thumbnail->userId/profile",
+                        "thumbnailFinal" => true,
+                        "thumbnailUrl" => $url,
+                        "bcOverlayUrl" => $auth->get_bc_overlay($thumbnail->userId),
+                        "substitutionType" => 0
                     ];
-
-                    die("$jsoncallback(".json_encode($allthumbs).")");
                 }
             }
+            die("$jsoncallback(" . json_encode($allthumbs) . ")");
+
         } else {
             http_response_code(400);
             die();
@@ -2280,7 +2296,7 @@ $router->get("/UserCheck/checkifinvalidusernameforsignup", function() {
         }
         
         
-        echo json_encode(array("data"=>0));
+        echo json_encode(array("data"=>$data));
     } else {
         echo json_encode(array("data"=>2));
     }

@@ -26,6 +26,12 @@ if($userinfo == null){
     die($router->return_status(404));
 }
 
+$is_deleted = $db->table("moderation")->where("userid", $userinfo->id)->where("type", "deleted")->first();
+
+if($is_deleted !== null){
+    die($router->return_status(404));
+}
+
 $status = "";
 
     if($auth->is_online($userinfo->id)){
@@ -79,6 +85,8 @@ if ($userinfo->membership !== "None") {
 
 $headshot = $thumbs->get_user_thumb($userinfo->id, "512x512", "headshot");
 $full = $thumbs->get_user_thumb($userinfo->id, "1024x1024", "full");
+
+
 
 $allfriends = $friends->get_friends($userid);
 $pagebuilder->set_page_name($userinfo->username);

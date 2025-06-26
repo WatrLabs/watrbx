@@ -342,6 +342,7 @@ $router->group('/api/v1/gameserver', function($router) {
                             'Bucket' => $_ENV["R2_BUCKET"],
                             'Key' => $md5,
                             'Body' => $cleaned,
+                            'ContentType' => "image/png"
                         ]);
                     } catch(Exception $e){
                         http_response_code(500);
