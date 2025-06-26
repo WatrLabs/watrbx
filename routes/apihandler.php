@@ -8,7 +8,7 @@ use watrbx\catalog;
 use Cocur\Slugify\Slugify;
 use watrbx\sitefunctions;
 use watrbx\relationship\friends;
-use asteroid\containers;
+use Aws\S3\S3Client;
 use Carbon\Carbon;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
@@ -191,7 +191,7 @@ $router->get('/Game/AreFriends', function() {
         $users = implode(",", $friendIds);
     }
 
-    echo "," . $users;
+    echo "," . $users . ",";
 });
 
 $router->get('/Thumbs/Avatar.ashx', function(){
@@ -511,40 +511,12 @@ $router->post('/api/item.ashx', function(){
 });
 
 $router->get('/container/info', function(){
-    $router = new Routing();
-    global $currentuser;
-
-    if($currentuser !== null){
-        if($currentuser->is_admin !== 1){
-            die($router->return_status(403));
-        }
-    } else {
-        die($router->return_status(403));
-    }
-    $containers = new containers();
-    $container = $_ENV["CONTAINERID"];
-    $key = $_ENV["ASSETCONTAINERKEY"];
-    if(isset($_GET["container"])){
-        $container = $_GET["container"];
-    }
-    if(isset($_GET["key"])){
-        $key = $_GET["key"];
-    }
-    $containerinfo = $containers->get_container_files($container, $key);
-
-    $dataArray = (array) $containerinfo;
-
-    echo "<table border='1' cellpadding='5'><tr><th>Key</th><th>Value</th></tr>";
-    foreach ($dataArray as $key => $value) {
-        echo "<tr><td>{$key}</td><td>" . (is_array($value) ? json_encode($value) : $value) . "</td></tr>";
-    }
-    echo "</table>";
+    global $s3_client;
 });
 
 $router->post('/api/v1/shirt-creator', function(){
 
     $router = new Routing();
-    $containers = new containers();
     global $currentuser;
 
     if($currentuser !== null){
@@ -581,72 +553,62 @@ $router->post('/api/v1/shirt-creator', function(){
             "updated"=>time(),
             "owner"=>$currentuser->id
         );
-        
-        $response = $containers->upload_file($_FILES["shirt"]["tmp_name"], '', $md5,'');
 
-        if($response !== false){
-            if(isset($response->success)){
-                if($response->success == true){
-                    $insertid = $db->table("assets")->insert($insert);
+        try {
 
-                    $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
-                                    <External>null</External>
-                                    <External>nil</External>
-                                    <Item class="Shirt" referent="RBX0">
-                                        <Properties>
-                                        <Content name="ShirtTemplate">
-                                            <url>http://www.watrbx.xyz/asset/?id='.$insertid.'</url>
-                                        </Content>
-                                        <string name="Name">Shirt</string>
-                                        <bool name="archivable">true</bool>
-                                        </Properties>
-                                    </Item>
-                                </roblox>';
+            global $s3_client;
 
-                    $shirtmd5 = md5($shirtxml);
-                    $shirtbase64 = base64_encode($shirtxml);
+            $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
+            
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $md5,
+                'SourceFile' => $_FILES["shirt"]["tmp_name"]
+            ]);
+            $insertid = $db->table("assets")->insert($insert);
 
-                    $response = $containers->upload_file('', $shirtbase64, $shirtmd5,'');
+            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+                        <External>null</External>
+                        <External>nil</External>
+                        <Item class="Shirt" referent="RBX0">
+                            <Properties>
+                            <Content name="ShirtTemplate">
+                                <url>http://www.watrbx.xyz/asset/?id='.$insertid.'</url>
+                            </Content>
+                            <string name="Name">Shirt</string>
+                            <bool name="archivable">true</bool>
+                            </Properties>
+                        </Item>
+                    </roblox>';
 
-                    if($response !== false){
-                        if(isset($response->success)){
+            $shirtmd5 = md5($shirtxml);
 
-                            if($response->success == true){
-                                $insert2 = array(
-                                    "prodcategory"=>11,
-                                    "name"=>$title,
-                                    "description"=>$description,
-                                    "robux"=>$robux,
-                                    "tix"=>$tix,
-                                    "fileid"=>$shirtmd5,
-                                    "created"=>time(),
-                                    "updated"=>time(),
-                                    "publicdomain"=>1,
-                                    "featured"=>1,
-                                    "owner"=>$currentuser->id
-                                );
-    
-                                $insertid = $db->table("assets")->insert($insert2);
-    
-                                header("Location: /catalog");
-                                die("Shirt uploaded!");
-                            } else {
-                                die("Failed to upload 1.");
-                            }
-                        } else {
-                            die("Failed to upload 2.");
-                        }
-                    } else {
-                        die("Failed to upload 3.");
-                    }
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $shirtmd5,
+                'Body' => $shirtxml,
+            ]);
+            
+            $insert2 = array(
+                "prodcategory"=>11,
+                "name"=>$title,
+                "description"=>$description,
+                "robux"=>$robux,
+                "tix"=>$tix,
+                "fileid"=>$shirtmd5,
+                "created"=>time(),
+                "updated"=>time(),
+                "publicdomain"=>1,
+                "featured"=>1,
+                "owner"=>$currentuser->id
+            );
 
-                    die("Asset uploaded with asset id: " . $insertid);
-                } else {
-                    die("Failed to upload asset!");
-                }
-            }
-        } else {
-            die("Failed to upload asset!");
+            $insertid = $db->table("assets")->insert($insert2);
+
+            header("Location: /catalog");
+            die("Shirt uploaded!");
+        } catch (Exception $exception) {
+            echo "Failed to upload with error: " . $exception->getMessage();
         }
 
     }
@@ -655,7 +617,6 @@ $router->post('/api/v1/shirt-creator', function(){
 $router->post('/api/v1/pants-creator', function(){
 
     $router = new Routing();
-    $containers = new containers();
     global $currentuser;
 
     if($currentuser !== null){
@@ -692,72 +653,62 @@ $router->post('/api/v1/pants-creator', function(){
             "updated"=>time(),
             "owner"=>$currentuser->id
         );
-        
-        $response = $containers->upload_file($_FILES["shirt"]["tmp_name"], '', $md5,'');
 
-        if($response !== false){
-            if(isset($response->success)){
-                if($response->success == true){
-                    $insertid = $db->table("assets")->insert($insert);
+        try {
 
-                    $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
-                                <External>null</External>
-                                <External>nil</External>
-                                <Item class="Pants" referent="RBX0">
-                                    <Properties>
-                                    <Content name="PantsTemplate">
-                                        <url>http://www.roblox.com/asset/?id='.$insertid.'</url>
-                                    </Content>
-                                    <string name="Name">Pants</string>
-                                    <bool name="archivable">true</bool>
-                                    </Properties>
-                                </Item>
-                                </roblox>';
+            global $s3_client;
 
-                    $shirtmd5 = md5($shirtxml);
-                    $shirtbase64 = base64_encode($shirtxml);
+            $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
+            
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $md5,
+                'SourceFile' => $_FILES["shirt"]["tmp_name"]
+            ]);
+            $insertid = $db->table("assets")->insert($insert);
 
-                    $response = $containers->upload_file('', $shirtbase64, $shirtmd5,'');
+            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+                        <External>null</External>
+                        <External>nil</External>
+                        <Item class="Pants" referent="RBX0">
+                            <Properties>
+                            <Content name="PantsTemplate">
+                                <url>http://www.watrbx.xyz/asset/?id='.$insertid.'</url>
+                            </Content>
+                            <string name="Name">Pants</string>
+                            <bool name="archivable">true</bool>
+                            </Properties>
+                        </Item>
+                        </roblox>';
 
-                    if($response !== false){
-                        if(isset($response->success)){
+            $shirtmd5 = md5($shirtxml);
 
-                            if($response->success == true){
-                                $insert2 = array(
-                                    "prodcategory"=>12,
-                                    "name"=>$title,
-                                    "description"=>$description,
-                                    "robux"=>$robux,
-                                    "tix"=>$tix,
-                                    "fileid"=>$shirtmd5,
-                                    "created"=>time(),
-                                    "updated"=>time(),
-                                    "publicdomain"=>1,
-                                    "featured"=>1,
-                                    "owner"=>$currentuser->id
-                                );
-    
-                                $insertid = $db->table("assets")->insert($insert2);
-    
-                                header("Location: /catalog");
-                                die("Shirt uploaded!");
-                            } else {
-                                die("Failed to upload 1.");
-                            }
-                        } else {
-                            die("Failed to upload 2.");
-                        }
-                    } else {
-                        die("Failed to upload 3.");
-                    }
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $shirtmd5,
+                'Body' => $shirtxml,
+            ]);
+            
+            $insert2 = array(
+                "prodcategory"=>11,
+                "name"=>$title,
+                "description"=>$description,
+                "robux"=>$robux,
+                "tix"=>$tix,
+                "fileid"=>$shirtmd5,
+                "created"=>time(),
+                "updated"=>time(),
+                "publicdomain"=>1,
+                "featured"=>1,
+                "owner"=>$currentuser->id
+            );
 
-                    die("Asset uploaded with asset id: " . $insertid);
-                } else {
-                    die("Failed to upload asset!");
-                }
-            }
-        } else {
-            die("Failed to upload asset!");
+            $insertid = $db->table("assets")->insert($insert2);
+
+            header("Location: /catalog");
+            die("Shirt uploaded!");
+        } catch (Exception $exception) {
+            echo "Failed to upload with error: " . $exception->getMessage();
         }
 
     }
@@ -768,62 +719,64 @@ $router->post('/api/v1/asset-upload', function(){
     global $currentuser;
 
     $auth = new authentication();
-    $containers = new containers();
 
-    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["product"]) && isset($_POST["robux"]) && isset($_POST["tix"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
+    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["product"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
 
         $md5 = md5_file($_FILES["asset"]["tmp_name"]);
         global $db;
 
         $title = htmlspecialchars($_POST["title"]);
         $description = htmlspecialchars($_POST["description"]);
-        $robux = (int)$_POST["robux"];
-        $tix = (int)$_POST["tix"];
+        $robux = null;
+        $tix = null;
+        $forsale = true;
+
+
+        if(isset($_POST["robux"])){
+            $robux = (int)$_POST["robux"];
+            $forsale = true;
+        }
+
+        if(isset($_POST["tix"])){
+            $tix = (int)$_POST["tix"];
+            $forsale = true;
+        }
         $prodcategory = $_POST["product"];
 
-        $asset = $db->table("assets")->where("fileid", $md5)->first();
+        global $currentuser;
 
-        if($asset == null){
+        $info = $currentuser;
 
-            global $currentuser;
+        $insert = array(
+            "prodcategory"=>$prodcategory,
+            "name"=>$title,
+            "description"=>$description,
+            "robux"=>$robux,
+            "tix"=>$robux,
+            "fileid"=>$md5,
+            "created"=>time(),
+            "updated"=>time(),
+            "owner"=>$info->id
+        );
 
-            $info = $currentuser;
-
-            $insert = array(
-                "prodcategory"=>$prodcategory,
-                "name"=>$title,
-                "description"=>$description,
-                "robux"=>$robux,
-                "tix"=>$robux,
-                "fileid"=>$md5,
-                "created"=>time(),
-                "updated"=>time(),
-                "owner"=>$info->id
-            );
-
-            try {
-                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], '', $md5,'');
-
-                if($response !== false){
-                    if(isset($response->success)){
-                        if($response->success == true){
-                            $insertid = $db->table("assets")->insert($insert);
-                            die("Asset uploaded with asset id: " . $insertid);
-                        } else {
-                            die("Failed to upload asset!");
-                        }
-                    }
-                } else {
-                    die("Failed to upload asset!");
-                }
-
-            } catch(ErrorException $e){
-                die("Failed to upload asset! $e");
-            }
-
-        } else {
-            die("Asset already exists with ID: " . $asset->id);
+        if($forsale == true){
+            $insert["publicdomain"] = 1;
+            $insert["featured"] = 1; // should make this an option but oh well
         }
+
+        try {
+            global $s3_client;
+
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $md5,
+                'SourceFile' => $_FILES["asset"]["tmp_name"]
+            ]);
+
+        } catch(Exception $e){
+            die("Failed to upload asset! $e");
+        }
+
 
     } else {
         die("Something was empty.");
@@ -1133,30 +1086,32 @@ $router->post('/api/v1/cdn-upload', function(){
         die($router->return_status(403));
     }
     if(isset($_POST["path"]) && isset($_FILES["file"])){
-        $containers = new containers();
 
         $path = $_POST["path"];
         $file = $_FILES["file"];
         $path = $path . $file["name"];
-        $response = $containers->upload_file($_FILES["file"]["tmp_name"],'', $file["name"], '', '');
 
-        if($response !== false){
-            if(isset($response->error)){
-                die($response->error);
-            } else {
-                die("Uploaded at path: " . $path);
-            }
-        } else {
-            die("Failed to create universe!");
+        global $s3_client;
+
+        try {
+
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $file["name"],
+                'SourceFile' => $_FILES["file"]["tmp_name"]
+            ]);
+
+        } catch(Exception $e){
+            die("Failed to upload to CDN!");
         }
 
+        die("Uploaded at path: " . $path);
     }
 });
 
 $router->post('/api/v1/universe-creator', function(){
 
     $auth = new authentication();
-    $containers = new containers();
 
     if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_FILES["asset"]) && $auth->hasaccount()){
 
@@ -1194,35 +1149,24 @@ $router->post('/api/v1/universe-creator', function(){
             "public"=>1
         );
 
-        if($asset == null){
-            try {
-                $response = $containers->upload_file($_FILES["asset"]["tmp_name"], '', $md5, '');
+        try {
+            global $s3_client;
 
-                if($response !== false){
-                    if(isset($response->error)){
-                        die($response->error);
-                    } else {
-                        $insertid = $db->table("assets")->insert($assetinsert);
-                        $universeinsert["assetid"] = $insertid;
-                        $universeid = $db->table("universes")->insert($universeinsert);
-                        header("Location: /games/$universeid/$slug");
-                        die();
-                    }
-                } else {
-                    die("Failed to create universe!");
-                }
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $md5,
+                'SourceFile' => $_FILES["asset"]["tmp_name"]
+            ]);
 
-            } catch(ErrorException $e){
-                die("Failed to create universe $e");
-            }
-
-        } else {
-            $insertid = $db->table("assets")->insert($assetinsert);
-            $universeinsert["assetid"] = $insertid;
-            $universeid = $db->table("universes")->insert($universeinsert);
-            header("Location: /games/$universeid/$slug");
-            die();
+        } catch(ErrorException $e){
+            die("Failed to create universe $e");
         }
+
+        $insertid = $db->table("assets")->insert($assetinsert);
+        $universeinsert["assetid"] = $insertid;
+        $universeid = $db->table("universes")->insert($universeinsert);
+        header("Location: /games/$universeid/$slug");
+        die();
 
     } else {
         die("Something was empty.");
@@ -1507,6 +1451,44 @@ $router->post('/api/friends/acceptfriendrequest', function(){
     }
 });
 
+$router->post('/api/v1/thumbnail-uploader', function(){
+
+    global $db;
+    global $currentuser;
+
+    if(isset($_POST["type"]) && isset($_FILES["thumb"]) && isset($_POST["assetid"])){
+        $type = $_POST["type"];
+        $file = $_FILES["thumb"];
+        $assetid = (int)$_POST["assetid"];
+
+        if($type == "Thumbnail" || $type == "Icon"){
+           
+        } else {
+             die("It can be only thumbnail <b>or</b> icon." . $type);
+        }
+
+        $md5 = md5_file($_FILES["thumb"]["tmp_name"]);
+        global $s3_client;
+        try {
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $md5,
+                'SourceFile' => $_FILES["shirt"]["tmp_name"]
+            ]);
+        } catch (Exception $e){
+            die("Failed to upload thumbnail!");
+        }
+
+        $insert = [
+            "dimensions"=>"",
+            "assetid"=>$assetid,
+            "mode"=>$type,
+            "file"=>$md5
+        ];
+        $db->table("thumbnails")->insert($insert);
+        die("Thumbnail uploaded.");
+    }
+});
 
 $router->get('/notifications/api/get-notifications', function(){
     header("Content-type: application/json");
@@ -1535,11 +1517,21 @@ $router->get('/users/friends/list-json', function(){
                 "FriendsType"=>$type,
                 "Friends"=>[],
             );
+
+            
             
             switch ($type) {
                 case "AllFriends":
                     $allfriends = $friends->get_friends($userid);
+                    
                     foreach ($allfriends as $friend){
+                        $is_ingame = $auth->is_ingame($friend->id);
+                        $is_online = false;
+
+                        if($is_ingame !== true){
+                            $is_online ==$auth->is_online($friend->id);
+                        }
+
                         $response["Friends"][] = [
                             "UserId" => $friend->id,
                             "AbsoluteURL" => "/users/$friend->id/profile/",
@@ -1560,8 +1552,8 @@ $router->get('/users/friends/list-json', function(){
                             "LastLocation" => "",
                             "PlaceId" => null,
                             "AbsolutePlaceURL" => null,
-                            "IsOnline" => true,
-                            "InGame" => false,
+                            "IsOnline" => $is_online,
+                            "InGame" => $is_ingame,
                             "InStudio" => false,
                             "ItemVisible" => false,
                             "FriendshipStatus" => 2,
@@ -1574,11 +1566,17 @@ $router->get('/users/friends/list-json', function(){
                 case "FriendRequests":
                     $allrequests = $friends->get_requests($userid);
                     foreach ($allrequests as $friend){
+                        $is_ingame = $auth->is_ingame($friend->user_id);
+                        $is_online = false;
+
+                        if($is_ingame !== true){
+                            $is_online ==$auth->is_online($friend->user_id);
+                        }
                         $response["Friends"][] = [
                             "UserId" => $friend->user_id,
                             "AbsoluteURL" => "/users/$friend->user_id/profile/",
                             "Username" => $friend->username,
-                            "AvatarUri" => "https://watrbx.xyz/images/defaultimage.png",
+                            "AvatarUri" => $thumbs->get_user_thumb($friend->user_id, "512x512", "headshot"),
                             "AvatarFinal" => true,
                             "OnlineStatus" => [
                                 "LocationOrLastSeen" => "Website",
@@ -1587,15 +1585,16 @@ $router->get('/users/friends/list-json', function(){
                             ],
                             "Thumbnail" => [
                                 "Final" => true,
-                                "Url" => "https://watrbx.xyz/images/defaultimage.png",
+                                "Url" => $thumbs->get_user_thumb($friend->user_id   , "512x512", "headshot"),
                                 "RetryUrl" => null
                             ],
                             "incomingfriendrequestid" => $friend->invitation_id,
+                            "invitationID"=>$friend->invitation_id,
                             "LastLocation" => "",
                             "PlaceId" => null,
                             "AbsolutePlaceURL" => null,
-                            "IsOnline" => true,
-                            "InGame" => false,
+                            "IsOnline" => $is_online,
+                            "InGame" => $is_ingame,
                             "InStudio" => false,
                             "ItemVisible" => true,
                             "FriendshipStatus" => 0,

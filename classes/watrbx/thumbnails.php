@@ -17,35 +17,66 @@ class thumbnails {
         $thumb = $db->table("thumbnails")->where("userid", $userid)->where("dimensions", $size)->first();
         $assetinfo = $db->table("users")->where("id", $userid)->first();
         if($thumb !== null){
-            return "//c0.watrbx.xyz/" . $thumb->file;
+            return "//cdn.watrbx.xyz/" . $thumb->file;
         } else {
             $this->request_user_thumbnail($userid, $size, $type);
             return "/images/defaultimage.png";
         }
     }
 
-    public function get_asset_thumb($id, $size = "300x300"){
+    public function get_asset_thumb($id, $size = "300x300", $type = "icon"){
         global $db;
 
-        $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->first();
+
+        if($size == "200x200"){
+            $thumb = $db->table("thumbnails")->where("assetid", $id)->where("mode", "Icon")->orderBy("id", "DESC")->first();
+            if($thumb == null){
+                $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
+            } else {
+                return "//cdn.watrbx.xyz/" . $thumb->file;
+            }
+        } else {
+            $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
+        }
+
+        if($size == "1280x720"){
+            $thumb = $db->table("thumbnails")->where("assetid", $id)->where("mode", "Thumbnail")->orderBy("id", "DESC")->first();
+            if($thumb == null){
+                $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
+            } else {
+                return "//cdn.watrbx.xyz/" . $thumb->file;
+            }
+        } else {
+            $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
+        }
         $assetinfo = $db->table("assets")->where("id", $id)->first();
         if($thumb !== null){
-            return "//c0.watrbx.xyz/" . $thumb->file;
+            return "//cdn.watrbx.xyz/" . $thumb->file;
         } else {
 
             if($assetinfo->prodcategory == 1){
-                return "//c0.watrbx.xyz/" . $assetinfo->fileid;
+                return "//cdn.watrbx.xyz/" . $assetinfo->fileid;
             } elseif($assetinfo->prodcategory == 18){
                 $assetimageinfo = $db->table("assets")->where("id", $id - 1)->first(); // really unsmart way of doing this, will improve
-                return "//c0.watrbx.xyz/" . $assetimageinfo->fileid;
+                return "//cdn.watrbx.xyz/" . $assetimageinfo->fileid;
             } elseif($assetinfo->prodcategory == 3){
-                return "//c0.watrbx.xyz/Soundimage2.png";
+                return "//cdn.watrbx.xyz/Soundimage2.png";
             }
 
             $this->request_asset_thumbnail($id, $size);
             return "/images/defaultimage.png";
         }
 
+    }
+
+    public function get_all_asset_thumbs($assetid, $type = "all"){
+        global $db;
+
+        if($type == "all"){
+            return $db->table("thumbnails")->where("assetid", $assetid)->get();
+        } else {
+            return $db->table("thumbnails")->where("assetid", $assetid)->where("mode", $type)->get();
+        }
     }
 
     public function request_asset_thumbnail($assetid, $dimensions = "300x300"){

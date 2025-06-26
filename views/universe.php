@@ -19,7 +19,7 @@ if(strpos($useragent, "Android")){
     $ismobile = true;
 }
 
-$auth->requiresession();
+
 
 global $db;
 
@@ -49,9 +49,10 @@ $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=leanbase___21
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___d4017b16ecf1d5724f4f7fadc30e304b_m.css');
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
 $pagebuilder->set_page_name($gameinfo->title);
+global $currentuser;
 
 if(isset($_COOKIE["_ROBLOSECURITY"]) && $auth->hasaccount()){
-    global $currentuser;
+    
     $userinfo = $currentuser;
 }
 
@@ -617,11 +618,14 @@ $pagebuilder->buildheader();
     <div id="AjaxCommentsContainer" class="comments-container"
          data-asset-id="<?=$assetinfo->id?>"
          data-total-collection-size=""
-         data-is-user-authenticated="True"
+         data-is-user-authenticated="<? if($currentuser == null){ echo "true"; } else { echo "false"; } ?>"
          data-signin-url="https://www.watrbx.xyz/newlogin?returnUrl=%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">
         <h3>Comments</h3>
         <div class="AddAComment">
-            <div class="comment-form">
+            <?php
+                if($currentuser !== null){ ?>
+
+                <div class="comment-form">
                 <div class="Avatar roblox-avatar-image" data-user-id="<?=$userinfo->id?>" data-image-size="small"></div>
 
                 <form class="rbx-form-horizontal ng-pristine ng-valid" role="form">
@@ -635,6 +639,8 @@ $pagebuilder->buildheader();
                     <button type="button" class="rbx-btn-secondary-sm rbx-post-comment">Post Comment</button>
                 </form>
             </div>
+
+                <? } ?>
             <div class="comments vlist">
 
             </div>
@@ -897,7 +903,7 @@ $pagebuilder->buildheader();
          data-rank-max="4"
          data-target-type="0"
          data-time-filter="1"
-         data-player-id="<?=$userinfo->id?>"
+         data-player-id="<? if($currentuser !== null){ echo $currentuser->id; } ?>"
          data-clan-id="-1"></div>
     <div class="rbx-leaderboard-item-template hidden">
         <div class="rbx-leaderboard-item">
@@ -967,7 +973,7 @@ $pagebuilder->buildheader();
          data-rank-max="4"
          data-target-type="1"
          data-time-filter="1"
-         data-player-id="<?=$userinfo->id?>"
+         data-player-id="<? if($currentuser !== null){ echo $currentuser->id; } ?>"
          data-clan-id="-1"></div>
     <div class="rbx-leaderboard-item-template hidden">
         <div class="rbx-leaderboard-item">
@@ -1129,9 +1135,9 @@ $pagebuilder->buildheader();
 <div id="ItemPurchaseAjaxData"
      data-has-currency-service-error="False"
      data-currency-service-error-message=""
-     data-authenticateduser-isnull="False"
-     data-user-balance-robux="<?=$userinfo->robux?>"
-     data-user-balance-tickets="<?=$userinfo->tix?>"
+     data-authenticateduser-isnull="<? if($currentuser !== null) { echo "False"; } else { echo "True"; } ?>"
+     data-user-balance-robux="<? if($currentuser !== null){ echo $currentuser->robux; } ?>"
+     data-user-balance-tickets="<? if($currentuser !== null){ echo $currentuser->tix; } ?>"
      data-user-bc="0"
      data-continueshopping-url="/games/<?=$assetinfo->id?>/Work-at-a-Pizza-Place"
      data-imageurl ="/temp/6142862bec7e76846e1affab21bff7a6.png"
@@ -1688,7 +1694,7 @@ $pagebuilder->buildheader();
      chat-data
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
-     data-userid="<?=$userinfo->id?>"
+     data-userid="<? if($currentuser !== null){ echo $currentuser->id; } ?>"
      data-domain="watrbx.xyz"
      data-gamespagelink="/games"
      data-chatdomain="https://chat.watrbx.xyz"

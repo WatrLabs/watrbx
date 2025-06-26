@@ -35,14 +35,21 @@ $query = $db->table("universes")->where("public", 1);
 $allgames = $query->get();
 
 foreach ($allgames as &$game) {
+    $game->visits = count($db->table("visits")->where("universeid",$game->assetid)->get());
     $game->active_players = $gameserver->get_active_players($game->assetid);
 }
 
 unset($game);
 
 usort($allgames, function ($a, $b) {
+    return $b->visits <=> $a->visits;
+});
+
+usort($allgames, function ($a, $b) {
     return $b->active_players <=> $a->active_players;
 });
+
+
 
 $paginated = array_slice($allgames, $startrows, $maxrows);
 

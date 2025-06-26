@@ -26,7 +26,15 @@ if($userinfo == null){
     die($router->return_status(404));
 }
 
-$is_online = $auth->is_online($userid);
+$status = "";
+
+    if($auth->is_online($userinfo->id)){
+        $status = '<span class="profile-avatar-status rbx-icon-online" title="Website"></span>';
+    }
+
+    if($auth->is_ingame($userinfo->id)){
+        $status = '<span class="profile-avatar-status rbx-icon-ingame" title="In-Game"></span>';
+    }
 
 if($auth->hasaccount()){
     $loggedininfo = $currentuser;
@@ -119,31 +127,31 @@ $pagebuilder->buildheader();
      data-friendurl="/users/<?=$userinfo->id?>/friends"
      data-incomingfriendrequestpending=<?if($incomingfriendrequestid !== 0){ echo "true"; } else { echo "false"; }?>
 
-     data-maysendfriendinvitation=<?if($incomingfriendrequestid == 0 && $pendingrequest == 'false'){ echo "true"; } else { echo "false"; }?>
+     data-maysendfriendinvitation=<?if($incomingfriendrequestid == 0 && $pendingrequest == 'false' && $currentuser !== null){ echo "true"; } else { echo "false"; }?>
 
      data-friendrequestpending=<?=$pendingrequest?>
 
      data-sendfriendrequesturl="/api/friends/sendfriendrequest"
      data-removefriendrequesturl="/api/friends/removefriend"
-     data-mayfollow=<?if($self){ echo "false"; } else { echo "true"; }?>
+     data-mayfollow=<?if($self || $currentuser == null){ echo "false"; } else { echo "true"; }?>
      data-isfollowing=false
      data-followurl="/user/follow"
      data-unfollowurl="/api/user/unfollow"
-     data-canmessage=<?if($self){ echo "false"; } else { echo "true"; }?>
+     data-canmessage=<?if($self || $currentuser == null){ echo "false"; } else { echo "true"; }?>
 
      data-messageurl="/messages/compose?recipientId=<?=$userinfo->id?>"
-     data-canbefollowed=<?if($self){ echo "false"; } else { echo "true"; }?>
+     data-canbefollowed=<?if($self || $currentuser == null){ echo "false"; } else { echo "true"; }?>
 
-     data-cantrade=<?if($self){ echo "false"; } else { echo "true"; }?>
+     data-cantrade=<?if($self || $currentuser == null){ echo "false"; } else { echo "true"; }?>
 
-     data-isblockbuttonvisible=<?if($self){ echo "false"; } else { echo "true"; }?>
+     data-isblockbuttonvisible=<?if($self || $currentuser == null){ echo "false"; } else { echo "true"; }?>
 
      data-getfollowscript="Roblox.GameLauncher.followPlayerIntoGame(<?=$userinfo->id?>);"
      data-ismorebtnvisible="true"
      data-isvieweeblocked=true
      data-mayimpersonate=false
      data-impersonateurl=""
-     data-mayupdatestatus="<?if($self){ echo "true"; } else { echo "false"; }?>"
+     data-mayupdatestatus="<?if($self && $currentuser !== null){ echo "true"; } else { echo "false"; }?>"
      data-updatestatusurl="/home/updatestatus"
      data-statustext='<?=$userinfo->blurb?>'
      data-editstatusmaxlength="254"
@@ -162,11 +170,7 @@ $pagebuilder->buildheader();
                     }
                 });
             </script>
-                     <?php
-                        if($is_online){
-                            echo '<span class="profile-avatar-status rbx-icon-online" title="Website"></span>';
-                        }
-                     ?>
+                     <?=$status?>
         </div>
         <div class="header-title">
             <h1><?=$userinfo->username?></h1>

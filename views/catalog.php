@@ -24,7 +24,12 @@ $asset = $db->table("assets")->where("id", 26)->first();
 $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
 
 ?>
-
+<style>
+        .original-image {
+            height: 100px;
+            width: 100px;
+        }
+    </style>
         
 <div id="BodyWrapper">
             

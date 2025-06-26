@@ -4,6 +4,7 @@
         "usmanhalalit/pixie": "^2.0",
         "phpmailer/phpmailer": "^6.10",
         "cocur/slugify": "^4.6",
-        "nesbot/carbon": "^3.9"
+        "nesbot/carbon": "^3.9",
+        "aws/aws-sdk-php": "^3.347"
     }
 }

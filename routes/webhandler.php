@@ -137,6 +137,11 @@ $router->get("/temp/create-asset", function(){
     $page::get_template("temp/uploadasset");
 });
 
+$router->get("/temp/upload-thumbnail", function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/upload-thumbnail");
+});
+
 $router->get("/temp/universe-creator", function(){
     $page = new pagebuilder;
     $page::get_template("temp/universe-creator");
@@ -262,6 +267,16 @@ $router->get('/temp/pants-uploader', function(){
 $router->get('/places/create', function(){
     $page = new pagebuilder;
     $page::get_template("places/create");
+});
+
+$router->get('/usercheck/show-tos', function(){
+    die('{
+  "PartialViewName": "CaptureTosAgreement_v2",
+  "IsI18nEnabled": false,
+  "TermsOfServiceUrl": "https://www.roblox.com/info/terms",
+  "PrivacyUrl": "https://www.roblox.com/info/privacy",
+  "LegalChangesUrl": "https://www.roblox.com/info/latest-changes"
+}');
 });
 
 $router->get("/my/character.aspx", function() {

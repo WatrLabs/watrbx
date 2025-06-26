@@ -1,10 +1,12 @@
 <?php
 use Pixie\Connection;
 use Pixie\QueryBuilder\QueryBuilderHandler;
+use Aws\S3\S3Client;
 use watrlabs\authentication;
 global $dotenv;
 global $db;
 global $currentuser;
+global $s3_client;
 
 spl_autoload_register(function ($class_name) {
     $directory = '../classes/';
@@ -27,6 +29,21 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 try {
+
+    $credentials = new Aws\Credentials\Credentials($_ENV["R2_KEY_ID"], $_ENV["R2_SECRET"]);
+
+    $options = [
+        'region' => 'auto',
+        'endpoint' => "https://".$_ENV["R2_ACCOUNT_ID"].".r2.cloudflarestorage.com",
+        'version' => 'latest',
+        'credentials' => $credentials,
+        'request_checksum_calculation' => 'when_required',
+        'response_checksum_validation' => 'when_required',
+        'use_aws_shared_config_files' => false,
+    ];
+
+    $s3_client = new Aws\S3\S3Client($options); // this is our s3/r2 connection.
+
 
     $config = [
         'driver'    => 'mysql',
