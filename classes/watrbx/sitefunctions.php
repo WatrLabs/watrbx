@@ -176,6 +176,21 @@ class sitefunctions {
         return $query->count();
     }
 
+    static function filter_text($text) 
+    {
+        $badlist = array_filter(explode(",", file_get_contents("../storage/bad_words.txt")));
+        $filterCount = count($badlist);
+
+        for ($i = 0; $i < $filterCount; $i++) {
+            $pattern = '/' . preg_quote($badlist[$i], '/') . '/i';
+            $text = preg_replace_callback($pattern, function($matches) {
+                return str_repeat('#', strlen($matches[0]));
+            }, $text);
+        }
+
+        return $text;
+    }
+
     static function isbadtext($text){
         $badlist = array_map('trim', array_filter(explode(",", file_get_contents("../storage/bad_words.txt"))));
                 
