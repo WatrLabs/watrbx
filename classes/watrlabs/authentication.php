@@ -288,38 +288,13 @@ class authentication {
         if($user == null){
             $errorjson = array(
                 "code"=>400,
-                "message"=>"User does not exist!"
+                "message"=>"Username or password is incorrect!"
             );
-            return json_encode($errorjson);
+            return $errorjson;
         } else {
             $hashedpass = $user->password;
 
             if(password_verify($password, $hashedpass)){
-                
-                if(!$user->email == null){
-
-                    $func = new sitefunctions();
-                    $sanitize = new sanitize();
-                    $ip = $func->getip();
-                    $encryptedip = $sanitize::ip($ip);
-                    $encryptedip = $func->encrypt($encryptedip);
-
-                    $query = $db->table("sessions")->where("ip", $encryptedip)->where("author", $user->id);
-                    $the = $query->first();
-                    if(!$the){
-                        $html = file_get_contents("../storage/emailtemplates/newip.html");
-
-                        $this->mail->setFrom($_ENV["MAIL_USER"], 'Info');
-                        $this->mail->addAddress($user->email, $user->username);
-                        $this->mail->isHTML(true);                                  //Set email format to HTML
-                        $this->mail->Subject = 'Your watrbx account was accessed from a new ip.';
-                        $this->mail->Body    = $html;
-                        $this->mail->AltBody = 'Alert\nA login from a new ip address was detected, If you logged in, you can ignore this email.';
-                        $this->mail->send();
-                    }
-
-
-                }
 
                 if($this->havesession()){
                     $this->relateaccount($user->id);
@@ -339,7 +314,7 @@ class authentication {
             } else {
                 $errorjson = array(
                     "code"=>400,
-                    "message"=>"Password incorrect!"
+                    "message"=>"Username or password is incorrect!"
                 );
                 return $errorjson;
             }

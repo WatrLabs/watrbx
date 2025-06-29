@@ -224,7 +224,7 @@ $router->get('/Setting/QuietGet/ClientAppSettings/', function(){
 $router->get('/game/players/{userid}/', function($userid){
     header("Content-type: application/json");
     http_response_code(200);
-    die('{"ChatFilter":"blacklist"}');
+    die('{"ChatFilter":"whitelist"}');
 });
 
 $router->get('/Setting/QuietGet/ClientSharedSettings/', function(){

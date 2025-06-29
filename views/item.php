@@ -262,7 +262,7 @@ if($currentuser !== null){
                                         
                                     </div>
                                     <div id="BuyWithRobux">
-                                        <div data-expected-currency="1" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton <? if($doesown !== null){ echo 'btn-disabled-primary'; } ?>" <? if($doesown !== null){ echo 'original-title="You already own this item."'; } ?> data-se="item-buyforrobux" data-item-name="<?=$asset->name?>" data-item-id="<?=$assetidbackup?>" data-expected-price="<?=$asset->robux?>" data-product-id="<?=$assetidbackup?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="<?=$creatorinfo->username?>">
+                                        <div data-expected-currency="1" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton <? if($doesown !== null || $asset->publicdomain == 0){ echo 'btn-disabled-primary'; } ?>" <? if($asset->publicdomain == 0){ echo 'original-title="This item is not for sale."'; } ?> <? if($doesown !== null){ echo 'original-title="You already own this item."'; } ?> data-se="item-buyforrobux" data-item-name="<?=$asset->name?>" data-item-id="<?=$assetidbackup?>" data-expected-price="<?=$asset->robux?>" data-product-id="<?=$assetidbackup?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="<?=$creatorinfo->username?>">
                                              Buy with R$
                                         </div>
                                         

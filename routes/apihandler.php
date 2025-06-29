@@ -39,11 +39,18 @@ function create_success($msg, $otherstuff = array(), $code = 200){
 }
 
 function get_signature($script)
-    {
-        $signature = "";
-        openssl_sign($script, $signature, file_get_contents("../storage/PrivateNut.pem"), OPENSSL_ALGO_SHA1);
-        return base64_encode($signature);
-    }
+{
+    $signature = "";
+    openssl_sign($script, $signature, file_get_contents("../storage/PrivateNut.pem"), OPENSSL_ALGO_SHA1);
+    return base64_encode($signature);
+}
+
+function get_test_signature($script)
+{
+    $signature = "";
+    openssl_sign($script, $signature, file_get_contents("../storage/testkey.pem"), OPENSSL_ALGO_SHA1);
+    return base64_encode($signature);
+}
 
 $router->get('/api/v1/get-players', function(){
     $func = new sitefunctions();
@@ -773,6 +780,12 @@ $router->post('/api/v1/asset-upload', function(){
                 'SourceFile' => $_FILES["asset"]["tmp_name"]
             ]);
 
+            global $db; 
+
+            $insertid = $db->table("assets")->insert($insert);
+
+            die("Asset uploaded with id: " . $insertid);
+
         } catch(Exception $e){
             die("Failed to upload asset! $e");
         }
@@ -781,6 +794,47 @@ $router->post('/api/v1/asset-upload', function(){
     } else {
         die("Something was empty.");
     }
+});
+
+$router->post('/moderation/filtertext/', function(){
+
+    $auth = new authentication();
+    $func = new sitefunctions();
+
+    global $db;
+
+    if (isset($_POST['text']) && isset($_POST["userId"])) {
+        $text = $_POST['text'];
+        $userid = $_POST["userId"];
+        
+        $textfiltered = $func->filter_text($text);
+        
+        $staterinfo = $auth->getuserbyid($userid);
+
+        $insert = [
+            "userid"=>$userid,
+            "message"=>$text,
+            "filtered"=>$textfiltered
+        ];
+
+        $db->table("chatlogs")->insert($insert);
+
+        $return = json_encode([
+            "success" => true,
+            "data" => [
+                "white" => $textfiltered,
+                "black" => $textfiltered
+            ]
+        ], JSON_UNESCAPED_SLASHES);
+
+        die($return);
+    } else {
+        die(create_error("Bad Request"));
+    } 
+});
+
+$router->get('/Game/ChatFilter.ashx', function(){
+    die("True");
 });
 
 $router->post('/home/updatestatus', function(){
@@ -2171,6 +2225,7 @@ $router->get('/CharacterFetch.aspx', function(){
     die($charapp);
 });
 
+
 $router->get('/users/inventory/list-json', function(){
     header("Content-type: application/json");
     die(file_get_contents("../storage/thing.json"));
@@ -2252,6 +2307,88 @@ $router->get('/Game/Join.ashx', function() {
 
         // Sign joinscript
         $signature = get_signature("\r\n" . $data);
+
+        // exit
+        exit("--rbxsig%". $signature . "%\r\n" . $data);
+    } else {
+        http_response_code(400);
+        die();
+    }
+    
+});
+
+
+$router->get('/Game/TestJoin.ashx', function() {
+
+    $auth = new authentication();
+    $func = new sitefunctions();
+    global $db;
+    global $currentuser;
+    
+    if(isset($_GET["joincode"]) && $auth->hasaccount()){
+
+        $code = $_GET["joincode"];
+        $joincode = $db->table("join_codes")->where("code", $code)->first();
+
+        $userinfo = $currentuser;
+
+        $ip = $joincode->ip;
+        if($ip == "192.168.1.221"){
+            $ip = "70.228.127.12";
+        }
+        $charappurl = "http://www.watrbx.xyz/CharacterFetch.aspx?Id=" . $currentuser->id;
+        $port = $joincode->port;
+        $pid = $joincode->placeid;
+        $placeinfo = $db->table("assets")->where("id", $joincode->placeid)->first();
+        $clientticket = $func->generateClientTicket($currentuser->id, $currentuser->username,$charappurl, $joincode->jobid, file_get_contents("../storage/testkey.pem"));
+
+        header("Content-Type: application/json");
+        // Construct joinscript
+        $joinscript = [
+            "ClientPort" => 0,
+            "MachineAddress" => $ip,
+            "ServerPort" => $port,
+            "PingUrl" => "",
+            "PingInterval" => 20,
+            "UserName" => $userinfo->username,
+            "SeleniumTestMode" => false,
+            "UserId" => $userinfo->id,
+            "SuperSafeChat" => false,
+            "CharacterAppearance" => $charappurl,
+            "ClientTicket" => $clientticket,
+            "GameId" => $pid,
+            "PlaceId" => $pid,
+            "MeasurementUrl" => "", // No telemetry here :)
+            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
+            "BaseUrl" => "http://www.watrbx.xyz/",
+            "ChatStyle" => "ClassicAndBubble",
+            "VendorId" => "0",
+            "ScreenShotInfo" => "",
+            "VideoInfo" => "",
+            "CreatorId" => $placeinfo->owner,
+            "CreatorTypeEnum" => "User",
+            "MembershipType" => "$userinfo->membership",
+            "AccountAge" => "3000000",
+            "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
+            "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
+            "CookieStoreEnabled" => true,
+            "IsRobloxPlace" => false,
+            "GenerateTeleportJoin" => false,
+            "IsUnknownOrUnder13" => false,
+            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null",
+            "DataCenterId" => 0,
+            "UniverseId" => 3,
+            "BrowserTrackerId" => 0,
+            "UsePortraitMode" => false,
+            "FollowUserId" => 0,
+            "characterAppearanceId" => 1
+        ];
+
+        // Encode it!
+        $data = json_encode($joinscript, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+
+        // Sign joinscript
+        $signature = get_test_signature("\r\n" . $data);
 
         // exit
         exit("--rbxsig%". $signature . "%\r\n" . $data);
@@ -2424,7 +2561,7 @@ $router->post('/api/v1/signup', function() {
 
     if($_ENV["CAN_REGISTER"] == "false"){
         http_response_code(403);
-        header("Location: /MEMBERSHIP/CREATIONDISABLED.aspx");
+        header("Location: /Membership/CreationDisabled.aspx");
         die();
     }
     
@@ -2440,6 +2577,12 @@ $router->post('/api/v1/signup', function() {
         $username = $_POST["username"];
         $pass = $_POST["password"];
         $gender = null;
+
+        $func = new sitefunctions();
+        if($func::isbadtext($username)){
+            http_response_code(400);
+            die("Username has innapropriate words in it.");
+        }
         
         if(isset($_POST["gender"])){
             $gender = (int)$_POST["gender"];

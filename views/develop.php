@@ -171,9 +171,15 @@ $pagebuilder->buildheader();
                               <table class="details-table">
                                 <tbody>
                                   <tr>
+                                    <td class="activate-cell">
+                                      <a class="place-active" href="/universes/configure?id=<?=$game->id ?>">
+                                          Active
+                                      </a>
+                                    </td>
                                     <td class="item-date">
                                       <span>Updated:</span><?=date("n/j/Y", $game->updated)?>
                                     </td>
+                                    
                                   </tr>
                                 </tbody>
                               </table>

@@ -56,6 +56,10 @@ if(isset($_GET["ID"])){
     die($router->return_status(404));
 }
 
+if($baninfo->offensiveitem !== null){
+    $offensivechat = $db->table("chatlogs")->where("id", $baninfo->offensiveitem)->first();
+}
+
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___486ee4e2def9b96aeaf9ebb663ab510e_m.css');
 $pagebuilder->addresource('jsfiles', '/js/35442da4b07e6a0ed6b085424d1a52cb.js');
@@ -79,19 +83,24 @@ $pagebuilder->buildheader();
         <p>Our content monitors have determined that your behavior at ROBLOX has been in violation of our Terms of Service. <? if($baninfo->banneduntil !== null){ echo "We will terminate your account if you do not abide by the rules."; } ?></p>
         <p>Reviewed: <span style="font-weight: bold"><?=date('n/j/Y g:i:s A', $baninfo->reviewed);?></span></p>
         <p>Moderator Note: <span style="font-weight: bold"><?=$baninfo->moderatornote?></span></p>
-        <!--<div style="width: auto; border: black thin solid; text-align: left;">
-            <p><span style="font-weight: bold">Reason:</span> Spam</p>
-            <p style="text-align: left;">
-                <span style="font-weight: bold">Offensive Item:</span> 
-                <br><br>
-                <span style="margin: 35px;">You're stupid for 20. You're really a child in reality.</span>
-                <br><br>
-                <span style="margin: 35px;">No capes!</span>
-            </p>
-        </div>
+        <!--
         -->
         
         <?php
+
+            if(isset($offensivechat)){ ?> 
+
+            <div style="width: auto; border: black thin solid; text-align: left;">
+                <p><span style="font-weight: bold">Reason:</span> Offensive Language</p>
+                <p style="text-align: left;">
+                    <span style="font-weight: bold">Offensive Item:</span> 
+                    <br><br>
+                    <span style="margin: 35px;"><?=$offensivechat->filtered?></span>
+                </p>
+            </div>
+
+            <? }
+
             if($canreactivate){ ?>
                 <p>Please abide by the ROBLOX Community Guidelines so that ROBLOX can be fun for users of all ages.</p>
                 <p>You may re-activate your account by agreeing to our <a href="#">Terms of Service</a></p>
@@ -99,7 +108,7 @@ $pagebuilder->buildheader();
                     <form method="POST" action="/api/v1/reactivate?ID=<?=$banid?>">
                         <input type="checkbox" id="tos" name="tos" value="tos">
                         <label for="tos">I agree</label><br><br>
-                        <button>Reactive My Account</button><br><br>
+                        <button>Reactivate My Account</button><br><br>
                         <button onclick="logout()">Logout</button><br><br>
                     </form>
                 </div>

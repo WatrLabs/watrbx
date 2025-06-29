@@ -86,6 +86,14 @@ if ($userinfo->membership !== "None") {
 $headshot = $thumbs->get_user_thumb($userinfo->id, "512x512", "headshot");
 $full = $thumbs->get_user_thumb($userinfo->id, "1024x1024", "full");
 
+$currentlywearing = $db->table("wearingitems")->where("userid", $userinfo->id);
+
+
+$wearingitems = [];
+
+
+//$currentlywearing = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
+
 
 
 $allfriends = $friends->get_friends($userid);
@@ -495,6 +503,23 @@ $pagebuilder->buildheader();
                         <img title="Roblox 'R' Baseball Cap" alt="Roblox 'R' Baseball Cap" class="accoutrement-image" src="/images/defaultimage.png" style="width: 100px; height: 100px;" width="100" height="100" />
                     </a>
                 </li>
+
+                <?php
+                    
+                    foreach ($wearingitems as $item){
+                        $itemthumb = $thumbs->get_asset_thumb($item->id);
+                        ?>
+
+                     <li class="accoutrement-item" ng-non-bindable>
+                        <a href="/item-item?id=<?=$item->id?>">
+                            <img title="<?=$item->name?>" alt="<?=$item->name?>" class="accoutrement-image" src="<?=$itemthumb?>" style="width: 100px; height: 100px;" width="100" height="100" />
+                        </a>
+                    </li>
+
+                    <? } ?>
+
+                
+
                     </ul>
 
     </div><!--profile-accoutrement-slider-->
@@ -518,6 +543,7 @@ $pagebuilder->buildheader();
             $pagebuilder->build_component("friend_container", ["userid"=>$userinfo->id]);
         }
     ?>
+    <!--
     <div class="section profile-collections" ng-controller="profileCollectionsController">
         <div class="container-header">
             <h3>Collections</h3>
@@ -536,7 +562,7 @@ $pagebuilder->buildheader();
         </ul>
 
     </div>
-        
+    -->
 
     
     <div class="container-list" ng-controller="profileGridController" ng-init="init('group-list','group-container')">
@@ -561,7 +587,7 @@ $pagebuilder->buildheader();
     <a href="/groups/group.aspx?gid=1" class="card-item group-item">
         <span class="card-thumb-content">
             <span class="card-thumb-wrapper">
-                <img class="card-thumb group-thumb" data-src="/images/defaultimage.png" alt="watrbx fan club" />
+                <img class="card-thumb group-thumb" data-src="<?=$full = $thumbs->get_user_thumb(1, "1024x1024", "full");?>" alt="watrbx fan club" />
             </span>
         </span>
         <span class="rbx-text-overflow card-title" title="watrbx fan club" ng-non-bindable>
@@ -591,7 +617,7 @@ $pagebuilder->buildheader();
                         <div class="col-sm-6 profile-slide-item-left">
                             <div class="slide-item-emblem-container">
                                 <a href="/groups/group.aspx?gid=1">
-                                        <img class="group-item-image" src="https://watrbx.xyz/images/defaultimage.png" data-src="https://watrbx.xyz/images/defaultimage.png" data-emblem-id="1" />
+                                        <img class="group-item-image" src="<?=$full = $thumbs->get_user_thumb(1, "1024x1024", "full");?>" data-src="<?=$full = $thumbs->get_user_thumb(1, "1024x1024", "full");?>" data-emblem-id="1" />
 
 
                                 </a>
@@ -631,7 +657,7 @@ $pagebuilder->buildheader();
 </div>
 
 
-
+<!--
 
         <div class="section" ng-controller="profileUtilitiesController">
             <div class="container-header">
@@ -691,7 +717,7 @@ $pagebuilder->buildheader();
 
 </div>
 
-
+    -->
         
 
 <div class="section profile-statistics">

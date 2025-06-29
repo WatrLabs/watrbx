@@ -2,7 +2,7 @@
 -- Used for faces and decals
 
 local assetUrl = "rbxassetid://%assetid%"
-local baseUrl = "%url%"
+local baseUrl = "https://www.watrbx.xyz"
 local fileExtension = "PNG"
 local x, y = %x%, %y%
 

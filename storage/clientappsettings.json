@@ -320,7 +320,7 @@
     "DFFlagPhysicsSkipUnnecessaryContactCreation": "True",
     "FFlagStudioLiveCoding": "True",
     "FFlagPlayerHumanoidStep60Hz": "True",
-    "DFFlagCrispFilteringEnabled": "False",
+    "DFFlagCrispFilteringEnabled": "True",
     "SFFlagProtocolSynchronization": "True",
     "FFlagUserInputServicePipelineStudio": "True",
     "FFlagUserInputServicePipelineWindowsClient": "True",
