@@ -282,14 +282,9 @@ $router->get('/places/create', function(){
     $page::get_template("places/create");
 });
 
-$router->get('/usercheck/show-tos', function(){
-    die('{
-  "PartialViewName": "CaptureTosAgreement_v2",
-  "IsI18nEnabled": false,
-  "TermsOfServiceUrl": "https://www.roblox.com/info/terms",
-  "PrivacyUrl": "https://www.roblox.com/info/privacy",
-  "LegalChangesUrl": "https://www.roblox.com/info/latest-changes"
-}');
+$router->get('/login/Default.aspx', function(){
+    header("Location: /newlogin");
+    die();
 });
 
 $router->get("/my/character.aspx", function() {
