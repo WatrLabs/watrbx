@@ -1,0 +1,42 @@
+
+<div>
+    <div ng-if="getAssetsError == true">
+        <div class="client-toolbox-error-message" ng-show="loadingComplete ==true">An error occured !</div>
+    </div>
+    <div ng-if="getAssetsError == false">
+    <div class="client-toolbox-noresult" ng-show="page.totalAssetsNum == 0 ">No Result found yet.</div>
+        <div class="client-toolbox-message" ng-hide="creatorName == null">Search by creator: {{creatorName}}</div>
+        <ul class="client-toolbox-assets" ng-show="isAssetsPageShown == true">
+        <li class="client-toolbox-item"
+            ng-repeat="asset in assets">
+            <div class="client-toolbox-inner" data-asset="{{asset}}">
+                <span roblox-toolbox-thumbnail
+                      asset="asset"
+                      insert-asset="insertAsset()"
+                      class="client-toolbox-image"></span>
+                <span class="client-toolbox-asset-name" title="{{asset.Asset.Name}}">{{asset.Asset.Name}}</span>
+                <div class="client-toolbox-voting" ng-show="selectedIds.indexOf(asset.Asset.Id) > -1">
+                    <span class="client-toolbox-vote client-toolbox-upvote"
+                          ng-class="{'client-toolbox-vote-selected':asset.Voting.UserVote == true }"
+                          ng-click="handleVote(true)"></span>
+                    <span class="client-toolbox-vote client-toolbox-downvote"
+                          ng-class="{'client-toolbox-vote-selected': asset.Voting.UserVote == false }"
+                          ng-click="handleVote(false)"></span>
+                </div>
+                    <p class="client-toolbox-creator" ng-click="searchByCreator()" title="{{asset.Creator.Name}}">by <span class="client-toolbox-creator-name">{{asset.Creator.Name}}</span></p>
+                <span ng-if="asset.Voting.ShowVotes == true"
+                      ng-hide="selectedIds.indexOf(asset.Asset.Id) > -1"
+                      class=" client-toolbox-vote-container">
+                    <div class="client-toolbox-progress">
+                        <span class="client-toolbox-bar" style="width:{{asset.Voting.UpVotes|getPercentage: asset.Voting.DownVotes }}"></span>
+
+                    </div>
+                    <span ng-if="asset.Voting.UpVotes + asset.Voting.DownVotes > 1">{{asset.Voting.UpVotes + asset.Voting.DownVotes}} votes</span>
+                    <span ng-if="asset.Voting.UpVotes + asset.Voting.DownVotes == 1">{{asset.Voting.UpVotes + asset.Voting.DownVotes}} vote</span>
+                </span>
+            </div>
+        </li>
+    </ul>
+</div>
+    <div ng-show="loadingComplete == false" class="client-toolbox-loading"></div>
+</div>

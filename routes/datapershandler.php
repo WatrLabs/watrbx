@@ -87,17 +87,34 @@ $router->group('/persistence', function($router) {
     $router->post('/getSortedValues', function() {
         global $db;
         
-        if(isset($_GET["key"])&&isset($_GET["placeId"])&&isset($_GET["scope"])){
+        if(isset($_GET["key"]) && isset($_GET["placeId"]) && isset($_GET["scope"])){
+            $desc = false;
             $key = (string)$_GET["key"];;
             $pid = (int)$_GET["placeId"];;
             $scope = (string)$_GET["scope"];
             $limit = 0;
             $limitSet = isset($_GET["pageSize"]);
+            $hasstartkey = false;
             if($limitSet){
                 $limit = (int)$_GET["pageSize"];
             }
+            if (isset($_GET["ascending"])){
+                if ($_GET["ascending"] == "False"){
+                    $desc = true;
+                }
+            }
+            if(isset($_GET["exclusivestartkey"])){
+                $hasstartkey = true;
+            }
 
             $notresult = $db->table('datastores')->where('type', 'sorted')->where('pid', $pid)->where('dkey', $key)->where('scope', $scope);
+            
+            if($hasstartkey){
+                $startkey = $_GET["exclusivestartkey"] ?? "";
+            }
+            if($desc){
+                $notresult->orderBy("id", "DESC");
+            }
             if($limitSet){
                 $notresult->limit($limit); 
             }       
@@ -106,7 +123,15 @@ $router->group('/persistence', function($router) {
             foreach($result as &$data){
                 array_push($entries,array("Target"=>$data->target,"Value"=>$data->value));
             }
-            exit(json_encode(["data"=>array("Entries"=>$entries)], JSON_NUMERIC_CHECK));
+
+            $datastuff = ["data"=>["Entries"=>$entries]];
+
+
+            if($hasstartkey){
+                $datastuff["data"]["ExclusiveStartKey"] = $startkey;
+            }
+
+            exit(json_encode($datastuff, JSON_NUMERIC_CHECK));
             
         }
     });
@@ -142,7 +167,7 @@ $router->group('/persistence', function($router) {
                 $scope = $_GET["scope"];
                 $type = $_GET["type"];
 
-                $result = $db->table("datastores")->where("pid", $pid)->where("dkey", $key)->where("scope", $scope)->where("target", $target)->where("target", $target)->get();
+                $result = $db->table("datastores")->where("pid", $pid)->where("dkey", $key)->where("scope", $scope)->where("target", $target)->where("target", $target)->orderBy("id", "DESC")->get();
 
                 $values = [];
                 foreach ($result as &$data) {

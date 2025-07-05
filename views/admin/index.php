@@ -183,7 +183,7 @@ $pagebuilder->buildheader();
      data-is-user-logged-in="True"
      data-os-name="Windows"
      data-protocol-name-for-client="roblox-player"
-     data-protocol-name-for-studio="roblox-studio"
+     data-protocol-name-for-studio="watrbx-studio"
      data-protocol-url-includes-launchtime="true"
      data-protocol-detection-enabled="true">
     <div class="modalPopup blueAndWhite PlaceLauncherModal" style="min-height: 160px">

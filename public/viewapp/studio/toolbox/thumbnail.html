@@ -1,0 +1,10 @@
+
+<div>
+    <img ng-src="{{imageUrl}}" alt="{{asset.Asset.Name}} image"
+         class="client-toolbox-asset-img"
+         draggable="true"
+         data-asset-index="{{index}}"
+         ng-click="insertAsset()"
+         title="{{asset.Asset.Name}}">
+    <div class="client-toolbox-stamp" ng-if="asset.Asset.IsEndorsed == true" title="Marked as a high-quality item"></div>
+</div>

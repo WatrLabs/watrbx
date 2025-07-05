@@ -45,6 +45,11 @@ $pagebuilder->buildheader();
                         <li class=""><a>Theme</a></li>
                         <li class=""><a>Gameplay</a></li>
                     </ul>
+                    <br>
+                    <div class="template" placeid="95206881">
+                            <a class="game-image"><img class="" src="https://web.archive.org/web/20151129105425im_/http://t6.rbxcdn.com/17507896d5a29371ea8048fbdc3b1d74"></a>
+                            <p>Baseplate</p>
+                        </div>
                     <br><br>
                     <a class="btn-medium btn-primary" style="float:left;" onclick="__doPostBack()">Create Place</a>
                     <a class="btn-medium btn-negative" onclick="window.close();" style="margin-left: 15px;">Cancel</a>

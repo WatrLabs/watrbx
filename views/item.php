@@ -77,6 +77,13 @@ $assetTypes = array(
     'WalkAnimation' => 55
 );
 
+if($asset->prodcategory == 1)
+{
+    $thumb = "//cdn.watrbx.xyz/" . $asset->fileid;
+} else {
+    $thumb = $thumbs->get_asset_thumb($asset->id);
+}
+
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___21c026f129b626345b81a3a4d6882c7d_m.css');
 $pagebuilder->addresource('jsfiles', '/js/4eedc3a9c944bd9a29f80c2e9668dfdb.js.gzip');
@@ -86,16 +93,12 @@ $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gz
 $pagebuilder->addresource('jsfiles', '/js/43936b3386e6514e97f2b3ae23f53404.js.gzip');
 $pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
 $pagebuilder->set_page_name($asset->name);
+$pagebuilder->addmetatag("og:image", $thumb);
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
 
-if($asset->prodcategory == 1)
-{
-    $thumb = "//cdn.watrbx.xyz/" . $asset->fileid;
-} else {
-    $thumb = $thumbs->get_asset_thumb($asset->id);
-}
+
 
 $creatorinfo = $auth->getuserbyid($asset->owner);
 

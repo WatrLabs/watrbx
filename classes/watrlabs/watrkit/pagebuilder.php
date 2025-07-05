@@ -27,6 +27,12 @@ class pagebuilder {
         } else {
             $this->authed = false;
         }
+
+        $currenturl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $this->addmetatag("og:type", "Website");
+        $this->addmetatag("og:url", $currenturl);
+        $this->addmetatag("og:site_name", $_ENV["APP_NAME"]);
+        $this->addmetatag("og:description", $_ENV["APP_DESC"]);
     }
     
     function setlegacy($value){
@@ -84,12 +90,8 @@ class pagebuilder {
     }
 
     public function buildheader() {
-        $currenturl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $this->addmetatag("og:type", "Website");
-        $this->addmetatag("og:url", $currenturl);
-        $this->addmetatag("og:site_name", $_ENV["APP_NAME"]);
+        
         $this->addmetatag("og:title", $_ENV["APP_NAME"] . " - " . $this->config['title']);
-        $this->addmetatag("og:description", $_ENV["APP_DESC"]);
         
         // this HAS to be expanded in the future 
         if($this->authed){

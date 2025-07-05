@@ -55,26 +55,49 @@ game:GetService("ChangeHistoryService"):SetEnabled(false)
 local ns = game:GetService("NetworkServer")
 
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
+pcall(function() game:GetService("ContentProvider"):SetBaseUrl(url .. "/") end)
 
 if url~=nil then
-	pcall(function() game:GetService("Players"):SetAbuseReportUrl(url .. "/AbuseReport/InGameChatHandler.ashx") end)
-	pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(url .. "/asset/") end)
+	-- players service --
+	pcall(function() game:GetService("Players"):SetAbuseReportUrl(url .. "/moderation/AbuseReport/InGameChatHandler") end) --TODO: Implement
+	pcall(function() game:GetService("Players"):SetChatFilterUrl(url .. "/Game/ChatFilter.ashx") end) --not even used, just enables filter (lol)
+	pcall(function() game:GetService("Players"):SetLoadDataUrl(url .. "/Persistence/GetBlobUrl.ashx?placeId=" .. placeId .. "&userId=%d") end)
+	pcall(function() game:GetService("Players"):SetSaveDataUrl(url .. "/Persistence/SetBlob.ashx?placeId=" .. placeId .. "&userId=%d") end)
+
+	-- scriptinformationprovider service --
+	pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(url .. "/Asset/") end)
+	
+	-- contentprovider service --
 	pcall(function() game:GetService("ContentProvider"):SetBaseUrl(url .. "/") end)
-	pcall(function() game:GetService("Players"):SetChatFilterUrl(url .. "/Game/ChatFilter.ashx") end)
-	pcall(function() game:GetService("Players"):SetSysStatsUrl(url .. "/report/systats/?apikey=" .. apikey) end)
+	
+	-- badge service --
+	pcall(function() game:GetService("BadgeService"):SetPlaceId(placeId) end)
+	pcall(function() game:GetService("BadgeService"):SetAwardBadgeUrl(url .. "/Game/Badge/AwardBadge?UserID=%d&BadgeID=%d&PlaceID=%d") end)
+	pcall(function() game:GetService("BadgeService"):SetHasBadgeUrl(url .. "/Game/Badge/HasBadge?UserID=%d&BadgeID=%d") end)
+	pcall(function() game:GetService("BadgeService"):SetIsBadgeDisabledUrl(url .. "/Game/Badge/IsBadgeDisabled?BadgeID=%d&PlaceID=%d") end)
+	pcall(function() game:GetService("BadgeService"):SetIsBadgeLegalUrl("") end)
 
-	game:GetService("FriendService"):SetMakeFriendUrl(url .. "/Game/CreateFriend?firstUserId=%d&secondUserId=%d")
-	game:GetService("FriendService"):SetBreakFriendUrl(url .. "/Game/BreakFriend?firstUserId=%d&secondUserId=%d")
-	game:GetService("FriendService"):SetGetFriendsUrl(url .. "/Game/AreFriends?userId=%d")
+	-- social service --
+	pcall(function() game:GetService("SocialService"):SetFriendUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=IsFriendsWith&playerid=%d&userid=%d") end)
+	pcall(function() game:GetService("SocialService"):SetBestFriendUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=IsBestFriendsWith&playerid=%d&userid=%d") end)
+	pcall(function() game:GetService("SocialService"):SetGroupUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=IsInGroup&playerid=%d&groupid=%d") end)
+	pcall(function() game:GetService("SocialService"):SetGroupRankUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRank&playerid=%d&groupid=%d") end)
+	pcall(function() game:GetService("SocialService"):SetGroupRoleUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=%d&groupid=%d") end)
 
-	game:GetService("BadgeService"):SetPlaceId(placeId)
+	-- gamepass service --
+	pcall(function() game:GetService("GamePassService"):SetPlayerHasPassUrl(url .. "/Game/GamePass/GamePassHandler.ashx?Action=HasPass&UserID=%d&PassID=%d") end)
 
-	game:GetService("BadgeService"):SetIsBadgeLegalUrl("")
-	game:GetService("InsertService"):SetBaseSetsUrl(url .. "/game/Tools/InsertAsset.ashx?nsets=10&type=base")
-	game:GetService("InsertService"):SetUserSetsUrl(url .. "/game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=%d")
-	game:GetService("InsertService"):SetCollectionUrl(url .. "/game/Tools/InsertAsset.ashx?sid=%d")
-	game:GetService("InsertService"):SetAssetUrl(url .. "/asset/?id=%d")
-	game:GetService("InsertService"):SetAssetVersionUrl(url .. "/asset/?assetversionid=%d")
+	-- friends service --
+	pcall(function() game:GetService("FriendService"):SetMakeFriendUrl(url .. "/Game/CreateFriend?firstUserId=%d&secondUserId=%d") end)
+	pcall(function() game:GetService("FriendService"):SetBreakFriendUrl(url .. "/Game/BreakFriend?firstUserId=%d&secondUserId=%d") end)
+	pcall(function() game:GetService("FriendService"):SetGetFriendsUrl(url .. "/Game/AreFriends?userId=%d") end)
+	
+	-- insert service --
+	pcall(function() game:GetService("InsertService"):SetBaseSetsUrl(url .. "/Game/Tools/InsertAsset.ashx?nsets=10&type=base") end)
+	pcall(function() game:GetService("InsertService"):SetUserSetsUrl(url .. "/Game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=%d") end)
+	pcall(function() game:GetService("InsertService"):SetCollectionUrl(url .. "/Game/Tools/InsertAsset.ashx?sid=%d") end)
+	pcall(function() game:GetService("InsertService"):SetAssetUrl(url .. "/Asset/?id=%d") end)
+	pcall(function() game:GetService("InsertService"):SetAssetVersionUrl(url .. "/Asset/?assetversionid=%d") end)
 	
 	pcall(function() game:HttpGet(url .. "/game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
 	
