@@ -52,4 +52,7 @@ class RBX {
         return array_search($assetinfo->prodcategory, $this->assetTypes);
     }
 
+    public function get_asset_type_with_id($assetid){
+        return array_search($assetid, $this->assetTypes);
+    }
 }

@@ -35,6 +35,26 @@ $router->get('/game/visit.ashx', function(){
     die(include("../storage/visit.php"));
 });
 
+$router->get('/ide/welcome', function(){
+    http_response_code(200);
+    die('<a href="#" onclick="window.external.OpenUniverse(1);">test</a>');
+});
+
+$router->get('/universes/get-info', function(){
+    http_response_code(200);
+    die('{"Name":"Classic: Crossroads","Description":"The classic ROBLOX level is back!","RootPlace":1,"StudioAccessToApisAllowed":true,"CurrentUserHasEditPermissions":true,"UniverseAvatarType":"MorphToR6"}');
+});
+
+$router->get('/IDE/ClientToolbox.aspx', function(){
+    $pagebuilder = new pagebuilder;
+    $pagebuilder::get_template("ide/clienttoolbox");
+});
+
+$router->get('/universes/get-universe-places', function(){
+    http_response_code(200);
+    die('{"FinalPage":true,"RootPlace":1,"Places":[{"PlaceId":1,"Name":"Test"}],"PageSize":50}');
+});
+
 $router->get('/IDE/Upload.aspx', function() {
     $pagebuilder = new pagebuilder;
     $pagebuilder::get_template("ide/upload");

@@ -1,12 +1,12 @@
 <div id="rbx-vip-servers" class="container-list"
-         data-placeid="<?=$id?>"
-         data-universeid="<?=$id?>"
+         data-placeid="<?=$gameinfo->assetid?>"
+         data-universeid="<?=$gameinfo->assetid?>"
          data-showshutdown
          data-slow-game-fps-threshold="15"
          data-private-server-name-max-length="50"
          data-private-server-name-error-text="The name of a VIP Server cannot be blank and can be no more than {0} characters."
          data-configure-base-url="/private-server/configure?privateServerId={0}"
-         data-game-instances-base-url="/private-server/instance-list?universeId=47545"
+         data-game-instances-base-url="/private-server/instance-list?universeId=<?=$id?>"
          data-game-shutdown-url="/game-instances/shutdown"
          data-is-user-authenticated="True"
          data-instance-list-url="/private-server/instance-list-json"
@@ -24,7 +24,7 @@
                             Game Name:
                         </div>
                         <span class="game-name">
-                            Work at a Pizza Place
+                            <?=$assetinfo->name?>
                         </span>
                         <div class="private-server-name-input">
                             Server Name:
@@ -35,9 +35,9 @@
                 </div>
                 <span class="rbx-btn-secondary-sm btn-more rbx-vip-server-create"
                       data-is-private-server="true"
-                      data-product-id="23075408"
+                      data-product-id="<?=$gameinfo->assetid?>"
                       data-item-id="<?=$id?>"
-                      data-item-name="Work at a Pizza Place"
+                      data-item-name="<?=$assetinfo->name?>"
                       data-expected-price="100"
                       data-expected-currency="1"
                       data-seller-name="Dued1"
@@ -46,7 +46,7 @@
                       data-purchase-title-text="Create VIP Server"
                       data-purchase-body-content=""
                       data-purchase-url="/private-server/purchase"
-                      data-universe-id="47545"
+                      data-universe-id="<?=$id?>"
                       data-modal-field-validation-required="true"
                       data-footer-text="Your balance after this transaction will be {0}. This is a subscription-based feature. It will auto-renew once a month until you cancel the subscription."
                       name="CreatePrivateServer">Create VIP Server</span>

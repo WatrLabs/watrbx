@@ -24,6 +24,8 @@ header("content-type: text/plain; X-Robots-Tag: noindex;charset=UTF-8");
 ob_start();
 ?>
 
+pcall(function() game:GetService("ContentProvider"):SetBaseUrl("http://www.watrbx.xyz" .. "/") end)
+
 -- Prepended to Edit.lua and Visit.lua and Studio.lua and PlaySolo.lua--
 
 function ifSeleniumThenSetCookie(key, value)

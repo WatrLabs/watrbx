@@ -60,6 +60,12 @@ class thumbnails {
                 $assetimageinfo = $db->table("assets")->where("id", $id - 1)->first(); // really unsmart way of doing this, will improve
                 return "//cdn.watrbx.xyz/" . $assetimageinfo->fileid;
             } elseif($assetinfo->prodcategory == 3){
+                $thumb = $db->table("thumbnails")->where("assetid", $id)->where("mode", "Icon")->orderBy("id", "DESC")->first();
+
+                if($thumb !== null){
+                    return "//cdn.watrbx.xyz/" . $thumb->file;
+                }
+
                 return "//cdn.watrbx.xyz/Soundimage2.png";
             }
 

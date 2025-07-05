@@ -53,7 +53,12 @@ $pagebuilder->buildheader();
               <tbody>
                 <tr>
                   <td class="menu-area divider-right">
-                    <a href="/develop?View=9" class="tab-item tab-item-selected">Places</a>
+                    <? foreach($categories as $newCategory => $newCategoryName) { 
+                    if(is_numeric($newCategory)) { ?>
+                      <a href="/develop?View=<?=$newCategory?>" class="tab-item <?if($newCategory == $categoryId) {?>tab-item-selected"<? } ?>><?=$newCategoryName?></a>
+                    <? } else {?>
+                      <a href="/develop?Page=<?=$newCategory?>" class="tab-item tab-item-selected">Places</a>
+                    <? } }?>
                     <a href="/develop?Page=universes" class="tab-item">Games</a>
                     <a href="/develop?View=10" class="tab-item">Models</a>
                     <a href="/develop?View=13" class="tab-item">Decals</a>
@@ -94,7 +99,7 @@ $pagebuilder->buildheader();
                         <tr>
                           <td class="content-title">
                             <div>
-                              <h2 class="header-text">Places</h2>
+                              <h2 class="header-text"><?=$categoryName?></h2>
                             </div>
                           </td>
                           <td>

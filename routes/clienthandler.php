@@ -4,12 +4,6 @@ use watrlabs\authentication;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
-$router->get('/Game/Join2014.ashx', function(){
-    header("Content-type: text/lua");
-    require("../storage/2014join.php");
-    die();
-});
-
 $router->get('/Asset/', function() {
         
     if(isset($_GET["id"])){
@@ -78,9 +72,14 @@ $router->get('/Game/Tools/ThumbnailAsset.ashx', function(){
 
     $assetid = $_GET['aid'];
     if(isset($_GET['aid'])){
-        $jsonstuff = json_decode(file_get_contents('https://thumbnails.roblox.com/v1/assets?assetids='.$assetid.'&size=420x420&format=Png&isCircular=false'));
-        foreach ($jsonstuff->data as $jsonsthing) {
-            header("Location: $jsonsthing->imageUrl");
+        $jsonstuff = @json_decode(file_get_contents('https://thumbnails.ttblox.mom/v1/assets?assetids='.$assetid.'&size=420x420&format=Png&isCircular=false'));
+        if($jsonstuff){
+            foreach ($jsonstuff->data as $jsonsthing) {
+                header("Location: $jsonsthing->imageUrl");
+            }
+        } else {
+            http_response_code(404);
+            die();
         }
 }
 
@@ -124,34 +123,57 @@ $router->post('/game/validate-machine', function(){
     die();
 });
 
+$router->post('/marketplace/purchase', function() {
+    $data = array('success' => 'true', 'status' => 'Bought', 'receipt' => "ye");
+    header('Content-type: application/json');
+    echo json_encode($data); 
+});
+
 $router->get('/marketplace/productinfo', function(){
+
     header("Content-type: application/json");
+    
     if(isset($_GET["assetId"])){
         $auth = new authentication();
         $assetid = (int)$_GET["assetId"];
-        global $db;
+        
         $productinfo = [
-            "Name"=>"",
-            "Description"=>"",
-            "Created"=>"",
-            "Updated"=>"",
-            "PriceInRobux"=>0,
-            "PriceInTickets"=>0,
-            "Creator"=>[
-                "Id"=>0,
-                "Name"=>"ROBLOX",
-                "CreatorType"=>"User",
-                "CreatorTargetId"=>1
+            "TargetId" => $assetid,
+            "ProductType" => "User Product",
+            "AssetId" => $assetid,
+            "ProductId" => $assetid,
+            "Name" => "Unknown Asset",
+            "AssetTypeId" => 9,
+            "Creator" => [
+                "Id" => 1,
+                "Name" => "Unkown",
+                "CreatorType" => "User",
+                "CreatorTargetId" => 1
             ],
+            "IconImageAssetId" => 607948062,
+            "Created" => "2016-05-01T01:07:04.78Z",
+            "Updated" => "2016-09-26T22:43:21.667Z",
+            "PriceInRobux" => null,
+            "PriceInTickets" => null,
+            "Sales" => 0,
+            "IsNew" => false,
+            "IsForSale" => true,
+            "IsPublicDomain" => true,
+            "IsLimited" => false,
+            "IsLimitedUnique" => false,
+            "Remaining" => null,
+            "MinimumMembershipLevel" => 0,
+            "ContentRatingTypeId" => 0
         ];
+
+        global $db;
         $assetinfo = $db->table("assets")->where("id", $assetid)->first();
 
         if($assetinfo !== null){
-
             $creatorinfo = $auth->getuserbyid($assetinfo->owner);
 
             $productinfo["Name"] = $assetinfo->name;
-            $productinfo["Description"] = $assetinfo->description;
+            $productinfo["AssetTypeId"] = $assetinfo->prodcategory;
             $productinfo["Created"] = date('c', $assetinfo->created);
             $productinfo["Updated"] = date('c', $assetinfo->updated);
             $productinfo["PriceInRobux"] = $assetinfo->robux;
@@ -160,46 +182,26 @@ $router->get('/marketplace/productinfo', function(){
             $productinfo["Creator"]["Id"] = $creatorinfo->id;
             $productinfo["Creator"]["Name"] = $creatorinfo->username;
             $productinfo["Creator"]["CreatorTargetId"] = $creatorinfo->id;
-            ob_clean();
-            die(json_encode($productinfo));
-
-        } else {
-
-            $assetinfo = $db->table("assets")->where("id", 1)->first();
-
-            $creatorinfo = $auth->getuserbyid($assetinfo->owner);
-
-            $productinfo["Name"] = $assetinfo->name;
-            $productinfo["Description"] = $assetinfo->description;
-            $productinfo["Created"] = date('c', $assetinfo->created);
-            $productinfo["Updated"] = date('c', $assetinfo->updated);
-            $productinfo["PriceInRobux"] = $assetinfo->robux;
-            $productinfo["PriceInTickets"] = $assetinfo->tix;
-
-            $productinfo["Creator"]["Id"] = $creatorinfo->id;
-            $productinfo["Creator"]["Name"] = $creatorinfo->username;
-            $productinfo["Creator"]["CreatorTargetId"] = $creatorinfo->id;
-            ob_clean();
-            die(json_encode($productinfo));
         }
-        
+
+        die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
 
     } else {
         header("Content-type: application/json");
-        echo json_encode(array("success"=>false));
-        die();
+        die(json_encode(array("success"=>false)));
+        
     }
 });
 
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
-    die('{"data":["0.235.0pcplayer","0.1.0pcplayer","0.235.0pcplayer","INTERNALiosapp","0.450.0pcplayer","0.205.0pcplayer"]}');
+    die('{"data":["0.2.0pcplayer","INTERNALiosapp"]}');
 });
 
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["84c450b64d3cff3b3e100a93cd13a6ae", "d587ab8b913640c24c31af5f7af7a6e2", "67621ff6cb93314c9d82fe34ca5bf24c", "3cfe30722cca6dd0ffc0d2e59c26e4b5"]}');
+    die('{"data":["168ea82075bc5e6a66444bde46e45a23", "7aef3c686af2926663008eb836865fbf"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){

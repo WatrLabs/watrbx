@@ -45,13 +45,6 @@ function get_signature($script)
     return base64_encode($signature);
 }
 
-function get_test_signature($script)
-{
-    $signature = "";
-    openssl_sign($script, $signature, file_get_contents("../storage/testkey.pem"), OPENSSL_ALGO_SHA1);
-    return base64_encode($signature);
-}
-
 $router->get('/api/v1/get-players', function(){
     $func = new sitefunctions();
     global $db;
@@ -204,11 +197,31 @@ $router->get('/Game/AreFriends', function() {
 $router->get('/Thumbs/Avatar.ashx', function(){
 
         $thumbs = new thumbnails();
+        global $db;
 
-        if(isset($_GET["x"]) && isset($_GET["y"]) && isset($_GET["userId"])){
+        if(isset($_GET["x"]) && isset($_GET["y"])){
             $x = (int)$_GET["x"];
             $y = (int)$_GET["y"];
-            $userid = (int)$_GET["userId"];
+
+            if(isset($_GET["userId"])){
+                $userid = (int)$_GET["userId"];
+                $userinfo = $db->table("users")->where("id", $userid)->first();
+            }
+
+            if(isset($_GET["username"])){
+                $username = $_GET["username"];
+                $userinfo = $db->table("users")->where("username", $username)->first();
+            }
+
+            if(!isset($userinfo)){
+                http_response_code(404);
+                die();
+            }
+
+            $userid = $userinfo->id;
+
+
+            
             $dimensions = $x . "x" . $y;
 
             if($x > 3000 || $y > 3000){
@@ -217,9 +230,6 @@ $router->get('/Thumbs/Avatar.ashx', function(){
             }   
 
             global $db;
-
-            $userinfo = $db->table("users")->where("id", $userid)->first();
-
             if($userinfo !== null){
 
                 $thumb = $thumbs->get_user_thumb($userid, $dimensions, "full");
@@ -235,42 +245,6 @@ $router->get('/Thumbs/Avatar.ashx', function(){
             die("Something was empty!"); 
         }
 });
-
-$router->get('/thumbs/avatar.ashx', function(){
-
-    $thumbs = new thumbnails();
-
-    if(isset($_GET["x"]) && isset($_GET["y"]) && isset($_GET["userId"])){
-        $x = (int)$_GET["x"];
-        $y = (int)$_GET["y"];
-        $userid = (int)$_GET["userId"];
-        $dimensions = $x . "x" . $y;
-
-        if($x > 3000 || $y > 3000){
-            http_response_code(400);
-            die("We don't allow user thumbnails bigger than 3000x3000!");
-        }   
-
-        global $db;
-
-        $userinfo = $db->table("users")->where("id", $userid)->first();
-
-        if($userinfo !== null){
-
-            $thumb = $thumbs->get_user_thumb($userid, $dimensions, "full");
-
-            header("Location: $thumb");
-            die($thumb);
-        } else {
-            http_response_code(400);
-            die("User does not exist!"); 
-        }
-    } else {
-        http_response_code(400);
-        die("Something was empty!"); 
-    }
-});
-
 
 $router->post('/api/item.ashx', function(){
     header("Content-type: application/json");
@@ -1113,6 +1087,115 @@ $router->post('/user/request-friendship', function(){
     }
 });
 
+$router->get('/sets/get-roblox-sets', function(){
+    // TODO: Actually implement sets
+    header("Content-type: application/json");
+    die('[{"Id":464140,"Name":"Game Stuff"},{"Id":464138,"Name":"Baseplates"},{"Id":464131,"Name":"Weapons"},{"Id":463266,"Name":"Vehicles"},{"Id":458339,"Name":"Bricks"},{"Id":360380,"Name":"Basic Building"},{"Id":360378,"Name":"Advanced Building"},{"Id":360375,"Name":"House Kit"},{"Id":360372,"Name":"House Interior Kit"},{"Id":360371,"Name":"Landscape"},{"Id":360369,"Name":"Castle Kit"},{"Id":360365,"Name":"Castle Interior Kit"},{"Id":360363,"Name":"Space Kit"},{"Id":360362,"Name":"Fun Machines"},{"Id":360360,"Name":"Deadly Machines"}]');
+});
+
+$router->get('/ide/toolbox/items', function(){
+    // TODO: Actually implement sets
+    header("Content-type: application/json");
+
+    $return = [
+        "TotalResults"=>0,
+        "Results"=>[]
+    ];
+    
+    if(isset($_GET["category"])){
+        $category = $_GET["category"];
+        if($category == "FreeModels"){
+            global $db;
+            $auth = new authentication;
+            $thumbs = new thumbnails;
+            $query = $db->table("assets")->where("prodcategory", 10)->where("publicdomain", 1);
+
+            if(isset($_GET["keyword"])){
+                $keyword = $_GET["keyword"];
+                if($keyword !== ""){
+                    $query->where("name", "LIKE", "%".$keyword."%");
+                }
+            }
+
+            if(isset($_GET["creatorId"])){
+                $creatorid = (int)$_GET["creatorId"];
+                $query->where("owner", $creatorid);
+            }
+
+            $allassets = $query->orderBy("id", "DESC")->get();
+
+            foreach ($allassets as $asset){
+                $creatorinfo = $auth->getuserbyid($asset->owner);
+                $return["Results"][] = [
+                    "Asset"=>[
+                        "Id"=>$asset->id,
+                        "Name"=>$asset->name,
+                        "TypeId"=>10,
+                        "IsEndorsed"=>false, // todo
+                    ],
+                    "Creator"=>[
+                        "Id"=>$creatorinfo->id,
+                        "Name"=>$creatorinfo->username,
+                        "Type"=>1 // todo
+                    ],
+                    "Thumbnail"=>[
+                        "Final"=>true,
+                        "Url"=>$thumbs->get_asset_thumb($asset->id),
+                        "RetryUrl"=>null,
+                        "UserId"=>0,
+                        "EndpointType"=>"Avatar" // no idea what this means
+                    ],
+                    "Voting"=>[
+                        "ShowVotes"=>false,
+                    ]
+                ];
+            }
+
+            $return["TotalResults"] = count($return["Results"]);
+
+            die(json_encode($return));
+        }
+
+        if($category == "FreeDecals"){
+            global $db;
+            $auth = new authentication;
+            $thumbs = new thumbnails;
+            $allassets = $db->table("assets")->where("prodcategory", 13)->where("publicdomain", 1)->orderBy("id", "DESC")->get();
+            foreach ($allassets as $asset){
+                $creatorinfo = $auth->getuserbyid($asset->owner);
+                $return["Results"][] = [
+                    "Asset"=>[
+                        "Id"=>$asset->id,
+                        "Name"=>$asset->name,
+                        "TypeId"=>13,
+                        "IsEndorsed"=>false, // todo
+                    ],
+                    "Creator"=>[
+                        "Id"=>$creatorinfo->id,
+                        "Name"=>$creatorinfo->username,
+                        "Type"=>1 // todo
+                    ],
+                    "Thumbnail"=>[
+                        "Final"=>true,
+                        "Url"=>$thumbs->get_asset_thumb($asset->id),
+                        "RetryUrl"=>null,
+                        "UserId"=>0,
+                        "EndpointType"=>"Avatar" // no idea what this means
+                    ],
+                    "Voting"=>[
+                        "ShowVotes"=>false,
+                    ]
+                ];
+            }
+
+            $return["TotalResults"] = count($return["Results"]);
+
+            die(json_encode($return));
+        }
+    }
+
+});
+
 $router->get("/user/get-friendship-count", function(){
     header("Content-type: application/json");
 
@@ -1543,10 +1626,10 @@ $router->post('/api/v1/thumbnail-uploader', function(){
             $s3_client->putObject([
                 'Bucket' => $_ENV["R2_BUCKET"],
                 'Key' => $md5,
-                'SourceFile' => $_FILES["shirt"]["tmp_name"]
+                'SourceFile' => $_FILES["thumb"]["tmp_name"]
             ]);
         } catch (Exception $e){
-            die("Failed to upload thumbnail!");
+            die("Failed to upload thumbnail! $e");
         }
 
         $insert = [
@@ -1971,7 +2054,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
         "jobid"=>"null",
         "status"=>0,
         "joinScriptUrl"=>"null",
-        "authenticationUrl"=>"http://www.roblox.icu/Login/Negotiate.ashx",
+        "authenticationUrl"=>"http://www.watrbx.xyz/Login/Negotiate.ashx",
         "authenticationTicket"=>"null",
         "message"=>"Hi!"
     ); 
@@ -2078,6 +2161,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     $gameserver = new gameserver();
 
     global $db;
+    $request = "";
 
     if(!$gameserver->get_closest_server()){
         http_response_code(503);
@@ -2090,6 +2174,10 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
             if($auth->hasaccount()){
 
                 $placeid = (int)$_GET["placeId"];
+
+                if(isset($_GET["request"])){
+                    $request = $_GET["request"];
+                }
 
                 $gameinstance = $db->table("game_instances")->where("placeid", $placeid)->first();
 
@@ -2158,13 +2246,48 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     die(json_encode($placelauncher));
 });
 
+$router->get('/users/{id}', function($id){
+    $id = (int)$id; // forcefulyl cast to int
+
+    $auth = new authentication;
+    $thumb = new thumbnails;
+    global $currentuser;
+
+    
+
+    $returnarray = [
+        "Id"=> 1,
+        "Username"=> "ROBLOX",
+        "AvatarUri"=> null,
+        "AvatarFinal"=> false,
+        "IsOnline"=> false
+    ];
+
+     $userinfo = $auth->getuserbyid($id);
+
+     if($userinfo !== null){
+        $thumb = $thumb->get_user_thumb($userinfo->id, "250x250", "full");
+        $returnarray["Id"] = $userinfo->id;
+        $returnarray["Username"] = $userinfo->username;
+        $returnarray["AvatarUri"] = $thumb;
+        $returnarray["IsOnline"] = $auth->is_online($userinfo->id);
+     } else {
+        die(create_error("User not found!", [], 404));
+     }
+
+     header("Content-type: application/json");
+     die(json_encode($returnarray, JSON_UNESCAPED_SLASHES));
+
+
+});
+
 $router->get('/leaderboards/rank/json', function(){
     header("Content-type: application/json");
     die("[]");
 });
 
 $router->get('/Game/GamePass/GamePassHandler.ashx', function(){
-    die("<Error>Unknown method</Error>");
+    die("<Value Type=\"boolean\">true</Value> ");
 });
 
 $router->get('/ownership/hasAsset', function(){
@@ -2186,6 +2309,160 @@ $router->get('/currency/balance', function(){
 
         die(json_encode($array));
     
+});
+
+$router->get("/universes/{id}/cloudeditenabled", function(){
+    header("Content-type: application/json");
+    die(json_encode(["enabled"=>false]));
+});
+
+$router->get('/Game/Badge/HasBadge', function(){
+    if(isset($_GET["UserID"]) && isset($_GET["BadgeID"])){
+        $userid = (int)$_GET["UserID"];
+        $badgeid = $_GET["BadgeID"];
+
+        global $db;
+
+        $badgeinfo = $db->table("assets")->where("id", $badgeid)->where("prodcategory", 21)->first();
+
+        if($badgeinfo !== null){
+            $isawarded = $db->table("awardedbadges")->where("badgeid", $badgeid)->where("userid", $userid);
+
+            if($isawarded !== null){
+                die("1");
+            } else {
+                die("0");
+            }
+
+        } else {
+            http_response_code(404);
+            die("");
+        }
+
+    }
+});
+
+$router->get('/Game/Badge/IsBadgeDisabled', function(){
+    if(isset($_GET["BadgeID"]) && isset($_GET["PlaceID"])){
+        $placeid = (int)$_GET["PlaceID"];
+        $badgeid = $_GET["BadgeID"];
+
+        global $db;
+
+        $badgeinfo = $db->table("assets")->where("id", $badgeid)->where("prodcategory", 21)->first();
+
+        if($badgeinfo !== null){
+           die("0");
+        } else {
+            die("1");
+        }
+
+    }
+});
+
+$router->post('/Game/Badge/AwardBadge', function(){
+    if(isset($_GET["BadgeID"]) && isset($_GET["UserID"])){
+        $userid = (int)$_GET["UserID"];
+        $badgeid = $_GET["BadgeID"];
+
+        global $db;
+
+        $badgeinfo = $db->table("assets")->where("id", $badgeid)->where("prodcategory", 21)->first();
+
+        if($badgeinfo !== null){
+           $alreadyhas = $db->table("awardedbadges")->where("badgeid", $badgeid)->where("userid", $userid);
+           if($alreadyhas == null){
+                die("1");
+           } else {
+                die("0");
+           }
+        } else {
+            die("1");
+        }
+
+    }
+});
+
+
+$router->get('/points/get-point-balance', function(){
+    if(isset($_GET["placeId"]) && isset($_GET["userId"])){
+        $placeid = (int)$_GET["placeId"];
+        $userid = (int)$_GET["userId"];
+
+        $currentbalance = $db->table("playerpoints")->where("userid", $userid)->where("placeid", $placeid)->first();
+
+        $array = [
+            "userId"=>$userid,
+            "pointBalance"=>0
+        ];
+
+        if($currentbalance == null){
+            die(json_encode($array));
+        }else {
+            $array["pointBalance"] == $currentbalance->balance;
+            die(json_encode($array));
+        }
+
+        die(json_encode($array));
+
+    } else {
+        die(create_error("Missing Input"));
+    }
+});
+
+$router->post('/points/award-points', function(){
+    if(isset($_GET["placeId"]) && isset($_GET["userId"]) && isset($_GET["amount"])){
+        $placeid = (int)$_GET["placeId"];
+        $userid = (int)$_GET["userId"];
+        $amount = (int)$_GET["amount"];
+
+        if($userid <= 0){
+            die(create_error("userid has to be more than 1"));
+        }
+
+        global $db;
+
+        $currentbalance = $db->table("playerpoints")->where("userid", $userid)->where("placeid", $placeid)->first();
+
+        if($currentbalance == null){
+            $insert = [
+                "userid"=>$userid,
+                "balance"=>$amount,
+                "placeid"=>$placeid
+            ];
+
+            $db->table("playerpoints")->insert($insert);
+
+            $returnjson = [
+                "success"=>true,
+                "userId"=>$userid,
+                "userGameBalance"=>$amount,
+                "userBalance"=>$amount,
+                "pointsAwarded"=>$amount
+            ];
+
+            die(json_encode($returnjson));
+        } else {
+            $newamount = $currentbalance->balance + $amount;
+            $returnjson = [
+                "success"=>true,
+                "userId"=>$userid,
+                "userGameBalance"=>$newamount,
+                "userBalance"=>$newamount,
+                "pointsAwarded"=>$newamount
+            ];
+
+            $update = [
+                "balance"=>$newamount
+            ];
+
+            $db->table("playerpoints")->where("userid", $userid)->where("placeid", $placeid)->update($update);
+            die(json_encode($returnjson));
+        }
+
+    } else {
+        die(create_error("Missing Input"));
+    }
 });
 
 $router->get('/marketplace/productDetails', function(){
@@ -2316,91 +2593,6 @@ $router->get('/Game/Join.ashx', function() {
     }
     
 });
-
-
-$router->get('/Game/TestJoin.ashx', function() {
-
-    $auth = new authentication();
-    $func = new sitefunctions();
-    global $db;
-    global $currentuser;
-    
-    if(isset($_GET["joincode"]) && $auth->hasaccount()){
-
-        $code = $_GET["joincode"];
-        $joincode = $db->table("join_codes")->where("code", $code)->first();
-
-        $userinfo = $currentuser;
-
-        $ip = $joincode->ip;
-        if($ip == "192.168.1.221"){
-            $ip = "70.228.127.12";
-        }
-        $charappurl = "http://www.watrbx.xyz/CharacterFetch.aspx?Id=" . $currentuser->id;
-        $port = $joincode->port;
-        $pid = $joincode->placeid;
-        $placeinfo = $db->table("assets")->where("id", $joincode->placeid)->first();
-        $clientticket = $func->generateClientTicket($currentuser->id, $currentuser->username,$charappurl, $joincode->jobid, file_get_contents("../storage/testkey.pem"));
-
-        header("Content-Type: application/json");
-        // Construct joinscript
-        $joinscript = [
-            "ClientPort" => 0,
-            "MachineAddress" => $ip,
-            "ServerPort" => $port,
-            "PingUrl" => "",
-            "PingInterval" => 20,
-            "UserName" => $userinfo->username,
-            "SeleniumTestMode" => false,
-            "UserId" => $userinfo->id,
-            "SuperSafeChat" => false,
-            "CharacterAppearance" => $charappurl,
-            "ClientTicket" => $clientticket,
-            "GameId" => $pid,
-            "PlaceId" => $pid,
-            "MeasurementUrl" => "", // No telemetry here :)
-            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
-            "BaseUrl" => "http://www.watrbx.xyz/",
-            "ChatStyle" => "ClassicAndBubble",
-            "VendorId" => "0",
-            "ScreenShotInfo" => "",
-            "VideoInfo" => "",
-            "CreatorId" => $placeinfo->owner,
-            "CreatorTypeEnum" => "User",
-            "MembershipType" => "$userinfo->membership",
-            "AccountAge" => "3000000",
-            "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
-            "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
-            "CookieStoreEnabled" => true,
-            "IsRobloxPlace" => false,
-            "GenerateTeleportJoin" => false,
-            "IsUnknownOrUnder13" => false,
-            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null",
-            "DataCenterId" => 0,
-            "UniverseId" => 3,
-            "BrowserTrackerId" => 0,
-            "UsePortraitMode" => false,
-            "FollowUserId" => 0,
-            "characterAppearanceId" => 1
-        ];
-
-        // Encode it!
-        $data = json_encode($joinscript, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
-
-        // Sign joinscript
-        $signature = get_test_signature("\r\n" . $data);
-
-        // exit
-        exit("--rbxsig%". $signature . "%\r\n" . $data);
-    } else {
-        http_response_code(400);
-        die();
-    }
-    
-});
-
-
-
 
 $router->get("/UserCheck/checkifinvalidusernameforsignup", function() {
     header("Content-type: application/json");

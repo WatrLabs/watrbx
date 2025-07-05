@@ -1,0 +1,28 @@
+
+<div class="client-toolbox-header-bar">
+    <form>
+        <select class="client-toolbox-selection"
+                ng-model="option"
+                ng-options="option.name for (key,option) in options"
+                data-options="{{options}}"></select>
+
+        <select class="client-toolbox-selection"
+                ng-model="childOption"
+                ng-options="childOption.name for childOption in option.children"
+                data-options="{{option.children}}"
+                ng-show="option.hasChildren == true"></select>
+        <div class="client-toolbox-search"
+             ng-hide="option.searchable == false">
+            <button class="client-toolbox-search-btn"
+                    type="submit"
+                    ng-click="search()"></button>
+            <div class="client-input-wrapper">
+                <input type="text"
+                       name="clientToolboxSearchInput"
+                       class="client-toolbox-searchinput"
+                       ng-model="searchText"
+                       value="{{searchText}}">
+            </div>
+        </div>
+    </form>
+</div>

@@ -49,6 +49,10 @@ $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=leanbase___21
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___d4017b16ecf1d5724f4f7fadc30e304b_m.css');
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
 $pagebuilder->set_page_name($gameinfo->title);
+$pagebuilder->addmetatag("og:image", $url);
+$pagebuilder->addmetatag("og:description", $gameinfo->description);
+$pagebuilder->addmetatag("og:image:width", "1280");
+$pagebuilder->addmetatag("og:image:height", "720");
 global $currentuser;
 
 if(isset($_COOKIE["_ROBLOSECURITY"]) && $auth->hasaccount()){
@@ -557,7 +561,7 @@ $pagebuilder->buildheader();
 
 <?php
     if($gameinfo->privateserverenabled == 1){
-        $pagebuilder->get_snippet("can_vipserver", array("gameinfo"=>$gameinfo));
+        $pagebuilder->get_snippet("can_vipserver", array("gameinfo"=>$gameinfo, "assetinfo"=>$assetinfo));
     } else {
         $pagebuilder->get_snippet("cannot_vipserver");
     }
@@ -968,7 +972,7 @@ $pagebuilder->buildheader();
 
 <div id="rbx-leaderboard-container-clan" class="section rbx-leaderboard-container rbx-leaderboard-clan" data-associated-leaderboard-more="rbx-leaderboard-btn-clan">
     <div class="rbx-leaderboard-data"
-         data-distributor-target-id="47545"
+         data-distributor-target-id="1"
          data-max="20"
          data-rank-max="4"
          data-target-type="1"
@@ -1050,7 +1054,7 @@ $pagebuilder->buildheader();
 
     <?php
     if($gameinfo->privateserverenabled == 1){
-        $pagebuilder->get_snippet("can_vipserver_instances", array("gameinfo"=>$gameinfo, "id"=>$id));
+        $pagebuilder->get_snippet("can_vipserver_instances", array("gameinfo"=>$gameinfo, "id"=>$id, "assetinfo"=>$assetinfo));
     } else {
         $pagebuilder->get_snippet("cannot_vipserver");
     }

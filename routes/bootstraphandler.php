@@ -8,19 +8,23 @@ $router->get("/version", function() {
 });
 
 $router->get('/versionQTStudio', function(){
-    echo "version-2niqaerqcb6351zx7";
+    echo "version-witnessescouldnt";
 });
 
 $router->get('/version-2niqaerqcb6351zx7-RobloxVersion.txt', function(){
     echo "1, 6, 3, 61076";
 });
 
+$router->get('/version-witnessescouldnt-BootstrapperQTStudioVersion.txt', function(){
+    echo "1, 6, 3, 172";
+});
+
 $router->get('/install/setup.ashx', function(){
-    header("Location: /watrbxbootstrapper.exe");
+    header("Location: /RobloxPlayerLauncher.exe");
 });
 
 $router->get('/cdn.txt', function(){
-    echo "watrbx.xyz";
+    echo "setup.watrbx.xyz";
 });
 
 $router->get('/version-2niqaerqcb6351zx7-rbxManifest.txt', function(){

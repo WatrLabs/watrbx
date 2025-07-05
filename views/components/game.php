@@ -8,6 +8,7 @@ $slugify = new Slugify();
 $auth = new authentication();
 $gameserver = new gameserver();
 global $db;
+
 $asseinfo = $db->table("assets")->where("id", $game->assetid);
 $upvotes = $db->table("likes")->where("assetid", $game->assetid)->where("vote", 1)->count();
 $downvotes = $db->table("likes")->where("assetid", $game->assetid)->where("vote", 0)->count();
