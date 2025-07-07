@@ -25,7 +25,7 @@ $router->get("/", function() {
 });
 
 $router->get('/agree', function(){
-    setcookie('has_read', 1, time() + 999999999, '', '.watrbx.xyz');
+    setcookie('has_read', 1, time() + 999999999, '', '.watrbx.wtf');
     header("Location: /");
 });
 
@@ -273,9 +273,34 @@ $router->get("/develop", function() {
 
             die($page::get_template("develop", ["categoryId" => $category, "categoryName" => $categoryName, "categories" => $categories]));
         }        
+    } else {
+        $category = 9;
+
+        // both the same thing but ones ordered ill probably end up removing validcategories in a minute
+        // update i did that
+        $categories = [9, "universes", 10, 13, 21, 34, 3, 24, 40, "ads", "sponsored-games", 11, 2, 12, 38];
+
+        foreach($categories as $categoriesCat) {
+            if(is_numeric($categoriesCat)) {
+                $categories[$categoriesCat] = $rbx->get_asset_type_with_id($categoriesCat);
+            }
+        }
+
+        if(array_key_exists($category, $categories)) {
+            $categoryName = null;
+            
+            if(is_numeric($category)) {
+                $categoryName = $rbx->get_asset_type_with_id($category);
+            } 
+            elseif(is_string($category)) 
+            {
+                $categoryName = ucfirst($categoryName);
+            }
+
+            die($page::get_template("develop", ["categoryId" => $category, "categoryName" => $categoryName, "categories" => $categories]));
+        }    
     }
 
-    $page::get_template("develop");
 });
 
 $router->get("/games/moreresultscached", function() {

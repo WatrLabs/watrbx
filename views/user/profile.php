@@ -765,8 +765,8 @@ $pagebuilder->buildheader();
         <span class="card-thumb-content game-thumb-content">
             <span class="card-thumb-wrapper game-thumb-wrapper"
                   >
-                <img class="card-thumb game-thumb" src="https://watrbx.xyz/place.png" alt="Work At A Pizza Place!"
-                     thumbnail='{"Final":true,"Url":"https://watrbx.xyz/place.png","RetryUrl":null}' image-retry />
+                <img class="card-thumb game-thumb" src="https://watrbx.wtf/place.png" alt="Work At A Pizza Place!"
+                     thumbnail='{"Final":true,"Url":"https://watrbx.wtf/place.png","RetryUrl":null}' image-retry />
             </span>
         </span>
         <span class="rbx-text-overflow rbx-game-title card-title" title="Work At A Pizza Place!" ng-non-bindable>
@@ -823,9 +823,9 @@ $pagebuilder->buildheader();
                             <div class="slide-item-emblem-container">
                                 <a href="/games/239335015/Place-7">
                             <img class="game-item-image"
-                                 src="https://watrbx.xyz/place.png"
-                                 data-src="https://watrbx.xyz/place.png"
-                                 data-emblem-id="239335015" thumbnail='{"Final":true,"Url":"https://watrbx.xyz/place.png","RetryUrl":null}' image-retry />
+                                 src="https://watrbx.wtf/place.png"
+                                 data-src="https://watrbx.wtf/place.png"
+                                 data-emblem-id="239335015" thumbnail='{"Final":true,"Url":"https://watrbx.wtf/place.png","RetryUrl":null}' image-retry />
 
                                 </a>
                             </div>
@@ -946,7 +946,7 @@ $pagebuilder->buildheader();
 
 <div id="usernotifications-data-model"
      class="hidden"
-     data-notificationsdomain="https://www.watrbx.xyz/"
+     data-notificationsdomain="https://www.watrbx.wtf/"
      data-notificationstestinterval="5000"
      data-notificationsmaxconnectiontime="43200000">
 </div>    <script type="text/javascript">
@@ -984,15 +984,15 @@ $pagebuilder->buildheader();
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="<?=$userinfo->id?>"
-     data-domain="watrbx.xyz"
+     data-domain="watrbx.wtf"
      data-gamespagelink="/games"
-     data-chatdomain="https://www.watrbx.xyz"
+     data-chatdomain="https://www.watrbx.wtf"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://www.watrbx.xyz/"
+     data-notificationsdomain="https://www.watrbx.wtf/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true

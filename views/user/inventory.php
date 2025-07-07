@@ -237,7 +237,7 @@ $pagebuilder->buildheader();
 
 <div id="usernotifications-data-model"
      class="hidden"
-     data-notificationsdomain="https://www.watrbx.xyz/"
+     data-notificationsdomain="https://www.watrbx.wtf/"
      data-notificationstestinterval="5000"
      data-notificationsmaxconnectiontime="43200000">
 </div>    <script type="text/javascript">
@@ -275,15 +275,15 @@ $pagebuilder->buildheader();
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="62402235"
-     data-domain="watrbx.xyz"
+     data-domain="watrbx.wtf"
      data-gamespagelink="http://www.roblox.com/games"
-     data-chatdomain="https://www.watrbx.xyz"
+     data-chatdomain="https://www.watrbx.wtf"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://www.watrbx.xyz/"
+     data-notificationsdomain="https://www.watrbx.wtf/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true

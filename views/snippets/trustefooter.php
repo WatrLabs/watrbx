@@ -5,19 +5,19 @@
 ?>
 <div id="Footer" class="footer-container">
     <div class="FooterNav">
-        <a href="http://www.watrbx.xyz/info/Privacy.aspx">Privacy Policy</a>
+        <a href="http://www.watrbx.wtf/info/Privacy.aspx">Privacy Policy</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.watrbx.xyz/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
+        <a href="http://corp.watrbx.wtf/advertise-on-roblox" class="roblox-interstitial">Advertise with Us</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.watrbx.xyz/press" class="roblox-interstitial">Press</a>
+        <a href="http://corp.watrbx.wtf/press" class="roblox-interstitial">Press</a>
         &nbsp;|&nbsp;
-        <a href="http://corp.watrbx.xyz/contact-us" class="roblox-interstitial">Contact Us</a>
+        <a href="http://corp.watrbx.wtf/contact-us" class="roblox-interstitial">Contact Us</a>
         &nbsp;|&nbsp;
-            <a href="http://corp.watrbx.xyz/about" class="roblox-interstitial">About Us</a>
-&nbsp;|&nbsp;        <a href="http://blog.watrbx.xyz">Blog</a>
+            <a href="http://corp.watrbx.wtf/about" class="roblox-interstitial">About Us</a>
+&nbsp;|&nbsp;        <a href="http://blog.watrbx.wtf">Blog</a>
         &nbsp;|&nbsp;
-            <a href="http://corp.watrbx.xyz/careers" class="roblox-interstitial">Jobs</a>
-&nbsp;|&nbsp;        <a href="http://corp.watrbx.xyz/parents" class="roblox-interstitial">Parents</a>
+            <a href="http://corp.watrbx.wtf/careers" class="roblox-interstitial">Jobs</a>
+&nbsp;|&nbsp;        <a href="http://corp.watrbx.wtf/parents" class="roblox-interstitial">Parents</a>
     </div>
     <div class="legal">
             <div class="left">
@@ -29,9 +29,9 @@
             </div>
             <div class="right">
                 <p class="Legalese">
-    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="http://corp.watrbx.xyz/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
+    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a href="http://corp.watrbx.wtf/" ref="footer-smallabout" class="roblox-interstitial">ROBLOX Corporation</a>, ©2015. Patents pending.
     ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
-    Use of this site signifies your acceptance of the <a href="http://www.watrbx.xyz/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
+    Use of this site signifies your acceptance of the <a href="http://www.watrbx.wtf/info/terms-of-service" ref="footer-terms">Terms and Conditions</a>.
 </p>
             </div>
         <div class="clear"></div>
@@ -54,7 +54,7 @@
 
     <script type="text/javascript">
         $(function () {
-            Roblox.CookieUpgrader.domain = 'watrbx.xyz';
+            Roblox.CookieUpgrader.domain = 'watrbx.wtf';
             Roblox.CookieUpgrader.upgrade("GuestData", { expires: Roblox.CookieUpgrader.thirtyYearsFromNow });
             Roblox.CookieUpgrader.upgrade("RBXSource", { expires: function (cookie) { return Roblox.CookieUpgrader.getExpirationFromCookieValue("rbx_acquisition_time", cookie); } });
             Roblox.CookieUpgrader.upgrade("RBXViralAcquisition", { expires: function (cookie) { return Roblox.CookieUpgrader.getExpirationFromCookieValue("time", cookie); } });

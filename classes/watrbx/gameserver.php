@@ -334,7 +334,7 @@ class gameserver {
                 //$uri, $server, $data
         
                 $request_data = json_encode(array(
-                    "url"=>"https://www.watrbx.xyz/api/v1/gameserver/load-job?jobid=".$jobid,
+                    "url"=>"https://www.watrbx.wtf/api/v1/gameserver/load-job?jobid=".$jobid,
                     "type"=>1,
                     "hostport"=>$port,
                     "rccinstance"=>$rcc->guid

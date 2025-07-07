@@ -17,7 +17,7 @@ class thumbnails {
         $thumb = $db->table("thumbnails")->where("userid", $userid)->where("dimensions", $size)->first();
         $assetinfo = $db->table("users")->where("id", $userid)->first();
         if($thumb !== null){
-            return "//cdn.watrbx.xyz/" . $thumb->file;
+            return "//cdn.watrbx.wtf/" . $thumb->file;
         } else {
             $this->request_user_thumbnail($userid, $size, $type);
             return "/images/defaultimage.png";
@@ -33,7 +33,7 @@ class thumbnails {
             if($thumb == null){
                 $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
             } else {
-                return "//cdn.watrbx.xyz/" . $thumb->file;
+                return "//cdn.watrbx.wtf/" . $thumb->file;
             }
         } else {
             $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
@@ -44,29 +44,29 @@ class thumbnails {
             if($thumb == null){
                 $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
             } else {
-                return "//cdn.watrbx.xyz/" . $thumb->file;
+                return "//cdn.watrbx.wtf/" . $thumb->file;
             }
         } else {
             $thumb = $db->table("thumbnails")->where("assetid", $id)->where("dimensions", $size)->orderBy("id", "DESC")->first();
         }
         $assetinfo = $db->table("assets")->where("id", $id)->first();
         if($thumb !== null){
-            return "//cdn.watrbx.xyz/" . $thumb->file;
+            return "//cdn.watrbx.wtf/" . $thumb->file;
         } else {
 
             if($assetinfo->prodcategory == 1){
-                return "//cdn.watrbx.xyz/" . $assetinfo->fileid;
+                return "//cdn.watrbx.wtf/" . $assetinfo->fileid;
             } elseif($assetinfo->prodcategory == 18){
                 $assetimageinfo = $db->table("assets")->where("id", $id - 1)->first(); // really unsmart way of doing this, will improve
-                return "//cdn.watrbx.xyz/" . $assetimageinfo->fileid;
+                return "//cdn.watrbx.wtf/" . $assetimageinfo->fileid;
             } elseif($assetinfo->prodcategory == 3){
                 $thumb = $db->table("thumbnails")->where("assetid", $id)->where("mode", "Icon")->orderBy("id", "DESC")->first();
 
                 if($thumb !== null){
-                    return "//cdn.watrbx.xyz/" . $thumb->file;
+                    return "//cdn.watrbx.wtf/" . $thumb->file;
                 }
 
-                return "//cdn.watrbx.xyz/Soundimage2.png";
+                return "//cdn.watrbx.wtf/Soundimage2.png";
             }
 
             $this->request_asset_thumbnail($id, $size);

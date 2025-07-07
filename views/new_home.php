@@ -96,7 +96,9 @@ $pagebuilder->buildheader();
             <?  foreach($recentlyvisited as $visit){
                 
                 $universeinfo = $db->table("universes")->where("assetid", $visit->universeid)->first();
-                $pagebuilder->build_component("game", ["game" => $universeinfo]);
+                if($universeinfo !== null){
+                    $pagebuilder->build_component("game", ["game" => $universeinfo]);
+                }
             } ?>
 
             </ul>
@@ -256,7 +258,7 @@ $pagebuilder->buildheader();
 
 <div id="usernotifications-data-model"
      class="hidden"
-     data-notificationsdomain="https://www.watrbx.xyz/"
+     data-notificationsdomain="https://www.watrbx.wtf/"
      data-notificationstestinterval="5000"
      data-notificationsmaxconnectiontime="43200000">
 </div>    <script type="text/javascript">
@@ -294,15 +296,15 @@ $pagebuilder->buildheader();
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="<?= $userinfo->id ?>"
-     data-domain="watrbx.xyz"
+     data-domain="watrbx.wtf"
      data-gamespagelink="/games"
-     data-chatdomain="watrbx.xyz"
+     data-chatdomain="watrbx.wtf"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://www.watrbx.xyz/"
+     data-notificationsdomain="https://www.watrbx.wtf/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true

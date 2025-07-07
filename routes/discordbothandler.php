@@ -38,7 +38,7 @@ $router->group('/api/v1/discord-bot', function($router) {
                 $auth = new authentication();
                 $online = $auth->is_online($userinfo->id);
                 $userdata = array(
-                    "render"=>"https://www.watrbx.xyz/images/defaultimage.png",
+                    "render"=>"https://www.watrbx.wtf/images/defaultimage.png",
                     "id"=>$userinfo->id,
                     "username"=>$userinfo->username,
                     "regtime"=>$userinfo->regtime,
@@ -64,7 +64,7 @@ $router->group('/api/v1/discord-bot', function($router) {
         $expires = time() + 5000000;
         $code = $func->genstring(25);
         $data = array(
-            "url"=>"https://www.watrbx.xyz/?validate=$code",
+            "url"=>"https://www.watrbx.wtf/?validate=$code",
             "expires"=>$expires
         );
 

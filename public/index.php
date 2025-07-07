@@ -50,7 +50,7 @@ try {
                             require("../views/maintenance.php");
                             die();
                         } else {
-                            setcookie("maint_bypass", $maintcode, $validmaintcode->expires, "", ".watrbx.xyz");
+                            setcookie("maint_bypass", $maintcode, $validmaintcode->expires, "", ".watrbx.wtf");
                         }
                     } else {
                         require("../views/maintenance.php");

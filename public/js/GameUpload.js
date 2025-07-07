@@ -12,7 +12,7 @@ function publish() {
     document.getElementById("Uploading").style.display = 'block';
     var result = window.external.Save();
     if (result) {
-        window.external.Write().Upload('https://www.watrbx.xyz/IDE/Upload.aspx?PlaceID=');
+        window.external.Write().Upload('https://www.watrbx.wtf/IDE/Upload.aspx?PlaceID=');
         alert('Attempting Upload');
         document.getElementById("DialogResult").value = '1';
         window.close();

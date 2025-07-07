@@ -5,12 +5,12 @@ use watrbx\relationship\friends;
 global $router; // IMPORTANT: KEEP THIS HERE!
 
 function add_cors(){
-    header('Access-Control-Allow-Origin: https://www.watrbx.xyz');
+    header('Access-Control-Allow-Origin: https://www.watrbx.wtf');
     header('Access-Control-Allow-Credentials: true');
 }
 
 $router->get('/presence/user', function(){
-    header('Access-Control-Allow-Origin: https://www.watrbx.xyz');
+    header('Access-Control-Allow-Origin: https://www.watrbx.wtf');
     header('Access-Control-Allow-Credentials: true');
 
     die('{"UserPresenceType": 1}');
@@ -19,7 +19,7 @@ $router->get('/presence/user', function(){
 $router->get('/friends/list', function(){
 
     header("Content-type: application/json");
-    header('Access-Control-Allow-Origin: https://www.watrbx.xyz');
+    header('Access-Control-Allow-Origin: https://www.watrbx.wtf');
     header('Access-Control-Allow-Credentials: true');
     $auth = new authentication();
     $friends = new friends();
@@ -41,7 +41,7 @@ $router->get('/friends/list', function(){
                         "IsOnline" => true,
                         "AvatarThumb" => [
                             "Final" => true,
-                            "Url" => "https://www.watrbx.xyz/images/defaultimage.png"
+                            "Url" => "https://www.watrbx.wtf/images/defaultimage.png"
                         ],
                         "UserPresenceType"=>1,
                     ];
@@ -57,11 +57,11 @@ $router->get('/friends/list', function(){
 
 
 $router->get('/thumbnail/avatar-headshot',function(){
-    die('{"Url": "https://www.watrbx.xyz/images/defaultimage.png", "Final": true }');
+    die('{"Url": "https://www.watrbx.wtf/images/defaultimage.png", "Final": true }');
 });
 
 $router->get('/thumbnail/avatar-headshots',function(){
-    die('[{"Url": "https://www.watrbx.xyz/images/defaultimage.png", "Final": true }]');
+    die('[{"Url": "https://www.watrbx.wtf/images/defaultimage.png", "Final": true }]');
 });
 
 $router->group('/v1.0', function($router) {
@@ -71,7 +71,7 @@ $router->group('/v1.0', function($router) {
     });
 
     $router->options("/start-one-to-one-conversation", function(){
-        header("Access-Control-Allow-Origin: https://www.watrbx.xyz");
+        header("Access-Control-Allow-Origin: https://www.watrbx.wtf");
         header("Access-Control-Allow-Credentials: true");
         header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, x-csrf-token");
         header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -118,7 +118,7 @@ $router->group('/v1.0', function($router) {
                 "IsGroupChat"=> false
             ];
 
-            header('Access-Control-Allow-Origin: https://www.watrbx.xyz');
+            header('Access-Control-Allow-Origin: https://www.watrbx.wtf');
             header('Access-Control-Allow-Credentials: true');
 
             die(json_encode($return));
@@ -142,7 +142,7 @@ $router->group('/v1.0', function($router) {
     });
 
     $router->options("/send-message", function(){
-        header("Access-Control-Allow-Origin: https://www.watrbx.xyz");
+        header("Access-Control-Allow-Origin: https://www.watrbx.wtf");
         header("Access-Control-Allow-Credentials: true");
         header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, x-csrf-token");
         header("Access-Control-Allow-Methods: POST, OPTIONS");

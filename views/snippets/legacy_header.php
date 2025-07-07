@@ -170,7 +170,7 @@ Roblox.Endpoints.Urls['/presence/users'] = '/presence/users';
 Roblox.Endpoints.Urls['/presence/user'] = '/presence/user';
 Roblox.Endpoints.Urls['/friends/list'] = '/friends/list';
 Roblox.Endpoints.Urls['/navigation/getCount'] = '/navigation/getCount';
-Roblox.Endpoints.Urls['/catalog/browse.aspx'] = 'https://www.watrbx.xyz/catalog/browse.aspx';
+Roblox.Endpoints.Urls['/catalog/browse.aspx'] = 'https://www.watrbx.wtf/catalog/browse.aspx';
 Roblox.Endpoints.Urls['/catalog/html'] = '/catalog/html';
 Roblox.Endpoints.Urls['/catalog/json'] = '/catalog/json';
 Roblox.Endpoints.Urls['/catalog/contents'] = '/catalog/contents';
@@ -595,4 +595,4 @@ function __doPostBack(eventTarget, eventArgument) {
         
         
         <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
-        <div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText"><b>Notice:</b> The CDN has been moved to a different provider. If you have any issues, <a href="https://www.watrbx.xyz/users/2/profile" style="text-decoration: underline; color:white;">message me.</a></div></div>
+        <div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">Game Publishing & Studio IDE is here! Download studio and create away!</div></div>

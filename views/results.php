@@ -4,6 +4,9 @@ use watrbx\gameserver;
 $pagebuilder = new pagebuilder();
 $gameserver = new gameserver();
 
+
+global $db;
+
 $startrows = 0;
 $genre = 0;
 $sort = 0;
@@ -16,6 +19,10 @@ if(isset($_GET["GenreID"])){
     $genre = (int)$_GET["GenreID"];
 }
 
+if(isset($_GET["Keyword"])){
+    $keyword = $_GET["Keyword"];
+}
+
 if(isset($_GET["StartRows"])){
     $startrows = (int)$_GET["StartRows"];
 }
@@ -25,13 +32,29 @@ if(isset($_GET["MaxRows"])){
 }
 
 if($sort !== 1){
-    die();
+    $query = $db->table("universes")->where("public", 1);
+
+    if (isset($keyword)) {
+        $query->where("title", 'LIKE', '%' . strtolower($keyword) . '%');
+    }
+
+    $allgames = $query->get();
+
+    $paginated = array_slice($allgames, $startrows, $maxrows);
+
+    foreach ($paginated as $game) {
+        $pagebuilder->build_component("game", ["game" => $game]);
+    }
 }
 
 
-global $db;
 
 $query = $db->table("universes")->where("public", 1);
+
+if(isset($keyword)){
+    $query->where("title", "LIKE", "%".$keyword."%");
+}
+
 $allgames = $query->get();
 
 foreach ($allgames as &$game) {
@@ -49,10 +72,7 @@ usort($allgames, function ($a, $b) {
     return $b->active_players <=> $a->active_players;
 });
 
-
-
 $paginated = array_slice($allgames, $startrows, $maxrows);
-
 
 foreach ($paginated as $game) {
     $pagebuilder->build_component("game", ["game" => $game]);

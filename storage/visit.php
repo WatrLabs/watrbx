@@ -3,28 +3,25 @@ use watrlabs\authentication;
 
 header("content-type: text/plain; X-Robots-Tag: noindex;charset=UTF-8"); 
  if (isset($_COOKIE["_ROBLOSECURITY"])) {
-            global $currentuser;
-            $userinfo = $currentuser;
-            if($userinfo == null){
-                $id = rand(100, 999); 
-                $username = "Guest $id";
-                $guest = true;
-            } else {
-                $username = $userinfo->username;
-                $id = $userinfo->id;
-                $guest = false;
-            }
-        } else {
-            $id = rand(100, 999); 
-                $username = "Guest $id";
-                $guest = true;
-        }
+	global $currentuser;
+	$userinfo = $currentuser;
+	if($userinfo == null){
+		$username = "Player1";
+		$id = -1;
+	} else {
+		$username = $userinfo->username;
+		$id = $userinfo->id;
+	}
+} else {
+	$username = "Player1";
+	$id = -1;
+}
 
 
 ob_start();
 ?>
 
-pcall(function() game:GetService("ContentProvider"):SetBaseUrl("http://www.watrbx.xyz" .. "/") end)
+pcall(function() game:GetService("ContentProvider"):SetBaseUrl("http://www.watrbx.wtf" .. "/") end)
 
 -- Prepended to Edit.lua and Visit.lua and Studio.lua and PlaySolo.lua--
 
@@ -45,30 +42,30 @@ local message = Instance.new("Message")
 message.Parent = workspace
 message.archivable = false
 
-game:GetService("ScriptInformationProvider"):SetAssetUrl("http://assetgame.watrbx.xyz/Asset/")
+game:GetService("ScriptInformationProvider"):SetAssetUrl("http://assetgame.watrbx.wtf/Asset/")
 game:GetService("ContentProvider"):SetThreadPool(16)
-pcall(function() game:GetService("InsertService"):SetFreeModelUrl("http://assetgame.watrbx.xyz/Game/Tools/InsertAsset.ashx?type=fm&q=%s&pg=%d&rs=%d") end) -- Used for free model search (insert tool)
-pcall(function() game:GetService("InsertService"):SetFreeDecalUrl("http://assetgame.watrbx.xyz/Game/Tools/InsertAsset.ashx?type=fd&q=%s&pg=%d&rs=%d") end) -- Used for free decal search (insert tool)
+pcall(function() game:GetService("InsertService"):SetFreeModelUrl("http://assetgame.watrbx.wtf/Game/Tools/InsertAsset.ashx?type=fm&q=%s&pg=%d&rs=%d") end) -- Used for free model search (insert tool)
+pcall(function() game:GetService("InsertService"):SetFreeDecalUrl("http://assetgame.watrbx.wtf/Game/Tools/InsertAsset.ashx?type=fd&q=%s&pg=%d&rs=%d") end) -- Used for free decal search (insert tool)
 
 ifSeleniumThenSetCookie("SeleniumTest2", "Set URL service")
 
 settings().Diagnostics:LegacyScriptMode()
 
-game:GetService("InsertService"):SetBaseSetsUrl("http://assetgame.watrbx.xyz/Game/Tools/InsertAsset.ashx?nsets=10&type=base")
-game:GetService("InsertService"):SetUserSetsUrl("http://assetgame.watrbx.xyz/Game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=%d")
-game:GetService("InsertService"):SetCollectionUrl("http://assetgame.watrbx.xyz/Game/Tools/InsertAsset.ashx?sid=%d")
-game:GetService("InsertService"):SetAssetUrl("http://assetgame.watrbx.xyz/Asset/?id=%d")
-game:GetService("InsertService"):SetAssetVersionUrl("http://assetgame.watrbx.xyz/Asset/?assetversionid=%d")
+game:GetService("InsertService"):SetBaseSetsUrl("http://assetgame.watrbx.wtf/Game/Tools/InsertAsset.ashx?nsets=10&type=base")
+game:GetService("InsertService"):SetUserSetsUrl("http://assetgame.watrbx.wtf/Game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=%d")
+game:GetService("InsertService"):SetCollectionUrl("http://assetgame.watrbx.wtf/Game/Tools/InsertAsset.ashx?sid=%d")
+game:GetService("InsertService"):SetAssetUrl("http://assetgame.watrbx.wtf/Asset/?id=%d")
+game:GetService("InsertService"):SetAssetVersionUrl("http://assetgame.watrbx.wtf/Asset/?assetversionid=%d")
 
-pcall(function() game:GetService("SocialService"):SetFriendUrl("http://assetgame.watrbx.xyz/Game/LuaWebService/HandleSocialRequest.ashx?method=IsFriendsWith&playerid=%d&userid=%d") end)
-pcall(function() game:GetService("SocialService"):SetBestFriendUrl("http://assetgame.watrbx.xyz/Game/LuaWebService/HandleSocialRequest.ashx?method=IsBestFriendsWith&playerid=%d&userid=%d") end)
-pcall(function() game:GetService("SocialService"):SetGroupUrl("http://assetgame.watrbx.xyz/Game/LuaWebService/HandleSocialRequest.ashx?method=IsInGroup&playerid=%d&groupid=%d") end)
-pcall(function() game:GetService("SocialService"):SetGroupRankUrl("http://assetgame.watrbx.xyz/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRank&playerid=%d&groupid=%d") end)
-pcall(function() game:GetService("SocialService"):SetGroupRoleUrl("http://assetgame.watrbx.xyz/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=%d&groupid=%d") end)
-pcall(function() game:GetService("GamePassService"):SetPlayerHasPassUrl("http://assetgame.watrbx.xyz/Game/GamePass/GamePassHandler.ashx?Action=HasPass&UserID=%d&PassID=%d") end)
-pcall(function() game:GetService("MarketplaceService"):SetProductInfoUrl("https://api.watrbx.xyz/marketplace/productinfo?assetId=%d") end)
-pcall(function() game:GetService("MarketplaceService"):SetDevProductInfoUrl("https://api.watrbx.xyz/marketplace/productDetails?productId=%d") end)
-pcall(function() game:GetService("MarketplaceService"):SetPlayerOwnsAssetUrl("https://api.watrbx.xyz/ownership/hasasset?userId=%d&assetId=%d") end)
+pcall(function() game:GetService("SocialService"):SetFriendUrl("http://assetgame.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsFriendsWith&playerid=%d&userid=%d") end)
+pcall(function() game:GetService("SocialService"):SetBestFriendUrl("http://assetgame.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsBestFriendsWith&playerid=%d&userid=%d") end)
+pcall(function() game:GetService("SocialService"):SetGroupUrl("http://assetgame.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsInGroup&playerid=%d&groupid=%d") end)
+pcall(function() game:GetService("SocialService"):SetGroupRankUrl("http://assetgame.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRank&playerid=%d&groupid=%d") end)
+pcall(function() game:GetService("SocialService"):SetGroupRoleUrl("http://assetgame.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=%d&groupid=%d") end)
+pcall(function() game:GetService("GamePassService"):SetPlayerHasPassUrl("http://assetgame.watrbx.wtf/Game/GamePass/GamePassHandler.ashx?Action=HasPass&UserID=%d&PassID=%d") end)
+pcall(function() game:GetService("MarketplaceService"):SetProductInfoUrl("https://api.watrbx.wtf/marketplace/productinfo?assetId=%d") end)
+pcall(function() game:GetService("MarketplaceService"):SetDevProductInfoUrl("https://api.watrbx.wtf/marketplace/productDetails?productId=%d") end)
+pcall(function() game:GetService("MarketplaceService"):SetPlayerOwnsAssetUrl("https://api.watrbx.wtf/ownership/hasasset?userId=%d&assetId=%d") end)
 pcall(function() game:SetCreatorID(0, Enum.CreatorType.User) end)
 
 ifSeleniumThenSetCookie("SeleniumTest3", "Set creator ID")
@@ -93,7 +90,7 @@ pcall(function() settings().Rendering.EnableFRM = true end)
 pcall(function() settings()["Task Scheduler"].PriorityMethod = Enum.PriorityMethod.AccumulatedError end)
 
 game:GetService("ChangeHistoryService"):SetEnabled(false)
-pcall(function() game:GetService("Players"):SetBuildUserPermissionsUrl("http://www.watrbx.xyz//Game/BuildActionPermissionCheck.ashx?assetId=0&userId=%d&isSolo=true") end)
+pcall(function() game:GetService("Players"):SetBuildUserPermissionsUrl("http://www.watrbx.wtf//Game/BuildActionPermissionCheck.ashx?assetId=0&userId=%d&isSolo=true") end)
 
 workspace:SetPhysicsThrottleEnabled(true)
 
@@ -133,7 +130,7 @@ function doVisit()
 	else
 		player = game:GetService("Players"):CreateLocalPlayer(0)
 	end
-	player.CharacterAppearance = "http://www.watrbx.xyz/Character.aspx"
+	player.CharacterAppearance = "http://www.watrbx.wtf/CharacterFetch.aspx?userId=1"
 	local propExists, canAutoLoadChar = false
 	propExists = pcall(function()  canAutoLoadChar = game.Players.CharacterAutoLoads end)
 
@@ -149,7 +146,7 @@ function doVisit()
 	
 	if not inStudio and false then
 		message.Text = "Setting Ping"
-		visit:SetPing("http://assetgame.watrbx.xyz/Game/ClientPresence.ashx?version=old&PlaceID=0", 120)
+		visit:SetPing("http://assetgame.watrbx.wtf/Game/ClientPresence.ashx?version=old&PlaceID=0", 120)
 
 		message.Text = "Sending Stats"
 		game:HttpGet("")
@@ -183,7 +180,7 @@ else
 	message.Text = "Error on visit: " .. err
 	if not inStudio then
 		if false then
-			game:HttpPost("https://data.watrbx.xyz/Error/Lua.ashx", "Visit.lua: " .. err)
+			game:HttpPost("https://data.watrbx.wtf/Error/Lua.ashx", "Visit.lua: " .. err)
 		end
 	end
 end
