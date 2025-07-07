@@ -2,9 +2,11 @@
     header("Content-type: text/lua");
 ?>
 
-url = "https://www.watrbx.xyz"
+url = "https://www.watrbx.wtf"
 
 function start(placeId, port, url, universeid)
+
+assetGameUrl = "http://assetgame.watrbx.wtf"
 
 apikey = "<?=$apikey?>"
 jobid = "<?=$jobid?>"
@@ -55,57 +57,34 @@ game:GetService("ChangeHistoryService"):SetEnabled(false)
 local ns = game:GetService("NetworkServer")
 
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
-pcall(function() game:GetService("ContentProvider"):SetBaseUrl(url .. "/") end)
 
 if url~=nil then
 	-- players service --
-	pcall(function() game:GetService("Players"):SetAbuseReportUrl(url .. "/moderation/AbuseReport/InGameChatHandler") end) --TODO: Implement
-	pcall(function() game:GetService("Players"):SetChatFilterUrl(url .. "/Game/ChatFilter.ashx") end) --not even used, just enables filter (lol)
-	pcall(function() game:GetService("Players"):SetLoadDataUrl(url .. "/Persistence/GetBlobUrl.ashx?placeId=" .. placeId .. "&userId=%d") end)
-	pcall(function() game:GetService("Players"):SetSaveDataUrl(url .. "/Persistence/SetBlob.ashx?placeId=" .. placeId .. "&userId=%d") end)
-
+	pcall(function() game:GetService("Players"):SetAbuseReportUrl(url .. "/AbuseReport/InGameChatHandler.ashx") end)
+	pcall(function() game:GetService("Players"):SetChatFilterUrl(url .. "/Game/ChatFilter.ashx") end)
 	-- scriptinformationprovider service --
 	pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(url .. "/Asset/") end)
 	
 	-- contentprovider service --
 	pcall(function() game:GetService("ContentProvider"):SetBaseUrl(url .. "/") end)
 	
-	-- badge service --
-	pcall(function() game:GetService("BadgeService"):SetPlaceId(placeId) end)
-	pcall(function() game:GetService("BadgeService"):SetAwardBadgeUrl(url .. "/Game/Badge/AwardBadge?UserID=%d&BadgeID=%d&PlaceID=%d") end)
-	pcall(function() game:GetService("BadgeService"):SetHasBadgeUrl(url .. "/Game/Badge/HasBadge?UserID=%d&BadgeID=%d") end)
-	pcall(function() game:GetService("BadgeService"):SetIsBadgeDisabledUrl(url .. "/Game/Badge/IsBadgeDisabled?BadgeID=%d&PlaceID=%d") end)
-	pcall(function() game:GetService("BadgeService"):SetIsBadgeLegalUrl("") end)
-
-	-- social service --
-	pcall(function() game:GetService("SocialService"):SetFriendUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=IsFriendsWith&playerid=%d&userid=%d") end)
-	pcall(function() game:GetService("SocialService"):SetBestFriendUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=IsBestFriendsWith&playerid=%d&userid=%d") end)
-	pcall(function() game:GetService("SocialService"):SetGroupUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=IsInGroup&playerid=%d&groupid=%d") end)
-	pcall(function() game:GetService("SocialService"):SetGroupRankUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRank&playerid=%d&groupid=%d") end)
-	pcall(function() game:GetService("SocialService"):SetGroupRoleUrl(url .. "/Game/LuaWebService/HandleSocialRequest.ashx?method=GetGroupRole&playerid=%d&groupid=%d") end)
-
-	-- gamepass service --
-	pcall(function() game:GetService("GamePassService"):SetPlayerHasPassUrl(url .. "/Game/GamePass/GamePassHandler.ashx?Action=HasPass&UserID=%d&PassID=%d") end)
-
-	-- friends service --
-	pcall(function() game:GetService("FriendService"):SetMakeFriendUrl(url .. "/Game/CreateFriend?firstUserId=%d&secondUserId=%d") end)
-	pcall(function() game:GetService("FriendService"):SetBreakFriendUrl(url .. "/Game/BreakFriend?firstUserId=%d&secondUserId=%d") end)
-	pcall(function() game:GetService("FriendService"):SetGetFriendsUrl(url .. "/Game/AreFriends?userId=%d") end)
+	game:GetService("BadgeService"):SetIsBadgeLegalUrl("")
+	game:GetService("InsertService"):SetBaseSetsUrl(assetGameUrl .. "/Game/Tools/InsertAsset.ashx?nsets=10&type=base")
+	game:GetService("InsertService"):SetUserSetsUrl(assetGameUrl .. "/Game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=%d")
+	game:GetService("InsertService"):SetCollectionUrl(assetGameUrl .. "/Game/Tools/InsertAsset.ashx?sid=%d")
+	game:GetService("InsertService"):SetAssetUrl(assetGameUrl .. "/Asset/?id=%d")
+	game:GetService("InsertService"):SetAssetVersionUrl(assetGameUrl .. "/Asset/?assetversionid=%d")
 	
-	-- insert service --
-	pcall(function() game:GetService("InsertService"):SetBaseSetsUrl(url .. "/Game/Tools/InsertAsset.ashx?nsets=10&type=base") end)
-	pcall(function() game:GetService("InsertService"):SetUserSetsUrl(url .. "/Game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=%d") end)
-	pcall(function() game:GetService("InsertService"):SetCollectionUrl(url .. "/Game/Tools/InsertAsset.ashx?sid=%d") end)
-	pcall(function() game:GetService("InsertService"):SetAssetUrl(url .. "/Asset/?id=%d") end)
-	pcall(function() game:GetService("InsertService"):SetAssetVersionUrl(url .. "/Asset/?assetversionid=%d") end)
-	
-	pcall(function() game:HttpGet(url .. "/game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
-	
-	-- pcall(function() 
-	--			if access then
-	--				game:HttpGet(url .. "/game/PlaceSpecificScript.ashx?PlaceId=" .. placeId .. "&" .. access)()
-	--			end
-	--		end)
+	if not newBadgeUrlEnabled then
+		game:GetService("BadgeService"):SetAwardBadgeUrl(assetGameUrl .. "/Game/Badge/AwardBadge.ashx?UserID=%d&BadgeID=%d&PlaceID=%d")
+	end
+
+	game:GetService("BadgeService"):SetHasBadgeUrl(assetGameUrl .. "/Game/Badge/HasBadge.ashx?UserID=%d&BadgeID=%d")
+	game:GetService("BadgeService"):SetIsBadgeDisabledUrl(assetGameUrl .. "/Game/Badge/IsBadgeDisabled.ashx?BadgeID=%d&PlaceID=%d")
+
+	game:GetService("FriendService"):SetMakeFriendUrl(assetGameUrl .. "/Game/CreateFriend?firstUserId=%d&secondUserId=%d")
+	game:GetService("FriendService"):SetBreakFriendUrl(assetGameUrl .. "/Game/BreakFriend?firstUserId=%d&secondUserId=%d")
+	game:GetService("FriendService"):SetGetFriendsUrl(assetGameUrl .. "/Game/AreFriends?userId=%d")
 end
 
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
@@ -155,7 +134,7 @@ function onChatted(msg, speaker)
 
     if msg == ";ec" then
 		local sound = Instance.new("Sound")
-    	sound.SoundId = "http://www.watrbx.xyz/asset/?id=17"
+    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=17"
     	sound.Parent = speaker.Character.Torso
     	sound.Volume = 0.5
     	sound:Play()
@@ -164,7 +143,7 @@ function onChatted(msg, speaker)
 
 	if msg == ";raymonf" then
 		local sound = Instance.new("Sound")
-    	sound.SoundId = "http://www.watrbx.xyz/asset/?id=19"
+    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=19"
     	sound.Parent = speaker.Character.Torso
     	sound.Volume = 0.5
     	sound:Play()
@@ -206,7 +185,7 @@ pcall(function() print(game:HttpGet(url .. "/api/v1/gameserver/mark-active?jobid
 
 end
 
-start(<?=$place?>, <?=$port?>, "https://www.watrbx.xyz", <?=$universeid?>)
+start(<?=$place?>, <?=$port?>, "https://www.watrbx.wtf", <?=$universeid?>)
 
 while wait(30) do
     if #game:GetService("Players"):GetPlayers() == 0 then

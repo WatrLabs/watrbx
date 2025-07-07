@@ -9,7 +9,7 @@
 	  <link rel="stylesheet" href="/CSS/Pages/gamesEdit.css">
       <link rel="stylesheet" href="/CSS/Pages/upload.css">
 	  <link rel='stylesheet' href='/CSS/Pages/StyleGuide2.css' />
-	  <script type="text/javascript" src="//code.jquery.com/jquery-1.7.2.min.js"></script>
+	  <script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
    </head>
    <body>
 		<div class="boxed-body">
@@ -25,7 +25,7 @@
 			  </div>
 		   </div>
 		   <div id="content" style="margin-top: -1px;">
-		   <form name="placeForm" method="post" id="placeForm">
+		   <form name="placeForm" method="post" id="placeForm" action="/api/v1/create-place">
 				 <div id="basicSettings" class="default-hidden" style="display: block;">
 					<div class="validation-summary-valid" data-valmsg-summary="true">
 					   <ul>
@@ -103,5 +103,11 @@
 		   </div> 
 		</div>
 		</form>
+		<script>
+			const form = document.getElementById("placeForm");
+			function Save() {
+				form.submit();
+			}
+		</script>
    </body>
 </html>

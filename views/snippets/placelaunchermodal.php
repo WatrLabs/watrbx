@@ -70,7 +70,7 @@
                 </button>
             </div>
             <div class="rbx-small rbx-text-notes">
-                <a href="https://en.help.watrbx.xyz/hc/en-us/articles/204473560" class="rbx-link" target="_blank">Click here for help</a>
+                <a href="https://en.help.watrbx.wtf/hc/en-us/articles/204473560" class="rbx-link" target="_blank">Click here for help</a>
             </div>
 
         </div>
@@ -112,7 +112,7 @@
         </div>
         <div id="videoPrerollJoinBC">
             <span>Get more with Builders Club!</span>
-            <a href="https://www.watrbx.xyz/premium/membership?ctx=preroll" target="_blank" class="btn-medium btn-primary" id="videoPrerollJoinBCButton">Join Builders Club</a>
+            <a href="https://www.watrbx.wtf/premium/membership?ctx=preroll" target="_blank" class="btn-medium btn-primary" id="videoPrerollJoinBCButton">Join Builders Club</a>
         </div>
     </div>   
         <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
@@ -161,8 +161,8 @@
         <div style="clear:both; height:25px;"></div>
         <div class="RevisedFooter">
             <div style="width:200px;margin:10px auto 0 auto;">
-                <a href="http://www.watrbx.xyz/?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fmy%2Fmessages%2F"><div class="RevisedCharacterSelectSignup"></div></a>
-                <a class="HaveAccount" href="https://www.watrbx.xyz/newlogin?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fmy%2Fmessages%2F">I have an account</a>
+                <a href="http://www.watrbx.wtf/?returnUrl=http%3A%2F%2Fwww.watrbx.wtf%2Fmy%2Fmessages%2F"><div class="RevisedCharacterSelectSignup"></div></a>
+                <a class="HaveAccount" href="https://www.watrbx.wtf/newlogin?returnUrl=http%3A%2F%2Fwww.watrbx.wtf%2Fmy%2Fmessages%2F">I have an account</a>
             </div>
         </div>
     </div>
@@ -222,7 +222,7 @@
 <script type="text/javascript">
     Roblox.Client._skip = null;
     Roblox.Client._CLSID = '76D50904-6780-4c8b-8986-1A7EE0B1716D';
-    Roblox.Client._installHost = 'setup.watrbx.xyz';
+    Roblox.Client._installHost = 'setup.watrbx.wtf';
     Roblox.Client.ImplementsProxy = true;
     Roblox.Client._silentModeEnabled = true;
     Roblox.Client._bringAppToFrontEnabled = false;

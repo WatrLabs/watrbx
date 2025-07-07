@@ -10,6 +10,8 @@ use watrbx\sitefunctions;
 use watrbx\relationship\friends;
 use Aws\S3\S3Client;
 use Carbon\Carbon;
+use watrlabs\logging\discord;
+use watrlabs\watrkit\pagebuilder;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
@@ -66,8 +68,8 @@ $router->get('/api/v1/get-players', function(){
  
 $router->get('/Login/Negotiate.ashx', function() {
     $auth = $_GET["suggest"] ?? 0;
-    setcookie(".ROBLOSECURITY", $auth, time() + 8600, "/", ".watrbx.xyz");
-    //setcookie(".ROBLOSECURITY", $session, $expiration, "/", ".watrbx.xyz");
+    setcookie(".ROBLOSECURITY", $auth, time() + 8600, "/", ".watrbx.wtf");
+    //setcookie(".ROBLOSECURITY", $session, $expiration, "/", ".watrbx.wtf");
 });
 
 $router->get('/Setting/QuietGet/ClientAppSettings/', function() {
@@ -142,7 +144,7 @@ $router->get('/avatar-thumbnail-3d/json', function(){
     header("Content-type: application/json");
 
     $json = array(
-        "Url"=>"https://www.watrbx.xyz/avatar-thumbnail-3d/",
+        "Url"=>"https://www.watrbx.wtf/avatar-thumbnail-3d/",
         "Final"=>true
     );
 
@@ -156,7 +158,7 @@ $router->get('/thumbnail/resolve-hash/{the}', function($the){
 
     $json = array(
         "Final"=>true,
-        "Url"=>"https://www.watrbx.xyz/thumbnail/3dfiles/$the",
+        "Url"=>"https://www.watrbx.wtf/thumbnail/3dfiles/$the",
         "width"=>500,
         "height"=>500
     );
@@ -554,7 +556,7 @@ $router->post('/api/v1/shirt-creator', function(){
                         <Item class="Shirt" referent="RBX0">
                             <Properties>
                             <Content name="ShirtTemplate">
-                                <url>http://www.watrbx.xyz/asset/?id='.$insertid.'</url>
+                                <url>http://www.watrbx.wtf/asset/?id='.$insertid.'</url>
                             </Content>
                             <string name="Name">Shirt</string>
                             <bool name="archivable">true</bool>
@@ -654,7 +656,7 @@ $router->post('/api/v1/pants-creator', function(){
                         <Item class="Pants" referent="RBX0">
                             <Properties>
                             <Content name="PantsTemplate">
-                                <url>http://www.watrbx.xyz/asset/?id='.$insertid.'</url>
+                                <url>http://www.watrbx.wtf/asset/?id='.$insertid.'</url>
                             </Content>
                             <string name="Name">Pants</string>
                             <bool name="archivable">true</bool>
@@ -1091,6 +1093,24 @@ $router->get('/sets/get-roblox-sets', function(){
     // TODO: Actually implement sets
     header("Content-type: application/json");
     die('[{"Id":464140,"Name":"Game Stuff"},{"Id":464138,"Name":"Baseplates"},{"Id":464131,"Name":"Weapons"},{"Id":463266,"Name":"Vehicles"},{"Id":458339,"Name":"Bricks"},{"Id":360380,"Name":"Basic Building"},{"Id":360378,"Name":"Advanced Building"},{"Id":360375,"Name":"House Kit"},{"Id":360372,"Name":"House Interior Kit"},{"Id":360371,"Name":"Landscape"},{"Id":360369,"Name":"Castle Kit"},{"Id":360365,"Name":"Castle Interior Kit"},{"Id":360363,"Name":"Space Kit"},{"Id":360362,"Name":"Fun Machines"},{"Id":360360,"Name":"Deadly Machines"}]');
+});
+
+$router->get('/universes/validate-place-join', function(){
+
+    
+    if(isset($_GET["destinationPlaceId"])){
+        
+        $destination = (int)$_GET["destinationPlaceId"];
+
+        global $db;
+        $assetinfo = $db->table("assets")->where("id", $destination)->where("prodcategory", 9)->first();
+
+        die(var_export($assetinfo !== null, true));
+
+    }
+
+    die("false");
+
 });
 
 $router->get('/ide/toolbox/items', function(){
@@ -1698,7 +1718,7 @@ $router->get('/users/friends/list-json', function(){
                             ],
                             "Thumbnail" => [
                                 "Final" => true,
-                                "Url" => "https://watrbx.xyz/images/defaultimage.png",
+                                "Url" => "https://watrbx.wtf/images/defaultimage.png",
                                 "RetryUrl" => null
                             ],
                             "InvitationId" => 0,
@@ -2048,20 +2068,191 @@ $router->post('/client-status/set', function(){
     
 });
 
+$router->post('/AbuseReport/InGameChatHandler.ashx', function(){
+    die();
+    $post = file_get_contents('php://input');
+
+    if(!empty($post)){
+
+        $xml = simplexml_load_string($post);
+
+        if($xml !== false){
+
+            $report = [
+                'reportinguser' => $xml['userID'],
+                'placeid' => $xml['placeID'],
+                'comment' => $xml->comment,
+                'messages' => []
+            ];
+
+            $allmessages = [];
+
+            foreach ($xml->messages->message as $message) {
+                $allmessages[] = [
+                    'userID' => (string) $message['userID'],
+                    'guid' => (string) $message['guid'],
+                    'text' => (string) $message
+                ];
+            }
+
+            $report["messages"] = json_encode($allmessages);
+
+            global $db;
+
+            $db->table("abuse-reports")->insert($report);
+            $log = new discord();
+            $log->set_webhook_url($_ENV["MODERATION_WEB_HOOK"]);
+            $auth = new authentication;
+            $reportinguser = $auth->getuserbyid($xml['userID']);
+
+            $exploded = explode(";", $xml->comment);
+
+            $log->abuse_report($reportinguser->username . " has made an abuse report!\n\n".$exploded[0]."\nPlaceID: ".$xml['placeID']."\nRule Broken: ".$exploded[1]."\nAdditional Details: ".$exploded[2]."");
+            die();
+        } else {
+            http_response_code(400);
+            die();
+        }
+
+    }
+
+});
+
+$router->get('/marketplace/productinfo', function(){
+
+    header("Content-type: application/json");
+    
+    if(isset($_GET["assetId"])){
+        $auth = new authentication();
+        $assetid = (int)$_GET["assetId"];
+        
+        $productinfo = array(
+            "Name" => "Unknown",
+            "Description" => "???",
+            "Created" => "0",
+            "Updated" => "0",
+            "PriceInRobux" => 0,
+            "PriceInTickets" => 0,
+            "AssetId" => $assetid,
+            "ProductId" => $assetid,
+            "AssetTypeId" => 0,
+            "Creator" => [
+                "Id" => "0",
+                "Name" => "Unknown",
+                "CreatorType" => "User",
+            ],
+            "MinimumMembershipLevel" => 0,
+            "IsForSale" => True,
+        );
+
+        global $db;
+        $assetinfo = $db->table("assets")->where("id", $assetid)->first();
+
+        if($assetinfo !== null){
+            $creatorinfo = $auth->getuserbyid($assetinfo->owner);
+
+            $productinfo["Name"] = $assetinfo->name;
+            $productinfo["Description"] = $assetinfo->description;
+            $productinfo["AssetTypeId"] = $assetinfo->prodcategory;
+            $productinfo["Created"] = date('c', $assetinfo->created);
+            $productinfo["Updated"] = date('c', $assetinfo->updated);
+            $productinfo["PriceInRobux"] = $assetinfo->robux;
+            $productinfo["PriceInTickets"] = $assetinfo->tix;
+
+            $productinfo["Creator"]["Id"] = $creatorinfo->id;
+            $productinfo["Creator"]["Name"] = $creatorinfo->username;
+            $productinfo["Creator"]["CreatorType"] = "User";
+        }
+
+        die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
+
+    } else {
+        header("Content-type: application/json");
+        die(json_encode(array("success"=>false)));
+        
+    }
+});
+
+
+$router->get('/marketplace/productDetails', function(){
+
+    header("Content-type: application/json");
+    
+    if(isset($_GET["productId"])){
+        $auth = new authentication();
+        $assetid = (int)$_GET["productId"];
+        
+        $productinfo = [
+            "TargetId" => $assetid,
+            "ProductType" => "User Product",
+            "AssetId" => $assetid,
+            "ProductId" => $assetid,
+            "Name" => "Unknown Asset",
+            "Description"=>"This is a discription.",
+            "AssetTypeId" => 9,
+            "Creator" => [
+                "Id" => 1,
+                "Name" => "Unkown",
+                "CreatorType" => "User",
+                "CreatorTargetId" => 1
+            ],
+            "IconImageAssetId" => 607948062,
+            "Created" => "2016-05-01T01:07:04.78Z",
+            "Updated" => "2016-09-26T22:43:21.667Z",
+            "PriceInRobux" => 0,
+            "PriceInTickets" => 0,
+            "Sales" => 0,
+            "IsNew" => false,
+            "IsForSale" => true,
+            "IsPublicDomain" => true,
+            "IsLimited" => false,
+            "IsLimitedUnique" => false,
+            "Remaining" => null,
+            "MinimumMembershipLevel" => 0,
+            "ContentRatingTypeId" => 0
+        ];
+
+        global $db;
+        $assetinfo = $db->table("assets")->where("id", $assetid)->first();
+
+        if($assetinfo !== null){
+            $creatorinfo = $auth->getuserbyid($assetinfo->owner);
+
+            $productinfo["Name"] = $assetinfo->name;
+            $productinfo["AssetTypeId"] = $assetinfo->prodcategory;
+            $productinfo["Created"] = date('c', $assetinfo->created);
+            $productinfo["Updated"] = date('c', $assetinfo->updated);
+            $productinfo["PriceInRobux"] = $assetinfo->robux;
+            $productinfo["PriceInTickets"] = $assetinfo->tix;
+
+            $productinfo["Creator"]["Id"] = $creatorinfo->id;
+            $productinfo["Creator"]["Name"] = $creatorinfo->username;
+            $productinfo["Creator"]["CreatorTargetId"] = $creatorinfo->id;
+        }
+
+        die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
+
+    } else {
+        header("Content-type: application/json");
+        die(json_encode(array("success"=>false)));
+        
+    }
+});
+
 $router->post('/Game/PlaceLauncher.ashx', function() {
     header("Content-type: application/json");
    $placelauncher = array(
         "jobid"=>"null",
         "status"=>0,
         "joinScriptUrl"=>"null",
-        "authenticationUrl"=>"http://www.watrbx.xyz/Login/Negotiate.ashx",
+        "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=>"null",
         "message"=>"Hi!"
     ); 
     
     //$placelauncher["jobid"] = "Test";
     //$placelauncher["status"] = 2;
-    //$placelauncher["joinScriptUrl"] = "http://www.watrbx.xyz/Game/Join.ashx?user=watrabi&ip=127.0.0.1&id=420&port=7894&capp=1&mship=BuildersClub&PlaceId=1";
+    //$placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?user=watrabi&ip=127.0.0.1&id=420&port=7894&capp=1&mship=BuildersClub&PlaceId=1";
     
     $gameserver = new gameserver();
 
@@ -2107,7 +2298,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
 
                     $placelauncher["jobid"] = $jobid;
 
-                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.xyz/Game/Join.ashx?joincode=" . $joincode;
+                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
                     
                 } else {
 
@@ -2156,7 +2347,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     
     //$placelauncher["jobid"] = "Test";
     //$placelauncher["status"] = 2;
-    //$placelauncher["joinScriptUrl"] = "http://www.watrbx.xyz/Game/Join.ashx?user=watrabi&ip=127.0.0.1&id=420&port=7894&capp=1&mship=BuildersClub&PlaceId=1";
+    //$placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?user=watrabi&ip=127.0.0.1&id=420&port=7894&capp=1&mship=BuildersClub&PlaceId=1";
     
     $gameserver = new gameserver();
 
@@ -2207,7 +2398,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
 
                     $placelauncher["jobid"] = $jobid;
 
-                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.xyz/Game/Join.ashx?joincode=" . $joincode;
+                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
                     
                 } else {
 
@@ -2316,7 +2507,7 @@ $router->get("/universes/{id}/cloudeditenabled", function(){
     die(json_encode(["enabled"=>false]));
 });
 
-$router->get('/Game/Badge/HasBadge', function(){
+$router->get('/Game/Badge/HasBadge.ashx', function(){
     if(isset($_GET["UserID"]) && isset($_GET["BadgeID"])){
         $userid = (int)$_GET["UserID"];
         $badgeid = $_GET["BadgeID"];
@@ -2342,7 +2533,7 @@ $router->get('/Game/Badge/HasBadge', function(){
     }
 });
 
-$router->get('/Game/Badge/IsBadgeDisabled', function(){
+$router->get('/Game/Badge/IsBadgeDisabled.ashx', function(){
     if(isset($_GET["BadgeID"]) && isset($_GET["PlaceID"])){
         $placeid = (int)$_GET["PlaceID"];
         $badgeid = $_GET["BadgeID"];
@@ -2360,7 +2551,7 @@ $router->get('/Game/Badge/IsBadgeDisabled', function(){
     }
 });
 
-$router->post('/Game/Badge/AwardBadge', function(){
+$router->post('/Game/Badge/AwardBadge.ashx', function(){
     if(isset($_GET["BadgeID"]) && isset($_GET["UserID"])){
         $userid = (int)$_GET["UserID"];
         $badgeid = $_GET["BadgeID"];
@@ -2465,12 +2656,6 @@ $router->post('/points/award-points', function(){
     }
 });
 
-$router->get('/marketplace/productDetails', function(){
-    ob_clean();
-    header("Content-type: application/json");
-    die('{"TargetId":0,"ProductType":null,"AssetId":19024608,"ProductId":0,"Name":"[ Content Deleted ]","Description":"T-Shirt","AssetTypeId":2,"Creator":{"Id":5536913,"Name":"chowder99999","CreatorType":"User","CreatorTargetId":5536913,"HasVerifiedBadge":false},"IconImageAssetId":0,"Created":"2009-12-09T19:20:08.09Z","Updated":"2009-12-09T19:20:08.09Z","PriceInRobux":0,"PriceInTickets":2,"Sales":0,"IsNew":false,"IsForSale":true,"IsPublicDomain":false,"IsLimited":false,"IsLimitedUnique":false,"Remaining":null,"MinimumMembershipLevel":0,"ContentRatingTypeId":0,"SaleAvailabilityLocations":null,"SaleLocation":null,"CollectibleItemId":null,"CollectibleProductId":null,"CollectiblesItemDetails":null}');
-});
-
 $router->get('/Game/LuaWebService/HandleSocialRequest.ashx', function(){
     die("<Error>Unknown method</Error>");
 });
@@ -2483,6 +2668,11 @@ $router->get('/leaderboards/game/json', function(){
 $router->get('/CharacterFetch.aspx', function(){
 
     $charapp = "";
+    $placeid = 0;
+
+    if(isset($_GET["placeid"])){
+        $placeid = (int)$_GET["placeid"];
+    }
 
     if(isset($_GET["Id"])){
         global $db;
@@ -2491,17 +2681,157 @@ $router->get('/CharacterFetch.aspx', function(){
         $allitems = $db->table("wearingitems")->where("userid", $id)->get();
 
         if(!empty($allitems)){
-            $charapp = "http://www.watrbx.xyz/Asset/BodyColors.ashx?Id=$id;";
+            $charapp = "http://www.watrbx.wtf/Asset/BodyColors.ashx?Id=$id;";
         }
 
         foreach ($allitems as $item){
-            $charapp .= "http://www.watrbx.xyz/asset/?id=". $item->itemid .";";
+            $assetinfo = $db->table("assets")->where("id", $item->itemid)->first();
+
+            if($assetinfo !== null){
+                if($assetinfo->prodcategory !== 19){
+                    $charapp .= "http://www.watrbx.wtf/asset/?id=". $item->itemid .";";
+                }
+            }
+            
+            
         }
     }
 
     die($charapp);
 });
 
+$router->post('/api/v1/create-place', function(){
+    
+    $sitefunc = new sitefunctions();
+
+    global $currentuser;
+    global $db;
+
+    if($currentuser == null){
+        http_response_code(401);
+        die("Unauthorized");
+    }
+
+    if(isset($_POST["title"]) && isset($_POST["info"])){
+        $title = $_POST["title"];
+        $description = $_POST["info"];
+
+        $title = $sitefunc->filter_text($title);
+        $description = $sitefunc->filter_text($description);
+
+        $currenttime = time();
+
+        $threemins = $currenttime - 60*3;
+
+        $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $threemins)->count();
+
+        if($created > 1){
+            die("You are updating/creating places too quickly!");
+        }
+
+        $insert = array(
+            "prodcategory"=>9,
+            "name"=>$title,
+            "description"=>$description,
+            "robux"=>null,
+            "tix"=>null,
+            "fileid"=>"None",
+            "created"=>time(),
+            "updated"=>time(),
+            "owner"=>$currentuser->id
+        );
+
+        $universeinsert = array(
+            "title"=>$title,
+            "description"=>$description,
+            "owner"=>$currentuser->id,
+            "assetid"=>0,
+            "public"=>1
+        );
+
+        $assetinsertid = $db->table("assets")->insert($insert);
+
+        $universeinsert["assetid"] = $assetinsertid;
+
+        $db->table("universes")->insert($universeinsert);
+
+        $page = new pagebuilder;
+        $page::get_template("ide/createdplace", ["assetinsertid"=>$assetinsertid]);
+
+    }
+});
+
+$router->get('/users/{$userid}/canmanage/{$assetid}', function($userid, $assetid){
+    $userid = (int)$userid;
+    $assetid = (int)$assetid;
+
+    $return = [
+        "Success"=>true,
+        "CanManage"=>false
+    ];
+
+    global $db;
+
+    $assetinfo = $db->table("assets")->where("id", $assetid)->first();
+
+    if($assetinfo !== null){
+        if($assetinfo->owner == $userid){
+            $return["CanManage"] = true;
+        }
+    }
+
+    die(json_encode($return));
+
+});
+
+$router->post('/api/v1/upload-place', function(){
+    global $db;
+    global $currentuser;
+    global $s3_client;
+
+    if($currentuser == null){
+        http_response_code(401);
+        die();
+    }
+    
+    if(isset($_GET["placeId"])){
+        $placeid = (int)$_GET["placeId"];
+
+        $assetinfo = $db->table("assets")->where("id", $placeid)->first();
+
+        if($assetinfo !== null){
+            if($assetinfo->owner == $currentuser->id){
+                $file = gzdecode(file_get_contents('php://input'));
+
+                $md5 = md5($file);
+
+                $s3_client->putObject([
+                    'Bucket' => $_ENV["R2_BUCKET"],
+                    'Key' => $md5,
+                    'Body' => $file,
+                ]);
+
+                $update = [
+                    "fileid"=>$md5,
+                    "updated"=>time()
+                ];
+
+                $db->table("assets")->where("id", $placeid)->update($update);
+                $db->table("thumbnails")->where("assetid", $placeid)->delete();
+
+                die("Place Updated");
+
+            } else {
+                http_response_code(403);
+            }
+        } else {
+            http_response_code(400);
+            die();
+        }
+    } else {
+        http_response_code(400);
+    }
+});
 
 $router->get('/users/inventory/list-json', function(){
     header("Content-type: application/json");
@@ -2531,10 +2861,11 @@ $router->get('/Game/Join.ashx', function() {
         if($ip == "192.168.1.221"){
             $ip = "70.228.127.12";
         }
-        $charappurl = "http://www.watrbx.xyz/CharacterFetch.aspx?Id=" . $currentuser->id;
         $port = $joincode->port;
         $pid = $joincode->placeid;
         $placeinfo = $db->table("assets")->where("id", $joincode->placeid)->first();
+        $charappurl = "http://www.watrbx.wtf/CharacterFetch.aspx?Id=" . $currentuser->id . "&placeId=" . $pid;
+        
         $clientticket = $func->generateClientTicket($currentuser->id, $currentuser->username,$charappurl, $joincode->jobid, file_get_contents("../storage/PrivateNut.pem"));
 
         header("Content-Type: application/json");
@@ -2555,7 +2886,7 @@ $router->get('/Game/Join.ashx', function() {
             "PlaceId" => $pid,
             "MeasurementUrl" => "", // No telemetry here :)
             "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
-            "BaseUrl" => "http://www.watrbx.xyz/",
+            "BaseUrl" => "http://www.watrbx.wtf/",
             "ChatStyle" => "ClassicAndBubble",
             "VendorId" => "0",
             "ScreenShotInfo" => "",

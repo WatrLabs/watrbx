@@ -11,7 +11,26 @@ class discord {
         }
     }
 
+    public function set_webhook_url($url){
+        $this->webhookurl = $url;
+    }
+
     public function internal_log($log, $title = "Internal Log"){
+        $embed = [
+            [
+                "title" => $title,
+                "type" => "rich",
+                "description" => $log,
+                "timestamp" => $timestamp = date("c", strtotime("now")),
+                "color" => hexdec( "3366ff" ),
+            ]
+        ];
+
+        $this->send_webhook($this->webhookurl, null, null, $embed);
+        return true;
+    }
+
+    public function abuse_report($log, $title = "Abuse Report!"){
         $embed = [
             [
                 "title" => $title,

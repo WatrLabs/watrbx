@@ -2,7 +2,7 @@
 -- See http://wiki.roblox.com/index.php?title=R15_Compatibility_Guide#Package_Parts for details on how body parts work with R15
 
 local assetUrl = "rbxassetid://%assetid%"
-local baseUrl = "http://www.watrbx.xyz/"
+local baseUrl = "http://www.watrbx.wtf/"
 local fileExtension = "PNG"
 local x, y = %x%, %y%
 local R6RigUrl = "rbxassetid://1785197"

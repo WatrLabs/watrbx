@@ -79,7 +79,7 @@ $assetTypes = array(
 
 if($asset->prodcategory == 1)
 {
-    $thumb = "//cdn.watrbx.xyz/" . $asset->fileid;
+    $thumb = "//cdn.watrbx.wtf/" . $asset->fileid;
 } else {
     $thumb = $thumbs->get_asset_thumb($asset->id);
 }

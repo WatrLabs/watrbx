@@ -24,7 +24,7 @@ $router->get('/install/setup.ashx', function(){
 });
 
 $router->get('/cdn.txt', function(){
-    echo "setup.watrbx.xyz";
+    echo "setup.watrbx.wtf";
 });
 
 $router->get('/version-2niqaerqcb6351zx7-rbxManifest.txt', function(){

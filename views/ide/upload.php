@@ -1,11 +1,22 @@
+<?php
+   use watrlabs\watrkit\pagebuilder;
+   $pagebuilder = new pagebuilder();
+   global $currentuser;
+   global $db;
+   if($currentuser !== null){
+      $allplaces = $db->table("assets")->where("prodcategory", 9)->where("owner", $currentuser->id)->get(); 
+   } else {
+      die();
+   }
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <title>Publish Place As</title>
-	  <link rel="stylesheet" href="/CSS/Pages/catalog.css">
+	   <link rel="stylesheet" href="/CSS/Pages/catalog.css">
       <link rel="stylesheet" href="/CSS/Pages/upload.css">
-	  <link rel='stylesheet' href='/CSS/Pages/StyleGuide2.css' />
+	   <link rel='stylesheet' href='/CSS/Pages/StyleGuide2.css' />
    </head>
    <body>
       <div class="boxed-body">
@@ -24,12 +35,12 @@
                   </a>
                   <p class="item-name-container ellipsis-overflow">(Create New)</p>
                </div>
-               <div class="place asset gameplace" data-placeid="1818">
-                  <a class="game-image" onclick="document.location.href = '/ide/publish/update?PlaceID=1818';" data-retry-url="">
-                  <img class="placeThumbnail" src="/Thumbs/Asset.ashx?assetId=1818">
-                  </a>
-                  <p class="notranslate item-name-container ellipsis-overflow">Place Name</p>
-               </div>
+                  <?php
+
+                  foreach($allplaces as $place){
+                     $pagebuilder->build_component("ide-place", ["asset"=>$place]);
+                  }
+                  ?>
             </div>
          </div>
          <div id="Close" class="footer-button-container divider-top">

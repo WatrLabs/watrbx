@@ -21,6 +21,9 @@ $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gz
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
 $pagebuilder->set_page_name("Develop");
 
+$category = $_GET["View"] ?? $_GET["Page"] ?? 9;
+$categories = [9, "universes", 10, 13, 21, 34, 3, 24, 40, "ads", "sponsored-games", 11, 2, 12, 38];
+
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 ?>

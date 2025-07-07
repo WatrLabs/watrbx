@@ -623,7 +623,7 @@ $pagebuilder->buildheader();
          data-asset-id="<?=$assetinfo->id?>"
          data-total-collection-size=""
          data-is-user-authenticated="<? if($currentuser == null){ echo "false"; } else { echo "true"; } ?>"
-         data-signin-url="https://www.watrbx.xyz/newlogin?returnUrl=%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">
+         data-signin-url="https://www.watrbx.wtf/newlogin?returnUrl=%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">
         <h3>Comments</h3>
         <div class="AddAComment">
             <?php
@@ -1225,17 +1225,17 @@ $pagebuilder->buildheader();
     <div class="footer">
         <ul class="row footer-links">
                 <li class="col-xs-4 col-sm-2 footer-link">
-                    <a href="https://corp.watrbx.xyz" class="roblox-interstitial" target="_blank">
+                    <a href="https://corp.watrbx.wtf" class="roblox-interstitial" target="_blank">
                         <h2>About Us</h2>
                     </a>
                 </li>
                 <li class="col-xs-4 col-sm-2 footer-link">
-                    <a href="https://corp.watrbx.xyz/jobs" class="roblox-interstitial" target="_blank">
+                    <a href="https://corp.watrbx.wtf/jobs" class="roblox-interstitial" target="_blank">
                         <h2>Jobs</h2>
                     </a>
                 </li>
             <li class="col-xs-4 col-sm-2 footer-link">
-                <a href="https://blog.watrbx.xyz" target="_blank">
+                <a href="https://blog.watrbx.wtf" target="_blank">
                     <h2>Blog</h2>
                 </a>
             </li>
@@ -1245,18 +1245,18 @@ $pagebuilder->buildheader();
                 </a>
             </li>
             <li class="col-xs-4 col-sm-2 footer-link">
-                <a href="https://corp.watrbx.xyz/parents" class="roblox-interstitial" target="_blank">
+                <a href="https://corp.watrbx.wtf/parents" class="roblox-interstitial" target="_blank">
                     <h2>Parents</h2>
                 </a>
             </li>
             <li class="col-xs-4 col-sm-2 footer-link">
-                <a href="https://en.help.watrbx.xyz/" class="roblox-interstitial" target="_blank">
+                <a href="https://en.help.watrbx.wtf/" class="roblox-interstitial" target="_blank">
                     <h2>Help</h2>
                 </a>
             </li>
         </ul>
         <p class="footer-note">
-            ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="https://corp.watrbx.xyz" class="rbx-link roblox-interstitial">ROBLOX Corporation</a>, ©2015.
+            ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="https://corp.watrbx.wtf" class="rbx-link roblox-interstitial">ROBLOX Corporation</a>, ©2015.
             Patents pending. ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
             Use of this site signifies your acceptance of the <a href="/info/terms-of-service" target="_blank" class="rbx-link">Terms and Conditions</a>.
         </p>
@@ -1579,7 +1579,7 @@ $pagebuilder->buildheader();
                     <p id="GenderInputValidation" class="rbx-control-label input-validation rbx-text-danger" ng-bind="(badSubmit && !(signup.gender == 2 || signup.gender == 3)) ? 'Gender is required' : ''"></p>
                 </div>
             </div>
-            <button id="SignupButton" type="button" tabindex="9" class="rbx-btn-primary-md" rbx-form-interaction name="signupSubmit" ng-disabled="isSubmitting" data-signup-api-url="https://api.watrbx.xyz/signup/v1" ng-click="submitSignup($event)" ng-keypress="submitSignup($event)">Sign Up and Play!</button>
+            <button id="SignupButton" type="button" tabindex="9" class="rbx-btn-primary-md" rbx-form-interaction name="signupSubmit" ng-disabled="isSubmitting" data-signup-api-url="https://api.watrbx.wtf/signup/v1" ng-click="submitSignup($event)" ng-keypress="submitSignup($event)">Sign Up and Play!</button>
             <noscript>
                 <div class="text-danger">
                     <strong>JavaScript is required to submit this form.</strong>
@@ -1602,10 +1602,10 @@ $pagebuilder->buildheader();
                 </div>
                 <div class="rbx-form-group" ng-class="{'has-error': ((loginForm.password.$dirty || badSubmit) && loginForm.password.$invalid || loginForm.password.showValidation), 'has-success': loginForm.password.$dirty && loginForm.password.$valid}">
                     <input id="login-password" class="form-control rbx-input-field" type="password" tabindex="2" placeholder="Password" name="password" rbx-form-interaction rbx-form-validation rbx-form-validation-redact-input ng-required="true" ng-model="login.password" ng-keypress="enterLogin($event)">
-                    <a href="https://www.watrbx.xyz/login/resetpasswordrequest.aspx" target="_top" class="rbx-link rbx-font-sm forgot-password-link">Forgot password?</a>
+                    <a href="https://www.watrbx.wtf/login/resetpasswordrequest.aspx" target="_top" class="rbx-link rbx-font-sm forgot-password-link">Forgot password?</a>
                     <p id="login-password-input-validation" class="rbx-control-label input-validation rbx-text-danger" ng-bind="((loginForm.password.$dirty || badSubmit) && loginForm.password.$invalid || loginForm.password.showValidation) ? loginForm.password.$validationMessage : ''"></p>
                 </div>
-                <button id="login-button" type="button" ng-disabled="isSubmitting || isTwoStepSectionShown" rbx-form-interaction name="loginSubmit" tabindex="3" class="rbx-btn-primary-md login-button" data-login-api-url="https://api.watrbx.xyz/login/v1" data-two-step-code-request-url="https://api.watrbx.xyz/twostepverification/request-unauthenticated" data-two-step-verification-api-url="https://api.watrbx.xyz/twostepverification/verify-unauthenticated" ng-click="submitLogin($event)">Log In</button>
+                <button id="login-button" type="button" ng-disabled="isSubmitting || isTwoStepSectionShown" rbx-form-interaction name="loginSubmit" tabindex="3" class="rbx-btn-primary-md login-button" data-login-api-url="https://api.watrbx.wtf/login/v1" data-two-step-code-request-url="https://api.watrbx.wtf/twostepverification/request-unauthenticated" data-two-step-verification-api-url="https://api.watrbx.wtf/twostepverification/verify-unauthenticated" ng-click="submitLogin($event)">Log In</button>
                 <div id="general-login-error-text" class="input-validation-large rbx-alert-warning rbx-font-bold" ng-show="$generalError" ng-bind="$generalErrorText" ng-click="$generalError=false" ng-cloak></div>
                 <div class="switch-to-signup-section">
                     Need an account?
@@ -1620,7 +1620,7 @@ $pagebuilder->buildheader();
                             <input id="two-step-verification-code" focus-me="{{isTwoStepSectionShown}}" class="form-control rbx-input-field" type="text" tabindex="1" placeholder="Enter verification code here" rbx-form-interaction rbx-form-validation rbx-form-validation-redact-input name="twoStepCode" ng-required="true" ng-keypress="enterTwoStepCode($event)" ng-model="twoStepVerification.twoStepCode" />
                             <p id="two-step-verification-code-validation" class="rbx-control-label input-validation rbx-text-danger" ng-bind="twoStepVerificationForm.twoStepCode.$invalid ? twoStepVerificationForm.twoStepCode.$validationMessage : '' "></p>
                         </div>
-                        <button id="two-step-button" ng-disabled="isSubmitting" type="button" tabindex="2" class="rbx-btn-primary-md two-step-button" rbx-form-interaction name="twoStepSubmit" ng-click="submitTwoStepCode($event)" data-login-api-url="https://api.watrbx.xyz/login/v1">Submit</button>
+                        <button id="two-step-button" ng-disabled="isSubmitting" type="button" tabindex="2" class="rbx-btn-primary-md two-step-button" rbx-form-interaction name="twoStepSubmit" ng-click="submitTwoStepCode($event)" data-login-api-url="https://api.watrbx.wtf/login/v1">Submit</button>
                         <button id="two-step-back-button" type="button" tabindex="3" rbx-show-section section-type="1" class="rbx-btn-secondary-md two-step-back-button">Back</button>
                         <a href="" target="_top" class="rbx-link rbx-font-sm" ng-click="requestTwoStepCode($event)">Resend code</a>
                     </div>
@@ -1643,8 +1643,8 @@ $pagebuilder->buildheader();
 		</iframe><br /><textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea><input name="recaptcha_response_field" value="manual_challenge" type="hidden" />
 </noscript>
         <button id="CaptchaSubmitButton" class="rbx-btn-primary-md captcha-submit-button"
-                data-signup-captcha-api-url="https://api.watrbx.xyz/captcha/validate/signup"
-                data-log-in-captcha-api-url="https://api.watrbx.xyz/captcha/validate/login"
+                data-signup-captcha-api-url="https://api.watrbx.wtf/captcha/validate/signup"
+                data-log-in-captcha-api-url="https://api.watrbx.wtf/captcha/validate/login"
                 ng-click="submitCaptcha($event)"
                 ng-disabled="isSubmitting"
                 rbx-form-interaction name="captchaSubmit">
@@ -1661,7 +1661,7 @@ $pagebuilder->buildheader();
 
 <div id="usernotifications-data-model"
      class="hidden"
-     data-notificationsdomain="https://notifications.watrbx.xyz/"
+     data-notificationsdomain="https://notifications.watrbx.wtf/"
      data-notificationstestinterval="5000"
      data-notificationsmaxconnectiontime="43200000">
 </div>    <script type="text/javascript">
@@ -1699,15 +1699,15 @@ $pagebuilder->buildheader();
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="<? if($currentuser !== null){ echo $currentuser->id; } ?>"
-     data-domain="watrbx.xyz"
+     data-domain="watrbx.wtf"
      data-gamespagelink="/games"
-     data-chatdomain="https://chat.watrbx.xyz"
+     data-chatdomain="https://chat.watrbx.wtf"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://notifications.watrbx.xyz/"
+     data-notificationsdomain="https://notifications.watrbx.wtf/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true
@@ -2522,7 +2522,7 @@ $pagebuilder->buildheader();
         </div>
         <div id="videoPrerollJoinBC">
             <span>Get more with Builders Club!</span>
-            <a href="https://www.watrbx.xyz/premium/membership?ctx=preroll" target="_blank" class="btn-medium btn-primary" id="videoPrerollJoinBCButton">Join Builders Club</a>
+            <a href="https://www.watrbx.wtf/premium/membership?ctx=preroll" target="_blank" class="btn-medium btn-primary" id="videoPrerollJoinBCButton">Join Builders Club</a>
         </div>
     </div>   
         <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
@@ -2570,8 +2570,8 @@ $pagebuilder->buildheader();
         <div style="clear:both; height:25px;"></div>
         <div class="RevisedFooter">
             <div style="width:200px;margin:10px auto 0 auto;">
-                <a href="/?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place"><div class="RevisedCharacterSelectSignup"></div></a>
-                <a class="HaveAccount" href="https://www.watrbx.xyz/newlogin?returnUrl=http%3A%2F%2Fwww.watrbx.xyz%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">I have an account</a>
+                <a href="/?returnUrl=http%3A%2F%2Fwww.watrbx.wtf%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place"><div class="RevisedCharacterSelectSignup"></div></a>
+                <a class="HaveAccount" href="https://www.watrbx.wtf/newlogin?returnUrl=http%3A%2F%2Fwww.watrbx.wtf%2Fgames%2F<?=$assetinfo->id?>%2FWork-at-a-Pizza-Place">I have an account</a>
             </div>
         </div>
     </div>
@@ -2631,7 +2631,7 @@ $pagebuilder->buildheader();
 <script type="text/javascript">
     Roblox.Client._skip = null;
     Roblox.Client._CLSID = '76D50904-6780-4c8b-8986-1A7EE0B1716D';
-    Roblox.Client._installHost = 'setup.watrbx.xyz';
+    Roblox.Client._installHost = 'setup.watrbx.wtf';
     Roblox.Client.ImplementsProxy = true;
     Roblox.Client._silentModeEnabled = true;
     Roblox.Client._bringAppToFrontEnabled = false;
@@ -2710,7 +2710,7 @@ $pagebuilder->buildheader();
 
     <script type="text/javascript">
         $(function () {
-            Roblox.CookieUpgrader.domain = 'watrbx.xyz';
+            Roblox.CookieUpgrader.domain = 'watrbx.wtf';
             Roblox.CookieUpgrader.upgrade("GuestData", { expires: Roblox.CookieUpgrader.thirtyYearsFromNow });
             Roblox.CookieUpgrader.upgrade("RBXSource", { expires: function (cookie) { return Roblox.CookieUpgrader.getExpirationFromCookieValue("rbx_acquisition_time", cookie); } });
             Roblox.CookieUpgrader.upgrade("RBXViralAcquisition", { expires: function (cookie) { return Roblox.CookieUpgrader.getExpirationFromCookieValue("time", cookie); } });
