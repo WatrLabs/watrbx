@@ -1,30 +1,37 @@
 <?php
     global $db;
     global $currentuser;
-    if(isset($_GET["placeId"])){
+
+    ob_start();
+
+    $script = "print(\"An error occured.\")";
+
+    if(isset($_GET["placeId"]) && $currentuser !== null){
         $placeid = (int)$_GET["placeId"];
+
+        $script = file_get_contents("../storage/lua/edit.lua");
+        $script = str_replace("%placeid%", $placeid, $script);
 
         $assetinfo = $db->table("assets")->where("id", $placeid)->first();
 
-        if($assetinfo->owner !== $currentuser->id){
-            die();
+        if($assetinfo !== null){
+            if($assetinfo->owner !== $currentuser->id){
+                $script = file_get_contents("../storage/lua/edit-error.lua");
+            }
+        } else {
+            $script = file_get_contents("../storage/lua/edit-error.lua");
         }
+
+    } else {
+
+        $script = file_get_contents("../storage/lua/edit-error.lua");
+        
     }
-    ob_start();
-?>
-pcall(function() game:SetPlaceID(<?=$placeid?>) end)
+    
+    echo $script;
 
-local message = Instance.new("Message")
-message.Parent = workspace
-message.archivable = false
-message.Text = "Loading Place... Please be patient"
-
-game:Load("rbxassetid://<?=$placeid?>")
-message:Destroy()
-
-<?php
-$data = "\r\n" . ob_get_clean();
-$key = file_get_contents("../storage/PrivateNut.pem");
-openssl_sign($data, $sig, $key, OPENSSL_ALGO_SHA1);
-echo "--rbxsig%" . base64_encode($sig) . "%" . $data;
+    $data = "\r\n" . ob_get_clean();
+    $key = file_get_contents("../storage/PrivateNut.pem");
+    openssl_sign($data, $sig, $key, OPENSSL_ALGO_SHA1);
+    echo "--rbxsig%" . base64_encode($sig) . "%" . $data;
 ?>

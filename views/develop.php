@@ -87,7 +87,7 @@ $pagebuilder->buildheader();
 												</div>
 												<div id="RightColumn">
 													<ul>
-														<li><a href="#" class="studio-launch" download="">Download</a></li>
+														<li><a href="//setup.watrbx.wtf/RobloxStudioLauncherBeta.exe" class="studio-launch" download="//setup.watrbx.wtf/RobloxStudioLauncherBeta.exe">Download</a></li>
 														<li><a href="#">Forum</a></li>
 														<li><a href="#">Wiki</a></li>
 													</ul>
@@ -378,7 +378,7 @@ $pagebuilder->buildheader();
                         <div id="RightColumn">
                           <ul>
                             <li>
-                              <a href="https://s3.amazonaws.com/setup.roblox.com/RobloxStudioLauncherBeta.exe" class="studio-launch" download="">Download</a>
+                              <a href="//setup.watrbx.wtf/RobloxStudioLauncherBeta.exe" class="studio-launch" download="">Download</a>
                             </li>
                             <li>
                               <a href="http://wiki.roblox.com/index.php/Studio">Visit Wiki</a>
