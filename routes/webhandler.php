@@ -308,6 +308,11 @@ $router->get("/games/moreresultscached", function() {
     $page::get_template("results");
 });
 
+$router->get("/logout", function() {
+    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+    header("Location: /newlogin");
+});
+
 $router->get("/home", function() {
     $page = new pagebuilder;
     $page::get_template("new_home");

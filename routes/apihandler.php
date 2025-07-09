@@ -2340,7 +2340,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
         "jobid"=>"null",
         "status"=>0,
         "joinScriptUrl"=>"null",
-        "authenticationUrl"=>"http://www.roblox.icu/Login/Negotiate.ashx",
+        "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=>"null",
         "message"=>"Hi!"
     ); 

@@ -64,7 +64,6 @@ $pagebuilder->buildheader();
 
 ?>
 
-
 <div class="content  ">
 
                                         <div id="Leaderboard-Abp" class="abp leaderboard-abp">
@@ -314,7 +313,28 @@ $pagebuilder->buildheader();
         </div>
         <div class="game-calls-to-action">
 
+            <?php
 
+                if($currentuser !== null){
+                    if($currentuser->id == $creator->id){ ?>
+                    <div id="game-context-menu">
+                        <a class="rbx-menu-item" data-toggle="popover" data-bind="game-context-menu" data-original-title="" title="" data-viewport=".game-calls-to-action">
+                            <i class="rbx-icon-more"></i>
+                        </a>
+                        <div class="rbx-popover-content" data-toggle="game-context-menu">
+                            <ul class="rbx-dropdown-menu" role="menu">
+                                    <li>
+                                        <div class="VisitButton VisitButtonEdit" placeid="<?=$gameinfo->assetid?>" data-universeid="<?=$id?>" data-allowupload="true">
+                                            <a>Edit</a>
+                                        </div>
+                                    </li>
+                            </ul>
+                        </div>
+                    </div>
+                  <?}
+                }?>
+
+            
             <h1 class="rbx-para-overflow game-name" title="<?=$gameinfo->title?>"><?=$gameinfo->title?></h1>
             <h4 class="game-creator"><span>By</span> <a class="rbx-link" href="/users/<?=$creator->id?>/profile"><?=$creator->username?></a></h4>
             <div class="game-play-buttons" data-autoplay="false">
@@ -2579,7 +2599,7 @@ $pagebuilder->buildheader();
 
 <script type="text/javascript">
     function checkRobloxInstall() {
-             return RobloxLaunch.CheckRobloxInstall('/install/download.aspx');
+             return true;
     }
 
 </script>
@@ -2860,5 +2880,9 @@ $pagebuilder->buildheader();
     <noscript>
         <img src="https://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
     </noscript>
+    <script>
+        $(function () { $('.VisitButtonPlay').click(function () {play_placeId=$(this).attr('placeid');Roblox.CharacterSelect.placeid = play_placeId;Roblox.CharacterSelect.show();});$('#game-context-menu').on('click touchstart','.VisitButtonBuild', function () {RobloxLaunch._GoogleAnalyticsCallback = function() { var isInsideRobloxIDE = 'website'; if (Roblox && Roblox.Client && Roblox.Client.isIDE && Roblox.Client.isIDE()) { isInsideRobloxIDE = 'Studio'; };GoogleAnalyticsEvents.FireEvent(['Plugin Location', 'Launch Attempt', isInsideRobloxIDE]);GoogleAnalyticsEvents.FireEvent(['Plugin', 'Launch Attempt', 'Build']);EventTracker.fireEvent('GameLaunchAttempt_Unknown', 'GameLaunchAttempt_Unknown_Plugin'); if (typeof Roblox.GamePlayEvents != 'undefined') { Roblox.GamePlayEvents.SendClientStartAttempt(null, play_placeId); }  }; play_placeId = (typeof $(this).attr('placeid') === 'undefined') ? play_placeId : $(this).attr('placeid'); Roblox.Client.WaitForRoblox(function() { window.location = '/Login/Default.aspx?ReturnUrl=http%3a%2f%2fwww.roblox.com%2fgames%2f1818%2fCrossroads' }); return false;});$('#game-context-menu').on('click touchstart','.VisitButtonEdit', function () {RobloxLaunch._GoogleAnalyticsCallback = function() { var isInsideRobloxIDE = 'website'; if (Roblox && Roblox.Client && Roblox.Client.isIDE && Roblox.Client.isIDE()) { isInsideRobloxIDE = 'Studio'; };GoogleAnalyticsEvents.FireEvent(['Plugin Location', 'Launch Attempt', isInsideRobloxIDE]);GoogleAnalyticsEvents.FireEvent(['Plugin', 'Launch Attempt', 'Edit']);EventTracker.fireEvent('GameLaunchAttempt_Unknown', 'GameLaunchAttempt_Unknown_Plugin'); if (typeof Roblox.GamePlayEvents != 'undefined') { Roblox.GamePlayEvents.SendClientStartAttempt(null, play_placeId); }  }; play_placeId = (typeof $(this).attr('placeid') === 'undefined') ? play_placeId : $(this).attr('placeid'); Roblox.Client.WaitForRoblox(function() { RobloxLaunch.StartGame('http://www.watrbx.wtf/Game/edit.ashx?PlaceID='+play_placeId+'&upload=', 'edit.ashx', 'http://www.watrbx.wtf/Login/Negotiate.ashx', 'FETCH', true) }); return false;});$('.VisitButtonPersonalServer').click(function () {play_placeId=$(this).attr('placeid');Roblox.CharacterSelect.placeid = play_placeId;Roblox.CharacterSelect.show();});$('#game-context-menu').on('click touchstart','.VisitButtonCloudEdit', function () {RobloxLaunch._GoogleAnalyticsCallback = function() { var isInsideRobloxIDE = 'website'; if (Roblox && Roblox.Client && Roblox.Client.isIDE && Roblox.Client.isIDE()) { isInsideRobloxIDE = 'Studio'; };GoogleAnalyticsEvents.FireEvent(['Plugin Location', 'Launch Attempt', isInsideRobloxIDE]);GoogleAnalyticsEvents.FireEvent(['Plugin', 'Launch Attempt', 'Edit']);EventTracker.fireEvent('GameLaunchAttempt_Unknown', 'GameLaunchAttempt_Unknown_Plugin'); if (typeof Roblox.GamePlayEvents != 'undefined') { Roblox.GamePlayEvents.SendClientStartAttempt(null, play_placeId); }  }; play_placeId = (typeof $(this).attr('placeid') === 'undefined') ? play_placeId : $(this).attr('placeid'); Roblox.Client.WaitForRoblox(function() { if (Roblox.VideoPreRoll) {Roblox.VideoPreRoll.showVideoPreRoll = false;}if (Roblox.VideoPreRollDFP) {Roblox.VideoPreRollDFP.showVideoPreRoll = false;}RobloxLaunch.StartGame('CloudEditPlace:'+play_placeId, 'CloudEdit', 'https://web.archive.org/web/20151222035835/https://www.roblox.com//Login/Negotiate.ashx', 'FETCH', true) }); return false;});$(document).on('CharacterSelectLaunch', function (event, genderTypeID) { if (genderTypeID == 3) { var isInsideRobloxIDE = 'website'; if (Roblox && Roblox.Client && Roblox.Client.isIDE && Roblox.Client.isIDE()) { isInsideRobloxIDE = 'Studio'; };GoogleAnalyticsEvents.FireEvent(['Plugin Location', 'Launch Attempt', isInsideRobloxIDE]);GoogleAnalyticsEvents.FireEvent(['Plugin', 'Launch Attempt', 'Play']);EventTracker.fireEvent("GameLaunchAttempt_Unknown", "GameLaunchAttempt_Unknown_Plugin"); if (typeof Roblox.GamePlayEvents != 'undefined') { Roblox.GamePlayEvents.SendClientStartAttempt(null, play_placeId); } } else { var isInsideRobloxIDE = 'website'; if (Roblox && Roblox.Client && Roblox.Client.isIDE && Roblox.Client.isIDE()) { isInsideRobloxIDE = 'Studio'; };GoogleAnalyticsEvents.FireEvent(['Plugin Location', 'Launch Attempt', isInsideRobloxIDE]);GoogleAnalyticsEvents.FireEvent(['Plugin', 'Launch Attempt', 'Play']);EventTracker.fireEvent("GameLaunchAttempt_Unknown", "GameLaunchAttempt_Unknown_Plugin"); if (typeof Roblox.GamePlayEvents != 'undefined') { Roblox.GamePlayEvents.SendClientStartAttempt(null, play_placeId); } }play_placeId = (typeof $(this).attr('placeid') === 'undefined') ? play_placeId : $(this).attr('placeid'); Roblox.Client.WaitForRoblox(function() { RobloxLaunch.RequestGame('PlaceLauncherStatusPanel', play_placeId, genderTypeID); }); return false;});}());;
+
+    </script>
 </body>
 </html>
