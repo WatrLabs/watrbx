@@ -15,6 +15,73 @@ function checkhelp() {
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
+$router->get('/game/GetAllowedExperimentalFeatures', function(){
+    die("{}");
+});
+
+$router->get('/marketplace/productinfo', function(){
+
+    header("Content-type: application/json");
+
+    ob_clean();
+
+    if(isset($_GET["assetId"])){
+        $auth = new authentication();
+        $assetid = (int)$_GET["assetId"];
+        
+        $productinfo = array(
+            "Name" => "Unknown",
+            "Description" => "[\r\n[52, 57, 57, 52, 56, 49, 57, 51],\r\n[50, 52, 57, 53, 55, 50, 55, 58],\r\n[56, 56, 52, 51, 52, 58, 57, 53],\r\n[52, 56, 54, 55, 53, 50, 52, 51],\r\n[52, 53, 58, 53, 55, 53, 54, 57],\r\n[55, 49, 51, 53, 51, 53, 57, 57],\r\n[54, 58, 57, 51, 58, 55, 54, 56],\r\n[53, 52, 51, 57, 51, 49, 50, 58]\r\n]",
+            "Created" => "0",
+            "Updated" => "0",
+            "PriceInRobux" => 0,
+            "PriceInTickets" => 0,
+            "AssetId" => $assetid,
+            "ProductId" => $assetid,
+            "AssetTypeId" => 0,
+            "Creator" => [
+                "Id" => "0",
+                "Name" => "Unknown",
+                "CreatorType" => "User",
+            ],
+            "MinimumMembershipLevel" => 0,
+            "IsForSale" => True,
+        );
+
+        global $db;
+        $assetinfo = $db->table("assets")->where("id", $assetid)->first();
+
+        if($assetinfo !== null){
+            $creatorinfo = $auth->getuserbyid($assetinfo->owner);
+
+            $productinfo["Name"] = $assetinfo->name;
+            $productinfo["Description"] = $assetinfo->description;
+            $productinfo["AssetTypeId"] = $assetinfo->prodcategory;
+            $productinfo["Created"] = date('c', $assetinfo->created);
+            $productinfo["Updated"] = date('c', $assetinfo->updated);
+            $productinfo["PriceInRobux"] = $assetinfo->robux;
+            $productinfo["PriceInTickets"] = $assetinfo->tix;
+
+            $productinfo["Creator"]["Id"] = $creatorinfo->id;
+            $productinfo["Creator"]["Name"] = $creatorinfo->username;
+            $productinfo["Creator"]["CreatorType"] = "User";
+        } else {
+            try {
+                die(file_get_contents("https://economy.ttblox.mom/v2/assets/$assetid/details"));
+            } catch (ErrorException $e){
+                die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
+            }
+        }
+
+        die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
+
+    } else {
+        header("Content-type: application/json");
+        die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
+        
+    }
+});
+
 $router->get("/", function() {
     $page = new pagebuilder;
     if(isset($_COOKIE["has_read"])){
@@ -245,62 +312,7 @@ $router->get("/upgrades/robux", function() {
 
 $router->get("/develop", function() {
     $page = new pagebuilder;
-    $rbx = new RBX;
-
-    if(isset($_GET["Page"]) || isset($_GET["View"])){
-        $category = $_GET["View"] ?? $_GET["Page"];
-
-        // both the same thing but ones ordered ill probably end up removing validcategories in a minute
-        // update i did that
-        $categories = [9, "universes", 10, 13, 21, 34, 3, 24, 40, "ads", "sponsored-games", 11, 2, 12, 38];
-
-        foreach($categories as $categoriesCat) {
-            if(is_numeric($categoriesCat)) {
-                $categories[$categoriesCat] = $rbx->get_asset_type_with_id($categoriesCat);
-            }
-        }
-
-        if(array_key_exists($category, $categories)) {
-            $categoryName = null;
-            
-            if(is_numeric($category)) {
-                $categoryName = $rbx->get_asset_type_with_id($category);
-            } 
-            elseif(is_string($category)) 
-            {
-                $categoryName = ucfirst($categoryName);
-            }
-
-            die($page::get_template("develop", ["categoryId" => $category, "categoryName" => $categoryName, "categories" => $categories]));
-        }        
-    } else {
-        $category = 9;
-
-        // both the same thing but ones ordered ill probably end up removing validcategories in a minute
-        // update i did that
-        $categories = [9, "universes", 10, 13, 21, 34, 3, 24, 40, "ads", "sponsored-games", 11, 2, 12, 38];
-
-        foreach($categories as $categoriesCat) {
-            if(is_numeric($categoriesCat)) {
-                $categories[$categoriesCat] = $rbx->get_asset_type_with_id($categoriesCat);
-            }
-        }
-
-        if(array_key_exists($category, $categories)) {
-            $categoryName = null;
-            
-            if(is_numeric($category)) {
-                $categoryName = $rbx->get_asset_type_with_id($category);
-            } 
-            elseif(is_string($category)) 
-            {
-                $categoryName = ucfirst($categoryName);
-            }
-
-            die($page::get_template("develop", ["categoryId" => $category, "categoryName" => $categoryName, "categories" => $categories]));
-        }    
-    }
-
+    $page::get_template("develop");
 });
 
 $router->get("/games/moreresultscached", function() {
@@ -392,7 +404,18 @@ $router->post('/my/character.aspx', function() {
                     if(isset($exploded[1])){
                         $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
                         $assetid = (int)$exploded[1];
-                        $db->table("wearingitems")->insert(["itemid"=>$assetid, "userid"=>$currentuser->id]);
+                        
+                        $iswearing = $db->table("wearingitems")->where("itemid", $assetid)->where("userid", $currentuser->id)->first();
+
+                        if($iswearing == null){
+
+                            $asset = $db->table("assets")->where("id", $assetid)->first();
+
+                            if($asset !== null){
+                                $db->table("wearingitems")->insert(["itemid"=>$assetid, "userid"=>$currentuser->id]);
+                                
+                            }
+                        }
                         $page::get_template("avatar", ["currentcategory"=>2]);
                         die();
                     }

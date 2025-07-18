@@ -26,7 +26,8 @@ $randomitems = $query->get();
 $randomitems1 = array_slice($randomitems, 0, 5);
 $randomitems2 = array_slice($randomitems, 5);
 
-
+$highlighteddesc = $asset->description;
+$highlighteddesc = preg_replace('#\bhttps?://[^\s<]+#i','<a href="$0" target="_blank" rel="noopener">$0</a>',$highlighteddesc);
 
 
 if($auth->hasaccount()){
@@ -140,11 +141,7 @@ if($currentuser !== null){
 	
                                 <a id="ctl00_cphRoblox_btnDelete" class="invisible" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$cphRoblox$btnDelete&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Delete from My Stuff</a>
                             
-</div>
-                            
-                            
-                            
-                            
+</div>                      
                         </div>
                     </div>
                 </div>
@@ -203,8 +200,8 @@ if($currentuser !== null){
                         </div>
                         <div id="ctl00_cphRoblox_DescriptionPanel" class="DescriptionPanel notranslate">
 	
-                            <pre class="Description Full text"> <?=$asset->description?> </pre>
-                            <pre class="Description body text"><span class="description-content"><?=$asset->description?></span><span class="description-more-container"></span></pre>
+                            <pre class="Description Full text"> <?=$highlighteddesc?> </pre>
+                            <pre class="Description body text"><span class="description-content"><?=$highlighteddesc?></span><span class="description-more-container"></span></pre>
                         
 </div>
                         <div class="ReportAbuse">
@@ -287,7 +284,7 @@ if($currentuser !== null){
                                         
                                     </div>
                                     <div id="BuyWithTickets">
-                                        <div data-expected-currency="2" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton <? if($doesown !== null){ echo 'btn-disabled-primary'; } ?>" <? if($doesown !== null){ echo 'original-title="You already own this item."'; } ?> data-se="item-buyforrobux" data-item-name="<?=$asset->name?>" data-item-id="<?=$assetidbackup?>" data-expected-price="<?=$asset->robux?>" data-product-id="<?=$assetidbackup?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="<?=$creatorinfo->username?>">
+                                        <div data-expected-currency="2" data-asset-type="<?=array_search($asset->prodcategory, $assetTypes)?>" class="btn-primary btn-medium PurchaseButton <? if($doesown !== null){ echo 'btn-disabled-primary'; } ?>" <? if($doesown !== null){ echo 'original-title="You already own this item."'; } ?> data-se="item-buyfortix" data-item-name="<?=$asset->name?>" data-item-id="<?=$assetidbackup?>" data-expected-price="<?=$asset->tix?>" data-product-id="<?=$assetidbackup?>" data-expected-seller-id="<?=$asset->owner?>" data-bc-requirement="0" data-seller-name="<?=$creatorinfo->username?>">
                                              Buy with Tx
                                         </div>
                                         

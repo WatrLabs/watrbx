@@ -41,6 +41,12 @@ class catalog {
                 // robux purchase
                 $auth->requiresession();
                 $userinfo = $auth->getuserbyid($userid);
+                $creatorinfo = $auth->getuserbyid($asset->owner);
+                $ownernewbalance = $creatorinfo->robux + $asset->robux;
+
+                $userupdate = ["robux"=>$ownernewbalance];
+                $db->table("users")->where("id", $creatorinfo->id)->update($userupdate);
+
 
                 $newbalance = $userinfo->robux - $asset->robux;
 
@@ -61,6 +67,11 @@ class catalog {
                 // tix purchase
                 $auth->requiresession();
                 $userinfo = $auth->getuserbyid($userid);
+                $creatorinfo = $auth->getuserbyid($asset->owner);
+                $ownernewbalance = $creatorinfo->tix + $asset->tix;
+
+                $userupdate = ["tix"=>$ownernewbalance];
+                $db->table("users")->where("id", $creatorinfo->id)->update($userupdate);
 
                 $newbalance = $userinfo->tix - $asset->tix;
 

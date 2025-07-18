@@ -47,30 +47,12 @@ function validate_header(){
     }
 }
 
-$router->get('/launch-place', function(){
-    header("Content-type: application/json");
-    $gameserver = new gameserver();
 
-    $response = $gameserver->request_game(11);
-    var_dump($response);
-
-    $decoded = json_decode($response, true);
-    if(isset($decoded["Success"])){
-        if($decoded["Success"] !== True){
-            http_response_code(500);
-        } else {
-            die("Success! Port: " . $decoded["data"]["running_port"]);
-        }
-    } else {
-        die(createerror("Failed to request place!", '', 500));
-    }
-});
 
 $router->get("/api/v1/gameserver/mark-active", function(){
 
     $log = new discord();
     
-
     $exploded = explode("=", $_GET["jobid"]);
 
     global $db;
@@ -90,6 +72,10 @@ $router->get("/api/v1/gameserver/mark-active", function(){
                 );
 
                 $db->table("game_instances")->insert($insert);
+
+                $update = ["type"=>1];
+                $db->table("rccinstances")->where("guid", $jobinfo->rccinstance)->update($update);
+
                 //$db->table("jobs")->where("jobid", $jobid)->delete();
                 $log->internal_log($placeid . "/" . $jobid . " has been marked active!", "Game marked active.");
                 die("Success.");

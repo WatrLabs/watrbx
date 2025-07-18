@@ -140,7 +140,7 @@ $pagebuilder = new pagebuilder();
                 // All Decals
 
                 $alltext = "All Decals";
-                $assets = $db->table("assets")->whereIn("prodcategory", [13])->orderBy("created", "DESC")->get();
+                $assets = $db->table("assets")->where("publicdomain",)->whereIn("prodcategory", [13])->orderBy("created", "DESC")->get();
         }elseif($category == 9){
                 // All Audio
 
@@ -155,6 +155,7 @@ $pagebuilder = new pagebuilder();
 
 ?>
 
+<script type='text/javascript'>Roblox.config.externalResources = [];Roblox.config.paths['Pages.Catalog'] = 'https://js.rbxcdn.com/46776eac503b939a2fd9146d77d735a3.js';Roblox.config.paths['Pages.CatalogShared'] = 'https://js.rbxcdn.com/da18f3da914691fb825e5ae9f00c9e49.js';Roblox.config.paths['Pages.Messages'] = 'https://js.rbxcdn.com/e8cbac58ab4f0d8d4c707700c9f97630.js';Roblox.config.paths['Resources.Messages'] = 'https://js.rbxcdn.com/fb9cb43a34372a004b06425a1c69c9c4.js';Roblox.config.paths['Widgets.AvatarImage'] = 'https://js.rbxcdn.com/bbaeb48f3312bad4626e00c90746ffc0.js';Roblox.config.paths['Widgets.DropdownMenu'] = 'https://js.rbxcdn.com/7b436bae917789c0b84f40fdebd25d97.js';Roblox.config.paths['Widgets.GroupImage'] = 'https://js.rbxcdn.com/33d82b98045d49ec5a1f635d14cc7010.js';Roblox.config.paths['Widgets.HierarchicalDropdown'] = 'https://js.rbxcdn.com/3368571372da9b2e1713bb54ca42a65a.js';Roblox.config.paths['Widgets.ItemImage'] = 'https://js.rbxcdn.com/8babd891cf420dfe3999b3824a0154cb.js';Roblox.config.paths['Widgets.PlaceImage'] = 'https://js.rbxcdn.com/f2697119678d0851cfaa6c2270a727ed.js';Roblox.config.paths['Widgets.SurveyModal'] = 'https://js.rbxcdn.com/d6e979598c460090eafb6d38231159f6.js';</script>
 
 <style type="text/css">
     #Body {
@@ -486,34 +487,50 @@ $pagebuilder = new pagebuilder();
     </div>
 </div>
 
+
 <script type="text/javascript">
     $(function () {
-        Roblox.require('Pages.Catalog', function (catalog) {
-            catalog.init({"Subcategory":1,"Category":1,"CurrencyType":0,"SortType":0,"SortAggregation":3,"SortCurrency":0,"Gears":null,"Genres":null,"CatalogContext":0,"Keyword":null,"PageNumber":1,"CreatorID":0,"PxMin":0,"PxMax":0,"IncludeNotForSale":false,"LegendExpanded":false,"ResultsPerPage":42}, 295725, true);
-        });
-
-        $('.Paging_Input').val('1'); /* what?! party.js overwrites paging_input on any pageback */
-
-        $(function () {
-            if (window.location.search.indexOf('&showInstructions=true') > -1) {
-                var modalProperties = { escClose: true, opacity: 80, overlayCss: { backgroundColor: "#000"} };
-                $('#AddToGearInstructionsPanel').modal(modalProperties);
+        Roblox.require(['Pages.Catalog', 'Pages.CatalogShared', 'Widgets.HierarchicalDropdown'], function (catalog) {
+            var pagestate = { "Category": 1, "CurrencyType": 0, "SortType": 0, "SortAggregation": 3, "SortCurrency": 0, "AssetTypes": null, "Gears": null, "Genres": null, "Keyword": null, "PageNumber": 1, "Creator": null, "PxMin": 0, "PxMax": 0 };
+            catalog.init(pagestate, 1);
+            Roblox.Widgets.HierarchicalDropdown.init();
+            if(Roblox.CatalogValues.ContainerID)
+            {
+                $('#' + Roblox.CatalogValues.ContainerID).on(Roblox.CatalogShared.CatalogLoadedViaAjaxEventName, null, null, Roblox.CatalogShared.handleCatalogLoadedViaAjaxEvent);
             }
         });
 
-
+            Roblox.CatalogValues = Roblox.CatalogValues || {};
+            Roblox.CatalogValues.CatalogContext = 1;
+        
+        
+            var idsCsv = '332747438,315618053,332744676,332744443,332748371,287039152,330296924,20573086,63043890,1073690,1029025,11297708,188703010,330295337,78730532,106690045,16630147,1028859,192557913,27847645,151784320,19380685';
+            var url =  '/catalog/impression';
+            Roblox.Catalog.ImpressionCounter.fireImpression(idsCsv, url);
     });
-</script>
 
+</script>
 <!--[if IE]>
     <script type="text/javascript">
         $(function () {
-            $('.CatalogItemInner').live('mouseenter', function () {
+            $('.BigInner').live('mouseenter', function () {                
+                $(this).parents('.BigView').css('z-index', '6');
+                $('.SmallView').css('z-index', '1');
+            });
+            $('.BigInner').live('mouseleave', function () {                
+                $(this).parents('.BigView').css('z-index', '1');
+                $('.SmallView').css('z-index', '6');
+            });
+            $('.SmallInner').live('mouseenter', function () {
+                $('.SmallView').css('z-index', '1');
                 $(this).parents('.SmallCatalogItemView').css('z-index', '6');
             });
-            $('.CatalogItemInner').live('mouseleave', function () {
+            $('.SmallInner').live('mouseleave', function () {
+                $('.SmallView').css('z-index', '1');
                 $(this).parents('.SmallCatalogItemView').css('z-index', '1');
             });
         });
     </script>
 <![endif]-->
+
+   
