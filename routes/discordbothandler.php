@@ -3,6 +3,7 @@ use watrlabs\router\Routing;
 use watrbx\sitefunctions;
 use watrlabs\api;
 use watrlabs\authentication;
+use watrbx\thumbnails;
 
 function is_bot_authenticated() {
     header("Content-type: application/json");
@@ -29,6 +30,7 @@ $router->group('/api/v1/discord-bot', function($router) {
             $username = (string)$_GET["username"];
 
             $api = new api();
+            $thumbs = new thumbnails();
 
             global $db;
             $userinfo = $db->table("users")->where("username", $username)->first();
@@ -37,14 +39,27 @@ $router->group('/api/v1/discord-bot', function($router) {
                 $online = null;
                 $auth = new authentication();
                 $online = $auth->is_online($userinfo->id);
+                $ingame = $auth->is_ingame($userinfo->id);
+
+                $activity = "Offline";
+
+                if($online){
+                    $activity = "Online (Website)";
+                }
+
+                if($ingame){
+                    $activity = "In-Game";
+                }
+
+                $render = "https:" . $thumbs->get_user_thumb($userinfo->id, "1024x1024", "full"); // have to do this so discord embeds dont complain (https:)
                 $userdata = array(
-                    "render"=>"https://www.watrbx.wtf/images/defaultimage.png",
+                    "render"=>$render,
                     "id"=>$userinfo->id,
                     "username"=>$userinfo->username,
                     "regtime"=>$userinfo->regtime,
                     "membership"=>$userinfo->membership,
                     "blurb"=>$userinfo->blurb,
-                    "online"=>$online
+                    "activity"=>$activity,
                 );
     
                 $successjson = $api::create_success("Found userinfo!", $userdata, 200);

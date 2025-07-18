@@ -68,8 +68,22 @@ $router->get('/api/v1/get-players', function(){
  
 $router->get('/Login/Negotiate.ashx', function() {
     $auth = $_GET["suggest"] ?? 0;
-    setcookie(".ROBLOSECURITY", $auth, time() + 8600, "/", ".watrbx.wtf");
-    //setcookie(".ROBLOSECURITY", $session, $expiration, "/", ".watrbx.wtf");
+    
+    header("Content-type: text/plain");
+    
+    global $db;
+
+    $session = $db->table("sessions")->where("session", $auth)->first();
+
+    if($session !== null){
+        setcookie(".ROBLOSECURITY", $session->session, time() + 8600, "/", ".watrbx.wtf");
+        echo "$session->session";
+        die();
+    } else {
+        http_response_code(401);
+        die("yeet");
+    }
+
 });
 
 $router->get('/Setting/QuietGet/ClientAppSettings/', function() {
@@ -204,6 +218,11 @@ $router->get('/Thumbs/Avatar.ashx', function(){
         if(isset($_GET["x"]) && isset($_GET["y"])){
             $x = (int)$_GET["x"];
             $y = (int)$_GET["y"];
+            $mode = "full";
+
+            if(isset($_GET["mode"])){
+                $mode = "headshot";
+            }
 
             if(isset($_GET["userId"])){
                 $userid = (int)$_GET["userId"];
@@ -221,8 +240,6 @@ $router->get('/Thumbs/Avatar.ashx', function(){
             }
 
             $userid = $userinfo->id;
-
-
             
             $dimensions = $x . "x" . $y;
 
@@ -234,7 +251,7 @@ $router->get('/Thumbs/Avatar.ashx', function(){
             global $db;
             if($userinfo !== null){
 
-                $thumb = $thumbs->get_user_thumb($userid, $dimensions, "full");
+                $thumb = $thumbs->get_user_thumb($userid, $dimensions, $mode);
 
                 header("Location: $thumb");
                 die($thumb);
@@ -735,7 +752,7 @@ $router->post('/api/v1/asset-upload', function(){
             "name"=>$title,
             "description"=>$description,
             "robux"=>$robux,
-            "tix"=>$robux,
+            "tix"=>$tix,
             "fileid"=>$md5,
             "created"=>time(),
             "updated"=>time(),
@@ -1837,6 +1854,7 @@ $router->post('/game-instances/shutdown', function(){
         $userinfo = $currentuser; // TODO: Check for group access as well ( Implement $auth->hasperm($userid, $assetid) )
         $assetinfo = $db->table("assets")->where("id", $placeid)->first();
 
+
         if($userinfo->id == $assetinfo->owner){
             if($gameserver->end_job($jobid)){
                 die(create_success("Game shutdown requested.", '', 200));
@@ -2118,60 +2136,7 @@ $router->post('/AbuseReport/InGameChatHandler.ashx', function(){
 
 });
 
-$router->get('/marketplace/productinfo', function(){
 
-    header("Content-type: application/json");
-    
-    if(isset($_GET["assetId"])){
-        $auth = new authentication();
-        $assetid = (int)$_GET["assetId"];
-        
-        $productinfo = array(
-            "Name" => "Unknown",
-            "Description" => "???",
-            "Created" => "0",
-            "Updated" => "0",
-            "PriceInRobux" => 0,
-            "PriceInTickets" => 0,
-            "AssetId" => $assetid,
-            "ProductId" => $assetid,
-            "AssetTypeId" => 0,
-            "Creator" => [
-                "Id" => "0",
-                "Name" => "Unknown",
-                "CreatorType" => "User",
-            ],
-            "MinimumMembershipLevel" => 0,
-            "IsForSale" => True,
-        );
-
-        global $db;
-        $assetinfo = $db->table("assets")->where("id", $assetid)->first();
-
-        if($assetinfo !== null){
-            $creatorinfo = $auth->getuserbyid($assetinfo->owner);
-
-            $productinfo["Name"] = $assetinfo->name;
-            $productinfo["Description"] = $assetinfo->description;
-            $productinfo["AssetTypeId"] = $assetinfo->prodcategory;
-            $productinfo["Created"] = date('c', $assetinfo->created);
-            $productinfo["Updated"] = date('c', $assetinfo->updated);
-            $productinfo["PriceInRobux"] = $assetinfo->robux;
-            $productinfo["PriceInTickets"] = $assetinfo->tix;
-
-            $productinfo["Creator"]["Id"] = $creatorinfo->id;
-            $productinfo["Creator"]["Name"] = $creatorinfo->username;
-            $productinfo["Creator"]["CreatorType"] = "User";
-        }
-
-        die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
-
-    } else {
-        header("Content-type: application/json");
-        die(json_encode(array("success"=>false)));
-        
-    }
-});
 
 
 $router->get('/marketplace/productDetails', function(){
@@ -2233,8 +2198,10 @@ $router->get('/marketplace/productDetails', function(){
         die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
 
     } else {
+
+
         header("Content-type: application/json");
-        die(json_encode(array("success"=>false)));
+        die(file_get_contents("https://economy.ttblox.mom/v2/assets/$assetid/details"));
         
     }
 });
@@ -2302,7 +2269,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
                     
                 } else {
 
-                    $job = $db->table("jobs")->where("assetid", $placeid)->first();
+                    $job = $db->table("jobs")->where("assetid", $placeid)->where("type", 1)->first();
 
                     if($job !== null){
                         //$gameserver->request_game($placeid);
@@ -2412,10 +2379,8 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                                 $placelauncher["status"] = 0;
                                 $placelauncher["jobid"] = $job->jobid;
                             } else {
-                                var_dump($gameserver->request_game($placeid));
                             http_response_code(503);
                             $placelauncher["status"] = 0;
-                            $placelauncher["jobid"] = $job->jobid;
                             die(json_encode($placelauncher));
                             //die("No gameservers available");
                         }
@@ -2463,7 +2428,12 @@ $router->get('/users/{id}', function($id){
         $returnarray["AvatarUri"] = $thumb;
         $returnarray["IsOnline"] = $auth->is_online($userinfo->id);
      } else {
-        die(create_error("User not found!", [], 404));
+        $userinfo = $auth->getuserbyid(2);
+        $thumb = $thumb->get_user_thumb($userinfo->id, "250x250", "full");
+        $returnarray["Id"] = $userinfo->id;
+        $returnarray["Username"] = $userinfo->username;
+        $returnarray["AvatarUri"] = $thumb;
+        $returnarray["IsOnline"] = $auth->is_online($userinfo->id);
      }
 
      header("Content-type: application/json");
@@ -2640,7 +2610,7 @@ $router->post('/points/award-points', function(){
                 "userId"=>$userid,
                 "userGameBalance"=>$newamount,
                 "userBalance"=>$newamount,
-                "pointsAwarded"=>$newamount
+                "pointsAwarded"=>$amount
             ];
 
             $update = [
@@ -2687,11 +2657,13 @@ $router->get('/CharacterFetch.aspx', function(){
         foreach ($allitems as $item){
             $assetinfo = $db->table("assets")->where("id", $item->itemid)->first();
 
-            if($assetinfo !== null){
-                if($assetinfo->prodcategory !== 19){
-                    $charapp .= "http://www.watrbx.wtf/asset/?id=". $item->itemid .";";
-                }
-            }
+            //if($assetinfo !== null){
+            //    if($assetinfo->prodcategory !== 19){
+            //        $charapp .= "http://www.watrbx.wtf/asset/?id=". $item->itemid .";";
+            //    }
+            //}
+
+            $charapp .= "http://www.watrbx.wtf/asset/?id=". $item->itemid .";";
             
             
         }
@@ -2879,7 +2851,7 @@ $router->get('/Game/Join.ashx', function() {
             "UserName" => $userinfo->username,
             "SeleniumTestMode" => false,
             "UserId" => $userinfo->id,
-            "SuperSafeChat" => false,
+            "SuperSafeChat" => true,
             "CharacterAppearance" => $charappurl,
             "ClientTicket" => $clientticket,
             "GameId" => $pid,
@@ -2906,7 +2878,7 @@ $router->get('/Game/Join.ashx', function() {
             "UniverseId" => 3,
             "BrowserTrackerId" => 0,
             "UsePortraitMode" => false,
-            "FollowUserId" => 0,
+            "FollowUserId" => 1416,
             "characterAppearanceId" => 1
         ];
 

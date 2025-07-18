@@ -243,7 +243,31 @@ class gameserver {
         if($query !== null){
             return $idlercc;
         } else {
-            return false;
+            global $db;
+
+            $timelimit = time() - 30;
+
+            $haslimit = $db->table("cooldown")->where("cooldownid", "startrcc")->where("date", ">", $timelimit)->first();
+
+            if($haslimit == null){
+                $server = $this->get_closest_server();
+                $port = $this->get_port($server);
+                $response = $this->start_rcc($server, $port, 4);
+
+                sleep(1); // give it time to register on-site
+
+                $query = $db->table("rccinstances")->where("is_idle", 1)->where("serverid", $serverid);
+                $idlercc = $query->first();
+
+                if($idlercc !== null){
+                    return $idlercc;
+                } else {
+                    return false;
+                }
+                
+            } else {
+                return false;
+            }
         }
         
     }
@@ -355,12 +379,12 @@ class gameserver {
                 $db->table("rccinstances")->where("guid", $rcc->guid)->update($update);
                 return $response;
             } else {
-                //$port = $this->get_port($close_server);
-                // if($this->start_rcc($close_server, $port, 1)){
-                //     return true;
-                // } else {
-                //     return false;
-                // }
+                $port = $this->get_port($close_server);
+                 if($this->start_rcc($close_server, $port, 1)){
+                     return true;
+                 } else {
+                     return false;
+                 }
                 return false;
             }
             

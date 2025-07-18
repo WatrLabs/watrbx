@@ -25,6 +25,7 @@ pcall(function() game:GetService("ContentProvider"):SetBaseUrl("http://www.watrb
 
 -- Prepended to Edit.lua and Visit.lua and Studio.lua and PlaySolo.lua--
 
+
 function ifSeleniumThenSetCookie(key, value)
 	if false then
 		game:GetService("CookiesService"):SetCookieValue(key, value)
@@ -130,7 +131,7 @@ function doVisit()
 	else
 		player = game:GetService("Players"):CreateLocalPlayer(0)
 	end
-	player.CharacterAppearance = "http://www.watrbx.wtf/CharacterFetch.aspx?userId=1"
+	player.CharacterAppearance = "https://www.watrbx.wtf/CharacterFetch.aspx?Id=1&placeId=1"
 	local propExists, canAutoLoadChar = false
 	propExists = pcall(function()  canAutoLoadChar = game.Players.CharacterAutoLoads end)
 

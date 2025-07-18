@@ -25,6 +25,21 @@ $router->get("/game/GetCurrentUser.ashx", function() {
 
 });
 
+$router->get('/login/RequestAuth.ashx', function(){
+    global $currentuser;
+
+    if($currentuser !== null && $_COOKIE["_ROBLOSECURITY"]){
+        http_response_code(200);
+        setcookie(".ROBLOSECURITY", $session->session, time() + 8600, "/", ".watrbx.wtf");
+        echo "$sessions->session";
+        die();
+    } else {
+        http_response_code(401);
+        die("User is not authorized.");
+    }
+    
+});
+
 $router->get('/Game/Edit.ashx', function(){
     header("Content-type: text/lua");
     http_response_code(200);

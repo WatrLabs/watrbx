@@ -21,11 +21,53 @@ $pagebuilder->addresource('jsfiles', '/js/f3251ed8271ce1271b831073a47b65e3.js.gz
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
 $pagebuilder->set_page_name("Develop");
 
-$category = $_GET["View"] ?? $_GET["Page"] ?? 9;
-$categories = [9, "universes", 10, 13, 21, 34, 3, 24, 40, "ads", "sponsored-games", 11, 2, 12, 38];
+$allowedcategories = [
+  "Places"=>9,
+  "Games"=>"universes",
+  "Models"=>10,
+  "Decals"=>13,
+  "Badges"=>21,
+  "Game Passes"=>34,
+  "Audio"=>3,
+  "Animations"=>24,
+  "Meshes"=>40,
+  "Ads"=>"ads",
+  "Sponsored Games"=>"sponsored-games",
+  "Shirts"=>11,
+  "T-Shirts"=>2,
+  "Pants"=>12,
+  "Plugins"=>38,
+  "Sets"=>"sets"
+];
+
+global $currentpage;
+
+$currentpage = 9;
+
+if(isset($_GET["View"])){
+  $view = $_GET["View"];
+
+  if(in_array($view, $allowedcategories)){
+    $currentpage = $view;
+  }
+}
+
+
+function is_tab_selected($tab) {
+
+  global $currentpage;
+
+  if($tab == $currentpage){
+    echo "tab-item-selected";
+  }
+
+}
+
+
 
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
+
 ?>
 
 <div id="AdvertisingLeaderboard">
@@ -56,26 +98,21 @@ $pagebuilder->buildheader();
               <tbody>
                 <tr>
                   <td class="menu-area divider-right">
-                    <? foreach($categories as $newCategory => $newCategoryName) { 
-                    if(is_numeric($newCategory)) { ?>
-                      <a href="/develop?View=<?=$newCategory?>" class="tab-item <?if($newCategory == $categoryId) {?>tab-item-selected"<? } ?>><?=$newCategoryName?></a>
-                    <? } else {?>
-                      <a href="/develop?Page=<?=$newCategory?>" class="tab-item tab-item-selected">Places</a>
-                    <? } }?>
-                    <a href="/develop?Page=universes" class="tab-item">Games</a>
-                    <a href="/develop?View=10" class="tab-item">Models</a>
-                    <a href="/develop?View=13" class="tab-item">Decals</a>
-                    <a href="/develop?View=21" class="tab-item">Badges</a>
-                    <a href="/develop?View=34" class="tab-item">Game Passes</a>
-                    <a href="/develop?View=3" class="tab-item">Audio</a>
-                    <a href="/develop?View=24" class="tab-item">Animations</a>
-                    <a href="/develop?View=40" class="tab-item">Meshes</a>
-                    <a href="/develop?Page=ads" class="tab-item">User Ads</a>
-                    <a href="/develop?Page=sponsored-games" class="tab-item">Sponsored Games</a>
-                    <a href="/develop?View=11" class="tab-item">Shirts</a>
-                    <a href="/develop?View=2" class="tab-item">T-Shirts</a>
-                    <a href="/develop?View=12" class="tab-item">Pants</a>
-                    <a href="/develop?View=38" class="tab-item">Plugins</a>
+                    <a href="/develop?View=9" class="tab-item <?=is_tab_selected(9)?>">Places</a>
+                    <a href="/develop?View=universes" class="tab-item <?=is_tab_selected("universes")?>">Games</a>
+                    <a href="/develop?View=10" class="tab-item <?=is_tab_selected(10)?>">Models</a>
+                    <a href="/develop?View=13" class="tab-item <?=is_tab_selected(13)?>">Decals</a>
+                    <a href="/develop?View=21" class="tab-item <?=is_tab_selected(21)?>">Badges</a>
+                    <a href="/develop?View=34" class="tab-item <?=is_tab_selected(34)?>">Game Passes</a>
+                    <a href="/develop?View=3" class="tab-item <?=is_tab_selected(3)?>">Audio</a>
+                    <a href="/develop?View=24" class="tab-item <?=is_tab_selected(24)?>">Animations</a>
+                    <a href="/develop?View=40" class="tab-item <?=is_tab_selected(40)?>">Meshes</a>
+                    <a href="/develop?View=ads" class="tab-item <?=is_tab_selected("ads")?>">User Ads</a>
+                    <a href="/develop?View=sponsored-games" class="tab-item <?=is_tab_selected("sponsored-games")?>">Sponsored Games</a>
+                    <a href="/develop?View=11" class="tab-item <?=is_tab_selected(11)?>">Shirts</a>
+                    <a href="/develop?View=2" class="tab-item <?=is_tab_selected(2)?>">T-Shirts</a>
+                    <a href="/develop?View=12" class="tab-item <?=is_tab_selected(12)?>">Pants</a>
+                    <a href="/develop?View=38" class="tab-item <?=is_tab_selected(38)?>">Plugins</a>
                     <a href="/My/Sets.aspx" class="tab-item">Sets</a>
                     <div id="StudioWidget">
 											<div class="widget-name">
@@ -102,7 +139,7 @@ $pagebuilder->buildheader();
                         <tr>
                           <td class="content-title">
                             <div>
-                              <h2 class="header-text"><?=$categoryName?></h2>
+                              <h2 class="header-text">Places</h2>
                             </div>
                           </td>
                           <td>
