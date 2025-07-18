@@ -103,7 +103,10 @@ $router->get("/temp/cdn-upload", function(){
 
 $router->get('/messages/compose', function(){
     $page = new pagebuilder;
+    $auth = new authentication;
+    $auth->createcsrf("compose");
     $page::get_template("compose");
+    
 });
 
 $router->get('/download/thankyou', function(){
@@ -154,7 +157,20 @@ $router->post('/messages/compose', function(){
 
         $auth = new authentication();
         $func = new sitefunctions();
+        $page = new pagebuilder;
         global $currentuser;
+
+
+        if(isset($_COOKIE["csrftoken"])){
+            if(!$auth->verifycsrf($_COOKIE["csrftoken"], "compose")){
+                $page::get_template("compose", ["error"=>"An unexpected error occured!"]);
+                die();
+            }
+        } else {
+            $page::get_template("compose", ["error"=>"An unexpected error occured!"]);
+            die();
+        }
+
         $recipient = $auth->getuserbyid($userid);
 
         if($auth->hasaccount()){
