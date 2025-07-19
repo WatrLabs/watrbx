@@ -304,17 +304,8 @@ $router->get('/my/settings/json', function() {
         die();
     }
 
-    // there's too much here so im just gonna hope it'll let this slide 
 });
 
 $router->get('/game/logout.aspx', function() {
     die("I totally logged ts out");
 });
-
-$router->group('/group', function($router) {
-    
-    $router->get("/hi", function () {
-        echo "test<br>";
-    });
-    
-}, 'checkhelp');

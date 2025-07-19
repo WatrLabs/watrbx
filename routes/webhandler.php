@@ -378,11 +378,56 @@ $router->get('/login/Default.aspx', function(){
 
 $router->get("/my/character.aspx", function() {
     $page = new pagebuilder;
-    $page::get_template("avatar", ["currentcategory"=>2]);
+
+    $lastcategory = "7";
+
+    $allowedevents = [
+        "17",
+        "18",
+        "8",
+        "2",
+        "11",
+        "12",
+        "19"
+    ];
+    
+
+    if(isset($_COOKIE["lastcategory"])){
+        $lastcategory = $_COOKIE["lastcategory"];
+
+        if(!in_array($lastcategory, $allowedevents)){
+            $lastcategory = "7";
+        } 
+
+    }
+
+    $page::get_template("avatar", ["currentcategory"=>$lastcategory]);
 });
 
 $router->post('/my/character.aspx', function() {
     $page = new pagebuilder;
+
+    $lastcategory = "7";
+
+    $allowedevents = [
+        "17",
+        "18",
+        "8",
+        "2",
+        "11",
+        "12",
+        "19"
+    ];
+    
+
+    if(isset($_COOKIE["lastcategory"])){
+        $lastcategory = $_COOKIE["lastcategory"];
+
+        if(!in_array($lastcategory, $allowedevents)){
+            $lastcategory = "7";
+        } 
+
+    }
 
     global $db;
     global $currentuser;
@@ -390,28 +435,57 @@ $router->post('/my/character.aspx', function() {
     if(isset($_POST["__EVENTTARGET"])){
         $event = $_POST["__EVENTTARGET"];
 
+        if(str_contains($event, "page")){
+            $exploded = explode("-", $event);
+
+            if(isset($exploded[1])){
+
+                if($exploded[1] == "+1"){
+                    if(isset($_COOKIE["page"])){
+                        $currentpage = (int)$_COOKIE["page"];
+                        
+                        $nextpage = $currentpage +1;
+
+                        setcookie("page", $nextpage,  time() + 9999999, "/", ".watrbx.wtf");
+                    } else {
+                        setcookie("page", "1",  time() + 9999999, "/", ".watrbx.wtf");
+                    }
+                } else {
+                    $newpage = (int)$exploded[1];
+                    setcookie("page", $newpage,  time() + 9999999, "/", ".watrbx.wtf");
+                }
+
+            }
+
+        }
+        
         switch ($event){
             case "viewheads":
+
                 $page::get_template("avatar", ["currentcategory"=>17]);
+                setcookie("lastcategory", 17, time() + 9999999, "/", ".watrbx.wtf");
                 die();
             case "viewfaces":
                 $page::get_template("avatar", ["currentcategory"=>18]);
+                setcookie("lastcategory", 18, time() + 9999999, "/", ".watrbx.wtf");
                 die();
             case "viewhats":
                 $page::get_template("avatar", ["currentcategory"=>8]);
-                die();
-            case "viewhats":
-                $page::get_template("avatar", ["currentcategory"=>8]);
+                setcookie("lastcategory", 8, time() + 9999999, "/", ".watrbx.wtf");
                 die();
             case "viewtshirts":
                 $page::get_template("avatar", ["currentcategory"=>2]);
+                setcookie("lastcategory", 2, time() + 2, "/", ".watrbx.wtf");
                 die();
             case "viewshirts":
                 $page::get_template("avatar", ["currentcategory"=>11]);
+                setcookie("lastcategory", 11, time() + 9999999, "/", ".watrbx.wtf");
                 die();
             case "viewpants":
                 die($page::get_template("avatar", ["currentcategory"=>12]));
+                setcookie("lastcategory", 12, time() + 9999999, "/", ".watrbx.wtf");
             case "viewgear":
+                setcookie("lastcategory", 19, time() + 9999999, "/", ".watrbx.wtf");
                 die($page::get_template("avatar", ["currentcategory"=>19]));
             default:
                 if(str_contains($event, "Wear")){
@@ -432,7 +506,7 @@ $router->post('/my/character.aspx', function() {
                                 
                             }
                         }
-                        $page::get_template("avatar", ["currentcategory"=>2]);
+                        $page::get_template("avatar", ["currentcategory"=>$lastcategory]);
                         die();
                     }
                 }
@@ -443,7 +517,7 @@ $router->post('/my/character.aspx', function() {
                         $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
                         $assetid = (int)$exploded[1];
                         $db->table("wearingitems")->where("userid", $currentuser->id)->where("itemid", $assetid)->delete();
-                        $page::get_template("avatar", ["currentcategory"=>2]);
+                        $page::get_template("avatar", ["currentcategory"=>$lastcategory]);
                         die();
                     }
                 }
@@ -480,7 +554,7 @@ $router->post('/my/character.aspx', function() {
 
     }
     
-    $page::get_template("avatar", ["currentcategory"=>2]);
+    $page::get_template("avatar", ["currentcategory"=>$lastcategory]);
     die();
 });
 

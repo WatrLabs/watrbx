@@ -1997,20 +1997,80 @@ $pagebuilder->buildheader();
 
                                             global $db;
 
+                                            $currentpage = 0;
+                                            $limit = 8;
+
+                                            if(isset($_COOKIE["page"])){
+                                                $currentpage = (int)$_COOKIE["page"];
+                                            }
+
                                             $ownedassets = $db->table("ownedassets")->where("userid", $userinfo->id)->get();
+                                            
+                                            $allassets = [];
 
                                             foreach ($ownedassets as $assetid){
                                                 $assetinfo = $db->table("assets")->where("id", $assetid->assetid)->where("prodcategory", $currentcategory)->first();
-                                                $iswearing = $db->table("wearingitems")->where("itemid", $assetid->assetid)->where("userid", $currentuser->id)->first();
 
                                                 if($assetinfo !== null){
-                                                    if($iswearing == null){
-                                                        $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
-                                                    } else {
-                                                        $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                    $allassets[] = $assetinfo;
+                                                }
+                                            }
+
+                                            $allpages = ceil(count($allassets)/$limit);
+                                            
+                                            $is_split = false;
+
+                                            $offset = $currentpage * $limit;
+
+                                            $allassets = array_slice($allassets, $offset, $limit);
+
+                                            if(count($allassets) > 4){
+                                                $is_split = true;
+                                                $allassets1 = array_slice($allassets, 0, 4);
+                                                $allassets2 = array_slice($allassets, 4, 4);
+                                            }
+                                            
+                                            if($is_split == false){
+                                                foreach ($allassets as $assetinfo){
+                                                    $iswearing = $db->table("wearingitems")->where("itemid", $assetinfo->id)->where("userid", $currentuser->id)->first();
+
+                                                    if($assetinfo !== null){
+                                                        if($iswearing == null){
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                        } else {
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                        }
                                                     }
+
+                                                }
+                                            } else {
+                                                foreach ($allassets1 as $assetinfo){
+                                                    $iswearing = $db->table("wearingitems")->where("itemid", $assetinfo->id)->where("userid", $currentuser->id)->first();
+
+                                                    if($assetinfo !== null){
+                                                        if($iswearing == null){
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                        } else {
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                        }
+                                                    }
+
                                                 }
 
+                                                echo "</div><div class=\"TileGroup\">";
+
+                                                foreach ($allassets2 as $assetinfo){
+                                                    $iswearing = $db->table("wearingitems")->where("itemid", $assetinfo->id)->where("userid", $currentuser->id)->first();
+
+                                                    if($assetinfo !== null){
+                                                        if($iswearing == null){
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                        } else {
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                        }
+                                                    }
+
+                                                }
                                             }
 
                                         ?>
@@ -2020,7 +2080,7 @@ $pagebuilder->buildheader();
                                         </div>
                                     
                                 <div class="FooterPager">
-                                    <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireDataPager_Footer"><a disabled="disabled">First</a>&nbsp;<a disabled="disabled">Previous</a>&nbsp;<span>1</span>&nbsp;<a disabled="disabled">Next</a>&nbsp;<a disabled="disabled">Last</a>&nbsp;</span>
+                                    <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AttireDataPager_Footer"><a echo href="javascript:__doPostBack('page-0','')">First</a>&nbsp;<a <? if($currentpage == 0){ echo 'disabled="disabled"'; } else { echo 'href="javascript:__doPostBack(\'page-0\',\'\')"'; } ?>>Previous</a>&nbsp;<span></span>&nbsp;<a href="javascript:__doPostBack('page-+1','')">Next</a>&nbsp;<a <? if($currentpage == 0){ echo 'disabled="disabled"'; } else { echo 'href="javascript:__doPostBack(\'page-last\',\'\')"'; } ?>>Last</a>&nbsp;</span>
                                 </div>
                             </div>
                             

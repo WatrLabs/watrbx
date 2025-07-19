@@ -77,7 +77,7 @@ $router->get('/Login/Negotiate.ashx', function() {
 
     if($session !== null){
         setcookie(".ROBLOSECURITY", $session->session, time() + 8600, "/", ".watrbx.wtf");
-        echo "$session->session";
+        //echo "$session->session";
         die();
     } else {
         http_response_code(401);
@@ -2701,6 +2701,14 @@ $router->post('/api/v1/create-place', function(){
             die("You are updating/creating places too quickly!");
         }
 
+        $oneday = $currenttime - 86400;
+
+        $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
+
+        if($created > 5){
+            die("You can only create 5 places per day.");
+        }
+
         $insert = array(
             "prodcategory"=>9,
             "name"=>$title,
@@ -2761,12 +2769,27 @@ $router->post('/api/v1/upload-place', function(){
     global $currentuser;
     global $s3_client;
 
+    $auth = new authentication;
+
     if($currentuser == null){
         http_response_code(401);
         die();
     }
     
     if(isset($_GET["placeId"])){
+
+        $ip = $auth->getip(true);
+
+        $currenttime = time();
+
+        $threemins = $currenttime - 60*3;
+
+        $created = $db->table("apireq")->where("ip", $ip)->where("time", ">", $threemins)->count();
+
+        if($created > 1){
+            die("You are updating/creating places too quickly!");
+        }
+
         $placeid = (int)$_GET["placeId"];
 
         $assetinfo = $db->table("assets")->where("id", $placeid)->first();
@@ -2790,6 +2813,14 @@ $router->post('/api/v1/upload-place', function(){
 
                 $db->table("assets")->where("id", $placeid)->update($update);
                 $db->table("thumbnails")->where("assetid", $placeid)->delete();
+
+                $ratelimitinsert = [
+                    "apiname"=>"updateplace",
+                    "time"=>time(),
+                    "ip"=>$ip
+                ];
+
+                $db->table("apireq")->insert($ratelimitinsert);
 
                 die("Place Updated");
 
