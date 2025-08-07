@@ -189,7 +189,7 @@ end
 
 -- called when the client connection fails
 function onConnectionFailed(_, error)
-  showErrorWindow("Failed to connect to the Game, sad to see you go, <?php echo $username; ?> (ID=" .. error .. ")", "ID" .. error, "Other")
+  showErrorWindow("Failed to connect to the Game, sad to see you go, <?= htmlspecialchars($username); ?> (ID=" .. error .. ")", "ID" .. error, "Other")
 end
 
 -- called when the client connection is rejected
@@ -209,7 +209,7 @@ local success, err = pcall(function()
   connectionFailed = client.ConnectionFailed:connect(onConnectionFailed)
   client.Ticket = ""
   
-  playerConnectSucces, player = pcall(function() return client:PlayerConnect(<?php echo $id; ?>, "<?php echo $ip; ?>", <?php echo $port; ?>, 0, threadSleepTime) end)
+  playerConnectSucces, player = pcall(function() return client:PlayerConnect(<?= $id; ?>, "<?= $ip; ?>", <?= $port; ?>, 0, threadSleepTime) end)
 
   player:SetSuperSafeChat(false)
   pcall(function() player:SetUnder13(false) end)
@@ -222,7 +222,7 @@ local success, err = pcall(function()
   
   player.CharacterAppearance = ""  
   if not test then visit:SetUploadUrl("")end
-        player.Name = "<?php echo $username; ?>"
+        player.Name = "<?= $username; ?>"
     
 end)
 
