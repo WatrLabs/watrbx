@@ -140,7 +140,7 @@ $pagebuilder = new pagebuilder();
                 // All Decals
 
                 $alltext = "All Decals";
-                $assets = $db->table("assets")->where("publicdomain",)->whereIn("prodcategory", [13])->orderBy("created", "DESC")->get();
+                $assets = $db->table("assets")->where("publicdomain",)->where("prodcategory", 13)->orderBy("created", "DESC")->get();
         }elseif($category == 9){
                 // All Audio
 

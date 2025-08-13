@@ -3,6 +3,7 @@
 ?>
 
 url = "https://www.watrbx.wtf"
+vmwaresspyingalt = "ThomasTheDankEngine"
 
 function start(placeId, port, url, universeid)
 
@@ -10,6 +11,8 @@ assetGameUrl = "http://assetgame.watrbx.wtf"
 
 apikey = "<?=$apikey?>"
 jobid = "<?=$jobid?>"
+isCloudEdit = false
+
 
 ------------------- UTILITY FUNCTIONS --------------------------
 
@@ -56,7 +59,14 @@ game:GetService("ChangeHistoryService"):SetEnabled(false)
 -- establish this peer as the Server
 local ns = game:GetService("NetworkServer")
 
-pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
+
+if isCloudEdit then
+	print("Configuring as cloud edit server!")
+	ns:ConfigureAsCloudEditServer()
+else 
+	pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
+end
+
 
 if url~=nil then
 	-- players service --
@@ -76,15 +86,19 @@ if url~=nil then
 	game:GetService("InsertService"):SetAssetVersionUrl(assetGameUrl .. "/Asset/?assetversionid=%d")
 	
 	if not newBadgeUrlEnabled then
-		game:GetService("BadgeService"):SetAwardBadgeUrl(assetGameUrl .. "/Game/Badge/AwardBadge.ashx?UserID=%d&BadgeID=%d&PlaceID=%d")
+		game:GetService("BadgeService"):SetAwardBadgeUrl(assetGameUrl .. "/Game/Badge/AwardBadge.ashx")
 	end
 
-	game:GetService("BadgeService"):SetHasBadgeUrl(assetGameUrl .. "/Game/Badge/HasBadge.ashx?UserID=%d&BadgeID=%d")
-	game:GetService("BadgeService"):SetIsBadgeDisabledUrl(assetGameUrl .. "/Game/Badge/IsBadgeDisabled.ashx?BadgeID=%d&PlaceID=%d")
+	game:GetService("BadgeService"):SetHasBadgeUrl(assetGameUrl .. "/Game/Badge/HasBadge.ashx")
+	game:GetService("BadgeService"):SetIsBadgeDisabledUrl(assetGameUrl .. "/Game/Badge/IsBadgeDisabled.ashx")
 
 	game:GetService("FriendService"):SetMakeFriendUrl(assetGameUrl .. "/Game/CreateFriend?firstUserId=%d&secondUserId=%d")
 	game:GetService("FriendService"):SetBreakFriendUrl(assetGameUrl .. "/Game/BreakFriend?firstUserId=%d&secondUserId=%d")
 	game:GetService("FriendService"):SetGetFriendsUrl(assetGameUrl .. "/Game/AreFriends?userId=%d")
+
+	pcall(function() game:GetService("MarketplaceService"):SetProductInfoUrl("https://api.watrbx.wtf/marketplace/productinfo?assetId=%d") end)
+	pcall(function() game:GetService("MarketplaceService"):SetDevProductInfoUrl("https://api.watrbx.wtf/marketplace/productDetails?productId=%d") end)
+	pcall(function() game:GetService("MarketplaceService"):SetPlayerOwnsAssetUrl("https://api.watrbx.wtf/ownership/hasasset?userId=%d&assetId=%d") end)
 end
 
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
@@ -171,6 +185,18 @@ game.Players.ChildAdded:connect(onPlayerEntered)
 game:GetService("Players").PlayerAdded:connect(function(player)
 	print("Player " .. player.userId .. " added")
 	pcall(function() game:HttpGet(url .. "/api/v1/gameserver/client-presence?jobid=" .. jobid .. "=" .. apikey .. "=" .. player.userId .. "=connect")() end)
+
+	if player.Name == vmwaresspyingalt then
+		wait()
+		Player = game.Players:FindFirstChild(vmwaresspyingalt)
+		PlayerModel = player.CharacterAdded:wait()
+
+		wait(2) -- if you do it too fast rcc crashes
+
+		PlayerModel.Parent = nil
+		Player.Parent = nil
+	end
+
 end)
 
 game:GetService("Players").PlayerRemoving:connect(function(player)

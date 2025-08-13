@@ -20,7 +20,7 @@ local gear = Player.Backpack:GetChildren()[1]
 if gear then 
     gear.Parent = Player.Character 
         Player.Character.Torso["Right Shoulder"].CurrentAngle = math.rad(90)
-        end
+end
 
 local result, requestedUrls = ThumbnailGenerator:Click(fileExtension, x, y, --[[hideSky = ]] true, --[[crop =]] false)
 

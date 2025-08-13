@@ -16,9 +16,9 @@ $pagebuilder->addresource('jsfiles', '/js/jquery.validate.js');
 $pagebuilder->addresource('jsfiles', '/js/jquery.validate.unobtrusive.js');
 $pagebuilder->addresource('jsfiles', '/js/GenericModal.js');
 $pagebuilder->addresource('jsfiles', '/js/SignupFormValidator.js');
-$pagebuilder->addresource('jsfiles', '/js/My/AccountMVC.js');
+$pagebuilder->addresource('jsfiles', '/js/My/AccountMVC.js?t=3');
 $pagebuilder->addresource('jsfiles', '/js/jquery.validate.js');
-$pagebuilder->addresource('jsfiles', '/js/AddEmail.js');
+$pagebuilder->addresource('jsfiles', '/js/AddEmail.js?t=2');
 $pagebuilder->addresource('jsfiles', '/js/SuperSafePrivacyIndicator.js');
 $pagebuilder->addresource('jsfiles', '/js/GenericConfirmation.js');
 /*
@@ -48,7 +48,7 @@ $pagebuilder->buildheader();
 <div id="BodyWrapper">
   <div id="RepositionBody">
     <div id="Body" style='width:970px;'>
-      <div id="AccountPageContainer" data-missingparentemail="true" data-userabove13="True" data-currentdateyear="2025" data-currentdatemonth="6" data-currentdateday="25">
+      <div id="AccountPageContainer" data-missingparentemail="false" data-userabove13="True" data-currentdateyear="2025" data-currentdatemonth="8" data-currentdateday="2">
         <div id="AccountPageLeft" class="divider-right">
           <h1>My Account</h1>
           <form action="/my/account/update" id="UpdateAccountForm" method="post">
@@ -258,7 +258,7 @@ $pagebuilder->buildheader();
                 <div id="EmailAddressSetting" class="SettingSubTitle">
                   <span id="emailAddressLabel" class="settingLabel form-label">Email address:</span>
                   <div id="emailBlock">
-                    <span id="UserEmail"><?=$currentuser->email?></span><? if( $currentuser->email == null){ echo '<a id="UpdateEmail" class="btn-control btn-control-small"> Add Email</a>'; }?>
+                    <span id="UserEmail"><?=$currentuser->email?></span><a id="UpdateEmail" class="btn-control btn-control-small"> Add Email</a>
                     <?php
                         if($currentuser->email !== null){
                             echo '<span id="EmailVerificationStatus" class="verifiedEmail"></span>';
@@ -302,7 +302,7 @@ $pagebuilder->buildheader();
                   <span class="field-validation-valid" data-valmsg-for="CountryId" data-valmsg-replace="true"></span>
                 </div>
                 <div style="clear: both;">
-                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn1" href="javascript:_doPostBack('$ct100$Roblox$UpdateAccount', 'stuff')">Update</a>
+                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn">Update</a>
                 </div>
               </div>
               <div id="AddEmailScreenModal" class="PurchaseModal simplemodal-data" data-uid="<?=$currentuser->id?>" data-userip="">
@@ -382,7 +382,7 @@ $pagebuilder->buildheader();
                   </select>
                 </div>
                 <div style="clear: both;">
-                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn2" href="javascript:_doPostBack('update', 'account')">Update</a>
+                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn">Update</a>
                 </div>
               </div>
             </div>

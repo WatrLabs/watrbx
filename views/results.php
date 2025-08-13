@@ -31,6 +31,29 @@ if(isset($_GET["MaxRows"])){
     $maxrows = (int)$_GET["MaxRows"];
 }
 
+if($sort == "3"){
+
+    // featured games
+
+    $featuredgames = $db->table("featuredgames")->get();
+
+    $universeids = [];
+
+    foreach ($featuredgames as $featured){
+        $universeids[] = $featured->universeid;
+    }
+
+    $allgames = $db->table("universes")->where("public", 1)->whereIn('id', $universeids)->get();
+
+    $paginated = array_slice($allgames, $startrows, $maxrows);
+
+    foreach ($paginated as $game) {
+        $pagebuilder->build_component("game", ["game" => $game]);
+    }
+
+    die();
+}
+
 if($sort !== 1){
     $query = $db->table("universes")->where("public", 1);
 
@@ -45,7 +68,11 @@ if($sort !== 1){
     foreach ($paginated as $game) {
         $pagebuilder->build_component("game", ["game" => $game]);
     }
+
+    die();
 }
+
+
 
 
 

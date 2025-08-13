@@ -111,7 +111,7 @@ if (typeof Roblox.AddEmail === "undefined") {
                         $('#Processing').hide();
                         //Don't reload page if it is for Parent's email when DOB is Changed to <13
                         if (!RobloxMissingParentEmail.resetParentEmail)
-                            reloadPageOnSuccess = true;
+                            reloadPageOnSuccess = false;
                         Roblox.GenericConfirmation.open({
                             titleText: emailChangedText,
                             bodyContent: emailVerificationText,
@@ -155,7 +155,7 @@ $(function () {
 	
     function closeModal() {
 		if (Roblox.AddEmail.reloadPageOnSuccess) {
-			location.reload(true);
+			
 		}
 		Roblox.GenericConfirmation.close("#AddEmailScreenModal");
 	};

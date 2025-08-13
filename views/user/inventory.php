@@ -1,12 +1,30 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
+use watrlabs\authentication;
+use watrlabs\router\Routing;
+$router = new Routing();
 $pagebuilder = new pagebuilder();
+$auth = new authentication();
+
+$otheruserinfo = $auth->getuserbyid($userid);
+
+if($otheruserinfo == null){
+    die($router->return_status(404));
+}
+
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___775166e336ea1267d5b2fe066340251f_m.css');
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
 $pagebuilder->set_page_name("Inventory");
 $pagebuilder->buildheader();
+
+global $currentuser;
+
+
+$auth->requiresession();
+
+
 
 ?>
 <div class="content  ">
@@ -23,7 +41,7 @@ $pagebuilder->buildheader();
 </script>
 
 <div id="state-properties"
-     data-userid="62402235"
+     data-userid="<?=$userid?>"
      data-headsid="17"
      data-facesid="18"
      data-gearid="19"
@@ -45,15 +63,15 @@ $pagebuilder->buildheader();
      data-right-legsid="31"
      data-torsosid="27"
      data-packagesid="32"
-     data-isuser="true"
-     data-absolute-library-url="http://www.roblox.com/develop/library"
-     data-absolute-catalog-url="http://www.roblox.com/catalog/"
+     data-isuser="<?if($currentuser->id == $userid){ echo "true"; } else { echo "false"; }?>"
+     data-absolute-library-url="/develop/library"
+     data-absolute-catalog-url="/catalog/"
      >
 </div>
 
     <div class="row page-content" ng-modules="robloxApp, ui.bootstrap, assetsExplorer, recommendations, robloxApp.helpers">
 <h1>
-    My Inventory
+    <?if($currentuser->id == $userid){ echo "My"; } else { echo $otheruserinfo->username . "'s"; }?> Inventory
 </h1>
     <div class=" col-xs-12 rbx-tabs-vertical assets-explorer-main-content ng-cloak" ng-controller="assetsExplorerController">
     <div class="category-dropdown">

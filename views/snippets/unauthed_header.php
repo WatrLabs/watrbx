@@ -1,4 +1,12 @@
+<?php
+$ismobile = false;
 
+$useragent = $_SERVER['HTTP_USER_AGENT'];
+
+if(strpos($useragent, "Android")){
+    $ismobile = true;
+}
+?>
 
 
 <!DOCTYPE html>
@@ -240,6 +248,11 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
      data-gutter-ads-enabled="false">
 
 
+<?php
+
+if($ismobile == true){ ?>
+
+
 <div id="header"
      class="navbar-fixed-top rbx-header"
      role="navigation">
@@ -334,6 +347,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     </div>
 </div>
 
+<? } ?>
 
 <!-- LEFT NAV MENU -->
     <div class="container-main    ">
@@ -343,4 +357,3 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                 }
             </script>
         <noscript><div class="SystemAlert"><div class="rbx-alert-info" role="alert">Please enable Javascript to use all the features on this site.</div></div></noscript>
-        <div class="SystemAlert"><div class="rbx-alert-info" role="alert">Game Publishing & Studio IDE is here! Download studio and create away!</div></div>

@@ -28,9 +28,9 @@ $router->get("/game/GetCurrentUser.ashx", function() {
 $router->get('/login/RequestAuth.ashx', function(){
     global $currentuser;
 
-    if($currentuser !== null && $_COOKIE["_ROBLOSECURITY"]){
+    if($currentuser !== null && isset($_COOKIE["_ROBLOSECURITY"])){
         http_response_code(200);
-        setcookie(".ROBLOSECURITY", $session->session, time() + 8600, "/", ".watrbx.wtf");
+        setcookie(".ROBLOSECURITY", $_COOKIE["_ROBLOSECURITY"], time() + 8600, "/", ".watrbx.wtf");
         echo "$sessions->session";
         die();
     } else {

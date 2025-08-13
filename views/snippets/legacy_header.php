@@ -8,6 +8,14 @@ $auth = new authentication();
 global $db;
 global $currentuser;
 
+$ismobile = false;
+
+$useragent = $_SERVER['HTTP_USER_AGENT'];
+
+if(strpos($useragent, "Android")){
+    $ismobile = true;
+}
+
 $pendingfq = count($friends->get_requests($currentuser->id));
 
 if($auth->hasaccount()){
@@ -317,6 +325,10 @@ function __doPostBack(eventTarget, eventArgument) {
     </div>
 </div>
 
+<?php 
+
+if($ismobile == false){ ?>
+
 <div id="header"
      class="navbar-fixed-top rbx-header"
      role="navigation">
@@ -510,6 +522,8 @@ function __doPostBack(eventTarget, eventArgument) {
         </div>
     </div>
 
+<? } ?>
+
         <div id="navContent" class="nav-content"><div class="nav-content-inner">
     <div id="MasterContainer" >
         
@@ -595,4 +609,3 @@ function __doPostBack(eventTarget, eventArgument) {
         
         
         <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
-        <div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">Game Publishing & Studio IDE is here! Download studio and create away!</div></div>

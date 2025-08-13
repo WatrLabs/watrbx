@@ -332,18 +332,12 @@ $(function () {
 
     $('.updateSettingsBtn').on('click', function (evt) {
         evt.preventDefault();
-        if (!$('.updateSettingsBtn').hasClass('btn-disabled-neutral')) {
-            if (userAbove13 && checkIfUserUnder13() && !RobloxMissingParentEmail.hasParentEmailBeenReset)
-                return false;
-        } else {
-            return false;
-        }
         document.getElementById("UpdateAccountForm").submit();
         return true;
     });
 
     $('#AccountPageContainer #YearDropDown').change(function () {
-        checkIfUserUnder13();
+        console.log("ba ba ba");
     });
 
     $('#AskParentToVerifyAgeLink, #AskParentToAgeMeUp').click(function () {
