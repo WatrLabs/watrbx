@@ -290,6 +290,15 @@ class gameserver {
 
             $db->table("jobs")->where("jobid", $jobid)->delete();
             $db->table("game_instances")->where("serverguid", $jobid)->delete();
+            $db->table("activeplayers")->where("jobid", $jobid)->delete();
+
+            $update = [
+                "is_idle"=>1,
+                "placeid"=>null,
+                "type"=>4  
+            ];
+
+            $db->table("rccinstances")->where("guid", $jobinfo->rccinstance)->update($update);
 
             return $killed;
 

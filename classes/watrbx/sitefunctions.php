@@ -4,6 +4,7 @@ namespace watrbx;
 use Pixie\Connection;
 use Pixie\QueryBuilder\QueryBuilderHandler;
 use watrlabs\users\getinfo;
+use watrlabs\watrkit\pagebuilder;
 
 class sitefunctions {
     
@@ -45,6 +46,18 @@ class sitefunctions {
 
         return $formated . $suffix;
 
+    }
+
+    public function get_setting($name) {
+        global $db;
+
+        $dbvalue = $db->table("site_config")->where("thekey", $name)->first();
+
+        if($dbvalue == null){
+            return $_ENV["CONFIG_" . $name];
+        } else {
+            return $dbvalue->value;
+        }
     }
     
     public function getip($encrypt = false) {
@@ -217,6 +230,9 @@ class sitefunctions {
     }
     
     public function get_message(){
+
+        $page = new pagebuilder;
+
         if(isset($_COOKIE["msg"])){
             
             $msg = $_COOKIE["msg"];
@@ -225,10 +241,10 @@ class sitefunctions {
             $decoded = json_decode($decrypted, true);
             
             if($decoded["type"] == "error"){
-                echo "<p id=\"errormsg\">". $decoded["message"] ."</p>";
+                $page->build_component("status", ["status"=>"error", "msg"=>$decoded["message"]]);
                 setcookie("msg", $msg, time() - 500, '');
             } elseif($decoded["type"] == "notice"){
-                echo "<p id=\"errormsg\" style=\"background-color: #378db8;\">". $decoded["message"] ."</p>";
+                $page->build_component("status", ["status"=>"confirm", "msg"=>$decoded["message"]]);
                 setcookie("msg", $msg, time() - 500, '');
             } else {
                 //throw new Exception('Invalid message type!');

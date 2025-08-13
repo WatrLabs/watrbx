@@ -87,9 +87,12 @@ $assetTypes = array(
              
         <? } ?>
         </select><br><br>
-        <input type="int" name="robux" placeholder="robux, put 0 for free" /><br><br>
-        <input type="int" name="tix" placeholder="tix, put 0 for free" /><br><br>
+        <input name="robux" placeholder="robux, put 0 for free" /><br><br>
+        <input name="tix" placeholder="tix, put 0 for free" /><br><br>
+        <input type="checkbox" name="featured" value="yes"> Featured <br><br>
+        <input type="checkbox" name="forsale" value="yes"> For Sale <br><br>
         <input type="file" name="asset" /><br><br>
         <button>Create Asset</button>
     </form>
+    <small>Note: to make off-sale, don't provide a value for robux and tix, putting them to 0 or more will put onsale</small>
 </div>

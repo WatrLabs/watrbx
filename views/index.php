@@ -1,6 +1,10 @@
 <?php
 use watrlabs\authentication;
+use watrbx\sitefunctions;
 $auth = new authentication();
+
+$func = new sitefunctions();
+$canregister = $func->get_setting("CAN_REGISTER");
 
 if($auth->hasaccount()){
     header("Location: /home");
@@ -232,7 +236,6 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 
 <div class="navbar navbar-landing navbar-fixed-top" role="navigation" 
      >
-     <div class="SystemAlert"><div class="rbx-alert-info" role="alert">Game Publishing & Studio IDE is here! Download studio and create away!</div></div>
     <div class="container">
         <div class="row">
             <div class="navbar-header col-md-6">
@@ -364,7 +367,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                 <input id="PasswordConfirm" ng-trim="false" name="passwordConfirm" class="form-control rbx-input-field" match="signup.password" rbx-valid-password-confirm rbx-form-interaction rbx-form-validation rbx-form-validation-redact-input type="password" tabindex="3" placeholder="Confirm Password" ng-model="signup.passwordConfirm"/>
                 <p id="PasswordConfirmInputValidation" class="rbx-control-label input-validation rbx-text-danger" ng-bind="(badSubmit || signupForm.passwordConfirm.$dirty) ? signupForm.passwordConfirm.$validationMessage : ''"></p>
             </div>
-            <div class="birthday-container">
+             <div class="birthday-container">
                 <div class="rbx-form-group" ng-class="{'has-error' : showBirthdayValidation(), 'has-success' : signupForm.birthdayMonth.$dirty && signupForm.birthdayDay.$dirty && signupForm.birthdayYear.$dirty && !showBirthdayValidation() }">
                     <div class="form-control fake-input-lg">
                         <label class="birthday-label">Birthday</label>
@@ -657,7 +660,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             </noscript>
 
             <?php
-                if($_ENV["CAN_REGISTER"] !== "true"){
+                if($canregister !== "true"){
                     echo '<div class="text-danger" style="text-align: center;"><strong>Account creation is temporarily disabled.</strong></div>';
                 }
             ?>
@@ -681,7 +684,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 
     const signupbtn = document.getElementById("SignupButton");
     
-    canregister = "<?=$_ENV["CAN_REGISTER"]?>"
+    canregister = "<?=$canregister?>"
     signupbtn.disabled = true;
 
     function onTurnstileSuccess(token) {

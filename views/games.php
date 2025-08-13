@@ -15,12 +15,6 @@ $pagebuilder->buildheader();
 
 ?>
         <div class="content  ">
-
-                                    
-
-
-
-
 <div id="ResponsiveWrapper" class="games-responsive-wrapper"
      data-gamessearchonpage="true"
      data-adsingamesearchresultsenabled="true">
@@ -102,13 +96,13 @@ $pagebuilder->buildheader();
             //</sl:translate>
         };
 
-        var defaultGamesListsCsv = "1,8,11,16,3";
+        var defaultGamesListsCsv = "1,3";
         Roblox.GamesPageContainerBehavior.FilterValueToGamesListsIdSuffixMapping = {"default": defaultGamesListsCsv.split(',')};
 
         Roblox.GamesPageContainerBehavior.IsUserLoggedIn = <?=$loggedin?>;
         Roblox.GamesPageContainerBehavior.adRefreshRateMilliSeconds = 3000;
         Roblox.GamesPageContainerBehavior.DeviceTypeId = 1;
-        Roblox.GamesPageContainerBehavior.isCreateNewAd = true;
+        Roblox.GamesPageContainerBehavior.isCreateNewAd = false;
         Roblox.GamesPageContainerBehavior.setIntervalId = null;
         Roblox.GamesListBehavior.RefreshAdsInGamesPageEnabled = true;
         Roblox.GamesListBehavior.isUserEligibleForMultirowFirstSort = false;
@@ -181,8 +175,8 @@ $pagebuilder->buildheader();
      data-event-stream-for-protocol-enabled="True"
      data-is-protocol-handler-launch-enabled="False"
      data-is-user-logged-in="<?=$loggedin?>"
-     data-os-name="Unknown"
-     data-protocol-name-for-client="roblox-player"
+     data-os-name="Windows"
+     data-protocol-name-for-client="watrbx-player"
      data-protocol-name-for-studio="watrbx-studio"
      data-protocol-url-includes-launchtime="true"
      data-protocol-detection-enabled="true">

@@ -1,3 +1,13 @@
+<?php
+$ismobile = false;
+
+$useragent = $_SERVER['HTTP_USER_AGENT'];
+
+if(strpos($useragent, "Android")){
+    $ismobile = true;
+}
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
@@ -208,6 +218,10 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     </div>
 </div>
 
+<?php 
+
+if($ismobile == false){ ?>
+
 <div id="header"
      class="navbar-fixed-top rbx-header"
      role="navigation">
@@ -301,7 +315,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
         </ul><!--rbx-navbar-->
     </div>
 </div>
-
+<? } ?>
 
 <!-- LEFT NAV MENU -->
     <div id="navContent" class="nav-content  ">
@@ -385,4 +399,3 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 
                 <div>
                                                             <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
-                                                            <div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">Game Publishing & Studio IDE is here! Download studio and create away!</div></div>

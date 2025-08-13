@@ -5,6 +5,7 @@ namespace watrlabs;
 use watrbx\sitefunctions;
 use watrlabs\users\getuserinfo;
 use watrlabs\watrkit\sanitize;
+use watrlabs\logging\discord;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use Pixie\Connection;
@@ -220,6 +221,11 @@ class authentication {
 
     public function createuser($username, $password, $gender = null){
 
+        $func = new sitefunctions();
+        $sanitize = new sanitize();
+        
+        $ip = $func->getip();
+
         if(strlen($username) > 20){
             return array("code"=>"400", "message"=>"Username is too long.");
         }
@@ -251,7 +257,8 @@ class authentication {
             "username"=>$username,
             "password"=>$password,
             "gender"=>$gender,
-            "regtime"=>time()
+            "regtime"=>time(),
+            "register_ip"=>$func->encrypt($ip)
         );
 
         $insertid = $db->table("users")->insert($insert);
@@ -261,6 +268,27 @@ class authentication {
         } else {
             $this->createsession($insertid);
         }
+
+        $allalts1 = $db->table("users")->where("register_ip", $func->encrypt($ip))->get();
+        $allalts2 = $db->table("users")->where("last_login_ip", $func->encrypt($ip))->get();
+
+        $allalts = array_merge($allalts1, $allalts2);
+
+        $alts = array_map(function($user) {
+            if($user->last_login_ip !== null){
+                return $user->username;
+            } 
+
+            if($user->register_ip !== null){
+                return $user->username;
+            } 
+        }, $allalts);
+
+        $possiblealts = implode(", ", $alts);
+
+        $discord = new discord();
+        $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
+        $discord->internal_log("New account: " . $username . "\nIP: $ip\nPossible Alts: $possiblealts", "New Signup!");
 
         return array("code"=>"200");
         
@@ -278,9 +306,36 @@ class authentication {
         return $query->first();
     }
 
+    private function is_session_valid($session){
+
+        global $db;
+        $currenttime = time();
+
+        $sessioninfo = $db->table("sessions")->where("session", $session)->first();
+
+        if($sessioninfo){
+            return $sessioninfo->expiration > $currenttime;
+        }
+        
+        return false;
+    } 
+
     public function login($username, $password){
 
         global $db;
+
+        $discord = new discord();
+        $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
+        $func = new sitefunctions();
+        $sanitize = new sanitize();
+        
+        $ip = $func->getip(false);
+        $ip = $sanitize::ip($ip);
+
+
+        $update = [
+            "last_login_ip"=>$func->encrypt($ip)
+        ];
 
         $query = $db->table('users')->where('username', '=', $username);
         $user = $query->first();
@@ -294,7 +349,27 @@ class authentication {
         } else {
             $hashedpass = $user->password;
 
+            
+
             if(password_verify($password, $hashedpass)){
+
+                $allalts1 = $db->table("users")->where("register_ip", $func->encrypt($ip))->get();
+                $allalts2 = $db->table("users")->where("last_login_ip", $func->encrypt($ip))->get();
+
+                $allalts = array_merge($allalts1, $allalts2);
+
+                $alts = array_map(function($user) {
+                    if($user->last_login_ip !== null){
+                        return $user->username;
+                    } 
+
+                    if($user->register_ip !== null){
+                        return $user->username;
+                    } 
+                }, $allalts);
+
+                $possiblealts = implode(", ", $alts);
+                $db->table("users")->where("id", $user->id)->update($update);
 
                 if($this->havesession()){
                     $this->relateaccount($user->id);
@@ -302,6 +377,8 @@ class authentication {
                         "code"=>200,
                         "message"=>"Login Success."
                     );
+                    
+                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nPossible Alts: $possiblealts", "Login");
                     return $errorjson;
                 } else {
                     $this->createsession($user->id);
@@ -309,6 +386,8 @@ class authentication {
                         "code"=>200,
                         "message"=>"Login Success."
                     );
+                                        
+                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nPossible Alts: $possiblealts", "Login");
                     return $errorjson;
                 }
             } else {
@@ -316,6 +395,7 @@ class authentication {
                     "code"=>400,
                     "message"=>"Username or password is incorrect!"
                 );
+                $discord->internal_log("Failed Login: " . $user->username . "\nIP: $ip", "Failed Login");
                 return $errorjson;
             }
         }
@@ -383,10 +463,88 @@ class authentication {
         $userid = $this->hasaccount();
         if (!$userid) return false;
 
+        $userinfo = $db->table('users')->where('id', '=', $userid)->first();
+
+        $this->auth_checks($userinfo, $session);
+    
+        return $userinfo;
+    }
+
+    private function auth_checks($userinfo, $session = null) {
+        // this is just dedicated to checking if someone's banned and whatnot
+
+        if(!$this->is_session_valid($session)){
+            $this->delete_session($session);
+        }
+
+        $this->log_action($userinfo);
+
+        $isbanned = $this->is_banned($userinfo->id);
+
+        if($isbanned !== false){
+            $this->handle_ban($isbanned);
+        }
+
+        $this->daily_stipend($userinfo);
+
+    }
+
+    private function delete_session($session){
+        global $db;
+
+        $db->table("sessions")->where("session", $session)->delete();
+
+        return;
+    }
+
+    private function daily_stipend($userinfo) {
+        $laststipend = $userinfo->last_stipend;
+        $membership = $userinfo->membership;
+        $currenttime = time();
+        $oneday = 86400;
+        $onedayago = $currenttime - $oneday;
+
+        if ($laststipend <= $onedayago) {
+            switch ($membership) {
+                case "BuildersClub":
+                    $this->award_stipend($userinfo, 25, 250);
+                    break;
+                case "TurboBuildersClub":
+                    $this->award_stipend($userinfo, 45, 450);
+                    break;
+                case "OutrageousBuildersClub":
+                    $this->award_stipend($userinfo, 70, 700);
+                    break;
+                default:
+                    $this->award_stipend($userinfo, 10, 100);
+                    break;
+            }
+        }
+    }
+
+
+    private function award_stipend($userinfo, $robux = 0, $tix = 0){
+
+        global $db;
+
+        $update = [
+            "last_stipend"=>time(),
+            "robux"=>$robux + $userinfo->robux,
+            "tix"=>$tix + $userinfo->tix
+        ];
+
+        $db->table("users")->where("id", $userinfo->id)->update($update);
+
+    }
+
+    private function log_action($userinfo){
+
+        // might transition this function to public and have it log more than just this
+
+        global $db;
+
         $lastpage = $_SERVER['REQUEST_URI'];
         $visittime = time();
-
-        $userinfo = $db->table('users')->where('id', '=', $userid)->first();
 
         if($userinfo !== null){
             $func = new sitefunctions();
@@ -409,26 +567,39 @@ class authentication {
 
             $db->table("users")->where("id", $userinfo->id)->update($update);
             $db->table("logs")->insert($insert);
+   
+        }
+    }
 
-            $baninfo = $db->table("moderation")->where("userid", $userinfo->id)->orderBy("id", "DESC")->first();
+    public function is_banned($userid){
+        global $db;
 
-            if($baninfo !== null){
-                if($baninfo->canignore == 0){
-                    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $baninfo = $db->table("moderation")->where("userid", $userid)->orderBy("id", "DESC")->first();
 
-                    $allowedurls = [
-                        "/Membership/NotApproved.aspx",
-                        "/CSS/Base/CSS/FetchCSS"
-                    ];
-
-                    if(!in_array($uri, $allowedurls)){
-                        header("Location: /Membership/NotApproved.aspx?ID=" . $baninfo->id);
-                    }
-                }
+        if($baninfo !== null){
+            if($baninfo->canignore == 0){
+                return $baninfo->id;
             }
         }
-    
-        return $userinfo;
+
+        return false;
+    }
+
+    private function handle_ban($banid){
+
+        // TODO: find a better way to store allowedurls (maybe)?
+
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        $allowedurls = [
+            "/Membership/NotApproved.aspx",
+            "/CSS/Base/CSS/FetchCSS",
+            "/logout"
+        ];
+
+        if(!in_array($uri, $allowedurls)){
+            header("Location: /Membership/NotApproved.aspx?ID=" . $banid);
+        }
     }
 
     public function get_data($session = null){

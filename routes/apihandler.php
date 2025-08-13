@@ -18,7 +18,6 @@ global $db;
 
 function create_error($error, $otherstuff = array(), $code = 400){
     header("Content-type: application/json");
-    http_response_code($code);
     $array = array(
         "success"=>false,
         "error"=>$error,
@@ -30,7 +29,6 @@ function create_error($error, $otherstuff = array(), $code = 400){
 
 function create_success($msg, $otherstuff = array(), $code = 200){
     header("Content-type: application/json");
-    http_response_code($code);
     $array = array(
         "success"=>true,
         "msg"=>$msg,
@@ -118,6 +116,15 @@ $router->get('/comments/get-json', function (){
 
         header("Content-type: application/json");
         $ismoderator = $currentuser->is_admin == 1;
+
+        $ismoderator = false;
+
+        if($currentuser !== null){
+            if($currentuser->is_admin == 1){
+                $ismoderator = true;
+            }
+        }
+
         $commentarray = [
             "IsUserModerator"=>$ismoderator,
             "Comments"=>[],
@@ -276,6 +283,9 @@ $router->post('/api/item.ashx', function(){
         global $currentuser;
         $userinfo = $currentuser;
 
+        $func = new sitefunctions();
+        $canpurchase = $func->get_setting("CAN_PURCHASE");
+
         if(isset($_GET["rqtype"])){
             $type = $_GET["rqtype"];
 
@@ -291,7 +301,7 @@ $router->post('/api/item.ashx', function(){
                         $price = (int)$_GET["expectedPrice"];
                         $sellerid = (int)$_GET["expectedSellerID"];
 
-                        if($_ENV["CAN_PURCHASE"] == "false"){
+                        if($canpurchase == "false"){
                             http_response_code(500);
                             $notforsale = array(
                                 "statusCode"=>500,
@@ -690,7 +700,7 @@ $router->post('/api/v1/pants-creator', function(){
             ]);
             
             $insert2 = array(
-                "prodcategory"=>11,
+                "prodcategory"=>12,
                 "name"=>$title,
                 "description"=>$description,
                 "robux"=>$robux,
@@ -727,20 +737,26 @@ $router->post('/api/v1/asset-upload', function(){
 
         $title = htmlspecialchars($_POST["title"]);
         $description = htmlspecialchars($_POST["description"]);
-        $robux = null;
-        $tix = null;
-        $forsale = true;
+        $robux = 0;
+        $tix = 0;
+        $forsale = false;
+        $featured = false;
 
+        $robux = (int)$_POST["robux"];
+        $tix = (int)$_POST["tix"];
 
-        if(isset($_POST["robux"])){
-            $robux = (int)$_POST["robux"];
-            $forsale = true;
+        if(isset($_POST["featured"])){
+            if($_POST["featured"] == "yes"){
+                $featured = true;
+            }
         }
 
-        if(isset($_POST["tix"])){
-            $tix = (int)$_POST["tix"];
-            $forsale = true;
+        if(isset($_POST["forsale"])){
+            if($_POST["forsale"] == "yes"){
+                $forsale = true;
+            }
         }
+
         $prodcategory = $_POST["product"];
 
         global $currentuser;
@@ -761,7 +777,13 @@ $router->post('/api/v1/asset-upload', function(){
 
         if($forsale == true){
             $insert["publicdomain"] = 1;
-            $insert["featured"] = 1; // should make this an option but oh well
+        } else {
+            $insert["robux"] = 0;
+            $insert["tix"] = 0;
+        }
+
+        if($featured == true){
+            $insert["featured"] = 1;
         }
 
         try {
@@ -793,6 +815,7 @@ $router->post('/moderation/filtertext/', function(){
 
     $auth = new authentication();
     $func = new sitefunctions();
+    $discord = new discord();
 
     global $db;
 
@@ -811,6 +834,8 @@ $router->post('/moderation/filtertext/', function(){
         ];
 
         $db->table("chatlogs")->insert($insert);
+
+        $discord->send_webhook($_ENV["CHATLOG_WEBHOOK"], "Chat Log", $staterinfo->username . ": " . $textfiltered . "\n" . $staterinfo->username . " (Unfiltered): " . $text);
 
         $return = json_encode([
             "success" => true,
@@ -1854,6 +1879,13 @@ $router->post('/game-instances/shutdown', function(){
         $userinfo = $currentuser; // TODO: Check for group access as well ( Implement $auth->hasperm($userid, $assetid) )
         $assetinfo = $db->table("assets")->where("id", $placeid)->first();
 
+        if($currentuser->is_admin == 1){
+            if($gameserver->end_job($jobid)){
+                die(create_success("Game shutdown requested.", '', 200));
+            } else {
+                die(create_error("Failed to shutdown game!", '', 500));
+            }
+        }
 
         if($userinfo->id == $assetinfo->owner){
             if($gameserver->end_job($jobid)){
@@ -2208,13 +2240,17 @@ $router->get('/marketplace/productDetails', function(){
 
 $router->post('/Game/PlaceLauncher.ashx', function() {
     header("Content-type: application/json");
-   $placelauncher = array(
+
+    $func = new sitefunctions();
+
+    $placelauncher = array(
         "jobid"=>"null",
         "status"=>0,
         "joinScriptUrl"=>"null",
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=>"null",
-        "message"=>"Hi!"
+        "message"=>"Hi!",
+        "settings"=>null
     ); 
     
     //$placelauncher["jobid"] = "Test";
@@ -2224,6 +2260,8 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
     $gameserver = new gameserver();
 
     global $db;
+    global $currentuser;
+    $request = "";
 
     if(!$gameserver->get_closest_server()){
         http_response_code(503);
@@ -2237,11 +2275,58 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
 
                 $placeid = (int)$_GET["placeId"];
 
+                if(isset($_GET["request"])){
+                    $request = $_GET["request"];
+
+                    if($request == "CloudEdit"){
+
+                        $placelauncher["settings"] = [
+                            "ClientPort" => 0,
+                            "MachineAddress" => "",
+                            "ServerPort" => "",
+                            "PingUrl" => "",
+                            "PingInterval" => 20,
+                            "UserName" => $currentuser->username,
+                            "SeleniumTestMode" => false,
+                            "UserId" => $currentuser->id,
+                            "SuperSafeChat" => true,
+                            "CharacterAppearance" => "",
+                            "ClientTicket" => "",
+                            "GameId" => "",
+                            "PlaceId" => "",
+                            "MeasurementUrl" => "", // No telemetry here :)
+                            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
+                            "BaseUrl" => "http://www.watrbx.wtf/",
+                            "ChatStyle" => "ClassicAndBubble",
+                            "VendorId" => "0",
+                            "ScreenShotInfo" => "",
+                            "VideoInfo" => "",
+                            "CreatorId" => "",
+                            "CreatorTypeEnum" => "User",
+                            "MembershipType" => "$currentuser->membership",
+                            "AccountAge" => "3000000",
+                            "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
+                            "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
+                            "CookieStoreEnabled" => true,
+                            "IsRobloxPlace" => false,
+                            "GenerateTeleportJoin" => false,
+                            "IsUnknownOrUnder13" => false,
+                            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null",
+                            "DataCenterId" => 0,
+                            "UniverseId" => 3,
+                            "BrowserTrackerId" => 0,
+                            "UsePortraitMode" => false,
+                            "FollowUserId" => 1416,
+                            "characterAppearanceId" => 1
+                        ];
+                    }
+                }
+
                 $gameinstance = $db->table("game_instances")->where("placeid", $placeid)->first();
 
                 if($gameinstance !== null){
 
-                    $func = new sitefunctions();
+                    
                     $placelauncher["status"] = 2;
 
                     $jobid = $gameinstance->serverguid;
@@ -2253,37 +2338,63 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
                     $ip = $server_info->ip;
                     $joincode = $func->genstring(25);
 
-                    $joinarray = array(
-                        "code"=>$joincode,
-                        "ip"=>$ip,
-                        "port"=>$port,
-                        "jobid"=>$jobid,
-                        "placeid"=>$placeid
-                    );
                     
-                    $db->table("join_codes")->insert($joinarray);
+                    if(isset($_GET["request"])){
+                        $request = $_GET["request"];
 
-                    $placelauncher["jobid"] = $jobid;
+                        if($request == "CloudEdit"){
+                            $placelauncher["settings"]["MachineAddress"] = $ip;
+                            $placelauncher["settings"]["ServerPort"] = $port;
+                        } else {
+                            $joinarray = array(
+                                "code"=>$joincode,
+                                "ip"=>$ip,
+                                "port"=>$port,
+                                "jobid"=>$jobid,
+                                "placeid"=>$placeid
+                            );
+                            
+                            $db->table("join_codes")->insert($joinarray);
 
-                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                            $placelauncher["jobid"] = $jobid;
+
+                            $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+
+                        }
+                    } else {
+                        $joinarray = array(
+                            "code"=>$joincode,
+                            "ip"=>$ip,
+                            "port"=>$port,
+                            "jobid"=>$jobid,
+                            "placeid"=>$placeid
+                        );
+                        
+                        $db->table("join_codes")->insert($joinarray);
+
+                        $placelauncher["jobid"] = $jobid;
+
+                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+
+                    }
                     
                 } else {
 
-                    $job = $db->table("jobs")->where("assetid", $placeid)->where("type", 1)->first();
+                    $job = $db->table("jobs")->where("assetid", $placeid)->first();
 
                     if($job !== null){
                         //$gameserver->request_game($placeid);
                         $placelauncher["status"] = 1;
                     } else {
                         if($gameserver->request_game($placeid) !== false){
-                                $placelauncher["status"] = 0;
-                            } else {
-                                var_dump($gameserver->request_game($placeid));
+                            $placelauncher["status"] = 0;
+                            $placelauncher["jobid"] = $func->createjobid();
+                        } else {
                             http_response_code(503);
                             $placelauncher["status"] = 0;
-                            die("No gameservers available");
+                            die(json_encode($placelauncher));
+                            //die("No gameservers available");
                         }
-                        
                     } 
                 }
 
@@ -2303,13 +2414,17 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
 
 $router->get('/Game/PlaceLauncher.ashx', function() {
     header("Content-type: application/json");
-   $placelauncher = array(
+
+    $func = new sitefunctions();
+
+    $placelauncher = array(
         "jobid"=>"null",
         "status"=>0,
         "joinScriptUrl"=>"null",
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=>"null",
-        "message"=>"Hi!"
+        "message"=>"Hi!",
+        "settings"=>null
     ); 
     
     //$placelauncher["jobid"] = "Test";
@@ -2319,6 +2434,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     $gameserver = new gameserver();
 
     global $db;
+    global $currentuser;
     $request = "";
 
     if(!$gameserver->get_closest_server()){
@@ -2335,13 +2451,56 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
 
                 if(isset($_GET["request"])){
                     $request = $_GET["request"];
+
+                    if($request == "CloudEdit"){
+
+                        $placelauncher["settings"] = [
+                            "ClientPort" => 0,
+                            "MachineAddress" => "",
+                            "ServerPort" => "",
+                            "PingUrl" => "",
+                            "PingInterval" => 20,
+                            "UserName" => $currentuser->username,
+                            "SeleniumTestMode" => false,
+                            "UserId" => $currentuser->id,
+                            "SuperSafeChat" => true,
+                            "CharacterAppearance" => "",
+                            "ClientTicket" => "",
+                            "GameId" => "",
+                            "PlaceId" => "",
+                            "MeasurementUrl" => "", // No telemetry here :)
+                            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
+                            "BaseUrl" => "http://www.watrbx.wtf/",
+                            "ChatStyle" => "ClassicAndBubble",
+                            "VendorId" => "0",
+                            "ScreenShotInfo" => "",
+                            "VideoInfo" => "",
+                            "CreatorId" => "",
+                            "CreatorTypeEnum" => "User",
+                            "MembershipType" => "$currentuser->membership",
+                            "AccountAge" => "3000000",
+                            "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
+                            "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
+                            "CookieStoreEnabled" => true,
+                            "IsRobloxPlace" => false,
+                            "GenerateTeleportJoin" => false,
+                            "IsUnknownOrUnder13" => false,
+                            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null",
+                            "DataCenterId" => 0,
+                            "UniverseId" => 3,
+                            "BrowserTrackerId" => 0,
+                            "UsePortraitMode" => false,
+                            "FollowUserId" => 1416,
+                            "characterAppearanceId" => 1
+                        ];
+                    }
                 }
 
                 $gameinstance = $db->table("game_instances")->where("placeid", $placeid)->first();
 
                 if($gameinstance !== null){
 
-                    $func = new sitefunctions();
+                    
                     $placelauncher["status"] = 2;
 
                     $jobid = $gameinstance->serverguid;
@@ -2353,19 +2512,45 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                     $ip = $server_info->ip;
                     $joincode = $func->genstring(25);
 
-                    $joinarray = array(
-                        "code"=>$joincode,
-                        "ip"=>$ip,
-                        "port"=>$port,
-                        "jobid"=>$jobid,
-                        "placeid"=>$placeid
-                    );
                     
-                    $db->table("join_codes")->insert($joinarray);
+                    if(isset($_GET["request"])){
+                        $request = $_GET["request"];
 
-                    $placelauncher["jobid"] = $jobid;
+                        if($request == "CloudEdit"){
+                            $placelauncher["settings"]["MachineAddress"] = $ip;
+                            $placelauncher["settings"]["ServerPort"] = $port;
+                        } else {
+                            $joinarray = array(
+                                "code"=>$joincode,
+                                "ip"=>$ip,
+                                "port"=>$port,
+                                "jobid"=>$jobid,
+                                "placeid"=>$placeid
+                            );
+                            
+                            $db->table("join_codes")->insert($joinarray);
 
-                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                            $placelauncher["jobid"] = $jobid;
+
+                            $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+
+                        }
+                    } else {
+                        $joinarray = array(
+                            "code"=>$joincode,
+                            "ip"=>$ip,
+                            "port"=>$port,
+                            "jobid"=>$jobid,
+                            "placeid"=>$placeid
+                        );
+                        
+                        $db->table("join_codes")->insert($joinarray);
+
+                        $placelauncher["jobid"] = $jobid;
+
+                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+
+                    }
                     
                 } else {
 
@@ -2376,15 +2561,14 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                         $placelauncher["status"] = 1;
                     } else {
                         if($gameserver->request_game($placeid) !== false){
-                                $placelauncher["status"] = 0;
-                                $placelauncher["jobid"] = $job->jobid;
-                            } else {
+                            $placelauncher["status"] = 0;
+                            $placelauncher["jobid"] = $func->createjobid();
+                        } else {
                             http_response_code(503);
                             $placelauncher["status"] = 0;
                             die(json_encode($placelauncher));
                             //die("No gameservers available");
                         }
-                        
                     } 
                 }
 
@@ -2460,15 +2644,15 @@ $router->get('/ownership/hasasset', function(){
 });
 
 $router->get('/currency/balance', function(){
-        header("Content-type: application/json");
-        global $currentuser;
+    header("Content-type: application/json");
+    global $currentuser;
 
-        $array = [
-            "robux"=>$currentuser->robux,
-            "tix"=>$currentuser->tix
-        ];
+    $array = [
+        "robux"=>$currentuser->robux,
+        "tix"=>$currentuser->tix
+    ];
 
-        die(json_encode($array));
+    die(json_encode($array));
     
 });
 
@@ -2550,6 +2734,8 @@ $router->get('/points/get-point-balance', function(){
         $placeid = (int)$_GET["placeId"];
         $userid = (int)$_GET["userId"];
 
+        global $db;
+
         $currentbalance = $db->table("playerpoints")->where("userid", $userid)->where("placeid", $placeid)->first();
 
         $array = [
@@ -2627,7 +2813,26 @@ $router->post('/points/award-points', function(){
 });
 
 $router->get('/Game/LuaWebService/HandleSocialRequest.ashx', function(){
-    die("<Error>Unknown method</Error>");
+
+    if(isset($_GET["method"]) && isset($_GET["playerid"])){
+        $method = $_GET["method"];
+        $userid = (int)$_GET["playerid"];
+        
+        $auth = new authentication;
+
+        $userinfo = $auth->getuserbyid($userid);
+
+        if($userinfo !== null){
+            if($userinfo->is_admin == 1){
+                die('<Value Type="boolean">True</Value>');
+            }
+        }
+
+        die('<Value Type="boolean">False</Value>');
+
+    }
+
+    die('<Value Type="boolean">False</Value>');
 });
 
 $router->get('/leaderboards/game/json', function(){
@@ -2698,6 +2903,7 @@ $router->post('/api/v1/create-place', function(){
         $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $threemins)->count();
 
         if($created > 1){
+            http_response_code(429);
             die("You are updating/creating places too quickly!");
         }
 
@@ -2706,6 +2912,7 @@ $router->post('/api/v1/create-place', function(){
         $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
 
         if($created > 5){
+            http_response_code(429);
             die("You can only create 5 places per day.");
         }
 
@@ -2742,8 +2949,13 @@ $router->post('/api/v1/create-place', function(){
 });
 
 $router->get('/users/{$userid}/canmanage/{$assetid}', function($userid, $assetid){
+
+    $auth = new authentication();
+
     $userid = (int)$userid;
     $assetid = (int)$assetid;
+
+    $userinfo = $auth->getuserbyid($userid);
 
     $return = [
         "Success"=>true,
@@ -2760,6 +2972,10 @@ $router->get('/users/{$userid}/canmanage/{$assetid}', function($userid, $assetid
         }
     }
 
+    if($userinfo->is_admin == 1){
+        $return["CanManage"] = true;
+    }
+
     die(json_encode($return));
 
 });
@@ -2769,27 +2985,12 @@ $router->post('/api/v1/upload-place', function(){
     global $currentuser;
     global $s3_client;
 
-    $auth = new authentication;
-
     if($currentuser == null){
         http_response_code(401);
         die();
     }
     
     if(isset($_GET["placeId"])){
-
-        $ip = $auth->getip(true);
-
-        $currenttime = time();
-
-        $threemins = $currenttime - 60*3;
-
-        $created = $db->table("apireq")->where("ip", $ip)->where("time", ">", $threemins)->count();
-
-        if($created > 1){
-            die("You are updating/creating places too quickly!");
-        }
-
         $placeid = (int)$_GET["placeId"];
 
         $assetinfo = $db->table("assets")->where("id", $placeid)->first();
@@ -2814,14 +3015,6 @@ $router->post('/api/v1/upload-place', function(){
                 $db->table("assets")->where("id", $placeid)->update($update);
                 $db->table("thumbnails")->where("assetid", $placeid)->delete();
 
-                $ratelimitinsert = [
-                    "apiname"=>"updateplace",
-                    "time"=>time(),
-                    "ip"=>$ip
-                ];
-
-                $db->table("apireq")->insert($ratelimitinsert);
-
                 die("Place Updated");
 
             } else {
@@ -2837,8 +3030,108 @@ $router->post('/api/v1/upload-place', function(){
 });
 
 $router->get('/users/inventory/list-json', function(){
-    header("Content-type: application/json");
-    die(file_get_contents("../storage/thing.json"));
+    $auth = new authentication();
+    $slugify = new Slugify();
+
+    $response = [
+        "IsValid"=>true,
+        "Data"=>[
+            "TotalItems"=>0,
+            "Start"=>0,
+            "End"=>0,
+            "Page"=>1,
+            "ItemsPerPage"=>24,
+            "PageType"=>"inventory",
+            "Items"=>[
+
+            ],
+        ]
+    ];
+
+    global $currentuser;
+    global $db;
+
+    $pagesize = 50;
+    $offset = 0;
+
+    if(isset($_GET["userId"]) && isset($_GET["assetTypeId"])){
+        $userid = (int)$_GET["userId"];
+        $assettype = (int)$_GET["assetTypeId"];
+
+        $auth = new authentication();
+        $thumbs = new thumbnails();
+
+        $userinfo = $auth->getuserbyid($userid);
+
+        if($userinfo !== null){
+            $allassets = $db->table("ownedassets")->where("userid", $userinfo->id)->orderBy("id", "desc")->get();
+            
+
+            foreach($allassets as $asset){
+
+                $assetinfo = $db->table("assets")->where("id", $asset->assetid)->where("prodcategory", $assettype)->first();
+
+                if($assetinfo !== null){
+
+                    $creatorinfo = $auth->getuserbyid($assetinfo->owner);
+
+                    $response["Data"]["Items"][] = [
+                        "Item"=>[
+                            "AssetId"=>$assetinfo->id,
+                            "Name"=>$assetinfo->name,
+                            "AbsoluteUrl"=>"/" . $slugify->slugify($assetinfo->name) . "-item?id=$assetinfo->id",
+                            "AssetType"=>0,
+                            "AssetTypeFriendlyLabel"=>null,
+                            "Description"=>$assetinfo->description,
+                            "Genres"=>null,
+
+                        ],
+                        "Creator"=>[
+                            "Id"=>$creatorinfo->id,
+                            "Name"=>$creatorinfo->username,
+                            "Type"=>1,
+                            "CreatorProfileLink"=>"/users/$creatorinfo->id/profile/"
+                        ],
+                        "Product"=>[
+                            "Id"=>$assetinfo->id,
+                            "PriceInRobux"=>$assetinfo->robux,
+                            "PriceInTickets"=>$assetinfo->tix,
+                            "IsForSale"=>true,
+                            "IsPublicDomain"=>false,
+                            "IsResellable"=>false,
+                            "IsLimited"=>(bool)$assetinfo->limited,
+                            "IsLimitedUnique"=>(bool)$assetinfo->limitedu,
+                            "SerialNumber"=>null,
+                            "IsRental"=>false,
+                            "RentalDurationInHours"=>null,
+                            "BcRequirement"=>0,
+                            "TotalPrivateSales"=>0,
+                            "SellerId"=>null,
+                            "SellerName"=>null,
+                            "LowestPrivateSaleUserAssetId"=>null,
+                            "IsXboxExclusiveItem"=>false,
+                            "OffsaleDeadline"=>null,
+                            "NoPriceText"=>"Free"
+                        ],
+                        "PrivateServer"=>null,
+                        "Thumbnail"=>[
+                            "Final"=>true,
+                            "Url"=>$thumbs->get_asset_thumb($assetinfo->id),
+                            "RetryUrl"=>"",
+                            "IsApproved"=>true
+                        ],
+                    ];
+                }
+            }
+
+            $response["Data"]["TotalItems"] = count($response["Data"]["Items"]);
+
+            header("Content-type: application/json");
+            die(json_encode($response));
+
+        }
+    }
+
 });
 
 $router->get('/users/inventory/recommended-json', function(){
@@ -2967,8 +3260,12 @@ $router->get("/UserCheck/checkifinvalidusernameforsignup", function() {
 
 $router->post('/api/v1/login', function() {
 
-    if($_ENV["CAN_LOGIN"] == "false"){
-        die(create_error("Login is currently disabled."));
+    $func = new sitefunctions();
+    $canlogin = $func->get_setting("CAN_LOGIN");
+
+    if($canlogin == "false"){
+        create_error("Login is currently disabled.");
+        die();
     }
 
     if(isset($_POST["username"]) && isset($_POST["password"]) || isset($_POST["Username"]) && isset($_POST["Password"])){
@@ -2979,7 +3276,9 @@ $router->post('/api/v1/login', function() {
             $username = $_POST["Username"];
             $password = $_POST["Password"];
         } else {
-            die(create_error("Something wasn't posted!"));
+            $func->set_message("Please fill out all fields and try again.");
+            header("Location: /newlogin");
+            die(create_error("Please fill out all fields and try again."));
         }
         
         // why not just change the post values? 
@@ -2997,21 +3296,31 @@ $router->post('/api/v1/login', function() {
                 die();
             } else {
                 if(isset($result["message"])){
+                    $func->set_message($result["message"]);
+                    header("Location: /newlogin");
                     die(create_error($result["message"]));        
                 } else {
-                    die("Something went wrong.");
+                    $func->set_message("Something went wrong. Please try again later.");
+                    header("Location: /newlogin");
+                    die(create_error("Something went wrong. Please try again later."));
                 }
             }
         } else {
             if(isset($result["message"])){
-                die(create_error($result["message"]));        
+                $func->set_message($result["message"]);
+                header("Location: /newlogin");
+                die(create_error($result["message"]));
             } else {
-                die("Something went wrong.");
+                $func->set_message("Something went wrong. Please try again later.");
+                header("Location: /newlogin");
+                die(create_error("Something went wrong. Please try again later."));
             }
         }
         
     } else {
-        die(create_error("Something wasn't posted!"));
+        $func->set_message("Please fill out all fields and try again.");
+        header("Location: /newlogin");
+        die(create_error("Please fill out all fields and try again."));
     }
 });
 
@@ -3085,7 +3394,10 @@ $router->post('/Membership/NotApproved.aspx', function(){
 
 $router->post('/api/v1/signup', function() {
 
-    if($_ENV["CAN_REGISTER"] == "false"){
+    $func = new sitefunctions();
+    $canregister = $func->get_setting("CAN_REGISTER");
+
+    if($canregister == "false"){
         http_response_code(403);
         header("Location: /Membership/CreationDisabled.aspx");
         die();

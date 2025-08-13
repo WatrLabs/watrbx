@@ -2,6 +2,7 @@
 use watrlabs\router\Routing;
 use watrlabs\logging\discord;
 use watrbx\gameserver;
+use watrlabs\authentication;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -152,6 +153,7 @@ $router->get("/api/v1/gameserver/client-presence", function(){
         $userid = $exploded[2];
         $action = $exploded[3];
         $gameserver = new gameserver();
+        $auth = new authentication();
 
         global $db;
 
@@ -180,8 +182,11 @@ $router->get("/api/v1/gameserver/client-presence", function(){
                     $db->table("users")->where("id", $userid)->update($update);
                     $db->table("visits")->insert($visitsinsert);
                     $db->table("activeplayers")->insert($insert);
+
                     
-                    $log->internal_log("UserID: " . $userid . " has joined place " . $jobinfo->assetid);
+
+                    $userinfo = $auth->getuserbyid($userid);
+                    $log->internal_log($userinfo->username . " has joined place " . $jobinfo->assetid);
                     die("Success.");
                 } elseif($action == "disconnect"){
                     $update = [
@@ -191,7 +196,8 @@ $router->get("/api/v1/gameserver/client-presence", function(){
 
                     $db->table("users")->where("id", $userid)->update($update);
                     $db->table("activeplayers")->where("userid", $userid)->where("jobid", $jobid)->delete();
-                    $log->internal_log("UserID: " . $userid . " has left place " . $jobinfo->assetid);
+                    $userinfo = $auth->getuserbyid($userid);
+                    $log->internal_log($userinfo->username . " has left place " . $jobinfo->assetid);
                     die("Success.");
                 } else {
                     http_response_code(400);

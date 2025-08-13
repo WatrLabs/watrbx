@@ -5,16 +5,16 @@ use watrlabs\authentication;
 global $router; // IMPORTANT: KEEP THIS HERE!
 
 $router->get('/Asset/', function() {
+
+    $id = isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0);
         
-    if(isset($_GET["id"])){
+    if($id){
         if(isset($_GET["version"])){
             $version = (int)$_GET["version"];
         } else {
             $version = 0;
         }
-
-        $id = (int)$_GET["id"];
-
+        
         global $db;
 
         $asset = $db->table("assets")->where("id", $id)->first();
@@ -31,15 +31,15 @@ $router->get('/Asset/', function() {
 });
 
 $router->get('/asset/', function() {
+
+    $id = isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0);
         
-    if(isset($_GET["id"])){
+    if($id){
         if(isset($_GET["version"])){
             $version = (int)$_GET["version"];
         } else {
             $version = 0;
         }
-
-        $id = (int)$_GET["id"];
 
         global $db;
 
@@ -139,7 +139,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["c860515c87ac8a80ab7c72ab1cca68f5"]}');
+    die('{"data":["c860515c87ac8a80ab7c72ab1cca68f5","359a1aad5833c3ac815949f35229ccbf","5c606856276cb29416c59d0c063822a0"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){

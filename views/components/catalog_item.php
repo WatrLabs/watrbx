@@ -44,7 +44,12 @@
         </div>
         
     <div id="textDisplay">
-    <div class="CatalogItemName notranslate"><a class="name notranslate" href="/Festive-Dual-Plungers-item?id=<?=$asset->id?>" title="<?=$asset->name?>"><?=$asset->name?></a></div>
+    <div class="CatalogItemName notranslate"><a class="name notranslate" href="/<?=$slugify->slugify($asset->name);?>-item?id=<?=$asset->id?>" title="<?=$asset->name?>"><?=$asset->name?></a></div>
+        <?php if($asset->publicdomain == 1){ ?>
+                <? if($asset->robux == 0){ ?>
+                    <div class="robux-price"><span class="robux notranslate">FREE</span></div>
+                <? } ?>
+
                 <? if($asset->robux !== 0){ ?>
                     <div class="robux-price"><span class="robux notranslate"><?=$asset->robux?></span></div>
                 <? } ?>
@@ -52,6 +57,8 @@
                 <? if($asset->tix !== 0){ ?>
                     <div class="tickets-price"><span class="tickets notranslate"><?=$asset->tix?></span></div>
                 <? } ?>
+
+            <? } ?>
 
                 <!-- TODO: Private Sales -->
     </div>

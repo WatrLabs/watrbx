@@ -9,11 +9,7 @@
       "PageType": "inventory",
       "Items": [
         {
-          "AssetRestrictionIcon": {
-            "TooltipText": true,
-            "CssTag": null,
-            "LoadAssetRestrictionIconCss": true
-          },
+          
           "Item": {
             "AssetId": 542845124,
             "Name": "really rare thing",

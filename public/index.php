@@ -4,6 +4,8 @@ use watrlabs\router\routing;
 use watrlabs\authentication;
 use watrlabs\users\getuserinfo;
 use watrlabs\logging\discord;
+use watrbx\sitefunctions;
+
 
 require_once '../init.php';
 
@@ -14,6 +16,17 @@ try {
         
         global $db;
         global $router;
+
+        $func = new sitefunctions();
+        $ip = $func->getip(true);
+
+
+        $ipbanned = $db->table("ipbans")->where("ip", $ip)->first();
+
+        if($ipbanned == true){
+            http_response_code(403);
+            die();
+        }
 
         ob_start();
 

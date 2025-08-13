@@ -13,6 +13,14 @@ $msgcount = $db->table("messages")->where("userto", $userinfo->id)->where("hasre
 
 $count = $pendingfq + $msgcount;
 
+$ismobile = false;
+
+$useragent = $_SERVER['HTTP_USER_AGENT'];
+
+if(strpos($useragent, "Android")){
+    $ismobile = true;
+}
+
 $obc = '';
 
 if($userinfo->membership == "OutrageousBuildersClub"){
@@ -320,6 +328,10 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     </div>
 </div>
 
+<?php if($ismobile == false){ ?>
+
+
+
 <div id="header"
      class="navbar-fixed-top rbx-header"
      role="navigation">
@@ -515,6 +527,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             </ul>
         </div>
     </div>
+    <? } ?>
     <div class="container-main    ">
             <script type="text/javascript">
                 if (top.location != self.location) {
@@ -522,4 +535,3 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                 }
             </script>
         <noscript><div class="SystemAlert"><div class="rbx-alert-info" role="alert">Please enable Javascript to use all the features on this site.</div></div></noscript>
-        <div class="SystemAlert"><div class="rbx-alert-info" role="alert">Game Publishing & Studio IDE is here! Download studio and create away!</div></div>

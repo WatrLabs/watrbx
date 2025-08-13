@@ -1,8 +1,10 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
+use watrbx\sitefunctions;
 $pagebuilder = new pagebuilder();
 $auth = new authentication();
+$func = new sitefunctions();
 $auth->requireguest();
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
@@ -55,7 +57,9 @@ $pagebuilder->buildheader();
         </div>
     </div>
 </div>
-<form action="/api/v1/login" id="loginForm" method="post">            <div id="loginarea" class="divider-bottom" data-is-captcha-on="False">
+<form action="/api/v1/login" id="loginForm" method="post">            
+    <?=$func->get_message();?>
+    <div id="loginarea" class="divider-bottom" data-is-captcha-on="False">
                 <div id="leftArea">
                     <div id="loginPanel">
                         <table id="logintable">
@@ -74,7 +78,7 @@ $pagebuilder->buildheader();
                             <div id="forgotPasswordPanel">
                                 <a class="text-link" href="/Login/ResetPasswordRequest.aspx" target="_blank">Forgot your password?</a>
                             </div>
-                            <div id="signInButtonPanel" data-use-apiproxy-signin="False" data-sign-on-api-path="/login/v1">
+                            <div id="signInButtonPanel" data-use-apiproxy-signin="False" data-sign-on-api-path="/api/v1/login">
                                 <a  roblox-js-onclick class="btn-medium btn-neutral">Sign In</a>
                                 <a  roblox-js-oncancel class="btn-medium btn-negative">Cancel</a>
                             </div>

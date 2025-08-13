@@ -15,12 +15,16 @@ function checkhelp() {
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
+$router->get('/stats', function(){
+    $page = new pagebuilder;
+    $page::get_template("stats");
+});
+
 $router->get('/game/GetAllowedExperimentalFeatures', function(){
     die("{}");
 });
 
 $router->get('/marketplace/productinfo', function(){
-
     header("Content-type: application/json");
 
     ob_clean();
@@ -73,10 +77,12 @@ $router->get('/marketplace/productinfo', function(){
             }
         }
 
+        http_response_code(200);
         die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
 
     } else {
-        header("Content-type: application/json");
+        
+        http_response_code(200);
         die(json_encode($productinfo, JSON_UNESCAPED_SLASHES));
         
     }
@@ -251,7 +257,7 @@ $router->get("/users/{userid}/profile", function($userid) {
 
 $router->get("/users/{userid}/inventory", function($userid) {
     $page = new pagebuilder;
-    $page::get_template("user/inventory");
+    $page::get_template("user/inventory", ["userid"=>$userid]);
 });
 
 $router->get("/my/messages", function() {
@@ -502,7 +508,13 @@ $router->post('/my/character.aspx', function() {
                             $asset = $db->table("assets")->where("id", $assetid)->first();
 
                             if($asset !== null){
-                                $db->table("wearingitems")->insert(["itemid"=>$assetid, "userid"=>$currentuser->id]);
+
+                                $hasasset = $db->table("ownedassets")->where("assetid", $assetid)->where("userid", $currentuser->id)->first();
+
+                                if($hasasset !== null){
+                                    $db->table("wearingitems")->insert(["itemid"=>$assetid, "userid"=>$currentuser->id]);
+                                }
+                                
                                 
                             }
                         }
