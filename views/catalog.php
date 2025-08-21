@@ -19,9 +19,8 @@ $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
 global $db;
-$asset = $db->table("assets")->where("id", 26)->first();
 
-$assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
+$assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->limit(35)->get();
 
 ?>
 <style>

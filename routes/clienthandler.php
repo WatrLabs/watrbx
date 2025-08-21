@@ -4,37 +4,12 @@ use watrlabs\authentication;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
-$router->get('/Asset/', function() {
-
-    $id = isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0);
-        
-    if($id){
-        if(isset($_GET["version"])){
-            $version = (int)$_GET["version"];
-        } else {
-            $version = 0;
-        }
-        
-        global $db;
-
-        $asset = $db->table("assets")->where("id", $id)->first();
-
-        if($asset !== null){
-            header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
-            die();
-        } else {
-            $queryparams = http_build_query($_GET);
-            header("Location: https://assetdelivery.ttblox.mom/v1/asset/?$queryparams");
-            die();
-        }
-    }
-});
-
 $router->get('/asset/', function() {
 
-    $id = isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0);
+    (int) $id = basename(isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0));
         
     if($id){
+
         if(isset($_GET["version"])){
             $version = (int)$_GET["version"];
         } else {
@@ -49,8 +24,38 @@ $router->get('/asset/', function() {
             header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
             die();
         } else {
+
+            header("Content-type: application/octet-stream");
+
+            if(file_exists("../storage/asset_cache/$id")){
+                die(file_get_contents("../storage/asset_cache/$id"));
+            }
+
             $queryparams = http_build_query($_GET);
-            header("Location: https://assetdelivery.ttblox.mom/v1/asset/?$queryparams");
+            
+            try {
+                $asset = @file_get_contents("https://assetdelivery.ttblox.mom/v1/asset/?$queryparams");
+
+                if($asset){
+                    
+                    try {
+                        $decoded = gzdecode($asset);
+                    } catch (ErrorException $e){
+                        die($asset);
+                    }
+
+                    file_put_contents("../storage/asset_cache/$id", $decoded); # THIS IS INSECURE!!!!!! (except for the fact I cast id to int & basename it)
+
+                    die($decoded);
+                    
+                }
+
+            } catch (ErrorException $e){
+                http_response_code(500);
+                die($e);
+            }
+
+            http_response_code(500);
             die();
         }
     }
@@ -129,8 +134,6 @@ $router->post('/marketplace/purchase', function() {
     echo json_encode($data); 
 });
 
-
-
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
     die('{"data":["0.2.0pcplayer","INTERNALiosapp"]}');
@@ -139,7 +142,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["c860515c87ac8a80ab7c72ab1cca68f5","359a1aad5833c3ac815949f35229ccbf","5c606856276cb29416c59d0c063822a0"]}');
+    die('{"data":["c860515c87ac8a80ab7c72ab1cca68f5","359a1aad5833c3ac815949f35229ccbf","95e6226794c620ad6682ac2946b9e18c"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){

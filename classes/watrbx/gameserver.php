@@ -313,14 +313,19 @@ class gameserver {
         return $db->table("activeplayers")->where("placeid", $placeid)->count();
     }
 
-    static function get_visits($userid){
+    static function get_visits($userid, $limit = null){
         global $db;
 
-        $rows = $db->table("visits")
+        $query = $db->table("visits")
             ->select($db->raw("MAX(id) as id"))
             ->where("userid", $userid)
-            ->groupBy("universeid")
-            ->get();
+            ->groupBy("universeid");
+            
+        if($limit){
+            $query->limit($limit);
+        }
+
+        $rows = $query->get();
             
         if(empty($rows)){
             return false;
@@ -330,10 +335,16 @@ class gameserver {
             return $row->id;
         }, $rows);
     
-        return $db->table("visits")
+
+        $query2 = $db->table("visits")
             ->whereIn("id", $unqiue)
-            ->orderBy("id", "desc")
-            ->get();
+            ->orderBy("id", "desc");
+            
+        if($limit){
+            $query2->limit($limit);
+        }
+
+        return $query2->get();
     }
 
     public function request_game($placeid){

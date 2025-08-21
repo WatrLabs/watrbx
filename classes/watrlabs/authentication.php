@@ -523,7 +523,7 @@ class authentication {
     }
 
 
-    private function award_stipend($userinfo, $robux = 0, $tix = 0){
+    public function award_stipend($userinfo, $robux = 0, $tix = 0){
 
         global $db;
 
@@ -733,7 +733,7 @@ class authentication {
             
             
         } else {
-            die(header("Location: /login")); // again never should be ran but just in case
+            die(header("Location: /newlogin")); // again never should be ran but just in case
         }
         
     }

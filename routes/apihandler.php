@@ -84,10 +84,6 @@ $router->get('/Login/Negotiate.ashx', function() {
 
 });
 
-$router->get('/Setting/QuietGet/ClientAppSettings/', function() {
-
-});
-
 $router->get("/character-model", function(){
     header("Content-type: application/json");
     die(file_get_contents("../storage/character.json"));
@@ -520,33 +516,44 @@ $router->post('/api/item.ashx', function(){
     }
 });
 
-$router->get('/container/info', function(){
-    global $s3_client;
-});
-
 $router->post('/api/v1/shirt-creator', function(){
 
     $router = new Routing();
     global $currentuser;
 
-    if($currentuser !== null){
-        if($currentuser->is_admin !== 1){
-            die($router->return_status(403));
-        }
-    } else {
-        die($router->return_status(403));
+    if($currentuser == null){
+        header("Location: /newlogin");
+        die();
     }
 
     if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["robux"]) && isset($_POST["tix"]) && isset($_FILES["shirt"])){
         
         global $db;
 
-        $title = $_POST["title"];
-        $description = $_POST["description"];
+        $oneday = time() - 160;
+
+        $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
+
+        if($created > 1){
+            http_response_code(429);
+            die("Please wait before creating another asset.");
+        }
+
+        $title = htmlspecialchars($_POST["title"]);
+        $description = htmlspecialchars($_POST["description"]);
         $robux = (int)$_POST["robux"];
         $tix = (int)$_POST["tix"];
         $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
 
+        $imagesize = getimagesize($_FILES["shirt"]["tmp_name"]);
+
+        if($imagesize == false){
+            die("This is not a valid image.");
+        }
+
+        if($imagesize[0] !== 585 || $imagesize[1] !== 559){
+            die("Your shirt is not the right size.");
+        }
 
         if($tix < 0 || $robux < 0){
             die("Price cannot be negative");
@@ -609,7 +616,7 @@ $router->post('/api/v1/shirt-creator', function(){
                 "created"=>time(),
                 "updated"=>time(),
                 "publicdomain"=>1,
-                "featured"=>1,
+                "featured"=>0,
                 "owner"=>$currentuser->id
             );
 
@@ -629,20 +636,27 @@ $router->post('/api/v1/pants-creator', function(){
     $router = new Routing();
     global $currentuser;
 
-    if($currentuser !== null){
-        if($currentuser->is_admin !== 1){
-            die($router->return_status(403));
-        }
-    } else {
-        die($router->return_status(403));
+    if($currentuser == null){
+        header("Location: /newlogin");
+        die();
     }
+
 
     if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["robux"]) && isset($_POST["tix"]) && isset($_FILES["shirt"])){
         
         global $db;
 
-        $title = $_POST["title"];
-        $description = $_POST["description"];
+        $oneday = time() - 160;
+
+        $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
+
+        if($created > 1){
+            http_response_code(429);
+            die("Please wait before creating another asset.");
+        }
+
+        $title = htmlspecialchars($_POST["title"]);
+        $description = htmlspecialchars($_POST["description"]);
         $robux = (int)$_POST["robux"];
         $tix = (int)$_POST["tix"];
         $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
@@ -650,6 +664,16 @@ $router->post('/api/v1/pants-creator', function(){
 
         if($tix < 0 || $robux < 0){
             die("Price cannot be negative");
+        }
+
+        $imagesize = getimagesize($_FILES["shirt"]["tmp_name"]);
+
+        if($imagesize == false){
+            die("This is not a valid image.");
+        }
+
+        if($imagesize[0] !== 585 || $imagesize[1] !== 559){
+            die("Your pants are not the right size.");
         }
 
         $insert = array(
@@ -709,7 +733,7 @@ $router->post('/api/v1/pants-creator', function(){
                 "created"=>time(),
                 "updated"=>time(),
                 "publicdomain"=>1,
-                "featured"=>1,
+                "featured"=>0,
                 "owner"=>$currentuser->id
             );
 
@@ -723,10 +747,226 @@ $router->post('/api/v1/pants-creator', function(){
 
     }
 });
+/*
+$router->get('/api/v1/award-tix', function(){
+
+    global $db;
+    $auth = new authentication();
+
+    if(isset($_GET["username"])){
+        $exploded = null;
+        $data = $_GET["username"];
+
+        $exploded = explode("=", $_GET["username"]);  
+
+        if(isset($exploded[1])){
+            $username = $exploded[0];
+            $apikey = $exploded[1];
+
+            $isValid = $db->table("event-apikeys")->where("apikey", $apikey)->first();
+
+            if($isValid){
+
+                $userExists = $db->table("users")->where("username", $username)->first();
+
+                if($userExists){
+                    $auth->award_stipend($userExists, 0, 5);
+                    die();
+                }
+
+                die("User Doesn't Exist");
+
+            }
+            die("Invalid API Key");
+        }
+        die("Invalid Request 2");
+    }
+    die("Invalid Request 1");
+
+    http_response_code(400);
+    die();
+
+});
+
+$router->get('/api/v1/award-robux', function(){
+
+    global $db;
+    $auth = new authentication();
+
+    if(isset($_GET["username"])){
+        $exploded = null;
+        $data = $_GET["username"];
+
+        $exploded = explode("=", $_GET["username"]);  
+
+        if(isset($exploded[1])){
+            $username = $exploded[0];
+            $apikey = $exploded[1];
+
+            $isValid = $db->table("event-apikeys")->where("apikey", $apikey)->first();
+
+            if($isValid){
+
+                $userExists = $db->table("users")->where("username", $username)->first();
+
+                if($userExists){
+                    $auth->award_stipend($userExists, 1, 0);
+                    die();
+                }
+
+                die("User Doesn't Exist");
+
+            }
+            die("Invalid API Key");
+        }
+        die("Invalid Request 2");
+    }
+    die("Invalid Request 1");
+
+    http_response_code(400);
+    die();
+
+});
+
+*/
+
+$router->post('/api/v1/decal-creator', function(){
+
+    $router = new Routing();
+    global $currentuser;
+
+    if($currentuser == null){
+        header("Location: /newlogin");
+        die();
+    }
+
+
+    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["robux"]) && isset($_POST["tix"]) && isset($_FILES["shirt"])){
+        
+        global $db;
+
+        $oneday = time() - 160;
+
+        $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
+
+        if($created > 1){
+            http_response_code(429);
+            die("Please wait before creating another asset.");
+        }
+
+        $title = htmlspecialchars($_POST["title"]);
+        $description = htmlspecialchars($_POST["description"]);
+        $robux = (int)$_POST["robux"];
+        $tix = (int)$_POST["tix"];
+        $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
+        $forsale = false;
+
+        if(isset($_POST["forsale"])){
+            if($_POST["forsale"] == "yes"){
+                $forsale = true;
+            }
+        }
+
+        if($tix < 0 || $robux < 0){
+            die("Price cannot be negative");
+        }
+
+        $imagesize = getimagesize($_FILES["shirt"]["tmp_name"]);
+
+        if($imagesize == false){
+            die("This is not a valid image."); // lazy but effective way to check format
+        }
+
+        $insert = array(
+            "prodcategory"=>1,
+            "name"=>$title,
+            "description"=>"Image",
+            "robux"=>$robux,
+            "tix"=>$tix,
+            "fileid"=>$md5,
+            "created"=>time(),
+            "updated"=>time(),
+            "owner"=>$currentuser->id
+        );
+
+        try {
+
+            global $s3_client;
+
+            $md5 = md5_file($_FILES["shirt"]["tmp_name"]);
+            
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $md5,
+                'SourceFile' => $_FILES["shirt"]["tmp_name"]
+            ]);
+            $insertid = $db->table("assets")->insert($insert);
+
+            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+                            <External>null</External>
+                            <External>nil</External>
+                            <Item class="Decal" referent="RBX0">
+                                <Properties>
+                                    <token name="Face">5</token>
+                                    <string name="Name">Decal</string>
+                                    <float name="Shiny">20</float>
+                                    <float name="Specular">0</float>
+                                    <Content name="Texture"><url>http://www.watrbx.wtf/asset/?id='.$insertid.'</url></Content>
+                                    <float name="Transparency">0</float>
+                                </Properties>
+                            </Item>
+                        </roblox>';
+
+            $shirtmd5 = md5($shirtxml);
+
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $shirtmd5,
+                'Body' => $shirtxml,
+            ]);
+
+            
+            
+            $insert2 = array(
+                "prodcategory"=>13,
+                "name"=>$title,
+                "description"=>$description,
+                "robux"=>$robux,
+                "tix"=>$tix,
+                "fileid"=>$shirtmd5,
+                "created"=>time(),
+                "updated"=>time(),
+                "publicdomain"=>1,
+                "featured"=>1,
+                "owner"=>$currentuser->id
+            );
+
+            if($forsale == true){
+                $insert2["publicdomain"] = 1;
+            } else {
+                $insert2["robux"] = 0;
+                $insert2["tix"] = 0;
+            }
+
+            $insertid = $db->table("assets")->insert($insert2);
+
+            //header("Location: /catalog");
+            die("Decal uploaded! ID: $insertid");
+        } catch (Exception $exception) {
+            echo "Failed to upload with error: " . $exception->getMessage();
+        }
+
+    }
+});
 
 $router->post('/api/v1/asset-upload', function(){
     $router = new Routing();
     global $currentuser;
+
+    if($currentuser == null){
+        header("Location: /newlogin");
+        die();
+    }
 
     $auth = new authentication();
 
@@ -852,7 +1092,7 @@ $router->post('/moderation/filtertext/', function(){
 });
 
 $router->get('/Game/ChatFilter.ashx', function(){
-    die("True");
+    die("true");
 });
 
 $router->post('/home/updatestatus', function(){
@@ -1193,7 +1433,7 @@ $router->get('/ide/toolbox/items', function(){
                         "Id"=>$asset->id,
                         "Name"=>$asset->name,
                         "TypeId"=>10,
-                        "IsEndorsed"=>false, // todo
+                        "IsEndorsed"=>$creatorinfo->is_admin == 1, // todo
                     ],
                     "Creator"=>[
                         "Id"=>$creatorinfo->id,
@@ -1230,7 +1470,7 @@ $router->get('/ide/toolbox/items', function(){
                         "Id"=>$asset->id,
                         "Name"=>$asset->name,
                         "TypeId"=>13,
-                        "IsEndorsed"=>false, // todo
+                        "IsEndorsed"=>$creatorinfo->is_admin == 1, // todo
                     ],
                     "Creator"=>[
                         "Id"=>$creatorinfo->id,
@@ -1281,7 +1521,6 @@ $router->get("/user/get-friendship-count", function(){
 
     
 });
-
 
 $router->post('/user/multi-following-exists', function(){
     // TODO
@@ -1671,6 +1910,10 @@ $router->post('/api/v1/thumbnail-uploader', function(){
     global $db;
     global $currentuser;
 
+    if($currentuser->is_admin !== 1){
+        die("You aren't admin!");
+    }
+
     if(isset($_POST["type"]) && isset($_FILES["thumb"]) && isset($_POST["assetid"])){
         $type = $_POST["type"];
         $file = $_FILES["thumb"];
@@ -1712,6 +1955,8 @@ $router->get('/notifications/api/get-notifications', function(){
 });
 
 $router->get('/users/friends/list-json', function(){
+
+    // TODO: Proper Pagination and maybe optimize because its a bit slow
 
     header("Content-type: application/json");
     $auth = new authentication();
@@ -1857,8 +2102,6 @@ $router->get('/messages/api/get-my-unread-messages-count', function(){
     
 });
 
-
-
 $router->get('/presence/users', function() {
     header("Content-type: application/jsom");
     json_encode(array());
@@ -1902,33 +2145,28 @@ $router->post('/game-instances/shutdown', function(){
     }
 });
 
-$router->get('/api/v1/all-gameservers', function(){
-    $gs = new gameserver();
-    $allgameservers = $gs->get_gameservers();
-    header("Content-type: application/json");
-    
-    if($allgameservers == null){
-        die(create_error("Failed to get gameservers!", "", 500));
-    } else {
-        die(json_encode($allgameservers));
-    }
-});
-
 $router->get('/games/getgameinstancesjson', function() {
     header("Content-type: Application/json");
-    // stolen afterworld response
-    //die('{"PlaceId":1,"ShowShutdownAllButton":true,"Collection":[{"Capacity":50,"ShowSlowGameMessage":false,"Guid":"17be-fb-ff-40-1efc148","PlaceId":1,"CurrentPlayers":[{"Id":290,"Username":"p2p","Thumbnail":{"rowId":0,"rowHash":null,"rowTypeId":0,"Url":"http:\/\/www.aftwld.xyz\/Thumbs\/Avatar.ashx?userId=128&x=75&y=75","IsFinal":true}}],"UserCanJoin":false,"ShowShutdownButton":true,"JoinScript":"Roblox.GameLauncher.joinGameInstance(1, \'17be-fb-ff-40-1efc148\');"}],"TotalCollectionSize":1}'); 
     if(isset($_GET["placeId"])){
         $placeid = (int)$_GET["placeId"];
         $auth = new authentication();
         $thumbs = new thumbnails();
 
         global $db;
+        global $currentuser;
         $allservers = $db->table("game_instances")->where("placeid", $placeid)->get();
+        $assetinfo = $db->table("assets")->where("id", $placeid)->first();
+
+        $canshutdown = false;
+
+        if($assetinfo && $currentuser){
+            $canshutdown = $assetinfo->owner == $currentuser->id;
+        }
+
 
         $json = array(
             "PlaceId" => "$placeid",
-            "ShowShutdownAllButton" => true,
+            "ShowShutdownAllButton" => $canshutdown,
             "Collection" => array(),
             "TotalCollectionSize" => 0
         );
@@ -2115,7 +2353,11 @@ $router->get('/game/getauthticket', function() {
 });
 
 $router->post('/client-status/set', function(){
-    
+    die('0'); // TODO   
+});
+
+$router->get('/client-status', function(){
+    die('0'); // TODO
 });
 
 $router->post('/AbuseReport/InGameChatHandler.ashx', function(){
@@ -2468,7 +2710,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                             "ClientTicket" => "",
                             "GameId" => "",
                             "PlaceId" => "",
-                            "MeasurementUrl" => "", // No telemetry here :)
+                            "MeasurementUrl" => "",
                             "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
                             "BaseUrl" => "http://www.watrbx.wtf/",
                             "ChatStyle" => "ClassicAndBubble",
@@ -2587,13 +2829,11 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
 });
 
 $router->get('/users/{id}', function($id){
-    $id = (int)$id; // forcefulyl cast to int
+    $id = (int)$id;
 
     $auth = new authentication;
     $thumb = new thumbnails;
     global $currentuser;
-
-    
 
     $returnarray = [
         "Id"=> 1,
@@ -2632,15 +2872,11 @@ $router->get('/leaderboards/rank/json', function(){
 });
 
 $router->get('/Game/GamePass/GamePassHandler.ashx', function(){
-    die("<Value Type=\"boolean\">true</Value> ");
+    die("<Value Type=\"boolean\">True</Value> ");
 });
 
 $router->get('/ownership/hasAsset', function(){
-    die("true");
-});
-
-$router->get('/ownership/hasasset', function(){
-    die("true");
+    die("True");
 });
 
 $router->get('/currency/balance', function(){
@@ -2730,6 +2966,9 @@ $router->post('/Game/Badge/AwardBadge.ashx', function(){
 
 
 $router->get('/points/get-point-balance', function(){
+
+    // TODO: RCC Authentication (maybe just set a key for it with cookies? not sure if rcc stores cookies but it wouldn't suprise me if it didn't)
+
     if(isset($_GET["placeId"]) && isset($_GET["userId"])){
         $placeid = (int)$_GET["placeId"];
         $userid = (int)$_GET["userId"];
@@ -2758,6 +2997,9 @@ $router->get('/points/get-point-balance', function(){
 });
 
 $router->post('/points/award-points', function(){
+
+    // TODO: RCC Authentication (maybe just set a key for it with cookies? not sure if rcc stores cookies but it wouldn't suprise me if it didn't)
+
     if(isset($_GET["placeId"]) && isset($_GET["userId"]) && isset($_GET["amount"])){
         $placeid = (int)$_GET["placeId"];
         $userid = (int)$_GET["userId"];
@@ -2912,8 +3154,8 @@ $router->post('/api/v1/create-place', function(){
         $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
 
         if($created > 5){
-            http_response_code(429);
-            die("You can only create 5 places per day.");
+            //http_response_code(429);
+            //die("You can only create 5 places per day.");
         }
 
         $insert = array(
@@ -3131,7 +3373,6 @@ $router->get('/users/inventory/list-json', function(){
 
         }
     }
-
 });
 
 $router->get('/users/inventory/recommended-json', function(){
@@ -3154,9 +3395,6 @@ $router->get('/Game/Join.ashx', function() {
         $userinfo = $currentuser;
 
         $ip = $joincode->ip;
-        if($ip == "192.168.1.221"){
-            $ip = "70.228.127.12";
-        }
         $port = $joincode->port;
         $pid = $joincode->placeid;
         $placeinfo = $db->table("assets")->where("id", $joincode->placeid)->first();
@@ -3230,7 +3468,6 @@ $router->get("/UserCheck/checkifinvalidusernameforsignup", function() {
     // 3 + All Good
     
     if(isset($_GET["username"])){
-        
         $sanitize = new sanitize;
         
         $username = $sanitize::get($_GET["username"]);
@@ -3250,7 +3487,6 @@ $router->get("/UserCheck/checkifinvalidusernameforsignup", function() {
         } else {
             $data = 1;
         }
-        
         
         echo json_encode(array("data"=>$data));
     } else {
@@ -3316,7 +3552,6 @@ $router->post('/api/v1/login', function() {
                 die(create_error("Something went wrong. Please try again later."));
             }
         }
-        
     } else {
         $func->set_message("Please fill out all fields and try again.");
         header("Location: /newlogin");
@@ -3347,11 +3582,9 @@ $router->post('/api/v1/verify-captcha', function(){
             $db->table("captchaverified")->insert($insert);
             
             die(create_success("Captcha Verified!", array("token"=>$token)));
-            
         } else {
             die(create_error("The captcha provided is invalid!"));
         }
-        
     } else {
         die(create_error("No captcha was provided!"));
     }
@@ -3385,7 +3618,6 @@ $router->post('/Membership/NotApproved.aspx', function(){
             header("Location: /home");
             die();
         }
-
     } else {
         header("Location: /home");
         die();
@@ -3430,7 +3662,6 @@ $router->post('/api/v1/signup', function() {
         $token = $query->first();
         
         if($token !== null){
-            
             if(!$token->time < time()){
                 $auth = new authentication();
                 $result = $auth->createuser($username, $pass, $gender);
@@ -3444,8 +3675,6 @@ $router->post('/api/v1/signup', function() {
                 $db->table("captchaverified")->where("token", $token)->delete();
                 die(create_error("Captcha session provided is invalid."));
             }
-            
-            
         } else {
             die(create_error("Captcha session provided is invalid."));
         }

@@ -44,7 +44,7 @@ function validate_header(){
         }
 
     } else {
-        //adie(createerror("Gameserver is not authorized!", '', 401));
+        die(createerror("Gameserver is not authorized!", '', 401)); // this was left commented wayyy too long. oops.
     }
 }
 
@@ -178,6 +178,12 @@ $router->get("/api/v1/gameserver/client-presence", function(){
                         "active_where"=>"Game"
                     ];
 
+                    $userinfo = $auth->getuserbyid($userid);
+
+                    if($userinfo == null){
+                        die();
+                    }
+
 
                     $db->table("users")->where("id", $userid)->update($update);
                     $db->table("visits")->insert($visitsinsert);
@@ -185,7 +191,7 @@ $router->get("/api/v1/gameserver/client-presence", function(){
 
                     
 
-                    $userinfo = $auth->getuserbyid($userid);
+                    
                     $log->internal_log($userinfo->username . " has joined place " . $jobinfo->assetid);
                     die("Success.");
                 } elseif($action == "disconnect"){
@@ -425,6 +431,15 @@ $router->group('/api/v1/gameserver', function($router) {
                         case "10":
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/model.lua");
+                            $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $dimensions = explode("x", $jobinfo->dimensions);
+                            $lua = str_replace("%x%", $dimensions[0], $lua);
+                            $lua = str_replace("%y%", $dimensions[1], $lua);
+                            die($lua);
+                            break;
+                        case "18":
+                            header("Content-type: text/lua");
+                            $lua = file_get_contents("../storage/lua/face.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
                             $dimensions = explode("x", $jobinfo->dimensions);
                             $lua = str_replace("%x%", $dimensions[0], $lua);
