@@ -1,15 +1,11 @@
 <?php
     use watrlabs\router\Routing;
+    use watrlabs\authentication;
+    $auth = new authentication();
+    $auth->requiresession();
     $router = new Routing();
     global $currentuser;
 
-    if($currentuser !== null){
-        if($currentuser->is_admin !== 1){
-            die($router->return_status(403));
-        }
-    } else {
-        die($router->return_status(403));
-    }
 ?>
 
 <style>

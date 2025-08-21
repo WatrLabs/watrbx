@@ -307,5 +307,7 @@ $router->get('/my/settings/json', function() {
 });
 
 $router->get('/game/logout.aspx', function() {
-    die("I totally logged ts out");
+    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+    header("Location: /newlogin");
+    die();
 });

@@ -23,20 +23,30 @@ class friends {
         return $isfriends !== null;
     }
 
-    public function get_friends($userid) {
+    public function get_friends($userid, $limit = null) {
         global $db;
     
-        $friends1 = $db->table("friends")
+        $query1 = $db->table("friends")
                        ->where("userid", $userid)
                        ->where("status", "accepted")
-                       ->join('users', 'users.id', '=', 'friends.friendid')
-                       ->get();
+                       ->join('users', 'users.id', '=', 'friends.friendid');
+
+        if($limit){
+            $query1->limit($limit);
+        }
+
+        $friends1 = $query1->get();
     
-        $friends2 = $db->table("friends")
+        $query2 = $db->table("friends")
                        ->where("friendid", $userid)
                        ->where("status", "accepted")
-                       ->join('users', 'users.id', '=', 'friends.userid')
-                       ->get();
+                       ->join('users', 'users.id', '=', 'friends.userid');
+
+        if($limit){
+            $query2->limit($limit);
+        }
+
+        $friends2 = $query2->get();
 
         $friends = array_merge($friends1, $friends2);
     

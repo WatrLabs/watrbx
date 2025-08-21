@@ -19,7 +19,7 @@ global $currentuser;
 $character = $thumbs->get_user_thumb($currentuser->id, "512x512", "headshot");
 
 $userinfo = $currentuser;
-$allfriends = $friends->get_friends($userinfo->id);
+$allfriends = $friends->get_friends($userinfo->id, 9);
 
 if ($userinfo->membership !== "None") {
     if ($userinfo->membership == "OutrageousBuildersClub") {
@@ -33,10 +33,8 @@ if ($userinfo->membership !== "None") {
     $bc = null;
 }
 
-$recentlyvisited = $gameserver->get_visits($userinfo->id);
-if($recentlyvisited){
-    $recentlyvisited = array_slice($recentlyvisited, 0, 6);
-}
+$recentlyvisited = $gameserver->get_visits($userinfo->id, 6);
+
 
 $pagebuilder->addresource("cssfiles", "/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css");
 $pagebuilder->addresource("cssfiles","/CSS/Base/CSS/FetchCSS?path=page___47b79e13014f607f8bba2a5bcaeef6d8_m.css");
@@ -174,7 +172,7 @@ $pagebuilder->buildheader();
 
                     $query = $db
                         ->table("feed")
-                        ->limit(10)
+                        ->limit(5)
                         ->orderBy("date", "DESC");
 
                     $feed = $query->get();

@@ -518,6 +518,7 @@ if($ismobile == false){ ?>
                     <li class="rbx-text-notes rbx-font-bold rbx-font-sm">
                         Events
                     </li>
+                    
             </ul>
         </div>
     </div>

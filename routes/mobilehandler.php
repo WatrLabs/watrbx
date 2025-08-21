@@ -53,7 +53,6 @@ $router->post('/mobileapi/login', function(){
     }
 });
 
-
 $router->get("/device/initialize", function() {
     header("Content-type: applcation/json");
     die('{"browserTrackerId":1234567890,"appDeviceIdentifier":null}'); 

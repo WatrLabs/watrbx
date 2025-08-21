@@ -24,8 +24,33 @@ class thumbnails {
         }
     }
 
+    public function check_moderation_status($asset){
+
+        global $db;
+
+        if(is_int($asset)){
+            $asset = $db->table("assets")->where("id", $asset)->first();
+        }
+
+        if($asset->moderation_status == "Pending"){
+            return "/images/defaultimage.png";
+        }
+
+        if($asset->moderation_status == "Deleted"){
+            return "//cdn/watrbx.wtf/94d99af3ba4bc501d80b51580ffa9b4a3031560c.png";
+        }
+
+        return null;
+    }
+
     public function get_asset_thumb($id, $size = "300x300", $type = "icon"){
         global $db;
+
+        (int) $id;
+
+        if($this->check_moderation_status((int) $id)){
+            return $this->check_moderation_status((int) $id);
+        }
 
 
         if($size == "200x200"){
@@ -56,9 +81,6 @@ class thumbnails {
 
             if($assetinfo->prodcategory == 1){
                 return "//cdn.watrbx.wtf/" . $assetinfo->fileid;
-            } elseif($assetinfo->prodcategory == 18){
-                $assetimageinfo = $db->table("assets")->where("id", $id - 1)->first(); // really unsmart way of doing this, will improve
-                return "//cdn.watrbx.wtf/" . $assetimageinfo->fileid;
             } elseif($assetinfo->prodcategory == 3){
                 $thumb = $db->table("thumbnails")->where("assetid", $id)->where("mode", "Icon")->orderBy("id", "DESC")->first();
 

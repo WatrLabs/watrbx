@@ -107,6 +107,11 @@ $router->get("/temp/cdn-upload", function(){
     $page::get_template("temp/cdn-upload");
 });
 
+$router->get("/temp/decal-creator", function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/decal-creator");
+});
+
 $router->get('/messages/compose', function(){
     $page = new pagebuilder;
     $auth = new authentication;
@@ -383,6 +388,9 @@ $router->get('/login/Default.aspx', function(){
 });
 
 $router->get("/my/character.aspx", function() {
+
+    // TODO: Improve this. A LOT.
+
     $page = new pagebuilder;
 
     $lastcategory = "7";
@@ -580,22 +588,9 @@ $router->get("/search/users", function() {
     $page::get_template("search/users");
 });
 
-$router->get("/My/Groups.aspx", function() {
-    $page = new pagebuilder;
-    $page::get_template("groups/default");
-});
-
-$router->post("/My/Groups.aspx", function() {
-    var_dump($_POST);
-});
-
 $router->get("/my/money.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("my/money");
-});
-
-$router->get('/Thumbs/Place.aspx', function(){
-    header("Location: /images/9a4a5d6f14dd9785c0af4175e7aff706.png");
 });
 
 $router->get("/userads/{num}", function($num) {
@@ -636,11 +631,3 @@ $router->get("/CSS/Base/CSS/FetchCSS", function() {
     }
     
 });
-
-$router->group('/group', function($router) {
-    
-    $router->get("/hi", function () {
-        echo "test<br>";
-    });
-    
-}, 'checkhelp');
