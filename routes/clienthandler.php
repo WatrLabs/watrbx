@@ -1,10 +1,71 @@
 <?php
 use watrlabs\router\Routing;
 use watrlabs\authentication;
+use watrbx\gameserver;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
+$router->get('/place/{id}/fetch', function($id){
+
+    global $db;
+    $gameserver = new gameserver();
+
+    if(isset($_GET["apikey"])){
+        $apikey = $_GET["apikey"];
+
+
+        if($gameserver->validate_api_key($apikey)){
+            $asset = $db->table("assets")->where("id", $id)->first();
+
+            if($asset){
+                header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
+                die();
+            } else {
+                http_response_code(403);
+                die();
+            }
+
+        } else {
+            http_response_code(403);
+            die();
+        }
+
+        http_response_code(403);
+        die();
+
+    }
+
+    http_response_code(403);
+    die();
+
+});
+
 $router->get('/asset/', function() {
+
+    global $db;
+
+    $id = $_GET["id"];
+
+    $exploded = explode("=", $id);
+
+    if($exploded){
+        if(isset($exploded[0]) && isset($exploded[1])){
+            (int)$id = $exploded[0];
+            (string)$apikey = $exploded[1];
+
+            $gameserver = new gameserver();
+            if($gameserver->validate_api_key($apikey)){
+                $asset = $db->table("assets")->where("id", $id)->first();
+
+                if($asset){
+                    header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
+                    die();
+                }
+
+            }
+
+        }
+    }
 
     (int) $id = basename(isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0));
         
@@ -17,12 +78,30 @@ $router->get('/asset/', function() {
         }
 
         global $db;
+        global $currentuser;
 
         $asset = $db->table("assets")->where("id", $id)->first();
 
         if($asset !== null){
-            header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
-            die();
+            if($asset->prodcategory == 9){
+
+                if($currentuser){
+
+                    if($asset->owner == $currentuser->id){
+                        header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
+                        die();
+
+                    } 
+                }
+
+                http_response_code("403");
+                die("You do not own this asset.");
+                
+
+            } else {
+                header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
+                die();
+            }
         } else {
 
             header("Content-type: application/octet-stream");

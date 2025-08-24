@@ -3,6 +3,7 @@
 namespace watrbx;
 
 use watrbx\sitefunctions;
+use watrbx\gameserver;
 
 class thumbnails {
 
@@ -112,10 +113,12 @@ class thumbnails {
         $iconrequest = $db->table("jobs")->where("assetid", $assetid)->where("type", 2)->first();
         if($iconrequest == null){
             $func = new sitefunctions();
+            $gameservers = new gameserver();
             $assetinfo = $db->table("assets")->where("id", $assetid)->first();
             if($assetinfo !== null){
                 $jobid = $func->createjobid();
-                $db->table("jobs")->insert(["status"=>"0", "type"=>2, "assetid"=>$assetid, "jobid"=>$jobid, "dimensions"=>$dimensions]);
+                $apikey = $gameservers->create_api_key();
+                $db->table("jobs")->insert(["status"=>"0", "type"=>2, "apikey"=>$apikey, "assetid"=>$assetid, "jobid"=>$jobid, "dimensions"=>$dimensions]);
             } else {
                 // TODO: Grab thumb from roblox instead.
             }
