@@ -2871,6 +2871,11 @@ $router->get('/leaderboards/rank/json', function(){
     die("[]");
 });
 
+$router->get('/gametransactions/getpendingtransactions', function(){
+    header("Content-type: application/json");
+    die("[]");
+});
+
 $router->get('/Game/GamePass/GamePassHandler.ashx', function(){
     die("<Value Type=\"boolean\">True</Value> ");
 });

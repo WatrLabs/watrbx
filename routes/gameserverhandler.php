@@ -44,7 +44,7 @@ function validate_header(){
         }
 
     } else {
-        die(createerror("Gameserver is not authorized!", '', 401)); // this was left commented wayyy too long. oops.
+        //die(createerror("Gameserver is not authorized!", '', 401)); // this was left commented wayyy too long. oops.
     }
 }
 
@@ -459,6 +459,7 @@ $router->group('/api/v1/gameserver', function($router) {
                             header("Content-type: text/lua");
                             $lua = file_get_contents("../storage/lua/place.lua");
                             $lua = str_replace("%assetid%", $assetinfo->id, $lua);
+                            $lua = str_replace("%apikey%", $jobinfo->apikey, $lua);
                             $dimensions = explode("x", $jobinfo->dimensions);
                             $lua = str_replace("%x%", $dimensions[0], $lua);
                             $lua = str_replace("%y%", $dimensions[1], $lua);
