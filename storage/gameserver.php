@@ -62,6 +62,7 @@ local ns = game:GetService("NetworkServer")
 
 if isCloudEdit then
 	print("Configuring as cloud edit server!")
+	game:SetServerSaveUrl(url .. "/ide/publish/UploadFromCloudEdit")
 	ns:ConfigureAsCloudEditServer()
 else 
 	pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
@@ -101,7 +102,7 @@ if url~=nil then
 	pcall(function() game:GetService("MarketplaceService"):SetPlayerOwnsAssetUrl("https://api.watrbx.wtf/ownership/hasasset?userId=%d&assetId=%d") end)
 end
 
-pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
+--pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 settings().Diagnostics.LuaRamLimit = 0
 --settings().Network:SetThroughputSensitivity(0.08, 0.01)
 --settings().Network.SendRate = 35
@@ -136,6 +137,24 @@ ns:Start(port)
 
 scriptContext:SetTimeout(10)
 scriptContext.ScriptsDisabled = false
+
+if isCloudEdit then
+        local doPeriodicSaves = true
+        local delayBetweenSavesSeconds = 5 * 60 -- 5 minutes
+        local function periodicSave()
+            if doPeriodicSaves then
+                game:ServerSave()
+                delay(delayBetweenSavesSeconds, periodicSave)
+            end
+        end
+        -- Spawn thread to save in the future
+        delay(delayBetweenSavesSeconds, periodicSave)
+        -- Hook into OnClose to save on shutdown
+        game.OnClose = function()
+            doPeriodicSaves = false
+            game:ServerSave()
+        end
+    end
 
 
 

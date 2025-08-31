@@ -44,8 +44,7 @@ $router->get('/asset/', function() {
 
     global $db;
 
-    $id = $_GET["id"];
-
+    $id = basename(isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0));
     $exploded = explode("=", $id);
 
     if($exploded){
@@ -67,7 +66,7 @@ $router->get('/asset/', function() {
         }
     }
 
-    (int) $id = basename(isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0));
+
         
     if($id){
 
@@ -88,8 +87,15 @@ $router->get('/asset/', function() {
                 if($currentuser){
 
                     if($asset->owner == $currentuser->id){
-                        header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
-                        die();
+                        try {
+                            $asset = file_get_contents("http://cdn.watrbx.wtf/" . $asset->fileid);
+                            $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
+                            $asset = str_replace("watrbx.xyz", "watrbx.wtf", $asset);
+                            die($asset);
+                        } catch (ErrorException){
+                            http_response_code(500);
+                            die();
+                        }
 
                     } 
                 }
@@ -100,7 +106,15 @@ $router->get('/asset/', function() {
 
             } else {
                 header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
-                die();
+                try {
+                    $asset = file_get_contents("http://cdn.watrbx.wtf/" . $asset->fileid);
+                    $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
+                    $asset = str_replace("watrbx.xyz", "watrbx.wtf", $asset);
+                    die($asset);
+                } catch (ErrorException){
+                    http_response_code(500);
+                    die();
+                }
             }
         } else {
 
@@ -124,6 +138,8 @@ $router->get('/asset/', function() {
                     }
 
                     file_put_contents("../storage/asset_cache/$id", $decoded); # THIS IS INSECURE!!!!!! (except for the fact I cast id to int & basename it)
+
+                    $decoded = str_replace("roblox.com", "watrbx.wtf", $decoded);
 
                     die($decoded);
                     
@@ -221,11 +237,20 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["c860515c87ac8a80ab7c72ab1cca68f5","359a1aad5833c3ac815949f35229ccbf","95e6226794c620ad6682ac2946b9e18c"]}');
+    die('{"data":["c860515c87ac8a80ab7c72ab1cca68f5","359a1aad5833c3ac815949f35229ccbf","95e6226794c620ad6682ac2946b9e18c", "439d18dcc7f4b21b6e310608fec71a94"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){
     die('');
+});
+
+$router->get('/gen-hash', function(){
+    $prefix = "version-";
+    $basething = time() . bin2hex(random_bytes(8));
+    $hash = sha1($basething);
+    $shortthing = substr($hash, 0, 16);
+    $alltogether = $prefix . $shortthing;
+    echo $alltogether;
 });
 
 $router->get('/Setting/QuietGet/ClientAppSettings/', function(){

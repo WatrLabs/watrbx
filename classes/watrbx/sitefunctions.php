@@ -267,7 +267,6 @@ class sitefunctions {
         
         $final = date('n\/j\/Y\ g\:i\:s\ A') . ";" . $sig2 . ";" . $sig;
         return $final;
-        // robloxes format is.. really weird.
     }
     
 }
