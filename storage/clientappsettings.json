@@ -864,5 +864,8 @@
     "FFlagUsePGSSolver": "True",
     "FFlagSimplifyKeyboardInputPath": "False",
     "FFlagNewInGameDevConsole": "True",
-    "DFFlagUseR15Character": "True"
+    "DFFlagUseR15Character": "True",
+    "DFFlagRCCSupportCloudEdit": "True",
+    "RCCEnableCloudEdit": "True",
+    "RCCSupportCloudEdit": "True"
     }

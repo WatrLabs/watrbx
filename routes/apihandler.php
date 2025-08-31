@@ -213,14 +213,36 @@ $router->get('/Game/AreFriends', function() {
     echo "," . $users . ",";
 });
 
+$router->get('/thumbnail/place-thumbnails', function(){
+    die('{"IsJpegThumbnailEnabled":true,"thumbnails":[{"AssetId":696217389,"AssetHash":null,"AssetTypeId":1,"Url":"https://cdn.watrbx.wtf/bcd556a3becf0c3773653ded31449e84","IsFinal":true}],"thumbnailCount":1,"ShowYouTubeVideo":false,"IsMobile":false,"PlaceThumbnailsResources":{"ActionContinueToVideoMetadata":{"IsTranslated":true},"ActionContinueToVideo":"Continue to Video","DescriptionLeaveRobloxForYouTubeMetadata":{"IsTranslated":true},"DescriptionLeaveRobloxForYouTube":"You are about to leave Roblox to view a video on YouTube.","DescriptionYouTubeIsNotRobloxMetadata":{"IsTranslated":true},"DescriptionYouTubeIsNotRoblox":"YouTube is not part of Roblox.com and is governed by a separate privacy policy.","HeadingLeavingRobloxMetadata":{"IsTranslated":true},"HeadingLeavingRoblox":"You are leaving Roblox","LabelNextMetadata":{"IsTranslated":true},"LabelNext":"Next","LabelPreviousMetadata":{"IsTranslated":true},"LabelPrevious":"Previous","State":0}}');
+});
+
+$router->get('/places/api-get-details', function(){
+    die('{"AssetId":192800,"Name":"Work at a Pizza Place","Description":"Work together to get the pizzas to the customers.\r\n\r\nHow to play:\r\nhttps://www.youtube.com/watch?v=93wwyxkJ1Uw","Created":"3/30/2008","Updated":"6/20/2014","FavoritedCount":389086,"VisitedCount":16599836,"MaxPlayers":12,"Builder":"Dued1","IsPlayable":true,"IsPersonalServer":false,"IsPersonalServerOverlay":false,"BuildersClubOverlay":"None","PlayButtonType":"FancyButtons","AssetGenre":"Town and City","OnlineCount":2158}');
+});
+
 $router->get('/Thumbs/Avatar.ashx', function(){
 
         $thumbs = new thumbnails();
         global $db;
 
-        if(isset($_GET["x"]) && isset($_GET["y"])){
+        if(isset($_GET["x"])){
             $x = (int)$_GET["x"];
+        }
+
+        if(isset($_GET["width"])){
+            $x = (int)$_GET["width"];
+        }
+
+         if(isset($_GET["y"])){
             $y = (int)$_GET["y"];
+        }
+
+        if(isset($_GET["height"])){
+            $y = (int)$_GET["height"];
+        }
+
+        if(isset($x) && isset($y)){
             $mode = "full";
 
             if(isset($_GET["mode"])){
@@ -238,8 +260,7 @@ $router->get('/Thumbs/Avatar.ashx', function(){
             }
 
             if(!isset($userinfo)){
-                http_response_code(404);
-                die();
+                $userinfo = $db->table("users")->where("id", 1)->first();
             }
 
             $userid = $userinfo->id;
@@ -2343,9 +2364,9 @@ $router->get('/private-server/instance-list-json', function() {
         "TotalPages"=>1,
     );
 
-    die(json_encode($priavte));
+    //die(json_encode($priavte));
 
-    //die('{"Instances": [], "CurrentPage": 1, "TotalPages": 0 }'); 
+    die('{"Instances": [], "CurrentPage": 1, "TotalPages": 0 }'); 
 });
 
 $router->get('/game/getauthticket', function() {
@@ -2897,9 +2918,67 @@ $router->get('/currency/balance', function(){
     
 });
 
+$router->get('/games/list-json', function(){
+
+    header("Content-type: application/json");
+
+    die('[{"CreatorID":131,"CreatorName":"Dued1","CreatorUrl":"https://www.roblox.com/users/82471/profile","Plays":216463921,"Price":0,"ProductID":0,"IsOwned":false,"IsVotingEnabled":true,"TotalUpVotes":264204,"TotalDownVotes":17667,"TotalBought":0,"UniverseID":47545,"HasErrorOcurred":false,"GameDetailReferralUrl":"https://web.archive.org/web/20170101144445/https://www.roblox.com/games/192800/Work-at-a-Pizza-Place","Url":"https://cdn.watrbx.wtf/15daa6827d7eee2fcc932c08caa77b00","RetryUrl":null,"Final":true,"Name":"Work at a Pizza Place","PlaceID":192800,"PlayerCount":3313,"ImageId":566142976}]');
+
+});
+
+$router->get('/asset-thumbnail/json', function(){
+
+    $thumbs = new thumbnails();
+
+    if(isset($_GET["userId"])){
+        $userid = (int)$_GET["userId"];
+
+        if($userid <= 0){
+            $url = "http:" . $thumbs->get_asset_thumb(1);
+            header("Content-type: application/json");
+            die(json_encode(["Final"=>true, "Url"=>$url]));
+        } else {
+            $url = "http:" . $thumbs->get_asset_thumb($userid);
+            header("Content-type: application/json");
+            die(json_encode(["Final"=>true, "Url"=>$url]));
+        }
+
+    }
+
+});
+
+$router->get('/xbox/catalog/contents', function(){
+    die("[]");
+});
+
+$router->get('/games/moreresultsuncached-json', function(){
+    die("[]");
+});
+
+$router->get('/avatar-thumbnail/json', function(){
+
+    $thumbs = new thumbnails();
+
+    if(isset($_GET["userId"])){
+        $userid = (int)$_GET["userId"];
+
+        if($userid <= 0){
+            $url = "http:" . $thumbs->get_user_thumb(1, "1024x1024");
+            header("Content-type: application/json");
+            die(json_encode(["Final"=>true, "Url"=>$url]));
+        } else {
+            $url = "http:" . $thumbs->get_user_thumb($userid, "1024x1024");
+            header("Content-type: application/json");
+            die(json_encode(["Final"=>true, "Url"=>$url]));
+        }
+
+    }
+
+});
+
 $router->get("/universes/{id}/cloudeditenabled", function(){
     header("Content-type: application/json");
-    die(json_encode(["enabled"=>false]));
+    die(json_encode(["enabled"=>true]));
 });
 
 $router->get('/Game/Badge/HasBadge.ashx', function(){
@@ -3086,6 +3165,12 @@ $router->get('/leaderboards/game/json', function(){
     header("Content-type: application/json");
     die('[]');
 }); 
+
+$router->post('/marketplace/submitpurchase', function(){
+    header("Content-type: application/json");
+
+    die('{"success": true, "receipt": "hi" }');
+});
 
 $router->get('/CharacterFetch.aspx', function(){
 

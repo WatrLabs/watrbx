@@ -32,6 +32,7 @@ if($gameinfo == null){
     die($router->return_status(404));
 } else {
     $visits = count($db->table("visits")->where("universeid",$gameinfo->assetid)->get());
+    $visits = number_format($visits);
     $url = $thumbs->get_asset_thumb($gameinfo->assetid, "1280x720");
     $query = $db->table("assets")->where("id", $gameinfo->assetid);
     $assetinfo = $query->first();

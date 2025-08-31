@@ -15,13 +15,11 @@ $router->get("/game/GetCurrentUser.ashx", function() {
             echo $userinfo->id;
             die();
         } else {
-            http_response_code(400);
-            die("Bad Request.");
+            die();
         }
-
-    } else {
-        die("2");
     }
+
+    die();
 
 });
 
