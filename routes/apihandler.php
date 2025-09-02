@@ -45,6 +45,8 @@ function get_signature($script)
     return base64_encode($signature);
 }
 
+
+
 $router->get('/api/v1/get-players', function(){
     $func = new sitefunctions();
     global $db;
@@ -1935,6 +1937,79 @@ $router->post('/api/friends/declinefriendrequest', function(){
         http_response_code(401);
         die();
     }
+
+});
+
+$router->post('/messages/api/send-message', function(){
+    //die('{"success": false, "message": "Currently not implemented. Please try again later!." }');
+
+    $response = [
+        "success"=>false,
+        "message"=>"An unknown error occured."
+    ];
+
+    $auth = new authentication();
+    $func = new sitefunctions();
+
+    global $currentuser;
+    global $db;
+
+    if($currentuser){
+        $post = file_get_contents('php://input');
+        $decoded = json_decode($post);
+
+        if(isset($decoded->body) && isset($decoded->includePreviousMessage) && isset($decoded->recipientId) && isset($decoded->replyMessageId) && isset($decoded->subject)){
+
+            (int)$recipient = $decoded->recipientId;
+            (string)$subject = $decoded->subject;
+            (string)$body = $decoded->body;
+
+            (bool)$includepreviousmessage = $decoded->includePreviousMessage;
+
+            if($includepreviousmessage && $decoded->replyMessageId){
+
+                (int) $replyid = $decoded->replyMessageId;
+                
+                $messageinfo = $db->table("messages")->where("id", $replyid)->first();
+
+                if($messageinfo){
+                    $body = $body . "\n\n\n------------------------------------------------------\n" .$messageinfo->body;
+                }
+
+            }
+
+            $subject = "RE: " . $subject;
+
+            $msgcount = $db->table("messages")->where("userfrom", $currentuser->id)->where("date", ">", time() - 60)->count();
+
+            if($msgcount >= 3){
+                $response["message"] = "You're sending messages too quickly.";
+                die(json_encode($response));
+            } else {
+                $subject = htmlspecialchars($subject, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                $body = htmlspecialchars($body, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                $subject = $func::filter_text($subject);
+                $body = $func::filter_text($body);
+
+                $insert = array(
+                    "userfrom"=>$currentuser->id,
+                    "userto"=>$recipient,
+                    "subject"=>$subject,
+                    "body"=>$body,
+                    "date"=>time()
+                );
+                $db->table("messages")->insert($insert);
+                $response["message"] = "Message Sent!";
+                $response["success"] = true;
+                die(json_encode($response));
+            }
+
+        }
+
+    }
+
+    die(json_encode($response));
 
 });
 
