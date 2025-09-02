@@ -1868,6 +1868,76 @@ $router->post('/api/friends/removefriend', function(){
     }
 });
 
+$router->post('/api/friends/declinefriendrequest', function(){
+
+    $auth = new authentication();
+    global $currentuser;
+
+    if($auth->hasaccount()){
+        global $db;
+        $friends = new friends();
+
+        $post = file_get_contents('php://input');
+        $decoded = json_decode($post);
+
+        if($decoded){
+            if(isset($decoded->invitationID) && isset($decoded->targetUserID)){
+                $invitationID = $decoded->invitationID;
+                $targetUserID = $decoded->targetUserID;
+                $currentuserid = $currentuser->id;
+
+                $invitation = $db->table("friends")->where("id", $invitationID)->first();
+
+                if($invitation !== null){
+                    if($invitation->userid == $targetUserID){
+                        if($invitation->friendid == $currentuserid){
+                            $db->table("friends")->where("userid", $targetUserID)->where("friendid", $currentuserid)->delete();
+                            die('{"success":true}');
+                        } else {
+                            http_response_code(400);
+                            die();
+                        }
+
+                    } else {
+                        http_response_code(400);
+                        die();
+                    }
+                } else {
+                    if($invitationID == $currentuser->id){
+                        $pending = $friends->get_pending_request($currentuser->id, $decoded->targetUserID);
+
+                        if($pending){
+                            $invitationID = $pending->id;
+                            $db->table("friends")->where("userid", $targetUserID)->where("friendid", $currentuserid)->delete();
+                            die('{"success":true}');
+                        } else {
+                            var_dump($pending);
+                            die("Couldn't find it");
+                        }
+
+                    } else {
+                        die("goof");
+                    }
+                }
+
+
+            } else {
+                http_response_code(400);
+                die();
+            }
+
+        } else {
+            http_response_code(400);
+            die();
+        }
+
+    } else {
+        http_response_code(401);
+        die();
+    }
+
+});
+
 $router->post('/api/friends/acceptfriendrequest', function(){
     $auth = new authentication();
     global $currentuser;
@@ -1905,8 +1975,24 @@ $router->post('/api/friends/acceptfriendrequest', function(){
                         die();
                     }
                 } else {
-                    http_response_code(400);
-                    die();
+                    if($invitationID == $currentuser->id){
+                        $pending = $friends->get_pending_request($currentuser->id, $decoded->targetUserID);
+
+                        if($pending){
+                            $invitationID = $pending->id;
+                            $update = array(
+                                "status"=>"accepted"
+                            );
+                            $db->table("friends")->where("userid", $targetUserID)->where("friendid", $currentuserid)->update($update);
+                            die('{"success":true}');
+                        } else {
+                            var_dump($pending);
+                            die("Couldn't find it");
+                        }
+
+                    } else {
+                        die("goof");
+                    }
                 }
 
 
@@ -2216,7 +2302,7 @@ $router->get('/games/getgameinstancesjson', function() {
 
             $json['Collection'][] = array(
                 "Capacity"=>10,
-                "ShowSlowGameMessage"=>false,
+                "ShowSlowGameMessage"=>$server->laggy == 1,
                 "Guid"=>$server->serverguid,
                 "PlaceId"=>$server->placeid,
                 "CurrentPlayers"=>$playerList,

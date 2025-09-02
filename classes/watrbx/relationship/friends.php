@@ -25,33 +25,56 @@ class friends {
 
     public function get_friends($userid, $limit = null) {
         global $db;
-    
-        $query1 = $db->table("friends")
-                       ->where("userid", $userid)
-                       ->where("status", "accepted")
-                       ->join('users', 'users.id', '=', 'friends.friendid');
 
-        if($limit){
-            $query1->limit($limit);
-        }
+        $query1 = $db->table("friends")
+                    ->select(["users.id", "users.username"])
+                    ->where("friends.userid", $userid)
+                    ->where("friends.status", "accepted")
+                    ->join("users", "users.id", "=", "friends.friendid");
+
+        $query2 = $db->table("friends")
+                    ->select(["users.id", "users.username"])
+                    ->where("friends.friendid", $userid)
+                    ->where("friends.status", "accepted")
+                    ->join("users", "users.id", "=", "friends.userid");
 
         $friends1 = $query1->get();
-    
-        $query2 = $db->table("friends")
-                       ->where("friendid", $userid)
-                       ->where("status", "accepted")
-                       ->join('users', 'users.id', '=', 'friends.userid');
-
-        if($limit){
-            $query2->limit($limit);
-        }
-
         $friends2 = $query2->get();
 
-        $friends = array_merge($friends1, $friends2);
-    
-        return $friends;
+        $all_friends = array_merge($friends1, $friends2);
+
+        if ($limit) {
+            $all_friends = array_slice($all_friends, 0, $limit);
+        }
+
+        return $all_friends;
     }
+
+    public function get_friend_count($userid){
+
+        global $db;
+
+        $query1 = $db->table("friends")
+                    ->select(["users.id", "users.username"])
+                    ->where("friends.userid", $userid)
+                    ->where("friends.status", "accepted")
+                    ->join("users", "users.id", "=", "friends.friendid");
+
+        $query2 = $db->table("friends")
+                    ->select(["users.id", "users.username"])
+                    ->where("friends.friendid", $userid)
+                    ->where("friends.status", "accepted")
+                    ->join("users", "users.id", "=", "friends.userid");
+
+        $friends1 = $query1->get();
+        $friends2 = $query2->get();
+
+        $all_friends = array_merge($friends1, $friends2);
+
+        return count($all_friends);
+
+    }
+
 
     public function get_requests($userid) {
         global $db;

@@ -7,8 +7,9 @@
     $friends = new friends();
     $pagebuilder = new pagebuilder();
 
-    $allfriends = $friends->get_friends($userid);
-    $friendcount = count($allfriends);
+    $allfriends = $friends->get_friends($userid, 9);
+    $friendcount = $friends->get_friend_count($userid);
+
 ?>
 <div class="<? if(isset($ishome)){if($ishome){echo 'col-xs-12'; }}?> section home-friends">
   <div class="container-header">

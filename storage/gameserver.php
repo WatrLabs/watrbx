@@ -9,9 +9,10 @@ function start(placeId, port, url, universeid)
 
 assetGameUrl = "http://assetgame.watrbx.wtf"
 
-apikey = "<?=$apikey?>"
+local apikey = "<?=$apikey?>"
 jobid = "<?=$jobid?>"
 isCloudEdit = false
+isLagging = false
 
 
 ------------------- UTILITY FUNCTIONS --------------------------
@@ -233,7 +234,9 @@ end
 start(<?=$place?>, <?=$port?>, "https://www.watrbx.wtf", <?=$universeid?>)
 
 while wait(30) do
+
     if #game:GetService("Players"):GetPlayers() == 0 then
+		local apikey = "<?=$apikey?>"
         game:HttpGet(url .. "/api/v1/gameserver/end-server?jobid=" .. jobid .. "=" .. apikey)
     end
 end
