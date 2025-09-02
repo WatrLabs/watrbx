@@ -44,11 +44,79 @@ function validate_header(){
         }
 
     } else {
-        //die(createerror("Gameserver is not authorized!", '', 401)); // this was left commented wayyy too long. oops.
+        die(createerror("Gameserver is not authorized!", '', 401)); // this was left commented wayyy too long. oops.
     }
 }
 
+$router->get('/api/v1/gameserver/laggy-server', function() {
 
+    $log = new discord();
+    
+    $exploded = explode("=", $_GET["jobid"]);
+
+    global $db;
+
+    if(isset($exploded[0]) && isset($exploded[1])){
+        $jobid = $exploded[0];
+        $apikey = $exploded[1];
+        $gameserver = new gameserver();
+
+        if($gameserver->validate_api_key($apikey)){
+            $gameinstance = $db->table("game_instances")->where("serverguid", $jobid)->first();
+
+            if($gameinstance){
+                $update = [
+                    "laggy"=>1
+                ];
+
+                $db->table("game_instances")->where("serverguid", $jobid)->update($update);
+            }
+
+        } else {
+            http_response_code(400);
+            die();
+        }
+    } else {
+        http_response_code(500);
+        die();
+    }
+
+});
+
+$router->get('/api/v1/gameserver/end-laggy-server', function() {
+
+    $log = new discord();
+    
+    $exploded = explode("=", $_GET["jobid"]);
+
+    global $db;
+
+    if(isset($exploded[0]) && isset($exploded[1])){
+        $jobid = $exploded[0];
+        $apikey = $exploded[1];
+        $gameserver = new gameserver();
+
+        if($gameserver->validate_api_key($apikey)){
+            $gameinstance = $db->table("game_instances")->where("serverguid", $jobid)->first();
+
+            if($gameinstance){
+                $update = [
+                    "laggy"=>0
+                ];
+
+                $db->table("game_instances")->where("serverguid", $jobid)->update($update);
+            }
+
+        } else {
+            http_response_code(400);
+            die();
+        }
+    } else {
+        http_response_code(500);
+        die();
+    }
+
+});
 
 $router->get("/api/v1/gameserver/mark-active", function(){
 
@@ -272,6 +340,25 @@ $router->group('/api/v1/gameserver', function($router) {
 
         } else {
             var_dump($_POST);
+            die(createerror("Something wasn't posted.", '', 400));
+        }
+    });
+
+    $router->post('/job-error', function(){
+        global $db;
+
+        if(isset($_POST["jobid"])){
+            $jobid = $_POST["jobid"];
+            $query = $db->table("jobs")->where("guid", $guid);
+            $rcc = $query->first(); 
+            if($rcc !== null){
+                $log = new discord();
+                $log->internal_log("Failed to execute job! (" . $jobid  . ")");
+                $db->table("rccinstances")->where("jobid", $jobid)->delete();
+            } else {
+                die(createerror("Job is not found!", '', 404));
+            }
+        } else {
             die(createerror("Something wasn't posted.", '', 400));
         }
     });
