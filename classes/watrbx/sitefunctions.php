@@ -54,7 +54,7 @@ class sitefunctions {
         $dbvalue = $db->table("site_config")->where("thekey", $name)->first();
 
         if($dbvalue == null){
-            return $_ENV["CONFIG_" . $name];
+            return $_ENV["CONFIG_" . $name] ?? null;
         } else {
             return $dbvalue->value;
         }

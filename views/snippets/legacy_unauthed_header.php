@@ -1,4 +1,6 @@
 <?php
+use watrbx\sitefunctions;
+$func = new sitefunctions();
 $ismobile = false;
 
 $useragent = $_SERVER['HTTP_USER_AGENT'];
@@ -315,7 +317,16 @@ if($ismobile == false){ ?>
         </ul><!--rbx-navbar-->
     </div>
 </div>
-<? } ?>
+<? } else { ?>
+
+    <style>
+        body, #rbx-body, #navContent {
+            margin: 0px;
+            height: 100% !important;
+        }
+    </style>
+
+    <? } ?>
 
 <!-- LEFT NAV MENU -->
     <div id="navContent" class="nav-content  ">
@@ -395,7 +406,10 @@ if($ismobile == false){ ?>
     });
 
 </script>
+<div>
+<noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
+<?php
+$sitebanner = $func->get_setting("SITE_BANNER");
 
-
-                <div>
-                                                            <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
+if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">'.$sitebanner.'</div></div>'; }
+?>

@@ -1,5 +1,8 @@
 <?php
     use watrlabs\router\Routing;
+    use watrlabs\authentication;
+    $auth = new authentication();
+    $auth->requiresession();
     $router = new Routing();
     global $currentuser;
 
@@ -20,6 +23,8 @@
 <div id="main">
     <h1>Temporary pants creator</h1>
     <small>this is temporary till the develop page is done</small>
+    <br>
+    <small><a href="https://cdn.watrbx.wtf/PantsTemplate_02222016.png">Need the template?</a></small>
     <br><br>
 
     <form method="post" action="/api/v1/pants-creator" enctype="multipart/form-data">

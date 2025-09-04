@@ -523,7 +523,16 @@ if($ismobile == false){ ?>
         </div>
     </div>
 
-<? } ?>
+<? } else { ?>
+
+    <style>
+        body, #rbx-body, #navContent {
+            margin: 0px;
+            height: 100% !important;
+        }
+    </style>
+
+    <? } ?>
 
         <div id="navContent" class="nav-content"><div class="nav-content-inner">
     <div id="MasterContainer" >
@@ -610,3 +619,8 @@ if($ismobile == false){ ?>
         
         
         <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
+<?php
+$sitebanner = $sitefunctions->get_setting("SITE_BANNER");
+
+if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">'.$sitebanner.'</div></div>'; }
+?>

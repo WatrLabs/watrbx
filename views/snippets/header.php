@@ -528,6 +528,15 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             </ul>
         </div>
     </div>
+    <? } else { ?>
+
+    <style>
+        body, #wrap, .container-main {
+            margin: 0px;
+            height: 100% !important;
+        }
+    </style>
+
     <? } ?>
     <div class="container-main    ">
             <script type="text/javascript">
@@ -536,3 +545,8 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                 }
             </script>
         <noscript><div class="SystemAlert"><div class="rbx-alert-info" role="alert">Please enable Javascript to use all the features on this site.</div></div></noscript>
+<?php
+$sitebanner = $sitefunctions->get_setting("SITE_BANNER");
+
+if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="rbx-alert-info" role="alert">'.$sitebanner.'</div></div>'; }
+?>
