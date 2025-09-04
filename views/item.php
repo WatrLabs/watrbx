@@ -95,6 +95,8 @@ $pagebuilder->addresource('jsfiles', '/js/43936b3386e6514e97f2b3ae23f53404.js.gz
 $pagebuilder->addresource('jsfiles', '/ScriptResource.axd');
 $pagebuilder->set_page_name($asset->name);
 $pagebuilder->addmetatag("og:image", $thumb);
+$pagebuilder->addmetatag("og:title", $asset->name);
+$pagebuilder->addmetatag("og:description", $asset->description);
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 

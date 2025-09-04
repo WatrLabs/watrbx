@@ -867,5 +867,6 @@
     "DFFlagUseR15Character": "True",
     "DFFlagRCCSupportCloudEdit": "True",
     "RCCEnableCloudEdit": "True",
-    "RCCSupportCloudEdit": "True"
+    "RCCSupportCloudEdit": "True",
+    "UseNewUrlClass":"True"
     }

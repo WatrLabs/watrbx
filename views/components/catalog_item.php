@@ -26,7 +26,7 @@
                     <img title="<?=$asset->name?>" alt="<?=$asset->name?>" class="original-image " src="<?=$thumbnailurl?>">
                     <?php
 
-                        if($asset->created >= time() + 8600){
+                        if($asset->created >= time() - 86400){
                             echo '<img src="/images/b84cdb8c0e7c6cbe58e91397f91b8be8.png" alt="New">';
                         }
 
