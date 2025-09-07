@@ -1077,10 +1077,18 @@ $router->post('/api/v1/asset-upload', function(){
 $router->post('/moderation/filtertext/', function(){
 
     $auth = new authentication();
+    $gameserver = new gameserver();
     $func = new sitefunctions();
     $discord = new discord();
 
     global $db;
+    $ip = $func->getip(false);
+
+    if(!$gameserver->is_gameserver_ip($ip)){
+        http_response_code(403);
+        die();        
+    }
+
 
     if (isset($_POST['text']) && isset($_POST["userId"])) {
         $text = $_POST['text'];
@@ -2538,9 +2546,9 @@ $router->post('/client-status/set', function(){
     die('0'); // TODO   
 });
 
-$router->get('/client-status', function(){
-    die('0'); // TODO
-});
+//$router->get('/client-status', function(){
+//    die('0'); // TODO
+//});
 
 $router->post('/AbuseReport/InGameChatHandler.ashx', function(){
     die();
@@ -2668,7 +2676,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
     $func = new sitefunctions();
 
     $placelauncher = array(
-        "jobid"=>"null",
+        "jobid"=>$func->createjobid(),
         "status"=>0,
         "joinScriptUrl"=>"null",
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
@@ -2842,7 +2850,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     $func = new sitefunctions();
 
     $placelauncher = array(
-        "jobid"=>"null",
+        "jobid"=>$func->createjobid(),
         "status"=>0,
         "joinScriptUrl"=>"null",
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
@@ -3143,6 +3151,17 @@ $router->get("/universes/{id}/cloudeditenabled", function(){
 });
 
 $router->get('/Game/Badge/HasBadge.ashx', function(){
+
+    $func = new sitefunctions();
+    $gameserver = new gameserver();
+
+    $ip = $func->getip(false);
+
+    if(!$gameserver->is_gameserver_ip($ip)){
+        http_response_code(403);
+        die();        
+    }
+
     if(isset($_GET["UserID"]) && isset($_GET["BadgeID"])){
         $userid = (int)$_GET["UserID"];
         $badgeid = $_GET["BadgeID"];
@@ -3169,6 +3188,19 @@ $router->get('/Game/Badge/HasBadge.ashx', function(){
 });
 
 $router->get('/Game/Badge/IsBadgeDisabled.ashx', function(){
+    
+
+    $func = new sitefunctions();
+    $gameserver = new gameserver();
+
+    $ip = $func->getip(false);
+
+    if(!$gameserver->is_gameserver_ip($ip)){
+        http_response_code(403);
+        die();        
+    }
+
+
     if(isset($_GET["BadgeID"]) && isset($_GET["PlaceID"])){
         $placeid = (int)$_GET["PlaceID"];
         $badgeid = $_GET["BadgeID"];
@@ -3187,6 +3219,18 @@ $router->get('/Game/Badge/IsBadgeDisabled.ashx', function(){
 });
 
 $router->post('/Game/Badge/AwardBadge.ashx', function(){
+
+    $func = new sitefunctions();
+    $gameserver = new gameserver();
+
+    $ip = $func->getip(false);
+
+    if(!$gameserver->is_gameserver_ip($ip)){
+        http_response_code(403);
+        die();        
+    }
+
+
     if(isset($_GET["BadgeID"]) && isset($_GET["UserID"])){
         $userid = (int)$_GET["UserID"];
         $badgeid = $_GET["BadgeID"];
@@ -3212,7 +3256,15 @@ $router->post('/Game/Badge/AwardBadge.ashx', function(){
 
 $router->get('/points/get-point-balance', function(){
 
-    // TODO: RCC Authentication (maybe just set a key for it with cookies? not sure if rcc stores cookies but it wouldn't suprise me if it didn't)
+    $func = new sitefunctions();
+    $gameserver = new gameserver();
+
+    $ip = $func->getip(false);
+
+    if(!$gameserver->is_gameserver_ip($ip)){
+        http_response_code(403);
+        die();        
+    }
 
     if(isset($_GET["placeId"]) && isset($_GET["userId"])){
         $placeid = (int)$_GET["placeId"];
@@ -3243,7 +3295,15 @@ $router->get('/points/get-point-balance', function(){
 
 $router->post('/points/award-points', function(){
 
-    // TODO: RCC Authentication (maybe just set a key for it with cookies? not sure if rcc stores cookies but it wouldn't suprise me if it didn't)
+    $func = new sitefunctions();
+    $gameserver = new gameserver();
+
+    $ip = $func->getip(false);
+
+    if(!$gameserver->is_gameserver_ip($ip)){
+        http_response_code(403);
+        die();        
+    }
 
     if(isset($_GET["placeId"]) && isset($_GET["userId"]) && isset($_GET["amount"])){
         $placeid = (int)$_GET["placeId"];

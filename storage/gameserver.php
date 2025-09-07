@@ -233,7 +233,7 @@ end
 
 start(<?=$place?>, <?=$port?>, "https://www.watrbx.wtf", <?=$universeid?>)
 
-while wait(30) do
+while wait(15) do
 
     if #game:GetService("Players"):GetPlayers() == 0 then
 		local apikey = "<?=$apikey?>"

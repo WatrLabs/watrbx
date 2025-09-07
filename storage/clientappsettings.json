@@ -426,7 +426,6 @@
     "DFFlagTaskSchedulerNotUpdateErrorOnPreStep": "True",
     "FFlagWikiSelectionSearch": "True",
     "DFIntTaskSchedularBatchErrorCalcFPS": 1200,
-    "FFlagSuppressNavOnTextBoxFocus": "False",
     "FFlagEnabledMouseIconStack": "True",
     "DFFlagFastClone": "True",
     "DFFlagLuaNoTailCalls": "True",

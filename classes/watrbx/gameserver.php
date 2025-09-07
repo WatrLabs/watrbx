@@ -231,7 +231,21 @@ class gameserver {
         );
 
         $db->table("apikeys")->insert($insert);
-        return $apikey;
+        return $apikey; 
+    }
+
+    public function is_gameserver_ip($ip){
+
+        global $db;
+
+        $result = $db->table("servers")->where("ip", $ip)->first();
+
+        if(!$result){
+            $result = $db->table("servers")->where("ipv6", $ip)->first();
+        }
+
+        return $result !== null;
+        
     }
 
     public function get_idle_rcc($serverid){

@@ -1,6 +1,21 @@
 <?php
-
+use watrbx\gameserver;
+use watrbx\sitefunctions;
+$gameserver = new gameserver();
+$func = new sitefunctions();
 global $router;
+
+function checkauth(){
+    $gameserver = new gameserver();
+    $func = new sitefunctions();
+    $ip = $func->getip(false);
+
+    if(!$gameserver->is_gameserver_ip($ip)){
+        http_response_code(403);
+        die();        
+    }
+
+}
 
 $router->group('/persistence', function($router) {  
     $router->post('/increment', function(){
@@ -186,4 +201,4 @@ $router->group('/persistence', function($router) {
             die(json_encode($json));
         }
     });
-}, '');
+}, 'checkauth');

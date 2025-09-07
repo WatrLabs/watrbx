@@ -571,6 +571,34 @@ class authentication {
         }
     }
 
+    public function convert_ban_types($baninfo)
+    {
+        if ($baninfo->type === 'warning') {
+            return 'Warn';
+        } elseif ($baninfo->type === 'deleted') {
+            return 'Delete';
+        } elseif ($baninfo->type === 'days') {
+            return "Ban {$baninfo->days} Days";
+        }
+
+        return null;
+    }
+
+
+    public function get_ban_info($banid){
+        global $db;
+
+        $baninfo = $db->table("moderation")->where("id", $banid)->orderBy("id", "DESC")->first();
+
+        if($baninfo !== null){
+            if($baninfo->canignore == 0){
+                return $baninfo;
+            }
+        }
+
+        return false;
+    }
+
     public function is_banned($userid){
         global $db;
 

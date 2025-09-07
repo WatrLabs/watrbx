@@ -9,8 +9,6 @@ $pagebuilder->set_page_name("Error");
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
-
-
 ?>
 <div id="Body" class="simple-body">
             
@@ -30,8 +28,17 @@ $pagebuilder->buildheader();
                     <a class="btn-neutral btn-small" title="Return Home" href="/">Return Home</a>
                     <div style="clear:both"></div>
                 </div>
-                <pre><?=$e?></pre>
             </div>
+                <?php
+                    global $currentuser;
+
+                    if($currentuser){
+                        if($currentuser->is_admin == 1){
+                            echo "<pre>$e</pre>";
+                        }
+                    }
+
+                ?>
             
                     </div>
                     <? $pagebuilder->build_footer(); ?>
