@@ -622,5 +622,5 @@ if($ismobile == false){ ?>
 <?php
 $sitebanner = $sitefunctions->get_setting("SITE_BANNER");
 
-if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">'.$sitebanner.'</div></div>'; }
+if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">'.preg_replace('#\bhttps?://[^\s<]+#i','<a href="$0" target="_blank" rel="noopener">$0</a>',$sitebanner).'</div></div>'; }
 ?>

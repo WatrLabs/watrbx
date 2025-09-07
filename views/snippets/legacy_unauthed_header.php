@@ -292,7 +292,7 @@ if($ismobile == false){ ?>
                         <iframe id="iframe-login" class="rbx-navbar-login-iframe" src="/Login/iFrameLogin.aspx?loginRedirect=False&amp;parentUrl=https%3a%2f%2fwww.watrbx.wtf%2fNewLogin" scrolling="no" frameborder="0" width="320"></iframe>
                     </div>
                     <li>
-                        <a class="rbx-navbar-signup" href="/newlogin?returnUrl=%2FNewLogin">Sign Up</a>
+                        <a class="rbx-navbar-signup" href="/">Sign Up</a>
                     </li>
                     <li class="rbx-navbar-right-search" data-toggle="toggle-search">
                         <a class="rbx-menu-icon">
@@ -411,5 +411,5 @@ if($ismobile == false){ ?>
 <?php
 $sitebanner = $func->get_setting("SITE_BANNER");
 
-if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">'.$sitebanner.'</div></div>'; }
+if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">'.preg_replace('#\bhttps?://[^\s<]+#i','<a href="$0" target="_blank" rel="noopener">$0</a>',$sitebanner).'</div></div>'; }
 ?>

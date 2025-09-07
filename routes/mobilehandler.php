@@ -10,6 +10,11 @@ $router->get("/mobileapi/check-app-version", function() {
 });
 
 $router->post('/mobileapi/login', function(){
+    
+    $errorresponse = [
+        "Status"=>""
+    ];
+
     if(isset($_POST["username"]) && isset($_POST["password"])){
         $username = $_POST["username"];
         $password = $_POST["password"];
@@ -33,23 +38,44 @@ $router->post('/mobileapi/login', function(){
         if(isset($result["code"])){
             if($result["code"] == 200){
                 $userinfo = $db->table("users")->where("username", $username)->first();
-                $loginarray["UserInfo"]["UserName"] = $userinfo->username;
-                $loginarray["UserInfo"]["RobuxBalance"] = $userinfo->robux;
-                $loginarray["UserInfo"]["TicketsBalance"] = $userinfo->tix;
-                $loginarray["UserInfo"]["UserID"] = $userinfo->id;
+
+                $banresult = $auth->is_banned($userinfo->id);
+                
+                if($banresult == false){
+                    $loginarray["UserInfo"]["UserName"] = $userinfo->username;
+                    $loginarray["UserInfo"]["RobuxBalance"] = $userinfo->robux;
+                    $loginarray["UserInfo"]["TicketsBalance"] = $userinfo->tix;
+                    $loginarray["UserInfo"]["UserID"] = $userinfo->id;
+
+                    die(json_encode($loginarray));
+                } else {
+                    http_response_code(400);
+                    $baninfo = $auth->get_ban_info($banresult);
+                    $errorresponse["Status"] = "AccountNotApproved";
+                    $errorresponse["PunishmentInfo"] = [
+                        "PunishmentType"=>$auth->convert_ban_types($baninfo),
+                        "MessageToUser"=>$baninfo->moderatornote,
+                        "BeginDateString"=>date('n/j/Y g:i:s A', $baninfo->reviewed),
+                        "EndDateString"=>date('n/j/Y g:i:s A', $baninfo->banneduntil),
+                    ];
+                    die(json_encode($errorresponse));
+                }
+            } else {
+                http_response_code(400);
+                $errorresponse["Status"] = "InvalidUsername";
+                die(json_encode($errorresponse));
             }
+        } else {
+            http_response_code(400);
+            $errorresponse["Status"] = "";
+            die(json_encode($errorresponse));
         }
 
         die(json_encode($loginarray));
     } else {
-        die('{
-  "errors": [
-    {
-      "code": 1,
-      "message": "Somethings not right"
-    }
-  ]
-}');
+        http_response_code(400);
+        $errorresponse["Status"] = "MissingRequiredField";
+        die(json_encode($errorresponse));
     }
 });
 
