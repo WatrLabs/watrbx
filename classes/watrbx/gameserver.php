@@ -4,13 +4,16 @@ namespace watrbx;
 use watrbx\sitefunction;
 use watrlabs\authentication;
 use watrbx\sitefunctions;
-
+use watrlabs\watrkit\pagebuilder;
 global $db;
 
 class gameserver {
 
     private $current_server = [];
     private $connecting_user = null;
+    private $close_server;
+    private $grid;
+    private $server;
 
     function __construct(){
         $func = new sitefunctions();
@@ -18,6 +21,16 @@ class gameserver {
 
         $auth = new authentication();
         $this->connecting_user = $auth->geolocateip($ip);
+
+        $this->close_server = $this->get_closest_server();
+        $this->grid = $this->get_grid($this->close_server);
+
+    }
+
+    private function get_grid($server){
+
+        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->ip . ":" . $server->port);
+        $this->grid = $Grid;
 
     }
 
@@ -30,80 +43,6 @@ class gameserver {
     public function get_server_info($serverid){
         global $db;
         return $db->table("servers")->where("server_id", $serverid)->first();
-    }
-
-    public function send_get_request($uri, $server){
-
-        if(!is_object($server)){
-            $serverinfo = $this->get_server_info($server);
-        } else {
-            $serverinfo = $server;
-        }
-
-        if($serverinfo == null){
-            return false;
-        }
-
-        $url = "http://" . $serverinfo->ip . ":" . $serverinfo->port . $uri;
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        if($response){
-            return $response;
-        } else {
-            echo curl_error($curl);
-            return false;
-        }
-    }
-
-    public function send_post_request($uri, $server, $data){
-
-        if($server == null){
-            return false;
-        }
-
-        $url = "http://" . $server->ip . ":" . $server->port . $uri;
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data );
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($curl, CURLOPT_POST, 1);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        if($response){
-            return $response;
-        } else {
-            echo curl_error($curl);
-            return false;
-        }
-    }
-
-    public function start_rcc($server, $port, $type){
-        $data = array(
-            "port"=>$port,
-            "type"=>$type
-        );
-
-        $response = $this->send_post_request('/start', $server, json_encode($data));
-
-        if($response){
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     public function calc_distance($lat1, $lon1, $lat2, $lon2)
@@ -131,26 +70,6 @@ class gameserver {
     public function get_all_servers(){
         global $db;
         return $db->table("servers")->get();
-    }
-
-    public function get_port($server){
-        $json = $this->send_get_request("/get-port", $server);
-
-        if($json){
-            $decoded = json_decode($json, true);
-        
-            if($decoded["Success"] == true){
-                return $decoded["port"];
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-        return false;
-
-        
     }
 
     public function get_closest_server(){
@@ -190,10 +109,6 @@ class gameserver {
         }
     }
 
-    public function join_game($placeid){
-        // TODO
-    }
-
     public function validate_api_key($key){
         // TODO: Add JobID support & expiration
         global $db;
@@ -204,18 +119,6 @@ class gameserver {
         } else {
             return true;
         }
-    }
-
-    public function get_rcc_info($rccuid){
-        global $db;
-        $rccinfo = $db->table("rccinstances")->where("guid", $rccuid)->first();
-
-        if($rccinfo !== null){
-            return $rccinfo;
-        } else {
-            return false;
-        }
-
     }
 
     public function create_api_key($jobid = null, $expiration = null){
@@ -248,77 +151,23 @@ class gameserver {
         
     }
 
-    public function get_idle_rcc($serverid){
-        global $db;
-
-        $query = $db->table("rccinstances")->where("is_idle", 1)->where("serverid", $serverid);
-        $idlercc = $query->first();
-
-        if($query !== null){
-            return $idlercc;
-        } else {
-            global $db;
-
-            $timelimit = time() - 30;
-
-            $haslimit = $db->table("cooldown")->where("cooldownid", "startrcc")->where("date", ">", $timelimit)->first();
-
-            if($haslimit == null){
-                $server = $this->get_closest_server();
-                $port = $this->get_port($server);
-                $response = $this->start_rcc($server, $port, 4);
-
-                sleep(1); // give it time to register on-site
-
-                $query = $db->table("rccinstances")->where("is_idle", 1)->where("serverid", $serverid);
-                $idlercc = $query->first();
-
-                if($idlercc !== null){
-                    return $idlercc;
-                } else {
-                    return false;
-                }
-                
-            } else {
-                return false;
-            }
-        }
-        
-    }
-
     public function end_job($jobid){
         global $db;
         $jobinfo = $db->table("jobs")->where("jobid", $jobid)->first();
 
-        if($jobinfo !== null){
-            $server = $this->get_server_info($jobinfo->server);
-            $rccinstance = $this->get_rcc_info($jobinfo->rccinstance);
+        $server = $this->get_server_info($jobinfo->server);
 
-            $postdata = json_encode(array(
-                "jobid"=>$jobid,
-                "hostport"=>$jobinfo->port,
-                "port"=>$rccinstance->port
-            ));
-            //send_post_request($uri, $server, $data){
-            $killed = $this->send_post_request('/kill-job', $server, $postdata);
+        $server = $this->close_server;
+        //$Grid = new \watrbx\Grid\Close\Service("http://" . $server->ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Grid;
+        $Grid = $Grid->Close("http://group-she.gl.at.ply.gg:49837");
+        $Result = $Grid->CloseJob($jobid);
 
-            $db->table("jobs")->where("jobid", $jobid)->delete();
-            $db->table("game_instances")->where("serverguid", $jobid)->delete();
-            $db->table("activeplayers")->where("jobid", $jobid)->delete();
+        $db->table("jobs")->where("jobid", $jobid)->delete();
+        $db->table("game_instances")->where("serverguid", $jobid)->delete();
+        $db->table("activeplayers")->where("jobid", $jobid)->delete();
 
-            $update = [
-                "is_idle"=>1,
-                "placeid"=>null,
-                "type"=>4  
-            ];
-
-            $db->table("rccinstances")->where("guid", $jobinfo->rccinstance)->update($update);
-
-            return $killed;
-
-        } else {
-            return false;
-        }
+        return $Result;
 
     }
 
@@ -361,70 +210,85 @@ class gameserver {
         return $query2->get();
     }
 
-    public function request_game($placeid){
+    public function execute_job($jobinfo, $scriptinfo){
 
-        $close_server = $this->get_closest_server();
+        $server = $this->close_server;
+        //$Grid = new \watrbx\Grid\Open\Service("http://" . $server->ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Open\Service("http://group-she.gl.at.ply.gg:49837");
+        $Result = $Grid->OpenJobEx($jobinfo, $scriptinfo);
+        return $Result; 
 
-        if($close_server !== false){
-            $rcc = $this->get_idle_rcc($close_server->server_id);
+    }
 
-            if($rcc){
-                $func = new sitefunctions();
-                $jobid = $func->createjobid();
+    public function gen_port(){
+
+        // TODO: Track used ports
+
+        $port = rand(4000, 4500);
+        return $port;
+    }
+
+    public function request_game($placeid, $context){
+
+        // Context 1 - Public Game
+        // Context 2 - Private Game
+        // Context 3 - CloudEdit
+        // (I'm just guessing)
+
+        $func = new sitefunctions();
+        $pagebuilder = new pagebuilder();
+        $jobid = $func->createjobid();
+        $port = $this->gen_port();
+        $close_server = $this->close_server;
+        $apikey = $this->create_api_key($jobid);
+
+        $insert = array(
+            "jobid"=>$jobid,
+            "type"=>1,
+            "assetid"=>$placeid,
+            "port"=>$port,
+            "apikey"=>$apikey,
+            "server"=>$close_server->server_id,
+        );
+        
+        global $db;
+
+        $db->table("jobs")->insert($insert);
+
+        $gamescript = $pagebuilder->get_from_storage("lua/game.lua");
+        
+        $jobInfo = [
+            "Id"=>$jobid,
+            "Expiration"=>9900000000, // 60 seconds until gameserver die
+            "Category"=>1, // Still have yet to learn what this does
+            "Cores"=>2 // 99999999999999999999999999999999999999
+        ];
+
+        $ScriptInfo = [
+            "Name"=>"Game Script",
+            "Script"=>$gamescript,
+            "Arguments"=>[
+                "placeId"=>$placeid,
+                "port"=>(int)$port,
+                "sleeptime"=>(int)10, // honestly don't know what this does
+                "access"=>$apikey,
+                "baseUrl"=>"watrbx.wtf",
+                "protocol"=>"http://",
+                "apiKey"=>$apikey,
+                "matchmakingContextId"=>$context,
+                "assetGameSubdomain"=>"assetgame."
+            ]
+        ];
+
+        $result = $this->execute_job($jobInfo, $ScriptInfo);
+
+        $return = [
+            "Result"=>$result,
+            "jobId"=>$jobid
+        ];
+
+        return $return;
     
-                $port = $this->get_port($close_server);
-                $apikey = $this->create_api_key($jobid);
-        
-                $insert = array(
-                    "jobid"=>$jobid,
-                    "type"=>1,
-                    "assetid"=>$placeid,
-                    "port"=>$port,
-                    "apikey"=>$apikey,
-                    "server"=>$close_server->server_id,
-                    "rccinstance"=>$rcc->guid
-                );
-                
-                global $db;
-        
-                $db->table("jobs")->insert($insert);
-        
-                //$uri, $server, $data
-        
-                $request_data = json_encode(array(
-                    "url"=>"https://www.watrbx.wtf/api/v1/gameserver/load-job?jobid=".$jobid,
-                    "type"=>1,
-                    "hostport"=>$port,
-                    "rccinstance"=>$rcc->guid
-                ));
-        
-                $response = $this->send_post_request("/execute-job", $close_server, $request_data); 
-                $decoded = json_decode($response, true);
-        
-                if($decoded == null){
-                    return false;
-                }
-
-                $update = array(
-                    "is_idle"=>0,
-                    "placeid"=>$placeid
-                );
-
-                $db->table("rccinstances")->where("guid", $rcc->guid)->update($update);
-                return $response;
-            } else {
-                $port = $this->get_port($close_server);
-                 if($this->start_rcc($close_server, $port, 1)){
-                     return true;
-                 } else {
-                     return false;
-                 }
-                return false;
-            }
-            
-        } else {
-            return false;
-        }
     }
 
 }
