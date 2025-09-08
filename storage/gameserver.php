@@ -231,7 +231,7 @@ pcall(function() print(game:HttpGet(url .. "/api/v1/gameserver/mark-active?jobid
 
 end
 
-start(<?=$place?>, <?=$port?>, "https://www.watrbx.wtf", <?=$universeid?>)
+start(<?=$place?>, <?=$port?>, "http://www.watrbx.wtf", <?=$universeid?>)
 
 while wait(15) do
 

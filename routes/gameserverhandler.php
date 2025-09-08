@@ -143,8 +143,7 @@ $router->get("/api/v1/gameserver/mark-active", function(){
                 $db->table("game_instances")->insert($insert);
 
                 $update = ["type"=>1];
-                $db->table("rccinstances")->where("guid", $jobinfo->rccinstance)->update($update);
-
+                
                 //$db->table("jobs")->where("jobid", $jobid)->delete();
                 $log->internal_log($placeid . "/" . $jobid . " has been marked active!", "Game marked active.");
                 die("Success.");

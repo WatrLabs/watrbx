@@ -557,7 +557,7 @@ $router->post('/api/v1/shirt-creator', function(){
 
         $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
 
-        if($created > 1){
+        if($created > 20){
             http_response_code(429);
             die("Please wait before creating another asset.");
         }
@@ -673,7 +673,7 @@ $router->post('/api/v1/pants-creator', function(){
 
         $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
 
-        if($created > 1){
+        if($created > 20){
             http_response_code(429);
             die("Please wait before creating another asset.");
         }
@@ -872,7 +872,7 @@ $router->post('/api/v1/decal-creator', function(){
 
         $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
 
-        if($created > 1){
+        if($created > 20){
             http_response_code(429);
             die("Please wait before creating another asset.");
         }
@@ -2670,352 +2670,281 @@ $router->get('/marketplace/productDetails', function(){
     }
 });
 
-$router->post('/Game/PlaceLauncher.ashx', function() {
-    header("Content-type: application/json");
+function genJoinCode($ip, $port, $jobid, $placeid){
 
     $func = new sitefunctions();
+    global $db;
+
+    $placelauncher = [];
+
+    $joincode = $func->genstring(25);
+    
+    $joinarray = array(
+        "code"=>$joincode,
+        "ip"=>$ip,
+        "port"=>$port,
+        "jobid"=>$jobid,
+        "placeid"=>$placeid
+    );
+    
+    $db->table("join_codes")->insert($joinarray);
+
+    return $joincode;
+    
+}
+
+$router->post('/Game/PlaceLauncher.ashx', function() {
+
+    $func = new sitefunctions();
+    $gameserver = new gameserver();
+
+    $Context = 1;
+
+    global $db;
 
     $placelauncher = array(
-        "jobid"=>$func->createjobid(),
-        "status"=>0,
+        "jobid"=>null,
+        "status"=>12,
         "joinScriptUrl"=>"null",
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=>"null",
-        "message"=>"Hi!",
-        "settings"=>null
-    ); 
-    
-    //$placelauncher["jobid"] = "Test";
-    //$placelauncher["status"] = 2;
-    //$placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?user=watrabi&ip=127.0.0.1&id=420&port=7894&capp=1&mship=BuildersClub&PlaceId=1";
-    
-    $gameserver = new gameserver();
+        "message"=>""
+    );     
 
-    global $db;
-    global $currentuser;
-    $request = "";
+    if(isset($_GET["placeId"])){
+        (int)$placeId = $_GET["placeId"];
+        
+        $assetinfo = $db->table("assets")->where("id", $placeId)->first();
 
-    if(!$gameserver->get_closest_server()){
-        http_response_code(503);
-        $placelauncher["status"] = -1;
-    }else {
-        if(isset($_GET["placeId"])){
-            global $db;
-            $auth = new authentication();
+        if($assetinfo){
 
-            if($auth->hasaccount()){
+            $universeinfo = $db->table("universes")->where("assetid", $placeId)->first();
 
-                $placeid = (int)$_GET["placeId"];
+            // look for game instances with place id
+            $gameinstances = $db->table("game_instances")->where("placeid", $placeId)->get();
 
-                if(isset($_GET["request"])){
-                    $request = $_GET["request"];
+            if($gameinstances){
 
-                    if($request == "CloudEdit"){
+                // We already have a game open, check if its full
 
-                        $placelauncher["settings"] = [
-                            "ClientPort" => 0,
-                            "MachineAddress" => "",
-                            "ServerPort" => "",
-                            "PingUrl" => "",
-                            "PingInterval" => 20,
-                            "UserName" => $currentuser->username,
-                            "SeleniumTestMode" => false,
-                            "UserId" => $currentuser->id,
-                            "SuperSafeChat" => true,
-                            "CharacterAppearance" => "",
-                            "ClientTicket" => "",
-                            "GameId" => "",
-                            "PlaceId" => "",
-                            "MeasurementUrl" => "", // No telemetry here :)
-                            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
-                            "BaseUrl" => "http://www.watrbx.wtf/",
-                            "ChatStyle" => "ClassicAndBubble",
-                            "VendorId" => "0",
-                            "ScreenShotInfo" => "",
-                            "VideoInfo" => "",
-                            "CreatorId" => "",
-                            "CreatorTypeEnum" => "User",
-                            "MembershipType" => "$currentuser->membership",
-                            "AccountAge" => "3000000",
-                            "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
-                            "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
-                            "CookieStoreEnabled" => true,
-                            "IsRobloxPlace" => false,
-                            "GenerateTeleportJoin" => false,
-                            "IsUnknownOrUnder13" => false,
-                            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null",
-                            "DataCenterId" => 0,
-                            "UniverseId" => 3,
-                            "BrowserTrackerId" => 0,
-                            "UsePortraitMode" => false,
-                            "FollowUserId" => 1416,
-                            "characterAppearanceId" => 1
-                        ];
+                foreach ($gameinstances as $game){
+                    $count = $db->table("activeplayers")->where("jobid", $game->serverguid)->count();
+
+                    if($count < $universeinfo->maxplayers){
+                        // Server has a free slots, join it
+                        $jobinfo = $db->table("jobs")->where("jobid", $game->serverguid)->first();
+                        $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server)->first();
+
+                        $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                        $placelauncher["jobid"] = $jobinfo->jobid;
+                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                        $placelauncher["status"] = 2;
+
+                        header("Content-type: application/json");
+                        die(json_encode($placelauncher));
+                        
                     }
+
                 }
 
-                $gameinstance = $db->table("game_instances")->where("placeid", $placeid)->first();
+                // All servers are full, open one
 
-                if($gameinstance !== null){
+                /*$return = [
+                    "Result"=>$result,
+                    "jobId"=>$jobId
+                ]; */
 
-                    
+                $info = $gameserver->request_game($placeId, $Context);
+
+                if($info["Result"]){
+                    // The game opened
+
+                    $jobId = $info["jobId"];
+
+                    $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                    $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server);
+
+                    $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                    $placelauncher["jobid"] = $jobinfo->jobid;
+                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
                     $placelauncher["status"] = 2;
 
-                    $jobid = $gameinstance->serverguid;
+                    header("Content-type: application/json");
+                    die(json_encode($placelauncher));
 
-                    $jobinfo = $db->table("jobs")->where("jobid", $jobid)->first();
-                    $server_info = $db->table("servers")->where("server_id", $jobinfo->server)->first();
-
-                    $port = $jobinfo->port;
-                    $ip = $server_info->ip;
-                    $joincode = $func->genstring(25);
-
-                    
-                    if(isset($_GET["request"])){
-                        $request = $_GET["request"];
-
-                        if($request == "CloudEdit"){
-                            $placelauncher["settings"]["MachineAddress"] = $ip;
-                            $placelauncher["settings"]["ServerPort"] = $port;
-                        } else {
-                            $joinarray = array(
-                                "code"=>$joincode,
-                                "ip"=>$ip,
-                                "port"=>$port,
-                                "jobid"=>$jobid,
-                                "placeid"=>$placeid
-                            );
-                            
-                            $db->table("join_codes")->insert($joinarray);
-
-                            $placelauncher["jobid"] = $jobid;
-
-                            $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
-
-                        }
-                    } else {
-                        $joinarray = array(
-                            "code"=>$joincode,
-                            "ip"=>$ip,
-                            "port"=>$port,
-                            "jobid"=>$jobid,
-                            "placeid"=>$placeid
-                        );
-                        
-                        $db->table("join_codes")->insert($joinarray);
-
-                        $placelauncher["jobid"] = $jobid;
-
-                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
-
-                    }
-                    
                 } else {
-
-                    $job = $db->table("jobs")->where("assetid", $placeid)->first();
-
-                    if($job !== null){
-                        //$gameserver->request_game($placeid);
-                        $placelauncher["status"] = 1;
-                    } else {
-                        if($gameserver->request_game($placeid) !== false){
-                            $placelauncher["status"] = 0;
-                            $placelauncher["jobid"] = $func->createjobid();
-                        } else {
-                            http_response_code(503);
-                            $placelauncher["status"] = 0;
-                            die(json_encode($placelauncher));
-                            //die("No gameservers available");
-                        }
-                    } 
+                    http_response_code(500);
+                    header("Content-type: application/json");
+                    die(json_encode($placelauncher));
                 }
 
+
             } else {
-                $placelauncher["status"] = 12;
-                http_response_code(401);
+
+                // No games open, open one
+
+                $info = $gameserver->request_game($placeId, $Context);
+
+                // The game opened
+
+                $jobId = $info["jobId"];
+
+                $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server)->first();
+
+                $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                $placelauncher["jobid"] = $jobinfo->jobid;
+                $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                $placelauncher["status"] = 2;
+
+                header("Content-type: application/json");
                 die(json_encode($placelauncher));
             }
+
+
         } else {
             http_response_code(400);
+            header("Content-type: application/json");
             die(json_encode($placelauncher));
         }
+    } else {
+        http_response_code(400);
+        header("Content-type: application/json");
+        die(json_encode($placelauncher));
     }
 
-    die(json_encode($placelauncher));
+    
 });
 
+
+
 $router->get('/Game/PlaceLauncher.ashx', function() {
-    header("Content-type: application/json");
 
     $func = new sitefunctions();
+    $gameserver = new gameserver();
+
+    $Context = 1;
+
+    global $db;
 
     $placelauncher = array(
-        "jobid"=>$func->createjobid(),
-        "status"=>0,
+        "jobid"=>null,
+        "status"=>12,
         "joinScriptUrl"=>"null",
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=>"null",
-        "message"=>"Hi!",
-        "settings"=>null
-    ); 
-    
-    //$placelauncher["jobid"] = "Test";
-    //$placelauncher["status"] = 2;
-    //$placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?user=watrabi&ip=127.0.0.1&id=420&port=7894&capp=1&mship=BuildersClub&PlaceId=1";
-    
-    $gameserver = new gameserver();
+        "message"=>""
+    );     
 
-    global $db;
-    global $currentuser;
-    $request = "";
+    if(isset($_GET["placeId"])){
+        (int)$placeId = $_GET["placeId"];
+        
+        $assetinfo = $db->table("assets")->where("id", $placeId)->first();
 
-    if(!$gameserver->get_closest_server()){
-        http_response_code(503);
-        $placelauncher["status"] = -1;
-    }else {
-        if(isset($_GET["placeId"])){
-            global $db;
-            $auth = new authentication();
+        if($assetinfo){
 
-            if($auth->hasaccount()){
+            $universeinfo = $db->table("universes")->where("assetid", $placeId)->first();
 
-                $placeid = (int)$_GET["placeId"];
+            // look for game instances with place id
+            $gameinstances = $db->table("game_instances")->where("placeid", $placeId)->get();
 
-                if(isset($_GET["request"])){
-                    $request = $_GET["request"];
+            if($gameinstances){
 
-                    if($request == "CloudEdit"){
+                // We already have a game open, check if its full
 
-                        $placelauncher["settings"] = [
-                            "ClientPort" => 0,
-                            "MachineAddress" => "",
-                            "ServerPort" => "",
-                            "PingUrl" => "",
-                            "PingInterval" => 20,
-                            "UserName" => $currentuser->username,
-                            "SeleniumTestMode" => false,
-                            "UserId" => $currentuser->id,
-                            "SuperSafeChat" => true,
-                            "CharacterAppearance" => "",
-                            "ClientTicket" => "",
-                            "GameId" => "",
-                            "PlaceId" => "",
-                            "MeasurementUrl" => "",
-                            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
-                            "BaseUrl" => "http://www.watrbx.wtf/",
-                            "ChatStyle" => "ClassicAndBubble",
-                            "VendorId" => "0",
-                            "ScreenShotInfo" => "",
-                            "VideoInfo" => "",
-                            "CreatorId" => "",
-                            "CreatorTypeEnum" => "User",
-                            "MembershipType" => "$currentuser->membership",
-                            "AccountAge" => "3000000",
-                            "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
-                            "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
-                            "CookieStoreEnabled" => true,
-                            "IsRobloxPlace" => false,
-                            "GenerateTeleportJoin" => false,
-                            "IsUnknownOrUnder13" => false,
-                            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null",
-                            "DataCenterId" => 0,
-                            "UniverseId" => 3,
-                            "BrowserTrackerId" => 0,
-                            "UsePortraitMode" => false,
-                            "FollowUserId" => 1416,
-                            "characterAppearanceId" => 1
-                        ];
+                foreach ($gameinstances as $game){
+                    $count = $db->table("activeplayers")->where("jobid", $game->serverguid)->count();
+
+                    if($count < $universeinfo->maxplayers){
+                        // Server has a free slots, join it
+                        $jobinfo = $db->table("jobs")->where("jobid", $game->serverguid)->first();
+                        $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server)->first();
+
+                        $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                        $placelauncher["jobid"] = $jobinfo->jobid;
+                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                        $placelauncher["status"] = 2;
+
+                        header("Content-type: application/json");
+                        die(json_encode($placelauncher));
+                        
                     }
+
                 }
 
-                $gameinstance = $db->table("game_instances")->where("placeid", $placeid)->first();
+                // All servers are full, open one
 
-                if($gameinstance !== null){
+                /*$return = [
+                    "Result"=>$result,
+                    "jobId"=>$jobId
+                ]; */
 
-                    
+                $info = $gameserver->request_game($placeId, $Context);
+
+                if($info["Result"]){
+                    // The game opened
+
+                    $jobId = $info["jobId"];
+
+                    $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                    $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server);
+
+                    $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                    $placelauncher["jobid"] = $jobinfo->jobid;
+                    $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
                     $placelauncher["status"] = 2;
 
-                    $jobid = $gameinstance->serverguid;
+                    header("Content-type: application/json");
+                    die(json_encode($placelauncher));
 
-                    $jobinfo = $db->table("jobs")->where("jobid", $jobid)->first();
-                    $server_info = $db->table("servers")->where("server_id", $jobinfo->server)->first();
-
-                    $port = $jobinfo->port;
-                    $ip = $server_info->ip;
-                    $joincode = $func->genstring(25);
-
-                    
-                    if(isset($_GET["request"])){
-                        $request = $_GET["request"];
-
-                        if($request == "CloudEdit"){
-                            $placelauncher["settings"]["MachineAddress"] = $ip;
-                            $placelauncher["settings"]["ServerPort"] = $port;
-                        } else {
-                            $joinarray = array(
-                                "code"=>$joincode,
-                                "ip"=>$ip,
-                                "port"=>$port,
-                                "jobid"=>$jobid,
-                                "placeid"=>$placeid
-                            );
-                            
-                            $db->table("join_codes")->insert($joinarray);
-
-                            $placelauncher["jobid"] = $jobid;
-
-                            $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
-
-                        }
-                    } else {
-                        $joinarray = array(
-                            "code"=>$joincode,
-                            "ip"=>$ip,
-                            "port"=>$port,
-                            "jobid"=>$jobid,
-                            "placeid"=>$placeid
-                        );
-                        
-                        $db->table("join_codes")->insert($joinarray);
-
-                        $placelauncher["jobid"] = $jobid;
-
-                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
-
-                    }
-                    
                 } else {
-
-                    $job = $db->table("jobs")->where("assetid", $placeid)->first();
-
-                    if($job !== null){
-                        //$gameserver->request_game($placeid);
-                        $placelauncher["status"] = 1;
-                    } else {
-                        if($gameserver->request_game($placeid) !== false){
-                            $placelauncher["status"] = 0;
-                            $placelauncher["jobid"] = $func->createjobid();
-                        } else {
-                            http_response_code(503);
-                            $placelauncher["status"] = 0;
-                            die(json_encode($placelauncher));
-                            //die("No gameservers available");
-                        }
-                    } 
+                    http_response_code(500);
+                    header("Content-type: application/json");
+                    die(json_encode($placelauncher));
                 }
 
+
             } else {
-                $placelauncher["status"] = 12;
-                http_response_code(401);
+
+                // No games open, open one
+
+                $info = $gameserver->request_game($placeId, $Context);
+
+                // The game opened
+
+                $jobId = $info["jobId"];
+
+                $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server)->first();
+
+                $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                $placelauncher["jobid"] = $jobinfo->jobid;
+                $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                $placelauncher["status"] = 2;
+
+                header("Content-type: application/json");
                 die(json_encode($placelauncher));
             }
+
+
         } else {
             http_response_code(400);
+            header("Content-type: application/json");
             die(json_encode($placelauncher));
         }
+    } else {
+        http_response_code(400);
+        header("Content-type: application/json");
+        die(json_encode($placelauncher));
     }
 
-    die(json_encode($placelauncher));
+    
 });
 
 $router->get('/users/{id}', function($id){
@@ -3717,7 +3646,7 @@ $router->get('/Game/Join.ashx', function() {
         // Construct joinscript
         $joinscript = [
             "ClientPort" => 0,
-            "MachineAddress" => $ip,
+            "MachineAddress" => "192.168.1.213",
             "ServerPort" => $port,
             "PingUrl" => "",
             "PingInterval" => 20,

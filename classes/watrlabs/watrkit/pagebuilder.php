@@ -39,6 +39,10 @@ class pagebuilder {
         $this->legacy = $value;
     }
 
+    public function get_from_storage($file){
+        return file_get_contents("../storage/$file");
+    }
+
     public function set_page_name($title){
         $this->config['title'] = $title;
     }

@@ -6,7 +6,7 @@ use watrbx\thumbnails;
 use watrlabs\watrkit\sanitize;
 use watrbx\sitefunctions;
 use watrbx\RBX;
-
+use watrbx\Grid\Grid;
 
 
 function checkhelp() {
@@ -605,6 +605,52 @@ $router->get("/userads/{num}", function($num) {
         $page::get_template("userads/$num");
     }
     
+});
+
+$router->get('/grid-test', function(){
+
+    $useService = new watrbx\Grid\Grid\;
+
+    $Open = $useService->Open("http://group-she.gl.at.ply.gg:49837");
+
+    $renderScript = file_get_contents("../storage/lua/TestRender.lua");
+
+    $jobInfo = [
+        "Id"=>"Test",
+        "Expiration"=>30,
+        "Category"=>1,
+        "Cores"=>1
+    ];
+
+    $ScriptInfo = [
+        "Name"=>"Test Render",
+        "Script"=>$renderScript,
+        "Arguments"=>[
+            "baseUrl"=>"https://www.watrbx.wtf",
+            "userId"=>2
+        ]
+    ];
+
+    $result = $Open->OpenJobEx($jobInfo, $ScriptInfo);
+
+    echo "<img src=\"data:image/png;base64," .  $result[0]->getValue() . "\">";
+
+
+    //$RobloxGrid = new Grid("http://group-she.gl.at.ply.gg:49837");
+    //$grid = $RobloxGrid->useGet();
+
+    //$script = new \StructType\ScriptExecution("print(\"hi\")");
+
+    //$execute = $grid->GetVersion(new \StructType\GetVersion());
+
+    //if ($execute !== false) {
+    //    $result = $grid->getResult();
+    //    echo $result->getGetVersionResult();
+    //} else {
+    //    $result = $grid->getLastError();
+    //    echo $result['ServiceType\GetVersion']->getMessage();
+    //}
+
 });
 
 $router->get("/CSS/Base/CSS/FetchCSS", function() {

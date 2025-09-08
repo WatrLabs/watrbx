@@ -13,6 +13,13 @@ class thumbnails {
         $this->thumb_url = "/";
     }
 
+    public function render_asset($assetid, $dimensions){
+        $open = new \watrbx\Grid\Open\Service;
+
+        
+
+    }
+
     public function get_user_thumb($userid, $size, $type = "full"){
         global $db;
         $thumb = $db->table("thumbnails")->where("userid", $userid)->where("dimensions", $size)->first();
