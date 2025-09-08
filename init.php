@@ -2,14 +2,14 @@
 use Pixie\Connection;
 use Pixie\QueryBuilder\QueryBuilderHandler;
 use Aws\S3\S3Client;
-use watrlabs\authentication;
+use \watrlabs\authentication;
 global $dotenv;
 global $db;
 global $currentuser;
 global $s3_client;
 
 spl_autoload_register(function ($class_name) {
-    $directory = '../classes/';
+    $directory = __DIR__ . '/classes/';
     $class_name = str_replace('\\', DIRECTORY_SEPARATOR, $class_name);
     $file = $directory . $class_name . '.php';
     if (file_exists($file)) {

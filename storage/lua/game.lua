@@ -1,6 +1,8 @@
 -- Start Game Script Arguments
 local placeId, port, sleeptime, access, baseUrl, protocol, matchmakingContextId, assetGameSubdomain = ...
 
+assetGameSubdomain = "assetgame"
+
 -----------------------------------"CUSTOM" SHARED CODE----------------------------------
 port = tonumber(port)
 sleeptime = tonumber(sleeptime)
@@ -167,4 +169,12 @@ if not isCloudEdit then
 	end
 
 	Game:GetService("RunService"):Run()
+end
+
+while wait(30) do
+
+	local PlayerCount = game:GetService('Players').NumPlayers
+    game:HttpGet(url .. "/api/v1/gameserver/pinger?jobId=" .. game.JobId .. "&apiKey=" .. access .. "&Players=" .. PlayerCount)
+	-- We have this to tell the website the server still exists (it adds 35 seconds every request to help it stay alive)
+
 end

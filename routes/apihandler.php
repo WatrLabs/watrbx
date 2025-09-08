@@ -226,6 +226,7 @@ $router->get('/places/api-get-details', function(){
 $router->get('/Thumbs/Avatar.ashx', function(){
 
         $thumbs = new thumbnails();
+        $sitefunc = new sitefunctions();
         global $db;
 
         if(isset($_GET["x"])){
@@ -277,10 +278,18 @@ $router->get('/Thumbs/Avatar.ashx', function(){
             global $db;
             if($userinfo !== null){
 
-                $thumb = $thumbs->get_user_thumb($userid, $dimensions, $mode);
+                $thumb = $thumbs->get_user_thumb($userid, "1024x1024", $mode);
 
-                header("Location: $thumb");
-                die($thumb);
+                $image = file_get_contents("https:" . $thumb);
+                $tempDir = sys_get_temp_dir();
+                $tempName = $sitefunc->genstring(5);
+
+                $File = $tempDir . "/" . $tempName;
+                
+                file_put_contents($tempDir . "/" . $tempName, $image);
+
+                header("Content-type: image/png");
+                die($sitefunc->resize_image($File, $x, $y, false));
             } else {
                 http_response_code(400);
                 die("User does not exist!"); 
@@ -3109,8 +3118,8 @@ $router->get('/Game/Badge/HasBadge.ashx', function(){
             }
 
         } else {
-            http_response_code(404);
-            die("");
+            //http_response_code(404);
+            die("0");
         }
 
     }
@@ -3646,7 +3655,7 @@ $router->get('/Game/Join.ashx', function() {
         // Construct joinscript
         $joinscript = [
             "ClientPort" => 0,
-            "MachineAddress" => "192.168.1.213",
+            "MachineAddress" => $ip,
             "ServerPort" => $port,
             "PingUrl" => "",
             "PingInterval" => 20,

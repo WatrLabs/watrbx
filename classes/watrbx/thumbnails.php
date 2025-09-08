@@ -13,10 +13,91 @@ class thumbnails {
         $this->thumb_url = "/";
     }
 
-    public function render_asset($assetid, $dimensions){
-        $open = new \watrbx\Grid\Open\Service;
+    public function render_asset($jobinfo){
 
-        
+        $gameserver = new gameserver();        
+        $closeserver = $gameserver->get_closest_server(); 
+        $serverUri = $gameserver->get_server_url($closeserver);
+
+        $theid = null;
+        $apikey = null;
+
+        global $db;
+        $Grid = new \watrbx\Grid\Grid;
+        $Open = $Grid->Open($serverUri);
+
+        if($jobinfo->userid !== null){
+
+            $theid = $jobinfo->userid;
+
+            if($jobinfo->jobtype == "full"){
+                $lua = file_get_contents("./storage/lua/user.lua");
+            } elseif ($jobinfo->jobtype == "headshot"){
+                $lua = file_get_contents("./storage/lua/user_headshot.lua");
+            } 
+        } else {
+
+            $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
+            $theid = $jobinfo->assetid;
+            switch ($assetinfo->prodcategory){
+                case "8":
+                    
+                    $lua = file_get_contents("./storage/lua/hat.lua");
+                    break;
+                case "10":
+                    
+                    $lua = file_get_contents("./storage/lua/model.lua");
+                    break;
+                case "18":
+                    
+                    $lua = file_get_contents("./storage/lua/face.lua");
+                    break;
+                case "19":
+                    
+                    $lua = file_get_contents("./storage/lua/gear.lua");
+                    break;
+                case "9":
+                    
+                    $apikey = $jobinfo->apikey;
+                    $lua = file_get_contents("./storage/lua/place.lua");
+                    break;
+                case "11":
+                    
+                    $lua = file_get_contents("./storage/lua/shirt.lua");
+                    break;
+                case "12":
+                    
+                    $lua = file_get_contents("./storage/lua/pant.lua");
+                    break;
+                case "17":
+                    
+                    $lua = file_get_contents("./storage/lua/head.lua");
+                    break;
+                case "13":
+                    
+                    $lua = file_get_contents("./storage/lua/decal.lua");
+                    break;
+            }
+        }
+
+        $jobInfo = [
+            "Id"=>$jobinfo->jobid,
+            "Expiration"=>60, // I don't think it should take longer than this to render 
+            "Category"=>1,
+            "Cores"=>1
+        ];
+
+        $ScriptInfo = [
+            "Name"=>"Render Script",
+            "Script"=>$lua,
+            "Arguments"=>[
+                "id"=>$theid,
+                "dimensions"=>"1024x1024",
+                "apikey"=>$jobinfo->apikey
+            ]
+        ];
+
+        return $gameserver->execute_job($jobInfo, $ScriptInfo);
 
     }
 

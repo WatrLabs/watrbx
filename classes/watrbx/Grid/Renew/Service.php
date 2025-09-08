@@ -26,7 +26,7 @@ class Service {
 
         $Service = $this->Service;
 
-        if ($Service->RenewLease(new \StructType\RenewLease($Renew)) !== false) {
+        if ($Service->RenewLease(new \StructType\RenewLease($id, $expirationInSeconds)) !== false) {
             $result = $Service->getResult();
             return $result->getRenewLeaseResult();
         } else {

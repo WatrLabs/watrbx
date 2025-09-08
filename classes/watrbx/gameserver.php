@@ -72,6 +72,10 @@ class gameserver {
         return $db->table("servers")->get();
     }
 
+    public function get_server_url($serverinfo){
+        return "http://" . $serverinfo->ip . ":" . $serverinfo->port;
+    }
+
     public function get_closest_server(){
         $all_servers = $this->get_all_servers();
 
@@ -158,9 +162,9 @@ class gameserver {
         $server = $this->get_server_info($jobinfo->server);
 
         $server = $this->close_server;
-        //$Grid = new \watrbx\Grid\Close\Service("http://" . $server->ip . ":" . $server->port);
         $Grid = new \watrbx\Grid\Grid;
-        $Grid = $Grid->Close("http://group-she.gl.at.ply.gg:49837");
+        //$Grid = $Grid->Close("http://group-she.gl.at.ply.gg:49837");
+        $Grid = new \watrbx\Grid\Close\Service("http://" . $server->ip . ":" . $server->port);
         $Result = $Grid->CloseJob($jobid);
 
         $db->table("jobs")->where("jobid", $jobid)->delete();
@@ -213,8 +217,8 @@ class gameserver {
     public function execute_job($jobinfo, $scriptinfo){
 
         $server = $this->close_server;
-        //$Grid = new \watrbx\Grid\Open\Service("http://" . $server->ip . ":" . $server->port);
-        $Grid = new \watrbx\Grid\Open\Service("http://group-she.gl.at.ply.gg:49837");
+        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->ip . ":" . $server->port);
+        //$Grid = new \watrbx\Grid\Open\Service("http://group-she.gl.at.ply.gg:49837");
         $Result = $Grid->OpenJobEx($jobinfo, $scriptinfo);
         return $Result; 
 
@@ -229,6 +233,7 @@ class gameserver {
     }
 
     public function request_game($placeid, $context){
+
 
         // Context 1 - Public Game
         // Context 2 - Private Game
@@ -259,9 +264,9 @@ class gameserver {
         
         $jobInfo = [
             "Id"=>$jobid,
-            "Expiration"=>9900000000, // 60 seconds until gameserver die
+            "Expiration"=>120, 
             "Category"=>1, // Still have yet to learn what this does
-            "Cores"=>2 // 99999999999999999999999999999999999999
+            "Cores"=>2 
         ];
 
         $ScriptInfo = [

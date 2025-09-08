@@ -66,8 +66,10 @@ class sitefunctions {
         
         if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
             $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
-        } else {
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+            return "127.0.0.1";
         }
         
         if(isset($ip)){

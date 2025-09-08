@@ -229,6 +229,14 @@ $router->post('/marketplace/purchase', function() {
     echo json_encode($data); 
 });
 
+$router->get('/Error/Grid.ashx', function(){
+    die();
+});
+
+$router->post('/Error/Grid.ashx', function(){
+    die();
+});
+
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
     die('{"data":["0.2.0pcplayer","INTERNALiosapp"]}');
