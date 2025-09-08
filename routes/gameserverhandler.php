@@ -118,6 +118,44 @@ $router->get('/api/v1/gameserver/end-laggy-server', function() {
 
 });
 
+$router->get('/api/v1/gameserver/pinger', function(){
+
+    global $db;
+    $gameserver = new gameserver();
+
+    if(isset($_GET["jobId"]) && isset($_GET["apiKey"]) && isset($_GET["Players"])){
+
+        $jobId = $_GET["jobId"];
+        $apiKey = $_GET["apiKey"];
+        $Players = (int)$_GET["Players"];
+
+        $jobInfo = $db->table("jobs")->where("jobid", $jobId)->first();
+
+        if($jobInfo){
+
+            $serverInfo = $db->table("servers")->where("server_id", $jobInfo->server)->first();
+
+            if($Players == 0){
+                $gameserver->end_job($jobId);
+                die(createsuccess("killed"));
+            } else {
+                $Grid = new watrbx\Grid\Grid;
+                $Url = "http://" . $serverInfo->ip . ":" . $serverInfo->port;
+
+                $Renew = $Grid->Renew($Url);
+                $Renew->RenewLease($jobId, 40); // 40 Seconds.
+                // TODO: Track last ping time and predict server shutdown to prevent people from joining
+                die(createsuccess("your life has been extended"));
+            }
+        } else {
+            die(createerror("Oof."));
+        }
+
+
+    }
+
+});
+
 $router->get("/api/v1/gameserver/mark-active", function(){
 
     $log = new discord();

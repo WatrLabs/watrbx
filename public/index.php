@@ -6,7 +6,6 @@ use watrlabs\users\getuserinfo;
 use watrlabs\logging\discord;
 use watrbx\sitefunctions;
 
-
 require_once '../init.php';
 
 try {
@@ -32,8 +31,6 @@ try {
 
         $auth = new authentication();
         $router = new routing();
-
-        
         
         if($_ENV["ACTUAL_MAINTENANCE"] == "true"){
             require("../views/really_bad_500.php");

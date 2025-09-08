@@ -1,9 +1,11 @@
 -- Head v1.2.0
 
-local assetUrl = "rbxassetid://%assetid%"
+local assetId = ...
+
+local assetUrl = "rbxassetid://" .. assetId 
 local baseUrl = "http://www.watrbx.wtf/"
 local fileExtension = "PNG"
-local x, y = %x%, %y%
+local x, y = 1024, 1024
 local mannequinId = 1785197
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")
 -- Modules

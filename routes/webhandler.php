@@ -609,7 +609,7 @@ $router->get("/userads/{num}", function($num) {
 
 $router->get('/grid-test', function(){
 
-    $useService = new watrbx\Grid\Grid\;
+    $useService = new watrbx\Grid\Grid;
 
     $Open = $useService->Open("http://group-she.gl.at.ply.gg:49837");
 

@@ -1,10 +1,11 @@
 -- Decal v1.0.2
 -- Used for faces and decals
 
+local assetId = ...
+
 local assetUrl = "rbxassetid://%assetid%"
 local baseUrl = "https://www.watrbx.wtf"
 local fileExtension = "PNG"
-local x, y = %x%, %y%
 
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")
 
@@ -15,7 +16,7 @@ local decal = game:GetObjects(assetUrl)[1]
 
 local image, requestedUrls
 local success = pcall(function()
-	image, requestedUrls = ThumbnailGenerator:ClickTexture(string.gsub(decal.Texture, "roblox.com", "watrbx.wtf"), fileExtension, x, y)
+	image, requestedUrls = ThumbnailGenerator:ClickTexture(string.gsub(decal.Texture, "roblox.com", "watrbx.wtf"), fileExtension, 1024, 1024)
 end)
 
 if success then

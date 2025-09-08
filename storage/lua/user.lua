@@ -1,7 +1,7 @@
-local userId = "%userId%"
+local userId = ...
 local baseUrl = "http://www.watrbx.wtf"
 local fileExtension = "PNG"
-local x, y = %x%, %y%
+local x, y = 1024, 1024
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")
 
 pcall(function() game:GetService("ContentProvider"):SetBaseUrl(baseUrl) end)
