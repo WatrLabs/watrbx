@@ -610,31 +610,14 @@ $router->get("/userads/{num}", function($num) {
 $router->get('/grid-test', function(){
 
     $useService = new watrbx\Grid\Grid;
+    $gameserver = new watrbx\gameserver();
 
-    $Open = $useService->Open("http://group-she.gl.at.ply.gg:49837");
+    $serverinfo = $gameserver->get_closest_server();
+    $url = $gameserver->get_server_url($serverinfo);
 
-    $renderScript = file_get_contents("../storage/lua/TestRender.lua");
+    $Close = $useService->Close($url);
 
-    $jobInfo = [
-        "Id"=>"Test",
-        "Expiration"=>30,
-        "Category"=>1,
-        "Cores"=>1
-    ];
-
-    $ScriptInfo = [
-        "Name"=>"Test Render",
-        "Script"=>$renderScript,
-        "Arguments"=>[
-            "baseUrl"=>"https://www.watrbx.wtf",
-            "userId"=>2
-        ]
-    ];
-
-    $result = $Open->OpenJobEx($jobInfo, $ScriptInfo);
-
-    echo "<img src=\"data:image/png;base64," .  $result[0]->getValue() . "\">";
-
+    echo $Close->CloseExpiredJobs();
 
     //$RobloxGrid = new Grid("http://group-she.gl.at.ply.gg:49837");
     //$grid = $RobloxGrid->useGet();

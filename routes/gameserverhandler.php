@@ -143,7 +143,7 @@ $router->get('/api/v1/gameserver/pinger', function(){
                 $Url = "http://" . $serverInfo->ip . ":" . $serverInfo->port;
 
                 $Renew = $Grid->Renew($Url);
-                $Renew->RenewLease($jobId, 40); // 40 Seconds.
+                $Renew->RenewLease($jobId, 60); // 60 Seconds.
                 // TODO: Track last ping time and predict server shutdown to prevent people from joining
                 die(createsuccess("your life has been extended"));
             }
