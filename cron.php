@@ -27,7 +27,7 @@ $allofdem = $db->table('jobs')
     ->get();
 
 foreach ($allofdem as $job) {
-    sleep(15); // too many too quick overloads arbiter, especially with games running
+    sleep(5); // too many too quick overloads arbiter, especially with games running
     $result = $thumbnail->render_asset($job);
     if($result){
         try {

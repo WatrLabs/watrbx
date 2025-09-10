@@ -122,6 +122,49 @@ game:GetService("Players").PlayerRemoving:connect(function(player)
 	end
 end)
 
+function onChatted(msg, speaker)
+    
+    source = string.lower(speaker.Name)
+    msg = string.lower(msg)
+    -- Note: This one is NOT caps sensitive
+
+    if msg == ";ec" then
+		local sound = Instance.new("Sound")
+    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=17"
+    	sound.Parent = speaker.Character.Torso
+    	sound.Volume = 0.5
+    	sound:Play()
+        speaker.Character.Humanoid.Health = 0
+    end
+
+	if msg == ";raymonf" then
+		local sound = Instance.new("Sound")
+    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=19"
+    	sound.Parent = speaker.Character.Torso
+    	sound.Volume = 0.5
+    	sound:Play()
+        speaker.Character.Humanoid.Health = 0
+    end
+
+    if msg == ";kick" then
+	    speaker:Kick("GET OUT!!!!!!!!")
+    end
+
+    if msg == ";sit" then
+		speaker.Character.Humanoid.Jump = true
+		wait(0.1)
+        speaker.Character.Humanoid.Sit = true
+    end
+end
+
+function onPlayerEntered(newPlayer)
+        newPlayer.Chatted:connect(function(msg) onChatted(msg, newPlayer) end) 
+end
+ 
+game.Players.ChildAdded:connect(onPlayerEntered)
+
+
+
 local onlyCallGameLoadWhenInRccWithAccessKey = newBadgeUrlEnabled
 if placeId ~= nil  then
 	-- yield so that file load happens in the heartbeat thread

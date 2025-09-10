@@ -15,6 +15,7 @@ $router->get("/game/GetCurrentUser.ashx", function() {
             echo $userinfo->id;
             die();
         } else {
+            setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
             die();
         }
     }
@@ -33,6 +34,7 @@ $router->get('/login/RequestAuth.ashx', function(){
         die();
     } else {
         http_response_code(401);
+        setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
         die("User is not authorized.");
     }
     

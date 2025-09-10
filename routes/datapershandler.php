@@ -135,18 +135,20 @@ $router->group('/persistence', function($router) {
             }       
             $result = $notresult->get();
             $entries = [];
-            foreach($result as &$data){
-                array_push($entries,array("Target"=>$data->target,"Value"=>$data->value));
+
+            foreach($result as $data){
+                $entries[] = ["Target" => $data->target, "Value" => $data->value];
             }
 
-            $datastuff = ["data"=>["Entries"=>$entries]];
+            $datastuff = ["data" => ["Entries" => $entries]];
 
-
-            if($hasstartkey){
-                $datastuff["data"]["ExclusiveStartKey"] = $startkey;
+            if($entries){
+                $last = end($entries);
+                $datastuff["data"]["ExclusiveStartKey"] = $last["Target"] . '$' . $last["Value"];
             }
 
             exit(json_encode($datastuff, JSON_NUMERIC_CHECK));
+
             
         }
     });

@@ -3,11 +3,7 @@ use watrlabs\watrkit\pagebuilder;
 use watrbx\thumbnails;
 $pagebuilder = new pagebuilder();
 
-$pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
-$pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___91ce90e508d798217cc5452e978970d5_m.css');
-$pagebuilder->addresource('jsfiles', '/js/71159c155b71b830770f1880fd3b181b.js');
-$pagebuilder->addresource('jsfiles', '/js/827f89b1af9564915de6fb8725c9b27c.js');
-$pagebuilder->addresource('jsfiles', '/js/142b5a3a1621b800298642e22ddb6650.js');
+w
 $pagebuilder->set_page_name("Search");
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
