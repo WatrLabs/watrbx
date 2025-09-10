@@ -88,6 +88,7 @@ $router->get('/asset/', function() {
 
                     if($asset->owner == $currentuser->id){
                         try {
+                            header("Content-type: application/octet-stream");
                             $asset = file_get_contents("http://cdn.watrbx.wtf/" . $asset->fileid);
                             $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
                             $asset = str_replace("watrbx.xyz", "watrbx.wtf", $asset);
@@ -105,7 +106,7 @@ $router->get('/asset/', function() {
                 
 
             } else {
-                header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
+                header("Content-type: application/octet-stream");
                 try {
                     $asset = file_get_contents("http://cdn.watrbx.wtf/" . $asset->fileid);
                     $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
@@ -140,7 +141,7 @@ $router->get('/asset/', function() {
                     file_put_contents("../storage/asset_cache/$id", $decoded); # THIS IS INSECURE!!!!!! (except for the fact I cast id to int & basename it)
 
                     $decoded = str_replace("roblox.com", "watrbx.wtf", $decoded);
-
+                    header("Content-type: application/octet-stream");
                     die($decoded);
                     
                 }
@@ -154,6 +155,11 @@ $router->get('/asset/', function() {
             die();
         }
     }
+});
+
+$router->get('/universes/get-player-place-instance', function(){
+    http_response_code(500);
+    die('{}');
 });
 
 $router->get('/Game/Tools/InsertAsset.ashx', function(){
@@ -245,7 +251,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["e23b4fa2cc50a991f464827d59a9480e","359a1aad5833c3ac815949f35229ccbf","95e6226794c620ad6682ac2946b9e18c", "439d18dcc7f4b21b6e310608fec71a94"]}');
+    die('{"data":["3f5585ee49c5923e79a4332d005112e2","439d18dcc7f4b21b6e310608fec71a94"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){

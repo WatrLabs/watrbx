@@ -166,6 +166,18 @@ class sitefunctions {
         }
         $src = imagecreatefrompng($file);
         $dst = imagecreatetruecolor($newwidth, $newheight);
+
+
+        // Fix transparency
+        imagealphablending($dst, false);
+        imagesavealpha($dst, true);
+        $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $transparent);
+
+        // Fix black outlining
+        imagealphablending($src, true);
+        imagesavealpha($src, true);
+
         imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
         return imagepng($dst);

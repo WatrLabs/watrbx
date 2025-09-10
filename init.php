@@ -54,6 +54,10 @@ try {
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
         'prefix'    => '', // if you have a prefix for all your tables.
+        'options'   => [
+            PDO::ATTR_PERSISTENT => true,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]
     ];
 
     $connection = new Connection('mysql', $config);
