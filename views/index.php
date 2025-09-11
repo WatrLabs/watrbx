@@ -9,8 +9,6 @@ $canregister = $func->get_setting("CAN_REGISTER");
 if($auth->hasaccount()){
     header("Location: /home");
     die();
-} else {
-    $auth->createsession();
 }
 
 ?>
