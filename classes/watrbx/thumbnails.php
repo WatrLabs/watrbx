@@ -9,8 +9,36 @@ class thumbnails {
 
     private $thumb_url = "";
 
+    private $luaFiles = [
+        "8"  => "hat.lua",
+        "9"  => "place.lua",
+        "10" => "model.lua",
+        "11" => "shirt.lua",
+        "12" => "pant.lua",
+        "13" => "decal.lua",
+        "17" => "head.lua",
+        "18" => "face.lua",
+        "19" => "gear.lua",
+    ];
+
     function __construct(){
         $this->thumb_url = "/";
+    }
+
+    private function getLua($jobinfo, $assetinfo = null) {
+        if ($jobinfo->userid !== null) {
+            return match ($jobinfo->jobtype) {
+                "full"     => file_get_contents("./storage/lua/user.lua"),
+                "headshot" => file_get_contents("./storage/lua/user_headshot.lua"),
+                default    => "",
+            };
+        }
+
+        if ($assetinfo && isset($this->luaFiles[$assetinfo->prodcategory])) {
+            return file_get_contents("./storage/lua/" . $this->luaFiles[$assetinfo->prodcategory]);
+        }
+
+        return "print('Failed to find lua.')";
     }
 
     public function render_asset($jobinfo){
@@ -27,59 +55,12 @@ class thumbnails {
         $Grid = new \watrbx\Grid\Grid;
         $Open = $Grid->Open($serverUri);
 
-        if($jobinfo->userid !== null){
+        $lua = $this->getLua($jobinfo);
 
-            $theid = $jobinfo->userid;
+        $exploded = explode("x", $jobinfo->dimensions);
 
-            if($jobinfo->jobtype == "full"){
-                $lua = file_get_contents("./storage/lua/user.lua");
-            } elseif ($jobinfo->jobtype == "headshot"){
-                $lua = file_get_contents("./storage/lua/user_headshot.lua");
-            } 
-        } else {
-
-            $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
-            $theid = $jobinfo->assetid;
-            switch ($assetinfo->prodcategory){
-                case "8":
-                    
-                    $lua = file_get_contents("./storage/lua/hat.lua");
-                    break;
-                case "10":
-                    
-                    $lua = file_get_contents("./storage/lua/model.lua");
-                    break;
-                case "18":
-                    
-                    $lua = file_get_contents("./storage/lua/face.lua");
-                    break;
-                case "19":
-                    
-                    $lua = file_get_contents("./storage/lua/gear.lua");
-                    break;
-                case "9":
-                    
-                    $apikey = $jobinfo->apikey;
-                    $lua = file_get_contents("./storage/lua/place.lua");
-                    break;
-                case "11":
-                    
-                    $lua = file_get_contents("./storage/lua/shirt.lua");
-                    break;
-                case "12":
-                    
-                    $lua = file_get_contents("./storage/lua/pant.lua");
-                    break;
-                case "17":
-                    
-                    $lua = file_get_contents("./storage/lua/head.lua");
-                    break;
-                case "13":
-                    
-                    $lua = file_get_contents("./storage/lua/decal.lua");
-                    break;
-            }
-        }
+        $x = $exploded[0];
+        $y = $exploded[1];
 
         $exploded = explode("x", $jobinfo->dimensions);
 
@@ -120,23 +101,18 @@ class thumbnails {
         }
     }
 
-    public function check_moderation_status($asset){
-
+    public function check_moderation_status($asset) {
         global $db;
-
-        if(is_int($asset)){
+        
+        if (is_int($asset)) {
             $asset = $db->table("assets")->where("id", $asset)->first();
         }
 
-        if($asset->moderation_status == "Pending"){
-            return "/images/defaultimage.png";
-        }
-
-        if($asset->moderation_status == "Deleted"){
-            return "//cdn/watrbx.wtf/94d99af3ba4bc501d80b51580ffa9b4a3031560c.png";
-        }
-
-        return null;
+        return match ($asset->moderation_status) {
+            "Pending" => "/images/defaultimage.png",
+            "Deleted" => "//cdn/watrbx.wtf/94d99af3ba4bc501d80b51580ffa9b4a3031560c.png",
+            default   => null,
+        };
     }
 
     public function get_asset_thumb($id, $size = "300x300", $type = "icon"){

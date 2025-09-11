@@ -43,13 +43,13 @@ $router->get('/login/RequestAuth.ashx', function(){
 $router->get('/Game/Edit.ashx', function(){
     header("Content-type: text/lua");
     http_response_code(200);
-    die(include("../storage/edit.php"));
+    die(require("../storage/edit.php"));
 });
 
 $router->get('/game/visit.ashx', function(){
     header("Content-type: text/lua");
     http_response_code(200);
-    die(include("../storage/visit.php"));
+    die(require("../storage/visit.php"));
 });
 
 $router->get('/ide/welcome', function(){
@@ -149,8 +149,6 @@ $router->get('/universes/get-universe-places', function(){
         die(json_encode($return));
 
     }
-
-    
 
     die('{"FinalPage":true,"RootPlace":1,"Places":[{"PlaceId":1,"Name":"Test"}],"PageSize":50}');
 });

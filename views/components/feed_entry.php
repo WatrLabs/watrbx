@@ -1,9 +1,5 @@
 <?php
 
-use watrlabs\authentication;
-use watrbx\thumbnails;
-$thumbs = new thumbnails();
-$auth = new authentication();
 $poster = $auth->getuserbyid($feedentry->owner);
 $headshot = $thumbs->get_user_thumb($feedentry->owner, "512x512", "headshot");
 $feedentry->content = preg_replace('#\bhttps?://[^\s<]+#i','<a href="$0" target="_blank" rel="noopener">$0</a>',$feedentry->content);

@@ -1,8 +1,14 @@
 <?php
 use watrlabs\watrkit\pagebuilder;
 use watrbx\gameserver;
+use Cocur\Slugify\Slugify;
+use watrlabs\authentication;
+use watrbx\thumbnails;
+$thumbs = new thumbnails();
+$slugify = new Slugify();
+$auth = new authentication();
 $pagebuilder = new pagebuilder();
-$gameserver = new gameserver();
+
 
 global $db;
 
@@ -20,7 +26,7 @@ if($sort === 3){
     }
     $allgames = $db->table("universes")->where("public", 1)->whereIn("id", $universeids)->offset($startrows)->limit($maxrows)->get();
     foreach ($allgames as $game) {
-        $pagebuilder->build_component("game", ["game" => $game]);
+      $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
     }
     die();
 }
@@ -32,7 +38,7 @@ if($sort !== 1){
     }
     $allgames = $query->offset($startrows)->limit($maxrows)->get();
     foreach ($allgames as $game) {
-        $pagebuilder->build_component("game", ["game" => $game]);
+      $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
     }
     die();
 }
@@ -56,5 +62,5 @@ usort($allgames, function ($a, $b) {
 $paginated = array_slice($allgames, $startrows, $maxrows);
 
 foreach ($paginated as $game) {
-    $pagebuilder->build_component("game", ["game" => $game]);
+    $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
 }

@@ -1,12 +1,14 @@
 <?php
 global $db;
-
+use Cocur\Slugify\Slugify;
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrbx\relationship\friends;
 use watrbx\gameserver;
-    use watrbx\thumbnails;
-    $thumbs = new thumbnails();
+use watrbx\thumbnails;
+$thumbs = new thumbnails();
+$slugify = new Slugify();
+
     
 $gameserver = new gameserver();
 $friends = new friends();
@@ -95,7 +97,7 @@ $pagebuilder->buildheader();
                 
                 $universeinfo = $db->table("universes")->where("assetid", $visit->universeid)->first();
                 if($universeinfo !== null){
-                    $pagebuilder->build_component("game", ["game" => $universeinfo]);
+                    $pagebuilder->build_component("game", ["game" => $universeinfo, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
                 }
             } ?>
 
@@ -122,7 +124,7 @@ $pagebuilder->buildheader();
                     $allgames = $query->get();
 
                     foreach ($allgames as $game) {
-                        echo $pagebuilder->build_component("game", ["game" => $game]);
+                        echo $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
                     }
                     ?>
                   </ul>
@@ -180,6 +182,8 @@ $pagebuilder->buildheader();
                     foreach ($feed as $feedentry) {
                         echo $pagebuilder->build_component("feed_entry", [
                             "feedentry" => $feedentry,
+                            "thumbs"=>$thumbs,
+                            "auth"=>$auth
                         ]);
                     }
                     ?>

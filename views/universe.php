@@ -3,7 +3,10 @@ use watrlabs\watrkit\pagebuilder;
 use watrlabs\router\Routing;
 use watrlabs\authentication;
 use watrbx\thumbnails;
-
+use watrbx\gameserver;
+use Cocur\Slugify\Slugify;
+$slugify = new Slugify();
+$gameserver = new gameserver();
 $thumbs = new thumbnails();
 $router = new Routing();
 $auth = new authentication();
@@ -760,6 +763,7 @@ $pagebuilder->buildheader();
                     foreach ($allgames as $game) {
                         echo $pagebuilder->build_component("game", [
                             "game" => $game,
+                            "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver
                         ]);
                     }
                     ?>

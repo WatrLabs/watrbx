@@ -4,6 +4,34 @@ namespace watrbx\relationship;
 
 class friends {
 
+    private $db;
+
+    public function __construct(){
+        global $db;
+
+        $this->db = $db;
+    }
+
+    private function buildFriendQuery($userid, $limit = null) {
+        $q1 = $this->db->table("friends")
+            ->select(["users.id", "users.username"])
+            ->where("friends.userid", $userid)
+            ->where("friends.status", "accepted")
+            ->join("users", "users.id", "=", "friends.friendid");
+
+        $q2 = $this->db->table("friends")
+            ->select(["users.id", "users.username"])
+            ->where("friends.friendid", $userid)
+            ->where("friends.status", "accepted")
+            ->join("users", "users.id", "=", "friends.userid");
+
+        if($limit){
+            $q1 = $q1->limit($limit);
+            $q2 = $q2->limit($limit);
+        }
+        return [$q1, $q2];
+    }
+
     public function are_friends($userid, $friendid) {
         global $db;
     
@@ -24,19 +52,7 @@ class friends {
     }
 
     public function get_friends($userid, $limit = null) {
-        global $db;
-
-        $query1 = $db->table("friends")
-                    ->select(["users.id", "users.username"])
-                    ->where("friends.userid", $userid)
-                    ->where("friends.status", "accepted")
-                    ->join("users", "users.id", "=", "friends.friendid");
-
-        $query2 = $db->table("friends")
-                    ->select(["users.id", "users.username"])
-                    ->where("friends.friendid", $userid)
-                    ->where("friends.status", "accepted")
-                    ->join("users", "users.id", "=", "friends.userid");
+        [$query1, $query2] = $this->buildFriendQuery($userid, $limit);
 
         $friends1 = $query1->get();
         $friends2 = $query2->get();
@@ -54,27 +70,16 @@ class friends {
 
         global $db;
 
-        $query1 = $db->table("friends")
-                    ->select(["users.id", "users.username"])
-                    ->where("friends.userid", $userid)
-                    ->where("friends.status", "accepted")
-                    ->join("users", "users.id", "=", "friends.friendid");
+        [$query1, $query2] = $this->buildFriendQuery($userid);
 
-        $query2 = $db->table("friends")
-                    ->select(["users.id", "users.username"])
-                    ->where("friends.friendid", $userid)
-                    ->where("friends.status", "accepted")
-                    ->join("users", "users.id", "=", "friends.userid");
+        $friends1 = $query1->count();
+        $friends2 = $query2->count();
 
-        $friends1 = $query1->get();
-        $friends2 = $query2->get();
+        $all_friends = $friends1 + $friends2;
 
-        $all_friends = array_merge($friends1, $friends2);
-
-        return count($all_friends);
+        return $all_friends;
 
     }
-
 
     public function get_requests($userid) {
         global $db;
