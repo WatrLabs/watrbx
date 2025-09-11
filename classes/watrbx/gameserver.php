@@ -82,7 +82,6 @@ class gameserver {
 
         if($all_servers !== null){
             foreach ($all_servers as $server){
-                
                 $serverlocate = $auth->geolocateip($server->wireguard_ip);
 
                 if(!isset($this->connecting_user["latitude"]) || !isset($this->connecting_user["longitude"])){
