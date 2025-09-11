@@ -2,6 +2,7 @@ if (typeof Roblox === "undefined") {
     Roblox = {};
 }
 if (typeof Roblox.AddEmail === "undefined") {
+    
     Roblox.AddEmail = function () {
         var reloadPageOnSuccess = false;
         var holdOnAnotherEnter = false;
@@ -105,37 +106,42 @@ if (typeof Roblox.AddEmail === "undefined") {
             holdOnAnotherEnter = true;
 
             if (validateEmail()) {
-                var onSuccess = onError = function (response) {
-                    if (response.Result) {
-                        Roblox.GenericConfirmation.close(); //force close the generic modal
-                        $('#Processing').hide();
-                        //Don't reload page if it is for Parent's email when DOB is Changed to <13
-                        if (!RobloxMissingParentEmail.resetParentEmail)
-                            reloadPageOnSuccess = false;
-                        Roblox.GenericConfirmation.open({
-                            titleText: emailChangedText,
-                            bodyContent: emailVerificationText,
-                            acceptText: okText,
-                            declineColor: Roblox.GenericConfirmation.none,
-                            dismissable: false
-                        });
-                        if (RobloxMissingParentEmail.resetParentEmail) {
-                            RobloxMissingParentEmail.hasParentEmailBeenReset = true;
-                            eval($('#UpdateSettingsBtn').attr('href'));
-                        }
-                    } else {
-                        $('#StandardError span').text(response.Message);
-                        $('#StandardError').show();
-                        $('#Processing').hide();
-                        $('.ConfirmationModalButtonContainer a').removeClass('btn-disabled-neutral');
-                        $('.ConfirmationModalButtonContainer a').removeClass('btn-disabled-negative');
-                    }
-                };
-                Roblox.Website.Services.Secure.AddParentEmail.InsertParentEmail(email, uID, password, userIP, RobloxMissingParentEmail.resetParentEmail, onSuccess, onError);
-                $('.ConfirmationModalButtonContainer a.btn-neutral').addClass('btn-disabled-neutral');
-                $('.ConfirmationModalButtonContainer a.btn-disabled-neutral').click(function () { return false; });
-                $('.ConfirmationModalButtonContainer a.btn-negative').addClass('btn-disabled-negative');
-                $('.ConfirmationModalButtonContainer a.btn-disabled-negative').click(function () { return false; });
+
+                $.ajax({
+                    url: "/my/account/sendverifyemail",
+                    cache: false,
+                    type: 'post',
+                    data: {
+                        email: email,
+                        password: password
+                    },
+                    success: onSuccess,
+                    error: onError
+                });
+
+                function onSuccess(response) {
+                    Roblox.GenericConfirmation.close(); //force close the generic modal
+                    $('#Processing').hide();
+                    
+                        
+                    Roblox.GenericConfirmation.open({
+                        titleText: emailChangedText,
+                        bodyContent: emailVerificationText,
+                        acceptText: okText,
+                        declineColor: Roblox.GenericConfirmation.none,
+                        dismissable: false
+                    });
+                return false;
+                }
+
+                function onError(response) {
+                    $('#StandardError span').text(response.Message);
+                    $('#StandardError').show();
+                    $('#Processing').hide();
+                    $('.ConfirmationModalButtonContainer a').removeClass('btn-disabled-neutral');
+                    $('.ConfirmationModalButtonContainer a').removeClass('btn-disabled-negative');
+                }
+
                 return false;
             } else {
                 return false;
@@ -146,13 +152,13 @@ if (typeof Roblox.AddEmail === "undefined") {
             loadEmailModal: loadEmailModal,
             resetWarnings: resetWarnings,
             holdOnAnotherEnter: holdOnAnotherEnter,
-            reloadPageOnSuccess: reloadPageOnSuccess
+            reloadPageOnSuccess: false
         };
     } ();
 }
 
 $(function () {
-	
+
     function closeModal() {
 		if (Roblox.AddEmail.reloadPageOnSuccess) {
 			

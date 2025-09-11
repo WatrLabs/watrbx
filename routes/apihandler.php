@@ -12,6 +12,7 @@ use Aws\S3\S3Client;
 use Carbon\Carbon;
 use watrlabs\logging\discord;
 use watrlabs\watrkit\pagebuilder;
+use watrbx\email;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
@@ -155,6 +156,97 @@ $router->get('/comments/get-json', function (){
     }
 
     die(file_get_contents("../storage/comments.json"));
+});
+
+$router->post('/my/account/sendverifyemail', function(){
+
+    global $currentuser;
+    global $db;
+
+    header("Content-type: application/json");
+
+    $emailClass = new email();
+    $sanitize = new sanitize();
+    $func = new sitefunctions();
+
+    if(isset($_POST["password"]) && isset($_POST["email"]) && $currentuser){
+        $password = $_POST["password"];
+        $email = $_POST["email"];
+
+        $oneday = time() - 160;
+
+        $created = $db->table("email_codes")->where("userid", $currentuser->id)->where("time", ">", $oneday)->count();
+
+        if($created > 5){
+            http_response_code(429);
+            $return = [
+                "Result"=>False,
+                "Message"=>"Please wait before changing your email again."
+            ];
+
+            die(json_encode($return));
+        }
+
+        if($sanitize::email($email)){
+            
+            if(password_verify($password, $currentuser->password)){
+                $update = [
+                    "email"=>$email,
+                    "email_verified"=>0,
+                ];
+
+                $db->table("users")->where("id", $currentuser->id)->update($update);
+
+                $code = $func->genstring(15);
+
+                $insert = [
+                    "code"=>$code,
+                    "userid"=>$currentuser->id,
+                    "time"=>time()
+                ];  
+
+                $db->table("email_codes")->insert($insert);
+
+                $template = $emailClass->get_template("verifyemail", ["%username%"=>$currentuser->username, "%ticket%"=>$code]);
+                $emailClass->send_email($email, "watrbx Email Verification", $template);
+
+                $return = [
+                    "Result"=>true,
+                    "Message"=>"Your email has been changed!"
+                ];
+
+                die(json_encode($return));
+
+            } else {
+                http_response_code(400);
+                $return = [
+                    "Result"=>False,
+                    "Message"=>"Incorrect Password!"
+                ];
+
+                die(json_encode($return));
+            }
+
+        } else {
+            http_response_code(400);
+            $return = [
+                "Result"=>False,
+                "Message"=>"Incorrect Email!"
+            ];
+
+            die(json_encode($return));
+        }
+
+    } else {
+        http_response_code(400);
+        $return = [
+            "Result"=>False,
+            "Message"=>"Something wasn't provided!"
+        ];
+
+        die(json_encode($return));
+    }
+
 });
 
 $router->get('/avatar-thumbnail-3d/json', function(){
