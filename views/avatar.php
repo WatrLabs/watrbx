@@ -2,6 +2,12 @@
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrbx\thumbnails;
+use watrbx\catalog;
+use watrbx\RBX;
+use Cocur\Slugify\Slugify;
+$slugify = new Slugify();
+$catalog = new catalog();
+$rbx = new RBX();
 $thumbs = new thumbnails();
 $auth = new authentication();
 $pagebuilder = new pagebuilder();
@@ -2036,9 +2042,9 @@ $pagebuilder->buildheader();
 
                                                     if($assetinfo !== null){
                                                         if($iswearing == null){
-                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear", "slugify"=>$slugify, "catalog"=>$catalog, "thumbs"=>$thumbs, "rbx"=>$rbx]);
                                                         } else {
-                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove", "slugify"=>$slugify, "catalog"=>$catalog, "thumbs"=>$thumbs, "rbx"=>$rbx]);
                                                         }
                                                     }
 
@@ -2049,9 +2055,9 @@ $pagebuilder->buildheader();
 
                                                     if($assetinfo !== null){
                                                         if($iswearing == null){
-                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear", "slugify"=>$slugify, "catalog"=>$catalog, "thumbs"=>$thumbs, "rbx"=>$rbx]);
                                                         } else {
-                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove", "slugify"=>$slugify, "catalog"=>$catalog, "thumbs"=>$thumbs, "rbx"=>$rbx]);
                                                         }
                                                     }
 
@@ -2064,9 +2070,9 @@ $pagebuilder->buildheader();
 
                                                     if($assetinfo !== null){
                                                         if($iswearing == null){
-                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear"]);
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Wear", "slugify"=>$slugify, "catalog"=>$catalog, "thumbs"=>$thumbs, "rbx"=>$rbx]);
                                                         } else {
-                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                            $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove", "slugify"=>$slugify, "catalog"=>$catalog, "thumbs"=>$thumbs, "rbx"=>$rbx]);
                                                         }
                                                     }
 
@@ -2189,7 +2195,7 @@ $pagebuilder->buildheader();
                                             $assetinfo = $db->table("assets")->where("id", $assetid->itemid)->first();
 
                                             if($assetinfo !== null){
-                                                $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove"]);
+                                                $pagebuilder->build_component("avatar_item", ["assetid"=>$assetinfo->id, "action"=>"Remove", "slugify"=>$slugify, "catalog"=>$catalog, "thumbs"=>$thumbs, "rbx"=>$rbx]);
                                             }
 
                                         }

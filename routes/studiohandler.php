@@ -30,7 +30,7 @@ $router->get('/login/RequestAuth.ashx', function(){
     if($currentuser !== null && isset($_COOKIE["_ROBLOSECURITY"])){
         http_response_code(200);
         setcookie(".ROBLOSECURITY", $_COOKIE["_ROBLOSECURITY"], time() + 8600, "/", ".watrbx.wtf");
-        echo "$sessions->session";
+        echo $_COOKIE["_ROBLOSECURITY"];
         die();
     } else {
         http_response_code(401);
@@ -43,13 +43,13 @@ $router->get('/login/RequestAuth.ashx', function(){
 $router->get('/Game/Edit.ashx', function(){
     header("Content-type: text/lua");
     http_response_code(200);
-    die(include("../storage/edit.php"));
+    die(require("../storage/edit.php"));
 });
 
 $router->get('/game/visit.ashx', function(){
     header("Content-type: text/lua");
     http_response_code(200);
-    die(include("../storage/visit.php"));
+    die(require("../storage/visit.php"));
 });
 
 $router->get('/ide/welcome', function(){
@@ -149,8 +149,6 @@ $router->get('/universes/get-universe-places', function(){
         die(json_encode($return));
 
     }
-
-    
 
     die('{"FinalPage":true,"RootPlace":1,"Places":[{"PlaceId":1,"Name":"Test"}],"PageSize":50}');
 });
@@ -307,7 +305,7 @@ $router->get('/my/settings/json', function() {
 });
 
 $router->get('/game/logout.aspx', function() {
-    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+    setcookie(".ROBLOSECURITY", "ThisIsInvalid!!!!", time() - 9999999, "/", ".watrbx.wtf");
     header("Location: /newlogin");
-    die();
+    die("[]");
 });

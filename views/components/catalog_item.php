@@ -1,13 +1,7 @@
 <?php
 
-    use Carbon\Carbon;
-    use watrlabs\authentication;
-    use watrbx\thumbnails;
-    use Cocur\Slugify\Slugify;
     global $db;
-    $slugify = new Slugify();
-    $thumbs = new thumbnails();
-    $auth = new authentication();
+
 
     if(!isset($asset)){
         return;
@@ -64,7 +58,7 @@
     </div>
         <div class="CatalogHoverContent">
             <div><span class="CatalogItemInfoLabel">Creator:</span> <span class="HoverInfo notranslate"><a href="/users/<?=$creator->id?>/profile"><?=$creator->username?></a></span></div>
-            <div><span class="CatalogItemInfoLabel">Updated:</span> <span class="HoverInfo"><?=Carbon::createFromTimestamp($asset->updated)->diffForHumans();?></span></div>
+            <div><span class="CatalogItemInfoLabel">Updated:</span> <span class="HoverInfo"><?=$Carbon::createFromTimestamp($asset->updated)->diffForHumans();?></span></div>
             <div><span class="CatalogItemInfoLabel">Sales:</span> <span class="HoverInfo notranslate"><?=$boughtamount?></span></div>
             <div><span class="CatalogItemInfoLabel">Favorited:</span> <span class="HoverInfo">0 times</span></div> <!-- TODO: Favorites -->
         </div>

@@ -215,6 +215,8 @@ $router->get('/Game/AreFriends', function() {
     echo "," . $users . ",";
 });
 
+
+
 $router->get('/thumbnail/place-thumbnails', function(){
     die('{"IsJpegThumbnailEnabled":true,"thumbnails":[{"AssetId":696217389,"AssetHash":null,"AssetTypeId":1,"Url":"https://cdn.watrbx.wtf/bcd556a3becf0c3773653ded31449e84","IsFinal":true}],"thumbnailCount":1,"ShowYouTubeVideo":false,"IsMobile":false,"PlaceThumbnailsResources":{"ActionContinueToVideoMetadata":{"IsTranslated":true},"ActionContinueToVideo":"Continue to Video","DescriptionLeaveRobloxForYouTubeMetadata":{"IsTranslated":true},"DescriptionLeaveRobloxForYouTube":"You are about to leave Roblox to view a video on YouTube.","DescriptionYouTubeIsNotRobloxMetadata":{"IsTranslated":true},"DescriptionYouTubeIsNotRoblox":"YouTube is not part of Roblox.com and is governed by a separate privacy policy.","HeadingLeavingRobloxMetadata":{"IsTranslated":true},"HeadingLeavingRoblox":"You are leaving Roblox","LabelNextMetadata":{"IsTranslated":true},"LabelNext":"Next","LabelPreviousMetadata":{"IsTranslated":true},"LabelPrevious":"Previous","State":0}}');
 });
@@ -1199,10 +1201,11 @@ $router->get('/api/comments.ashx', function(){
             $allcomments = $db->table("comments")->where("assetid", $assetid)->orderBy("id", "DESC")->get();
             $assetinfo = $db->table("assets")->where("id", $assetid)->first();
 
+            $auth = new authentication();
+
             foreach ($allcomments as $comment){
 
                 $doesown = false;
-                $auth = new authentication();
                 $commentor = $auth->getuserbyid($comment->userid);
                 if($assetinfo->owner == $comment->userid){
                     $doesown = true;
@@ -1541,6 +1544,8 @@ $router->get('/ide/toolbox/items', function(){
 $router->get("/user/get-friendship-count", function(){
     header("Content-type: application/json");
 
+    global $currentuser;
+
     if(isset($_GET["userId"])){
         $friends = new friends();
         $userId = (int)$_GET["userId"];
@@ -1555,8 +1560,20 @@ $router->get("/user/get-friendship-count", function(){
         die(json_encode($response));
 
     } else {
-        http_response_code(400);
-        die('{"success": false}');
+        if($currentuser){
+            $friends = new friends();
+            $friendcount = count($friends->get_friends($currentuser->id));
+
+            $response = [
+                "success"=>true,
+                "count"=>$friendcount
+            ];
+
+            die(json_encode($response));
+        } else {
+            http_response_code(400);
+            die();
+        }
     }
 
     
@@ -1851,6 +1868,42 @@ $router->post('/api/friends/sendfriendrequest', function(){
     }
 });
 
+$router->post('/user/decline-friend-request', function(){
+    $auth = new authentication();
+
+    global $currentuser;
+
+    if($auth->hasaccount()){
+        $friends = new friends();
+
+        $post = file_get_contents('php://input');
+        $decoded = json_decode($post);
+
+        if($decoded){
+            if(isset($decoded->targetUserID)){
+                $targetUserID = $decoded->targetUserID;
+                $currentuserid = $currentuser->id;
+
+                global $db;
+
+                $db->table("friends")->where("userid", $targetUserID)->where("friendid", $currentuserid)->delete();
+                $db->table("friends")->where("friendid", $targetUserID)->where("userid", $currentuserid)->delete();
+                die('{"success":true}');
+            } else {
+                http_response_code(400);
+                die();
+            }
+        } else {
+            http_response_code(400);
+            die();
+        }
+
+    } else {
+        http_response_code(401);
+        die();
+    }
+});
+
 $router->post('/api/friends/removefriend', function(){
     $auth = new authentication();
 
@@ -2028,6 +2081,60 @@ $router->post('/messages/api/send-message', function(){
 
     die(json_encode($response));
 
+});
+
+$router->post('/Game/CreateFriend', function(){
+
+    $auth = new authentication();
+    $friends = new friends();
+
+    global $db;
+
+    if(isset($_GET["firstUserId"]) && isset($_GET["secondUserId"])){ // I have no idea why it throws the amp in there but it's whatever
+        $firstuser = (int)$_GET["firstUserId"];
+        $seconduser = (int)$_GET["secondUserId"];
+
+        $pending = $friends->get_pending_request($firstuser, $seconduser);
+
+        if($pending){
+            $invitationID = $pending->id;
+            $update = array(
+                "status"=>"accepted"
+            );
+            $db->table("friends")->where("userid", $seconduser)->where("friendid", $firstuser)->update($update);
+            $db->table("friends")->where("friendid", $seconduser)->where("userid", $firstuser)->update($update);
+            die('{"success":true}');
+        } else {
+            http_response_code(400);
+            die('{"success":false}');
+        }
+
+    } else {
+        http_response_code(401);
+        die('{"success":false}');
+    }
+});
+
+$router->post('/Game/BreakFriend', function(){
+
+    $auth = new authentication();
+    $friends = new friends();
+
+    global $db;
+
+
+    if(isset($_GET["firstUserId"]) && isset($_GET["secondUserId"])){ 
+        $firstuser = (int)$_GET["firstUserId"];
+        $seconduser = (int)$_GET["secondUserId"];
+
+        $db->table("friends")->where("userid", $seconduser)->where("friendid", $firstuser)->delete();
+        $db->table("friends")->where("friendid", $seconduser)->where("userid", $firstuser)->delete();
+        die('{"success":true}');
+
+    } else {
+        http_response_code(401);
+        die('{"success":false}');
+    }
 });
 
 $router->post('/api/friends/acceptfriendrequest', function(){
@@ -2716,6 +2823,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     $func = new sitefunctions();
     $gameserver = new gameserver();
 
+    global $currentuser;
     $Context = 1;
 
     global $db;
@@ -2723,13 +2831,22 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     $placelauncher = array(
         "jobid"=>null,
         "status"=>12,
-        "joinScriptUrl"=>"null",
+        "joinScriptUrl"=>null,
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
-        "authenticationTicket"=>"null",
-        "message"=>""
+        "authenticationTicket"=>null,
+        "message"=>"hi."
     );     
 
+    if(!$currentuser){
+        http_response_code(401);
+        die();
+    } else {
+        $placelauncher["authenticationTicket"] = $_COOKIE["_ROBLOSECURITY"];
+    }
+
     if(isset($_GET["placeId"])){
+
+
         (int)$placeId = $_GET["placeId"];
         
         $assetinfo = $db->table("assets")->where("id", $placeId)->first();
@@ -2778,7 +2895,11 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                 if($info["Result"]){
                     // The game opened
 
-                    $gameinstance = $db->table("game_instances")->where("serverguid", $$info["jobId"])->first();
+                    if(is_array($info)){
+                        $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
+                    } else {
+                        $gameinstance = null;
+                    }
 
                     if($gameinstance !== null){
 
@@ -2799,16 +2920,31 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                         die(json_encode($placelauncher));
                     } else {
 
-                        // Server was requested but the game hasn't loaded yet
+                        sleep(5); // really hacky but android crashes on any status other than 2 so
 
-                        $jobId = $info["jobId"];
+                        $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
 
-                        $placelauncher["jobid"] = $jobinfo->jobid;
-                        $placelauncher["joinScriptUrl"] = ""; 
-                        $placelauncher["status"] = 1;
-                        
-                        header("Content-type: application/json");
-                        die(json_encode($placelauncher));
+                        if($gameinstance !== null){
+
+                            // Game was loaded by rcc, let the user join
+
+                            $jobId = $info["jobId"];
+
+                            $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                            $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server);
+
+                            $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                            $placelauncher["jobid"] = $jobinfo->jobid;
+                            $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                            $placelauncher["status"] = 2;
+
+                            header("Content-type: application/json");
+                            die(json_encode($placelauncher));
+                        } else {
+                            header("Content-type: application/json");
+                            die(json_encode($placelauncher));
+                        }
                     }
 
                 } else {
@@ -2824,7 +2960,13 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                 $info = $gameserver->request_game($placeId, $Context);
 
                 // The game opened
-                $gameinstance = $db->table("game_instances")->where("serverguid", $$info["jobId"])->first();
+
+                if(is_array($info)){
+                    $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
+                } else {
+                    $gameinstance = null;
+                }
+
 
                 if($gameinstance !== null){
 
@@ -2845,20 +2987,36 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
                     die(json_encode($placelauncher));
                 } else {
 
-                    // Server was requested but the game hasn't loaded yet
+                    sleep(5); // really hacky but android crashes on any status other than 2 so
 
-                    $jobId = $info["jobId"];
+                    $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
 
-                    $placelauncher["jobid"] = $jobinfo->jobid;
-                    $placelauncher["joinScriptUrl"] = ""; 
-                    $placelauncher["status"] = 1;
-                    header("Content-type: application/json");
-                    die(json_encode($placelauncher));
-                }
+                    if($gameinstance !== null){
+
+                        // Game was loaded by rcc, let the user join
+
+                        $jobId = $info["jobId"];
+
+                        $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                        $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server);
+
+                        $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                        $placelauncher["jobid"] = $jobinfo->jobid;
+                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                        $placelauncher["status"] = 2;
+
+                        header("Content-type: application/json");
+                        die(json_encode($placelauncher));
+                    } else {
+                        header("Content-type: application/json");
+                        die(json_encode($placelauncher));
+                    }
+            }
             }
 
         } else {
-            http_response_code(400);
+            http_response_code(403);
             header("Content-type: application/json");
             die(json_encode($placelauncher));
         }
@@ -2868,14 +3026,15 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
         die(json_encode($placelauncher));
     }
 
-    
 });
+
 
 $router->post('/Game/PlaceLauncher.ashx', function() {
 
     $func = new sitefunctions();
     $gameserver = new gameserver();
 
+    global $currentuser;
     $Context = 1;
 
     global $db;
@@ -2883,13 +3042,22 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
     $placelauncher = array(
         "jobid"=>null,
         "status"=>12,
-        "joinScriptUrl"=>"null",
+        "joinScriptUrl"=>null,
         "authenticationUrl"=>"http://www.watrbx.wtf/Login/Negotiate.ashx",
-        "authenticationTicket"=>"null",
-        "message"=>""
+        "authenticationTicket"=>null,
+        "message"=>"hi."
     );     
 
+    if(!$currentuser){
+        http_response_code(401);
+        die();
+    } else {
+        $placelauncher["authenticationTicket"] = $_COOKIE["_ROBLOSECURITY"];
+    }
+
     if(isset($_GET["placeId"])){
+
+
         (int)$placeId = $_GET["placeId"];
         
         $assetinfo = $db->table("assets")->where("id", $placeId)->first();
@@ -2938,7 +3106,11 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
                 if($info["Result"]){
                     // The game opened
 
-                    $gameinstance = $db->table("game_instances")->where("serverguid", $$info["jobId"])->first();
+                    if(is_array($info)){
+                        $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
+                    } else {
+                        $gameinstance = null;
+                    }
 
                     if($gameinstance !== null){
 
@@ -2959,16 +3131,31 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
                         die(json_encode($placelauncher));
                     } else {
 
-                        // Server was requested but the game hasn't loaded yet
+                        sleep(5); // really hacky but android crashes on any status other than 2 so
 
-                        $jobId = $info["jobId"];
+                        $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
 
-                        $placelauncher["jobid"] = $jobinfo->jobid;
-                        $placelauncher["joinScriptUrl"] = ""; 
-                        $placelauncher["status"] = 1;
+                        if($gameinstance !== null){
 
-                        header("Content-type: application/json");
-                        die(json_encode($placelauncher));
+                            // Game was loaded by rcc, let the user join
+
+                            $jobId = $info["jobId"];
+
+                            $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                            $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server);
+
+                            $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                            $placelauncher["jobid"] = $jobinfo->jobid;
+                            $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                            $placelauncher["status"] = 2;
+
+                            header("Content-type: application/json");
+                            die(json_encode($placelauncher));
+                        } else {
+                            header("Content-type: application/json");
+                            die(json_encode($placelauncher));
+                        }
                     }
 
                 } else {
@@ -2981,12 +3168,16 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
             } else {
 
                 // No games open, open one
-
                 $info = $gameserver->request_game($placeId, $Context);
 
                 // The game opened
 
-                $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
+                if(is_array($info)){
+                    $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
+                } else {
+                    $gameinstance = null;
+                }
+
 
                 if($gameinstance !== null){
 
@@ -3007,22 +3198,36 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
                     die(json_encode($placelauncher));
                 } else {
 
-                    // Server was requested but the game hasn't loaded yet
+                    sleep(5); // really hacky but android crashes on any status other than 2 so
 
-                    $jobId = $info["jobId"];
+                    $gameinstance = $db->table("game_instances")->where("serverguid", $info["jobId"])->first();
 
-                    $placelauncher["jobid"] = $jobinfo->jobid;
-                    $placelauncher["joinScriptUrl"] = ""; 
-                    $placelauncher["status"] = 1;
+                    if($gameinstance !== null){
 
-                    header("Content-type: application/json");
-                    die(json_encode($placelauncher));
+                        // Game was loaded by rcc, let the user join
 
-                }
+                        $jobId = $info["jobId"];
+
+                        $jobinfo = $db->table("jobs")->where("jobid", $jobId)->first();
+                        $serverinfo = $db->table("servers")->where("server_id", $jobinfo->server);
+
+                        $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
+
+                        $placelauncher["jobid"] = $jobinfo->jobid;
+                        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode=" . $joincode;
+                        $placelauncher["status"] = 2;
+
+                        header("Content-type: application/json");
+                        die(json_encode($placelauncher));
+                    } else {
+                        header("Content-type: application/json");
+                        die(json_encode($placelauncher));
+                    }
+            }
             }
 
         } else {
-            http_response_code(400);
+            http_response_code(403);
             header("Content-type: application/json");
             die(json_encode($placelauncher));
         }
@@ -3032,8 +3237,8 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
         die(json_encode($placelauncher));
     }
 
-    
 });
+
 
 $router->get('/users/{id}', function($id){
     $id = (int)$id;
@@ -3164,7 +3369,7 @@ $router->get('/avatar-thumbnail/json', function(){
 
 $router->get("/universes/{id}/cloudeditenabled", function(){
     header("Content-type: application/json");
-    die(json_encode(["enabled"=>true]));
+    die(json_encode(["enabled"=>false]));
 });
 
 $router->get('/Game/Badge/HasBadge.ashx', function(){
