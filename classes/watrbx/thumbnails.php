@@ -62,6 +62,11 @@ class thumbnails {
         $x = $exploded[0];
         $y = $exploded[1];
 
+        $exploded = explode("x", $jobinfo->dimensions);
+
+        $x = $exploded[0];
+        $y = $exploded[1];
+
         $jobInfo = [
             "Id"=>$jobinfo->jobid,
             "Expiration"=>60, // I don't think it should take longer than this to render 
