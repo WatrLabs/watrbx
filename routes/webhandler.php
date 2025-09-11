@@ -373,6 +373,66 @@ $router->get('/thumbnail/user-avatar', function(){
     die();
 });
 
+$router->get('/EmailVerify.aspx', function(){
+
+    $page = new pagebuilder;
+
+    global $db;
+    global $currentuser;
+    
+    if(isset($_GET["Ticket"])){
+        $token = $_GET["Ticket"];
+
+        $codeinfo = $db->table("email_codes")->where("code", $token)->first();
+
+        if($codeinfo){
+            if($codeinfo->userid == $currentuser->id){
+                $update = [
+                    "email_verified"=>1,
+                ];
+
+                $db->table("users")->where("id", $currentuser->id)->update($update);
+                
+                $insert = [
+                    "userid"=>$currentuser->id,
+                    "assetid"=>554,
+                    "time"=>time()
+                ];
+
+                $db->table("ownedassets")->insert($insert);
+                $page::get_template("verifiedemail");
+                die();
+            }
+        }
+
+    }
+
+    http_response_code(404);
+    $page::get_template("status_codes/404");
+});
+
+$router->post("/my/account", function() {
+
+    global $currentuser;
+    global $db;
+    $func = new sitefunctions();
+
+    if(isset($_POST["PersonalBlurb"]) && $currentuser){
+
+        $blurb = htmlspecialchars($_POST["PersonalBlurb"]);
+        $blurb =  $func::filter_text($blurb);
+
+        $update = [
+            "about"=>$blurb
+        ];
+
+        $db->table("users")->where("id", $currentuser->id)->update($update);
+    }
+
+    $page = new pagebuilder;
+    $page::get_template("my/account", ["newblurb"=>$blurb]);
+});
+
 $router->get("/my/account", function() {
     $page = new pagebuilder;
     $page::get_template("my/account");

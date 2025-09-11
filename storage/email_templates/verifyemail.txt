@@ -1,0 +1,9 @@
+Dear watrbx user,
+
+We are pleased that you have chosen to secure your %username% account by providing an email address.
+
+By verifying the email address associated with your watrbx account, you enable a higher level of security.
+
+Please click the link below to complete the verification process.
+
+http://www.watrbx.wtf/EmailVerify.aspx?Mode=emailOnly&Ticket=%ticket%

@@ -354,7 +354,7 @@ $(function () {
     });
 
     $('#UpdateEmail').click(function () {
-        Roblox.AddEmail.loadEmailModal(!userAbove13);
+        Roblox.AddEmail.loadEmailModal(false);
         return false;
     });
 
