@@ -16,30 +16,22 @@ $pagebuilder->addresource('jsfiles', '/js/jquery.validate.js');
 $pagebuilder->addresource('jsfiles', '/js/jquery.validate.unobtrusive.js');
 $pagebuilder->addresource('jsfiles', '/js/GenericModal.js');
 $pagebuilder->addresource('jsfiles', '/js/SignupFormValidator.js');
-$pagebuilder->addresource('jsfiles', '/js/My/AccountMVC.js?t=3');
+$pagebuilder->addresource('jsfiles', '/js/My/AccountMVC.js?t=5');
 $pagebuilder->addresource('jsfiles', '/js/jquery.validate.js');
-$pagebuilder->addresource('jsfiles', '/js/AddEmail.js?t=2');
+$pagebuilder->addresource('jsfiles', '/js/AddEmail.js?t=21');
 $pagebuilder->addresource('jsfiles', '/js/SuperSafePrivacyIndicator.js');
 $pagebuilder->addresource('jsfiles', '/js/GenericConfirmation.js');
-/*
-
-<script type='text/javascript' src='/js/jquery.validate.js'></script>
-<script type='text/javascript' src='/js/jquery.validate.unobtrusive.js'></script>
-<script type='text/javascript' src='/Services/Secure/AddParentEmail.asmx/js'></script>
-<script type='text/javascript' src='/js/GenericModal.js'></script>
-<script type='text/javascript' src='/js/SignupFormValidator.js'></script>
-<script type='text/javascript' src='/js/My/AccountMVC.js'></script>
-<script type='text/javascript' src='/js/AddEmail.js'></script>
-<script type='text/javascript' src='/js/SuperSafePrivacyIndicator.js'></script>
-<script type='text/javascript' src=''></script>
-
-
-*/
-
 
 $pagebuilder->set_page_name("Account");
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
+
+if(isset($newblurb)){
+  $blurb = $newblurb;
+} else {
+  $blurb = $currentuser->about;
+}
+
 ?>
 
 <div id="AdvertisingLeaderboard">
@@ -258,9 +250,9 @@ $pagebuilder->buildheader();
                 <div id="EmailAddressSetting" class="SettingSubTitle">
                   <span id="emailAddressLabel" class="settingLabel form-label">Email address:</span>
                   <div id="emailBlock">
-                    <span id="UserEmail"><?=$currentuser->email?></span><a id="UpdateEmail" class="btn-control btn-control-small"> Add Email</a>
+                    <span id="UserEmail"><?=$currentuser->email?></span><a id="UpdateEmail" class="btn-control btn-control-small"> Change Email</a>
                     <?php
-                        if($currentuser->email !== null){
+                        if($currentuser->email !== null && $currentuser->email_verified == 1){
                             echo '<span id="EmailVerificationStatus" class="verifiedEmail"></span>';
                         }
                     ?>
@@ -269,7 +261,7 @@ $pagebuilder->buildheader();
                 <div id="PersonalBlurbSetting" class="SettingSubTitle">
                   <span class="settingLabel form-label">Personal blurb:</span>
                   <div id="BlurbDesc">
-                    <textarea class="roblox-blurb-default-text accountPageChangeMonitor text" cols="20" data-val="true" data-val-length="The field PersonalBlurb must be a string with a maximum length of 1000." data-val-length-max="1000" id="blurbText" name="PersonalBlurb" rows="2" title="Describe yourself here"></textarea>
+                    <textarea class="roblox-blurb-default-text accountPageChangeMonitor text" cols="20" data-val="true" data-val-length="The field PersonalBlurb must be a string with a maximum length of 1000." data-val-length-max="1000" id="blurbText" name="PersonalBlurb" rows="2" title="Describe yourself here"><?=$blurb?></textarea>
                     <span class="field-validation-valid" data-valmsg-for="PersonalBlurb" data-valmsg-replace="true"></span>
                     <br />
                     <div id="blurbSubtext" class="footnote"> Do not provide any details that can be used to identify you outside ROBLOX. <span class="footnote">
@@ -302,7 +294,7 @@ $pagebuilder->buildheader();
                   <span class="field-validation-valid" data-valmsg-for="CountryId" data-valmsg-replace="true"></span>
                 </div>
                 <div style="clear: both;">
-                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn">Update</a>
+                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn" onclick="__doPostBack('', '')">Update</a>
                 </div>
               </div>
               <div id="AddEmailScreenModal" class="PurchaseModal simplemodal-data" data-uid="<?=$currentuser->id?>" data-userip="">
@@ -371,10 +363,9 @@ $pagebuilder->buildheader();
                   <span class="form-label priv-label">Who can follow me:</span>
                   <span class="InlineSuperSafeDiv">
                     <span id="SuperPanel" class="SuperSafePanel" data-js-supersafe-specialstyle="False">
-                      <img class="SuperSafePrivacyModeImg" data-js-supersafeprivacymode src="https://s3.amazonaws.com/images.roblox.com/1e9979bd2ad8c88ee8d1250900ca6358.png" alt="" />
                     </span>
                   </span>
-                  <select class="accountPageChangeMonitor form-select" data-js-supersafeprivacymode="" disabled="disabled" id="FollowList" name="FollowMePrivacy">
+                  <select class="accountPageChangeMonitor form-select" data-js-supersafeprivacymode="false" id="FollowList" name="FollowMePrivacy">
                     <option selected="selected" value="All">All Users</option>
                     <option value="TopFriends">Best Friends</option>
                     <option value="Friends">Friends</option>
@@ -382,7 +373,7 @@ $pagebuilder->buildheader();
                   </select>
                 </div>
                 <div style="clear: both;">
-                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn">Update</a>
+                  <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn" onclick="__doPostBack('', '')">Update</a>
                 </div>
               </div>
             </div>
@@ -391,10 +382,7 @@ $pagebuilder->buildheader();
                 <div class="billing-spacer">
                   <div id="PendingUnlock" class="SettingSubTitle"></div>
                 </div>
-                <div class="SettingSubTitle billing-spacer"> For billing and payment questions: <span class="SL_swap" id="CsEmailLink">
-                    <a href="mailto:info@roblox.com">info@roblox.com</a>
-                  </span>
-                </div>
+                <p>There's no billing, go away.</p>
               </div>
             </div>
           </form>
