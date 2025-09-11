@@ -2,33 +2,26 @@
 use watrlabs\authentication;
 use watrbx\relationship\friends;
 use watrbx\sitefunctions;
+
 $friends = new friends();
 $auth = new authentication();
 $sitefunctions = new sitefunctions();
-global $currentuser;
-$userinfo = $currentuser;
-$pendingfq = count($friends->get_requests($currentuser->id));
-global $db;
-$msgcount = $db->table("messages")->where("userto", $userinfo->id)->where("hasread", 0)->count();
+global $currentuser, $db;
 
+$userinfo = $currentuser;
+$pendingfq = count($friends->get_requests($userinfo->id));
+$msgcount = $db->table("messages")
+    ->where("userto", $userinfo->id)
+    ->where("hasread", 0)
+    ->count();
 $count = $pendingfq + $msgcount;
 
-$ismobile = false;
+$useragent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+$ismobile = strpos($useragent, "Android") !== false;
 
-$useragent = $_SERVER['HTTP_USER_AGENT'];
-
-if(strpos($useragent, "Android")){
-    $ismobile = true;
-}
-
-$obc = '';
-
-if($userinfo->membership == "OutrageousBuildersClub"){
-    $obc = '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC3.css">';
-} else {
-    $obc = '';
-}
-
+$obc = ($userinfo->membership === "OutrageousBuildersClub")
+    ? '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC3.css">'
+    : '';
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]><html class="ie8" ng-app="robloxApp"><![endif]-->

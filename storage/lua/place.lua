@@ -1,11 +1,10 @@
 -- Place v1.0.2
 
-local assetId, FAKEDimensions, apikey = ...
+local assetId, FAKEDimensions, apikey, x, y = ...
 
 local baseUrl = "http://www.watrbx.wtf/"
 local assetUrl = baseUrl .. "asset/?id=" .. assetId .. "=" .. apikey
 local fileExtension = "PNG"
-local x, y = 1024, 1024
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")
 print("X is ", x)
 print("Y is ", y)
