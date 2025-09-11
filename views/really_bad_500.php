@@ -77,7 +77,7 @@
 </div>
     <div class="content">
         <p class="notification">
-            We'll be right back.
+            The error page had an error, we'll be back soon!
         </p>
     </div>
 
