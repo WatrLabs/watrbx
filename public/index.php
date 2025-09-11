@@ -96,13 +96,9 @@ try {
         ob_end_flush();
 
     } catch(PDOException $e){
-        $log = new discord();
+        
         try {
-            $log->internal_log($e, "Site Error!");
-            ob_clean();
-            http_response_code(500);
-            file_put_contents("../storage/errorlog.log", $e . "\n\n", FILE_APPEND);
-            require("../views/status_codes/500.php");
+            
         } catch(ErrorException $e){
             $log = new discord();
             $log->internal_log($e, "Site Error!");
@@ -134,4 +130,24 @@ try {
     }
 
 }
+
+function handle_error($e){
+    $log = new discord();
+    try {
+        $log->internal_log($e, "Site Error!");
+        ob_clean();
+        file_put_contents("../storage/errorlog.log", $e . "\n\n", FILE_APPEND);
+        http_response_code(500);
+        require("../views/status_codes/500.php");
+    } catch(ErrorException $e){
+        $log->internal_log($e, "Site Error!");
+        ob_clean();
+        http_response_code(500);
+        echo $e;
+        file_put_contents("../storage/errorlog.log", $e . "\n\n", FILE_APPEND);
+        require("../views/really_bad_500.php");
+        die();
+    }
+}
+
 // aaaaaaaaaaaaaaaa my brain hurts 

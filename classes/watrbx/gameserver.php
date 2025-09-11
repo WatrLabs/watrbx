@@ -29,7 +29,7 @@ class gameserver {
 
     private function get_grid($server){
 
-        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         $this->grid = $Grid;
 
     }
@@ -73,7 +73,7 @@ class gameserver {
     }
 
     public function get_server_url($serverinfo){
-        return "http://" . $serverinfo->ip . ":" . $serverinfo->port;
+        return "http://" . $serverinfo->wireguard_ip . ":" . $serverinfo->port;
     }
 
     public function get_closest_server(){
@@ -82,7 +82,7 @@ class gameserver {
         if($all_servers !== null){
             foreach ($all_servers as $server){
                 $auth = new authentication();
-                $serverlocate = $auth->geolocateip($server->ip);
+                $serverlocate = $auth->geolocateip($server->wireguard_ip);
 
 
                 if(!isset($this->connecting_user["latitude"]) || !isset($this->connecting_user["longitude"])){
@@ -164,7 +164,7 @@ class gameserver {
         $server = $this->close_server;
         $Grid = new \watrbx\Grid\Grid;
         //$Grid = $Grid->Close("http://group-she.gl.at.ply.gg:49837");
-        $Grid = new \watrbx\Grid\Close\Service("http://" . $server->ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Close\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         $Result = $Grid->CloseJob($jobid);
 
         $db->table("jobs")->where("jobid", $jobid)->delete();
@@ -217,7 +217,7 @@ class gameserver {
     public function execute_job($jobinfo, $scriptinfo){
 
         $server = $this->close_server;
-        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         //$Grid = new \watrbx\Grid\Open\Service("http://group-she.gl.at.ply.gg:49837");
         $Result = $Grid->OpenJobEx($jobinfo, $scriptinfo);
         return $Result; 

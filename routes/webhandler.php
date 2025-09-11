@@ -126,21 +126,37 @@ $router->get('/download/thankyou', function(){
 });
 
 $router->get('/Thumbs/Asset.ashx', function(){
-    if(isset($_GET["AssetID"])){
 
+    $sitefunc = new sitefunctions();
+    
+    if(isset($_GET["AssetID"]) && isset($_GET["dimensions"])){
+
+        $dimensions = $_GET["dimensions"];
         $assetid = (int)$_GET["AssetID"];
 
+        $dimensions = explode("x", $dimensions);
         global $db;
 
         $thumb = $db->table("thumbnails")->where("assetid", $assetid)->first();
 
-        if($thumb !== null){
+        if($thumb !== null && isset($dimensions[0]) && isset($dimensions[1])){
             $thumbs = new thumbnails();
 
-            $thumbnailurl = $thumbs->get_asset_thumb($assetid);
+            $x = (int)$dimensions[0];
+            $y = (int)$dimensions[1];
 
-            Header("Location: $thumbnailurl");
-            die();
+            $thumb = $thumbs->get_asset_thumb($assetid, "1024x1024");
+
+            $image = file_get_contents("https:" . $thumb);
+            $tempDir = sys_get_temp_dir();
+            $tempName = $sitefunc->genstring(5);
+
+            $File = $tempDir . "/" . $tempName;
+            
+            file_put_contents($tempDir . "/" . $tempName, $image);
+
+            header("Content-type: image/png");
+            die($sitefunc->resize_image($File, $x, $y, true));
         } else {
             $url = "https://thumbnails.roblox.com/v1/assets?assetIds=$assetid&format=PNG&size=512x512";
             $robloxapi = file_get_contents($url);
@@ -153,10 +169,10 @@ $router->get('/Thumbs/Asset.ashx', function(){
             } else {
                 die($robloxapi);
             }
-
         }
-
     }
+
+    echo "hi";
 });
 
 

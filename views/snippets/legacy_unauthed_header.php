@@ -3,11 +3,14 @@ use watrbx\sitefunctions;
 $func = new sitefunctions();
 $ismobile = false;
 
-$useragent = $_SERVER['HTTP_USER_AGENT'];
+if(isset($_SERVER['HTTP_USER_AGENT'])){
+    $useragent = $_SERVER['HTTP_USER_AGENT'];
 
-if(strpos($useragent, "Android")){
-    $ismobile = true;
+    if(strpos($useragent, "Android")){
+        $ismobile = true;
+    }
 }
+
 ?>
 
 <!DOCTYPE html>

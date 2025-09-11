@@ -21,6 +21,7 @@ class thumbnails {
 
         $theid = null;
         $apikey = null;
+        $lua = "";
 
         global $db;
         $Grid = new \watrbx\Grid\Grid;
@@ -80,6 +81,11 @@ class thumbnails {
             }
         }
 
+        $exploded = explode("x", $jobinfo->dimensions);
+
+        $x = $exploded[0];
+        $y = $exploded[1];
+
         $jobInfo = [
             "Id"=>$jobinfo->jobid,
             "Expiration"=>60, // I don't think it should take longer than this to render 
@@ -93,12 +99,13 @@ class thumbnails {
             "Arguments"=>[
                 "id"=>$theid,
                 "dimensions"=>"1024x1024",
-                "apikey"=>$jobinfo->apikey
+                "apikey"=>$jobinfo->apikey,
+                "x"=>$x,
+                "y"=>$y
             ]
         ];
 
         return $gameserver->execute_job($jobInfo, $ScriptInfo);
-
     }
 
     public function get_user_thumb($userid, $size, $type = "full"){
@@ -181,7 +188,7 @@ class thumbnails {
             }
 
             $this->request_asset_thumbnail($id, $size);
-            return "/images/defaultimage.png";
+            return "//watrbx.wtf/images/defaultimage.png";
         }
 
     }
