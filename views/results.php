@@ -7,8 +7,8 @@ use watrbx\thumbnails;
 $thumbs = new thumbnails();
 $slugify = new Slugify();
 $auth = new authentication();
-$gameserver = new gameserver();
 $pagebuilder = new pagebuilder();
+
 
 global $db;
 
@@ -26,7 +26,7 @@ if($sort === 3){
     }
     $allgames = $db->table("universes")->where("public", 1)->whereIn("id", $universeids)->offset($startrows)->limit($maxrows)->get();
     foreach ($allgames as $game) {
-        $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
+      $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
     }
     die();
 }
@@ -38,7 +38,7 @@ if($sort !== 1){
     }
     $allgames = $query->offset($startrows)->limit($maxrows)->get();
     foreach ($allgames as $game) {
-        $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
+      $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
     }
     die();
 }
