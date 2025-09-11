@@ -1,14 +1,4 @@
 <?php
-    use watrbx\catalog;
-    use watrbx\thumbnails;
-    use watrbx\RBX;
-    use Cocur\Slugify\Slugify;
-    $slugify = new Slugify();
-    $catalog = new catalog();
-    $thumbs = new thumbnails();
-
-    $rbx = new RBX();
-
     $url = $thumbs->get_asset_thumb($assetid);
     $assetinfo = $catalog::get_asset_info($assetid);
 ?>

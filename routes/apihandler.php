@@ -1201,10 +1201,11 @@ $router->get('/api/comments.ashx', function(){
             $allcomments = $db->table("comments")->where("assetid", $assetid)->orderBy("id", "DESC")->get();
             $assetinfo = $db->table("assets")->where("id", $assetid)->first();
 
+            $auth = new authentication();
+
             foreach ($allcomments as $comment){
 
                 $doesown = false;
-                $auth = new authentication();
                 $commentor = $auth->getuserbyid($comment->userid);
                 if($assetinfo->owner == $comment->userid){
                     $doesown = true;

@@ -2,10 +2,13 @@
     use watrbx\relationship\friends;
     use watrlabs\watrkit\pagebuilder;
     use watrlabs\authentication;
+    use watrbx\thumbnails;
+
 
     $auth = new authentication();
     $friends = new friends();
     $pagebuilder = new pagebuilder();
+    $thumbs = new thumbnails();
 
     $allfriends = $friends->get_friends($userid, 9);
     $friendcount = $friends->get_friend_count($userid);
@@ -19,7 +22,7 @@
   <ul class="hlist friend-list">
     <?php
         foreach ($allfriends as $friend){
-            $pagebuilder->build_component("friend", ["friend"=>$friend]);
+            $pagebuilder->build_component("friend", ["friend"=>$friend, "thumbs"=>$thumbs, "auth"=>$auth]);
         }
     ?>
   </ul>

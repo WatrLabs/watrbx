@@ -1,7 +1,4 @@
 <?php
-    use watrbx\thumbnails;
-    use watrlabs\authentication;
-    $auth = new authentication();
     $status = "";
 
     if($auth->is_online($friend->id)){
@@ -12,7 +9,7 @@
         $status = '<span class="friend-status rbx-icon-ingame" title="In-Game"></span>';
     }
 
-    $thumbs = new thumbnails();
+    
     $character = $thumbs->get_user_thumb($friend->id, "250x250", "full");
 ?>
 <li class="list-item friend">

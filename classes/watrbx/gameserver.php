@@ -78,12 +78,11 @@ class gameserver {
 
     public function get_closest_server(){
         $all_servers = $this->get_all_servers();
+        $auth = new authentication();
 
         if($all_servers !== null){
             foreach ($all_servers as $server){
-                $auth = new authentication();
                 $serverlocate = $auth->geolocateip($server->wireguard_ip);
-
 
                 if(!isset($this->connecting_user["latitude"]) || !isset($this->connecting_user["longitude"])){
                     $this->connecting_user["longitude"] = 0;

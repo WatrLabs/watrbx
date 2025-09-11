@@ -1,6 +1,14 @@
 <?php
 use watrlabs\watrkit\pagebuilder;
+use watrlabs\authentication;
+use watrbx\thumbnails;
+use Carbon\Carbon;
+use Cocur\Slugify\Slugify;
+$slugify = new Slugify();
+$Carbon = new Carbon();
 $pagebuilder = new pagebuilder();
+$auth = new authentication();
+$thumbs = new thumbnails();
     global $db;
 
     $limit = 42;
@@ -444,7 +452,7 @@ $pagebuilder = new pagebuilder();
 
         <?php
             foreach ($assets as $asset){
-                $pagebuilder->build_component("catalog_item", ["asset"=>$asset]);
+                $pagebuilder->build_component("catalog_item", ["asset"=>$asset, "slugify"=>$slugify, "thumbs"=>$thumbs, "auth"=>$auth, "Carbon"=>$Carbon]);
             }
         ?>
 

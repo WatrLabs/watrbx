@@ -8,11 +8,6 @@ use watrbx\sitefunctions;
 use watrbx\RBX;
 use watrbx\Grid\Grid;
 
-
-function checkhelp() {
-    echo "hi";
-}
-
 global $router; // IMPORTANT: KEEP THIS HERE!
 
 $router->get('/stats', function(){

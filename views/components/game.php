@@ -1,12 +1,4 @@
 <?php
-use Cocur\Slugify\Slugify;
-use watrbx\gameserver;
-use watrlabs\authentication;
-use watrbx\thumbnails;
-$thumbs = new thumbnails();
-$slugify = new Slugify();
-$auth = new authentication();
-$gameserver = new gameserver();
 global $db;
 
 $asseinfo = $db->table("assets")->where("id", $game->assetid);
@@ -25,7 +17,7 @@ $bad = false;
             <span class="card-thumb-wrapper game-thumb-wrapper"
                   >
                 <img class="card-thumb game-thumb" src="<?=$url?>" alt="<?=$game->title?>"
-                     thumbnail='{"Final":true,"Url":"<?=$url?>","RetryUrl":null}' image-retry />
+                     thumbnail='{"Final":false,"Url":"<?=$url?>","RetryUrl":"https://watrbx.wtf/images/defaultimage.png"}' image-retry />
             </span>
         </span>
         <span class="rbx-text-overflow rbx-game-title card-title" title="<?=$game->title?>" ng-non-bindable>
