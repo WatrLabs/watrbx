@@ -286,12 +286,7 @@ class gameserver {
 
         $result = $this->execute_job($jobInfo, $ScriptInfo);
 
-        $return = [
-            "Result"=>$result,
-            "jobId"=>$jobid
-        ];
-
-        return $return;
+        return [$result[0], $result[1], $jobid];
     
     }
 

@@ -61,6 +61,8 @@ class Service {
 
     public function OpenJobEx($jobInformation, $ScriptInformation){
 
+        $success = false;
+
         $id = $jobInformation["Id"];
         $expirationInSeconds = $jobInformation["Expiration"];
         $category = $jobInformation["Category"];
@@ -87,11 +89,12 @@ class Service {
 
         if ($Service->OpenJobEx(new \StructType\OpenJobEx($Job, $Script)) !== false) {
             $result = $Service->getResult();
-            return $result->getOpenJobExResult()->getLuaValue();
+            $success = true;
+            return [$success, $result->getOpenJobExResult()->getLuaValue()];
         } else {
             $error = $Service->getLastError();
             $error = $error['ServiceType\Open::OpenJobEx'];
-            return $error->getMessage();
+            return [$success, $error->getMessage()];
         }
     }
 
