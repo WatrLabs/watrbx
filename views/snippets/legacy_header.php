@@ -394,14 +394,14 @@ if($ismobile == false){ ?>
     <li>
         <a class="rbx-menu-item" data-toggle="popover" data-bind="popover-setting" data-viewport="#header">
             <span class="rbx-icon-nav-settings" id="nav-settings"></span>
-            <? if($userinfo->email == null){ echo '<span class="rbx-font-xs nav-setting-highlight ">1</span>'; } else {echo '<span class="rbx-font-xs nav-setting-highlight hidden">0</span>'; } ?>
+            <? if($userinfo->email_verified == null){ echo '<span class="rbx-font-xs nav-setting-highlight ">1</span>'; } else {echo '<span class="rbx-font-xs nav-setting-highlight hidden">0</span>'; } ?>
         </a>
         <div class="rbx-popover-content" data-toggle="popover-setting">
             <ul class="rbx-dropdown-menu" role="menu">
                 <li>
                     <a class="rbx-menu-item" href="/my/account">
                         Settings
-                        <? if($userinfo->email == null){ echo '<span class="rbx-font-xs nav-setting-highlight ">1</span>'; } else {echo '<span class="rbx-font-xs nav-setting-highlight hidden">0</span>'; } ?>
+                        <? if($userinfo->email_verified == null){ echo '<span class="rbx-font-xs nav-setting-highlight ">1</span>'; } else {echo '<span class="rbx-font-xs nav-setting-highlight hidden">0</span>'; } ?>
                     </a>
                 </li>
                 <li><a href="/Help/Builderman.aspx" target="_blank">Help</a></li>

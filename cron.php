@@ -71,6 +71,7 @@ foreach ($allofdem as $job) {
                 }
             }
         } catch(Error $e){
+            $db->table("jobs")->where("jobid", $job->jobid)->delete();
             echo "\nSomething went wrong with $job->jobid!\n$e";
         }
         

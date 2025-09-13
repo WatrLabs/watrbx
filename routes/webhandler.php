@@ -393,13 +393,18 @@ $router->get('/EmailVerify.aspx', function(){
 
                 $db->table("users")->where("id", $currentuser->id)->update($update);
                 
-                $insert = [
-                    "userid"=>$currentuser->id,
-                    "assetid"=>554,
-                    "time"=>time()
-                ];
+                $hasitem = $db->table("ownedassets")->where("userid", $currentuser->id)->where("assetid", 554)->first();
 
-                $db->table("ownedassets")->insert($insert);
+                if($hasitem == null){
+                    $insert = [
+                        "userid"=>$currentuser->id,
+                        "assetid"=>554,
+                        "time"=>time()
+                    ];
+
+                    $db->table("ownedassets")->insert($insert);
+                }
+
                 $page::get_template("verifiedemail");
                 die();
             }

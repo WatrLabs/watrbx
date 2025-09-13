@@ -1,7 +1,9 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
+use watrlabs\authentication;
 $pagebuilder = new pagebuilder();
-
+$auth = new authentication();
+$auth->requiresession();
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___52ecb4339a49a1b9212e1c6894fd0ca0_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('jsfiles', '/js/0392919e76186a11f81ea25aa97bf5b7.js.gzip');

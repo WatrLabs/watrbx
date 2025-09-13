@@ -221,13 +221,6 @@ $router->get('/api/v1/gameserver/end-server', function(){
             $db->table("game_instances")->where("serverguid", $jobid)->delete();
             $db->table("activeplayers")->where("jobid", $jobid)->delete();
 
-            $update = array(
-                "is_idle"=>1,
-                "placeid"=>null,
-                "type"=>4
-            );
-
-            $db->table("rccinstances")->where("guid", $jobinfo->rccinstance)->update($update);
             $gameserver->end_job($jobid);
             $pid = $jobinfo->assetid;
             $log->internal_log("Place ID $pid has closed. ($jobid)");
@@ -309,6 +302,14 @@ $router->get("/api/v1/gameserver/client-presence", function(){
                     $db->table("activeplayers")->where("userid", $userid)->where("jobid", $jobid)->delete();
                     $userinfo = $auth->getuserbyid($userid);
                     $log->internal_log($userinfo->username . " has left place " . $jobinfo->assetid);
+
+                    $count = $db->table("activeplayers")->where("jobid", $jobid)->count();
+                    if($count == 0){
+                        // End server. KILL. IT.
+                        $gameserver->end_job($jobid);
+                    }
+
+
                     die("Success.");
                 } else {
                     http_response_code(400);
