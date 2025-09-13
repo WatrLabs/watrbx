@@ -8,7 +8,7 @@ $thumbs = new thumbnails();
 $slugify = new Slugify();
 $auth = new authentication();
 $pagebuilder = new pagebuilder();
-
+$gameserver = new gameserver();
 
 global $db;
 

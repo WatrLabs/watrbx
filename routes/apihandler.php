@@ -2308,8 +2308,16 @@ $router->post('/api/v1/thumbnail-uploader', function(){
     global $db;
     global $currentuser;
 
+    if(!$currentuser){
+        http_response_code(403);
+        die(create_error("You aren't an admin!", [], 403));
+        exit;
+    }
+
     if($currentuser->is_admin !== 1){
-        die("You aren't admin!");
+        http_response_code(403);
+        die(create_error("You aren't an admin!", [], 403));
+        exit;
     }
 
     if(isset($_POST["type"]) && isset($_FILES["thumb"]) && isset($_POST["assetid"])){
@@ -2945,6 +2953,12 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
 
         if($assetinfo){
 
+            if($assetinfo->prodcategory !== 9){ // its not a PLACE!!!
+                http_response_code(400);
+                header("Content-type: application/json");
+                die(json_encode($placelauncher));
+            }
+
             $universeinfo = $db->table("universes")->where("assetid", $placeId)->first();
 
             // look for game instances with place id
@@ -3149,12 +3163,17 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
 
     if(isset($_GET["placeId"])){
 
-
         (int)$placeId = $_GET["placeId"];
         
         $assetinfo = $db->table("assets")->where("id", $placeId)->first();
 
         if($assetinfo){
+
+            if($assetinfo->prodcategory !== 9){ // its not a PLACE!!!
+                http_response_code(400);
+                header("Content-type: application/json");
+                die(json_encode($placelauncher));
+            }
 
             $universeinfo = $db->table("universes")->where("assetid", $placeId)->first();
 

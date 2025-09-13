@@ -62,10 +62,13 @@ class thumbnails {
         $x = $exploded[0];
         $y = $exploded[1];
 
-        $exploded = explode("x", $jobinfo->dimensions);
+        if(isset($jobinfo->userid)){
+            $theid = $jobinfo->userid;
+        }
 
-        $x = $exploded[0];
-        $y = $exploded[1];
+        if(isset($jobinfo->assetid)){
+            $theid = $jobinfo->assetid;
+        }
 
         $jobInfo = [
             "Id"=>$jobinfo->jobid,
