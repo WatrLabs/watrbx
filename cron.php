@@ -29,10 +29,10 @@ $allofdem = $db->table('jobs')
 foreach ($allofdem as $job) {
     sleep(5); // too many too quick overloads arbiter, especially with games running
     $result = $thumbnail->render_asset($job);
-    if($result){
+    if($result[0] == true){
         try {
-            if(isset($result[0])){
-                $base64 = $result[0]->getValue();
+            if(isset($result[1][0])){
+                $base64 = $result[1][0]->getValue();
                 $img = base64_decode($base64);
                 if($img){
                     $md5 = md5($img);

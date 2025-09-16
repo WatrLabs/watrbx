@@ -3244,6 +3244,22 @@ $router->get('/avatar-thumbnail/json', function(){
 
 });
 
+$router->get('/game/updateprerollcount', function(){
+
+});
+
+
+$router->get('/api/v1/get-preroll', function(){
+
+    $return = [
+        "video"=>"https://files.catbox.moe/jxzpx0.mp4"
+    ];
+
+    header("Content-type: application/json");
+    die(json_encode($return));
+
+});
+
 $router->get("/universes/{id}/cloudeditenabled", function(){
     header("Content-type: application/json");
     die(json_encode(["enabled"=>false]));

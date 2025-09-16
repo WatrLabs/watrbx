@@ -46,10 +46,10 @@ $router->group('/persistence', function($router) {
 
         $entries = [];
         for ($i = 0; $i < $pageSize; $i++) {
-            if ($i < count($result)) {
+            if ($i < count($arrayresult)) {
                 $entries[] = [
-                    "Target" => $result[$i]['target'],
-                    "Value" => $result[$i]['value']
+                    "Target" => $arrayresult[$i]['target'],
+                    "Value" => $arrayresult[$i]['value']
                 ];
             }
         }
