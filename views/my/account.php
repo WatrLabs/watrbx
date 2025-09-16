@@ -382,7 +382,7 @@ if(isset($newblurb)){
           <div id="UpgradeAccount" style="margin-left: 10px">
             <h3 style="margin: 10px 0;"> Upgrade Account</h3>
             <div id="buyRobux" class="upgrade-account-button">
-              <a href="/upgrades/robux.aspx" class="buyRobux btn-medium btn-primary">Buy Robux <span class="btn-text">Buy Robux</span>
+              <a href="/upgrades/robux" class="buyRobux btn-medium btn-primary">Buy Robux <span class="btn-text">Buy Robux</span>
               </a>
             </div>
             <div id="JoinBuildersClub" class="upgrade-account-button">
@@ -449,7 +449,7 @@ if(isset($newblurb)){
             insufficientFundsTitle: "Insufficient Funds",
             insufficientFundsText: "You need {0} more to change your username.",
             insufficientFundsAcceptText: "Buy Robux",
-            insufficientFundsFooter: "or " + "<a href='/My/Money.aspx?tab=TradeCurrency' style='font-weight:bold'>Trade Currency</a>",
+            insufficientFundsFooter: "or " + "<a href='/my/money.aspx#/#TradeCurrency_tab' style='font-weight:bold'>Trade Currency</a>",
             emailVerifiedTitle: "Verified Email Required",
             emailVerifiedMessage: "You must verify your email before you can change your username.",
             verify: "Verify",
