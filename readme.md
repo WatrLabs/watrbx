@@ -1,11 +1,27 @@
-# watrbx 2015
-im like really indecisive but I think people will like this better so
+# watrbx 2015/2016
+a march 2016 roblox private server
+
+(it says 2015/2016 because some pages are taken from dec 2015)
 
 # in dev
 obviously in development
 
-if you'd like to contribute that'd be helpfull...
+if you'd like to contribute that'd be nice
 
 # setup
-just fill out everything in .env and then get composer and do `composer install` and you should be good to go
-(sike you don't have the database structure)
+copy .env.example and rename it to .env (fill it out)
+
+run `composer install` (we use a lot of composer packages)
+
+**make sure you add the schema in schema.sql** (no migration system yet, sorry)
+
+and make sure you add this to your nginx config
+```
+location / {  
+	try_files $uri $uri/ /index.php$is_args$query_string;  
+} 
+```
+apache will be done one day
+
+> [!CAUTION]
+> help will not be given setting this up, what you see is what you get. (if there are any issues support will be provided but thats it)
