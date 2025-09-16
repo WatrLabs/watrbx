@@ -279,7 +279,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                         <div id="LogoAndSlogan" class="text-center">
                                 <img id="MainLogoImage" title="ROBLOX" class="center-block img-responsive" src="/images/f76c76889f4b167ca1f27edc27eb8146.png" />
                             <div class="clearfix"></div>
-                            <h1>You Make the Game<span> &#8482 </span></h1>
+                            <h1>Powering Imagination<span> &#8482 </span></h1>
                         </div>
                     </div>
                 </div>
