@@ -17,11 +17,10 @@ $pagebuilder->setlegacy(true);
 
 $pagebuilder->buildheader();
 
-?>
                     <div id="BodyWrapper" class="">
                         <div id="RepositionBody">
                             <div id="Body" style="width:970px">
-                                
+
 <!--[if IE 7]>
 <style>
     #signInButtonPanel a
@@ -100,8 +99,8 @@ $pagebuilder->buildheader();
     data-rbx-update=""
     data-rbx-disconnect=""
      data-rbx-login-redirect-url="/social/postlogin"
-     
-     
+
+
      >
 </div>                        </span>
                     </div>
@@ -141,21 +140,14 @@ $pagebuilder->buildheader();
     };
 </script>
 
-<div id="guestarea">
-    <h2>You don't need an account to play ROBLOX</h2>
-    <br/>
-    <p class="text">You can start playing right now, in guest mode! <a  href="/games" class="btn-small btn-neutral" id="guestButton">Play as Guest</a></p>
-    
-</div>
-
 
 <div id="SocialIdentitiesInformation" 
     data-rbx-login=""
     data-rbx-update=""
     data-rbx-disconnect=""
      data-rbx-login-redirect-url="/social/postlogin"
-     
-     
+
+
      >
 </div>
                                 <div style="clear:both"></div>
