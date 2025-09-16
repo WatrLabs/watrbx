@@ -47,7 +47,6 @@ if(isset($newblurb)){
             <div class="tab-container">
               <div class="tab active" data-id="settings_tab">Settings</div>
               <div class="tab" data-id="privacy_tab">Privacy</div>
-              <div class="tab" data-id="billing_tab">Billing</div>
             </div>
             <input name="__RequestVerificationToken" type="hidden" value="Eyz0_gyuXxwx74Q6xigT8xOa7HTcrkFCdIXAsP3-5gCh1tvGtCpyPjgdVNGOAAdyxvlOpnrvwDNEiLM29Nn9DCIjp0EaLvoCixZwWQeHglUrLNswAzzeVOCNof8-qDSK-IPHJddxujB2d15i1oRWR55t4yg1" />
             <div class="tab-content active" id="settings_tab">
@@ -377,21 +376,13 @@ if(isset($newblurb)){
                 </div>
               </div>
             </div>
-            <div class="tab-content" id="billing_tab">
-              <div id="MembershipSeting">
-                <div class="billing-spacer">
-                  <div id="PendingUnlock" class="SettingSubTitle"></div>
-                </div>
-                <p>There's no billing, go away.</p>
-              </div>
-            </div>
           </form>
         </div>
         <div id="AccountPageRight">
           <div id="UpgradeAccount" style="margin-left: 10px">
             <h3 style="margin: 10px 0;"> Upgrade Account</h3>
             <div id="buyRobux" class="upgrade-account-button">
-              <a href="/upgrades/robux.aspx" class="buyRobux btn-medium btn-primary">Buy Robux <span class="btn-text">Buy Robux</span>
+              <a href="/upgrades/robux" class="buyRobux btn-medium btn-primary">Buy Robux <span class="btn-text">Buy Robux</span>
               </a>
             </div>
             <div id="JoinBuildersClub" class="upgrade-account-button">
@@ -458,7 +449,7 @@ if(isset($newblurb)){
             insufficientFundsTitle: "Insufficient Funds",
             insufficientFundsText: "You need {0} more to change your username.",
             insufficientFundsAcceptText: "Buy Robux",
-            insufficientFundsFooter: "or " + "<a href='/My/Money.aspx?tab=TradeCurrency' style='font-weight:bold'>Trade Currency</a>",
+            insufficientFundsFooter: "or " + "<a href='/my/money.aspx#/#TradeCurrency_tab' style='font-weight:bold'>Trade Currency</a>",
             emailVerifiedTitle: "Verified Email Required",
             emailVerifiedMessage: "You must verify your email before you can change your username.",
             verify: "Verify",

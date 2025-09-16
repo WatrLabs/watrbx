@@ -279,7 +279,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                         <div id="LogoAndSlogan" class="text-center">
                                 <img id="MainLogoImage" title="ROBLOX" class="center-block img-responsive" src="/images/f76c76889f4b167ca1f27edc27eb8146.png" />
                             <div class="clearfix"></div>
-                            <h1>You Make the Game<span> &#8482 </span></h1>
+                            <h1>Powering Imagination<span> &#8482 </span></h1>
                         </div>
                     </div>
                 </div>
@@ -769,15 +769,6 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                 <h2>ROBLOX on your device.</h2>
                 <p class="lead center-block">Play ROBLOX on your desktop, your tablet, or your phone. Access your account, games, and inventory; connect with your friends; and play games whether you're at home or on the go.</p>
             </div>
-        </div>
-
-        <div id="AppStoreContainer" class="row text-center app-store-container">
-            <a href="https://itunes.apple.com/us/app/roblox-mobile/id431946152" target="_blank" class="app-store-link-apple">
-                <img class="app-store-logo" src="/images/9819a104fc46fb90d183387ba81065a0.png" title="ROBLOX on App Store" />
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.roblox.client&hl=en" target="_blank" class="app-store-link-android">
-                <img class="app-store-logo" src="/images/75ba3866ee59c113220b369c2432c7f9.png" title="ROBLOX on Google Play" />
-            </a>
         </div>
 
         <div class="row" id="DeviceImageContainer">
