@@ -92,11 +92,7 @@ $router->get("/character-model", function(){
     die(file_get_contents("../storage/character.json"));
 });
 
-$router->get("/avatar-thumbnail-3d/", function(){
-    header("Content-type: application/json");
-    
-    die(file_get_contents("../storage/character.json"));
-});
+
 
 $router->get('/comments/get-json', function (){
     global $currentuser;
@@ -249,15 +245,140 @@ $router->post('/my/account/sendverifyemail', function(){
 
 });
 
+$router->get("/avatar-thumbnail-3d/", function(){
+    header("Content-type: application/json");
+
+    global $s3_client;
+    global $db;
+
+
+    $thumbnail = new thumbnails();
+    $auth = new authentication();
+
+    $json = [];
+    $result = [];
+
+
+    if(isset($_GET["userId"])){
+        $userId = (int)$_GET["userId"];
+
+        $userinfo = $auth->getuserbyid($userId);
+
+        if($userinfo){
+
+            $renderinfo = $db->table("3dthumnails")->where("userid", $userId)->first();
+
+            if($renderinfo){
+                die($renderinfo->json);
+            }
+
+            [$success, $soapresult] = $thumbnail->render_3d_user($userId);
+
+            if(isset($soapresult[0])){
+                $json = $soapresult[0]->getValue();
+
+                $decode = json_decode($json, true);
+
+                if(isset($decode["camera"])){
+                    // assume it worked idk
+
+                    $result["camera"] = $decode["camera"];
+                    $result["camera"]["fov"] = 70.0;
+                    $result["aabb"] = $decode["AABB"];
+
+                    $files = $decode["files"];
+
+                    $files = array_reverse($files);
+
+                    $mtlreplacements = [];
+
+                    foreach ($files as $filename => $info) {
+                        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                        $content = base64_decode($info["content"]);
+
+                        $hash = md5($content !== "" ? $content : $filename);
+
+
+                        switch ($ext) {
+                            case "obj":
+                                $result["obj"] = $hash;
+                                break;
+                            case "mtl":
+
+                                foreach($mtlreplacements as $filename => $hash){
+                                    $content = str_replace($filename, $hash, $content);
+                                }
+
+                                $hash = md5($content !== "" ? $content : $filename);
+
+                                $result["mtl"] = $hash;
+                                break;
+                            case "png":
+                                
+                                $mtlreplacements[$filename] = $hash;
+                                $result["textures"][] = $hash;
+                                break;
+                            case "jpg":
+                                $mtlreplacements[$filename] = $hash;
+                                $result["textures"][] = $hash;
+                                break;
+                            case "jpeg":
+                                $mtlreplacements[$filename] = $hash;
+                                $result["textures"][] = $hash;
+                                break;
+                        }
+
+                        $s3_client->putObject([
+                            'Bucket' => $_ENV["R2_BUCKET"],
+                            'Key' => $hash,
+                            'Body' => $content,
+                        ]);
+                    }
+
+                    $json = json_encode($result);
+
+                    $insert = [
+                        "userid"=>$userId,
+                        "json"=>$json,
+                    ];
+
+                    $db->table("3dthumnails")->insert($insert);
+
+                    die($json);
+                    
+                }
+
+
+            }
+        }
+
+    }
+    
+    die(file_get_contents("../storage/character.json"));
+});
+
 $router->get('/avatar-thumbnail-3d/json', function(){
     // {"Url":"https://web.archive.org/web/20150801002803/http://t5.rbxcdn.com/682ceca48cd03e698aa5e0dc65c758b7","Final":true}
 
     header("Content-type: application/json");
 
+    $auth = new authentication();
+
     $json = array(
-        "Url"=>"https://www.watrbx.wtf/avatar-thumbnail-3d/",
+        "Url"=>"https://sitetest1.watrbx.wtf/avatar-thumbnail-3d/",
         "Final"=>true
     );
+
+    if(isset($_GET["userId"])){
+        $userId = (int)$_GET["userId"];
+
+        $userinfo = $auth->getuserbyid($userId);
+
+        if($userinfo){
+            $json["Url"] = "https://sitetest1.watrbx.wtf/avatar-thumbnail-3d/?userId=$userId";
+        }
+
+    }
 
     die(json_encode($json));
 });
@@ -269,7 +390,7 @@ $router->get('/thumbnail/resolve-hash/{the}', function($the){
 
     $json = array(
         "Final"=>true,
-        "Url"=>"https://www.watrbx.wtf/thumbnail/3dfiles/$the",
+        "Url"=>"https://cdn.watrbx.wtf/$the",
         "width"=>500,
         "height"=>500
     );
