@@ -365,7 +365,7 @@ $router->get('/avatar-thumbnail-3d/json', function(){
     $auth = new authentication();
 
     $json = array(
-        "Url"=>"https://sitetest1.watrbx.wtf/avatar-thumbnail-3d/",
+        "Url"=>"https://watrbx.wtf/avatar-thumbnail-3d/",
         "Final"=>true
     );
 
@@ -375,7 +375,7 @@ $router->get('/avatar-thumbnail-3d/json', function(){
         $userinfo = $auth->getuserbyid($userId);
 
         if($userinfo){
-            $json["Url"] = "https://sitetest1.watrbx.wtf/avatar-thumbnail-3d/?userId=$userId";
+            $json["Url"] = "https://watrbx.wtf/avatar-thumbnail-3d/?userId=$userId";
         }
 
     }

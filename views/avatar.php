@@ -127,8 +127,8 @@ $pagebuilder->buildheader();
                             
 
 <div id="UserAvatar" class="thumbnail-holder" data-reset-enabled-every-page data-3d-thumbs-enabled 
-     data-url="/thumbnail/user-avatar?userId=65367932&amp;thumbnailFormatId=124&amp;width=352&amp;height=352" style="width:352px; height:352px;">
-    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=65367932"  data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='<?=$currentuser->username?>' class='' src='<?=$body?>' /></span>
+     data-url="/thumbnail/user-avatar?userId=<?=$currentuser->id?>&amp;thumbnailFormatId=124&amp;width=352&amp;height=352" style="width:352px; height:352px;">
+    <span class="thumbnail-span" data-3d-url="/avatar-thumbnail-3d/json?userId=<?=$currentuser->id?>"  data-js-files='/js/47e6e85800c4ed3c4eef848c077575a9.js.gzip' ><img alt='<?=$currentuser->username?>' class='' src='<?=$body?>' /></span>
     <span class="enable-three-dee btn-control btn-control-small"></span>
 </div>
 

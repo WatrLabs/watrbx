@@ -438,6 +438,11 @@ $router->post("/my/account", function() {
     $page::get_template("my/account", ["newblurb"=>$blurb]);
 });
 
+$router->get("/download", function() {
+    $page = new pagebuilder;
+    $page::get_template("download");
+});
+
 $router->get("/my/account", function() {
     $page = new pagebuilder;
     $page::get_template("my/account");
@@ -588,6 +593,7 @@ $router->post('/my/character.aspx', function() {
 
                     if(isset($exploded[1])){
                         $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
+                        $db->table("3dthumnails")->where("userid", $currentuser->id)->delete();
                         $assetid = (int)$exploded[1];
                         
                         $iswearing = $db->table("wearingitems")->where("itemid", $assetid)->where("userid", $currentuser->id)->first();
@@ -618,6 +624,7 @@ $router->post('/my/character.aspx', function() {
                         $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
                         $assetid = (int)$exploded[1];
                         $db->table("wearingitems")->where("userid", $currentuser->id)->where("itemid", $assetid)->delete();
+                        $db->table("3dthumnails")->where("userid", $currentuser->id)->delete();
                         $page::get_template("avatar", ["currentcategory"=>$lastcategory]);
                         die();
                     }
@@ -638,6 +645,7 @@ $router->post('/my/character.aspx', function() {
                             ];
                             $db->table("bodycolors")->where("userid", $currentuser->id)->where("part", $bodypart)->update($update);
                             $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
+                            $db->table("3dthumnails")->where("userid", $currentuser->id)->delete();
                         } else {
                             $insert = [
                                 "part"=>$bodypart,
@@ -647,6 +655,7 @@ $router->post('/my/character.aspx', function() {
 
                             $db->table("bodycolors")->insert($insert);
                             $db->table("thumbnails")->where("userid", $currentuser->id)->delete();
+                            $db->table("3dthumnails")->where("userid", $currentuser->id)->delete();
                         }
                     }
                 }
