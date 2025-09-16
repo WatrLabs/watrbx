@@ -443,6 +443,11 @@ $router->get("/my/account", function() {
     $page::get_template("my/account");
 });
 
+$router->get('/places/update', function(){
+    $page = new pagebuilder;
+    $page::get_template("places/update");
+});
+
 $router->get('/temp/shirt-uploader', function(){
     $page = new pagebuilder;
     $page::get_template("temp/shirt-creator");

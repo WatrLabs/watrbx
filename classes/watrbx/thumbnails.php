@@ -10,6 +10,7 @@ class thumbnails {
     private $thumb_url = "";
 
     private $luaFiles = [
+        "4" => "decal.lua",
         "8"  => "hat.lua",
         "9"  => "place.lua",
         "10" => "model.lua",
@@ -19,23 +20,28 @@ class thumbnails {
         "17" => "head.lua",
         "18" => "face.lua",
         "19" => "gear.lua",
+        "24" => "decal.lua",
+        "full" => "user.lua",
+        "headshot" => "user_headshot.lua"
     ];
 
     function __construct(){
         $this->thumb_url = "/";
     }
 
-    private function getLua($jobinfo, $assetinfo = null) {
+    private function getLua($jobinfo) {
+
+        global $db;
+
         if ($jobinfo->userid !== null) {
-            return match ($jobinfo->jobtype) {
-                "full"     => file_get_contents("./storage/lua/user.lua"),
-                "headshot" => file_get_contents("./storage/lua/user_headshot.lua"),
-                default    => "",
-            };
+            return file_get_contents("./storage/lua/" . $this->luaFiles[$jobinfo->jobtype]);
         }
 
-        if ($assetinfo && isset($this->luaFiles[$assetinfo->prodcategory])) {
-            return file_get_contents("./storage/lua/" . $this->luaFiles[$assetinfo->prodcategory]);
+        if ($jobinfo->assetid !== null) {
+            $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
+            if($assetinfo){
+                return file_get_contents("./storage/lua/" . $this->luaFiles[$assetinfo->prodcategory]);
+            }
         }
 
         return "print('Failed to find lua.')";

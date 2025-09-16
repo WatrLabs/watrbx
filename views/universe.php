@@ -2524,7 +2524,7 @@ $pagebuilder->buildheader();
             Gameplay sponsored by: 
         </div>
         <div id="content">
-            <video id="contentElement" style="width:0; height:0;" />
+            <video id="contentElement" />
         </div>
         <div id="videoPrerollMainDiv"></div>
         <div id="videoPrerollCompanionAd">
@@ -2564,7 +2564,7 @@ $pagebuilder->buildheader();
                 videoPreRollDFP.logsEnabled = true;
                 videoPreRollDFP.adUnit = "/1015347/VideoPrerollUnder13";
                 videoPreRollDFP.adTime = 15;
-                videoPreRollDFP.isSwfPreloaderEnabled = true;
+                videoPreRollDFP.isSwfPreloaderEnabled = false;
                 videoPreRollDFP.isPrerollShownEveryXMinutesEnabled = true;
                 customTargeting.userAge = "9";
                 customTargeting.userGender = "Male";
@@ -2750,7 +2750,7 @@ $pagebuilder->buildheader();
 
 
     
-    <script type='text/javascript' src='/js/22f5b93b0e23b69d9c48f68ea3c65fe3.js.gzip'></script>
+    <script type='text/javascript' src='/js/22f5b93b0e23b69d9c48f68ea3c65fe3.js.gzip?t=25'></script>
     <script type='text/javascript' src='/js/6385cae49dc708a8f2f93167ad17466d.js.gzip'></script>
     <script type='text/javascript' src='/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip'></script>
     <script type='text/javascript' src='/js/f3251ed8271ce1271b831073a47b65e3.js.gzip'></script>
