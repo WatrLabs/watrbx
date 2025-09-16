@@ -47,6 +47,45 @@ class thumbnails {
         return "print('Failed to find lua.')";
     }
 
+    public function render_3d_user($userid){
+
+        $func = new sitefunctions();
+        $gameserver = new gameserver();
+        $jobid = $func->createjobid();
+        $lua = file_get_contents("../storage/lua/3duser.lua");
+
+        $serverinfo = $gameserver->get_closest_server();
+        $url = $gameserver->get_server_url($serverinfo);
+
+        $Grid = new \watrbx\Grid\Grid();
+        $Close = $Grid->Close($url);
+
+        $jobInfo = [
+            "Id"=>$jobid,
+            "Expiration"=>60, // I don't think it should take longer than this to render 
+            "Category"=>1,
+            "Cores"=>1
+        ];
+
+        $ScriptInfo = [
+            "Name"=>"3D Render Script",
+            "Script"=>$lua,
+            "Arguments"=>[
+                "id"=>$userid,
+                "dimensions"=>"1024x1024",
+                "apikey"=>"",
+                "x"=>"1024",
+                "y"=>"1024"
+            ]
+        ];
+
+        $thing = $gameserver->execute_job($jobInfo, $ScriptInfo);
+
+        $Close->CloseJob($jobid);
+
+        return $thing;
+    }
+
     public function render_asset($jobinfo){
 
         $gameserver = new gameserver();        
