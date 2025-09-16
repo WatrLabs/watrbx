@@ -47,7 +47,6 @@ if(isset($newblurb)){
             <div class="tab-container">
               <div class="tab active" data-id="settings_tab">Settings</div>
               <div class="tab" data-id="privacy_tab">Privacy</div>
-              <div class="tab" data-id="billing_tab">Billing</div>
             </div>
             <input name="__RequestVerificationToken" type="hidden" value="Eyz0_gyuXxwx74Q6xigT8xOa7HTcrkFCdIXAsP3-5gCh1tvGtCpyPjgdVNGOAAdyxvlOpnrvwDNEiLM29Nn9DCIjp0EaLvoCixZwWQeHglUrLNswAzzeVOCNof8-qDSK-IPHJddxujB2d15i1oRWR55t4yg1" />
             <div class="tab-content active" id="settings_tab">
@@ -375,14 +374,6 @@ if(isset($newblurb)){
                 <div style="clear: both;">
                   <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn" onclick="__doPostBack('', '')">Update</a>
                 </div>
-              </div>
-            </div>
-            <div class="tab-content" id="billing_tab">
-              <div id="MembershipSeting">
-                <div class="billing-spacer">
-                  <div id="PendingUnlock" class="SettingSubTitle"></div>
-                </div>
-                <p>There's no billing, go away.</p>
               </div>
             </div>
           </form>
