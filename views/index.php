@@ -771,15 +771,6 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             </div>
         </div>
 
-        <div id="AppStoreContainer" class="row text-center app-store-container">
-            <a href="https://itunes.apple.com/us/app/roblox-mobile/id431946152" target="_blank" class="app-store-link-apple">
-                <img class="app-store-logo" src="/images/9819a104fc46fb90d183387ba81065a0.png" title="ROBLOX on App Store" />
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.roblox.client&hl=en" target="_blank" class="app-store-link-android">
-                <img class="app-store-logo" src="/images/75ba3866ee59c113220b369c2432c7f9.png" title="ROBLOX on Google Play" />
-            </a>
-        </div>
-
         <div class="row" id="DeviceImageContainer">
             <div class="col-md-12">
                 <div class="row text-center">
