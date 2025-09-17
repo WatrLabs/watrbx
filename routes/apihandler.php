@@ -357,6 +357,145 @@ $router->get("/avatar-thumbnail-3d/", function(){
     die(file_get_contents("../storage/character.json"));
 });
 
+$router->get("/asset-thumbnail-3d/", function(){
+    header("Content-type: application/json");
+
+    global $s3_client;
+    global $db;
+
+
+    $thumbnail = new thumbnails();
+    $auth = new authentication();
+
+    $json = [];
+    $result = [];
+
+
+    if(isset($_GET["assetId"])){
+        $assetId = (int)$_GET["assetId"];
+
+        $assetinfo = $db->table("assets")->where("id", $assetId)->first();
+
+        if($assetinfo){
+
+            $renderinfo = $db->table("3dthumnails")->where("assetid", $assetId)->first();
+
+            if($renderinfo){
+                die($renderinfo->json);
+            }
+
+            [$success, $soapresult] = $thumbnail->render_3d_item($assetId);
+
+            if(isset($soapresult[0])){
+                $json = $soapresult[0]->getValue();
+
+                $decode = json_decode($json, true);
+
+                if(isset($decode["camera"])){
+                    // assume it worked idk
+
+                    $result["camera"] = $decode["camera"];
+                    $result["camera"]["fov"] = 90.0;
+                    $result["aabb"] = $decode["AABB"];
+
+                    $files = $decode["files"];
+
+                    $files = array_reverse($files);
+
+                    $mtlreplacements = [];
+
+                    foreach ($files as $filename => $info) {
+                        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                        $content = base64_decode($info["content"]);
+
+                        $hash = md5($content !== "" ? $content : $filename);
+
+
+                        switch ($ext) {
+                            case "obj":
+                                $result["obj"] = $hash;
+                                break;
+                            case "mtl":
+
+                                foreach($mtlreplacements as $filename => $hash){
+                                    $content = str_replace($filename, $hash, $content);
+                                }
+
+                                $hash = md5($content !== "" ? $content : $filename);
+
+                                $result["mtl"] = $hash;
+                                break;
+                            case "png":
+                                
+                                $mtlreplacements[$filename] = $hash;
+                                $result["textures"][] = $hash;
+                                break;
+                            case "jpg":
+                                $mtlreplacements[$filename] = $hash;
+                                $result["textures"][] = $hash;
+                                break;
+                            case "jpeg":
+                                $mtlreplacements[$filename] = $hash;
+                                $result["textures"][] = $hash;
+                                break;
+                        }
+
+                        $s3_client->putObject([
+                            'Bucket' => $_ENV["R2_BUCKET"],
+                            'Key' => $hash,
+                            'Body' => $content,
+                        ]);
+                    }
+
+                    $json = json_encode($result);
+
+                    $insert = [
+                        "assetid"=>$assetId,
+                        "json"=>$json,
+                    ];
+
+                    $db->table("3dthumnails")->insert($insert);
+
+                    die($json);
+                    
+                }
+
+
+            }
+        }
+
+    }
+    
+    die(file_get_contents("../storage/character.json"));
+});
+
+$router->get('/asset-thumbnail-3d/json', function(){
+    // {"Url":"https://web.archive.org/web/20150801002803/http://t5.rbxcdn.com/682ceca48cd03e698aa5e0dc65c758b7","Final":true}
+
+    header("Content-type: application/json");
+
+    global $db;
+
+    $json = array(
+        "Url"=>"https://watrbx.wtf/asset-thumbnail-3d/",
+        "Final"=>true
+    );
+
+    if(isset($_GET["assetId"])){
+        $assetId = (int)$_GET["assetId"];
+
+        $renderinfo = $db->table("assets")->where("id", $assetId)->first();
+
+        if($renderinfo){
+            $json["Url"] = "https://watrbx.wtf/asset-thumbnail-3d/?assetId=$assetId";
+        }
+
+    }
+
+    die(json_encode($json));
+});
+
+
 $router->get('/avatar-thumbnail-3d/json', function(){
     // {"Url":"https://web.archive.org/web/20150801002803/https://t5.rbxcdn.com/682ceca48cd03e698aa5e0dc65c758b7","Final":true}
 
