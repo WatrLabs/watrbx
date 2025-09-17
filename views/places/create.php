@@ -163,7 +163,7 @@ $pagebuilder->buildheader();
                         </div>
                         <div id="ProcessingView" style="display:none">
                         <div class="ProcessingModalBody">
-                            <p class="processing-indicator"><img src='http://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Searching..." /></p>
+                            <p class="processing-indicator"><img src='https://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Searching..." /></p>
                         </div>
                     </div>
                     </div>
@@ -171,7 +171,7 @@ $pagebuilder->buildheader();
                 <div id="ProcessingView" style="display:none">
                     <div class="ProcessingModalBody">
                         <p class="processing-indicator">
-                            <img src='http://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Searching..." />
+                            <img src='https://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Searching..." />
                             <br>
                             Creating Place...
                         </p>

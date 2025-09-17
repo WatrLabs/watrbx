@@ -82,7 +82,7 @@
     </div>
 
     <script type="text/javascript">
-        window.window.setTimeout("window.location = 'http://www.watrbx.wtf/'", 30000);
+        window.window.setTimeout("window.location = 'https://www.watrbx.wtf/'", 30000);
     </script>
 </body>
 </html>

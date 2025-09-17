@@ -8,8 +8,8 @@
     }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="https://www.facebook.com/2008/fbml">
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <title>Update Place</title>
@@ -49,7 +49,7 @@
 			  <a onclick="window.close();" class="btn-medium btn-neutral uploadOK" id="okButton">OK</a> 
 			  <p>100% Completed</p>
 		   </div>
-		   <div  id="shareWithFriends" class="divider-top"><h3>Share your Place with friends</h3> <input class="form-text-box" id="gameLink" name="gameLink" type="text" value="http://www.roblox.com/PlaceItem.aspx?ID=1818"></div>
+		   <div  id="shareWithFriends" class="divider-top"><h3>Share your Place with friends</h3> <input class="form-text-box" id="gameLink" name="gameLink" type="text" value="https://www.roblox.com/PlaceItem.aspx?ID=1818"></div>
       </div>
     </div>
    </div>
@@ -63,7 +63,7 @@
       function publish(placeid){
          progresstext.innerHtml = "Updating " + placename + " ...";
          uploadbar.style.width = "20%";
-         window.external.SaveUrl('http://www.watrbx.wtf/api/v1/upload-place?placeId=' + placeid);
+         window.external.SaveUrl('https://www.watrbx.wtf/api/v1/upload-place?placeId=' + placeid);
          uploadbar.style.width = "100%";
          uploadcontainer.style.display = "none";
          uploadsuccess.style.display = "block";

@@ -709,7 +709,7 @@ $pagebuilder->buildheader();
             <ul class="hlist badge-list">
                 <li class="list-item badge-item asset-item">
                     <a href="/#" class="badge-link" title="AAAUUUUGHHHHH">
-                        <img src="/temp/07b49d720238e3b83c9c058536e212ed.png" alt="AAAUUUUGHHHHH" thumbnail='{"Final":true,"Url":"http://t1.rbxcdn.com/07b49d720238e3b83c9c058536e212ed","RetryUrl":null}' image-retry>
+                        <img src="/temp/07b49d720238e3b83c9c058536e212ed.png" alt="AAAUUUUGHHHHH" thumbnail='{"Final":true,"Url":"https://t1.rbxcdn.com/07b49d720238e3b83c9c058536e212ed","RetryUrl":null}' image-retry>
                         <span class="item-name rbx-text-overflow" ng-non-bindable>AAAUUUUGHHHHH</span>
                     </a>
                 </li>
@@ -901,17 +901,17 @@ $pagebuilder->buildheader();
     <div class="footer">
         <ul class="row footer-links">
                 <li class="col-xs-4 col-sm-2 footer-link">
-                    <a href="http://corp.roblox.com" class="roblox-interstitial" target="_blank">
+                    <a href="https://corp.roblox.com" class="roblox-interstitial" target="_blank">
                         <h2>About Us</h2>
                     </a>
                 </li>
                 <li class="col-xs-4 col-sm-2 footer-link">
-                    <a href="http://corp.roblox.com/jobs" class="roblox-interstitial" target="_blank">
+                    <a href="https://corp.roblox.com/jobs" class="roblox-interstitial" target="_blank">
                         <h2>Jobs</h2>
                     </a>
                 </li>
             <li class="col-xs-4 col-sm-2 footer-link">
-                <a href="http://blog.roblox.com" target="_blank">
+                <a href="https://blog.roblox.com" target="_blank">
                     <h2>Blog</h2>
                 </a>
             </li>
@@ -921,18 +921,18 @@ $pagebuilder->buildheader();
                 </a>
             </li>
             <li class="col-xs-4 col-sm-2 footer-link">
-                <a href="http://corp.roblox.com/parents" class="roblox-interstitial" target="_blank">
+                <a href="https://corp.roblox.com/parents" class="roblox-interstitial" target="_blank">
                     <h2>Parents</h2>
                 </a>
             </li>
             <li class="col-xs-4 col-sm-2 footer-link">
-                <a href="http://en.help.roblox.com/" class="roblox-interstitial" target="_blank">
+                <a href="https://en.help.roblox.com/" class="roblox-interstitial" target="_blank">
                     <h2>Help</h2>
                 </a>
             </li>
         </ul>
         <p class="footer-note">
-            ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="http://corp.roblox.com" class="rbx-link roblox-interstitial">ROBLOX Corporation</a>, ©2015.
+            ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="https://corp.roblox.com" class="rbx-link roblox-interstitial">ROBLOX Corporation</a>, ©2015.
             Patents pending. ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
             Use of this site signifies your acceptance of the <a href="/info/terms-of-service" target="_blank" class="rbx-link">Terms and Conditions</a>.
         </p>
@@ -991,7 +991,7 @@ $pagebuilder->buildheader();
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
-     data-spinner="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
+     data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
      data-notificationsdomain="https://www.watrbx.wtf/"
      data-devicetype="Computer"
      data-inapp=false
@@ -1715,7 +1715,7 @@ $pagebuilder->buildheader();
      data-protocol-detection-enabled="true">
     <div class="modalPopup blueAndWhite PlaceLauncherModal" style="min-height: 160px">
         <div id="Spinner" class="Spinner" style="padding:20px 0;">
-            <img src="http://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
+            <img src="https://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
         </div>
         <div id="status" style="min-height:40px;text-align:center;margin:5px 20px">
             <div id="Starting" class="PlaceLauncherStatus MadStatusStarting" style="display:block">
@@ -1742,7 +1742,7 @@ $pagebuilder->buildheader();
                 ROBLOX is now loading. Get ready to play!
             </p>
             <div class="ph-startingdialog-spinner-row">
-                <img src="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
+                <img src="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
             </div>
         </div>
     </div>
@@ -1774,7 +1774,7 @@ $pagebuilder->buildheader();
 <div id="ProtocolHandlerClickAlwaysAllowed" class="ph-clickalwaysallowed" style="display:none;">
     <p class="larger-font-size">
         <span class="rbx-icon-moreinfo"></span>
-        Check <b>Remember my choice</b> and click <img src="http://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
+        Check <b>Remember my choice</b> and click <img src="https://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
     </p>
 </div>
 
@@ -1880,17 +1880,17 @@ $pagebuilder->buildheader();
                     <div class="ph-install-step ph-installinstructions-step1-of4">
                         <h1>1</h1>
                         <p class="larger-font-size">Click RobloxPlayerLauncher.exe to run the ROBLOX installer, which just downloaded via your web browser.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/8b0052e4ff81d8e14f19faff2a22fcf7.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/8b0052e4ff81d8e14f19faff2a22fcf7.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step2-of4">
                         <h1>2</h1>
                         <p class="larger-font-size">Click <strong>Run</strong> when prompted by your computer to begin the installation process.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/4a3f96d30df0f7879abde4ed837446c6.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/4a3f96d30df0f7879abde4ed837446c6.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step3-of4">
                         <h1>3</h1>
                         <p class="larger-font-size">Click <strong>Ok</strong> once you've successfully installed ROBLOX.</p>
-                        <img width="230" height="180" src="http://images.rbxcdn.com/6e23e4971ee146e719fb1abcb1d67d59.png" />
+                        <img width="230" height="180" src="https://images.rbxcdn.com/6e23e4971ee146e719fb1abcb1d67d59.png" />
                     </div>
                     <div class="ph-install-step ph-installinstructions-step4-of4">
                         <h1>4</h1>
@@ -2142,12 +2142,12 @@ $pagebuilder->buildheader();
         (function() {
             var s = document.createElement("script"), el = document.getElementsByTagName("script")[0];
             s.async = true;
-            s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+            s.src = (document.location.protocol == "https:" ? "https://sb" : "https://b") + ".scorecardresearch.com/beacon.js";
             el.parentNode.insertBefore(s, el);
         })();
     </script>
     <noscript>
-        <img src="http://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
+        <img src="https://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
     </noscript>
 </body>
 </html>

@@ -36,7 +36,7 @@ if(isset($_GET["keyword"])){
         <input id="people-search-keyword" autofocus autocomplete="off" name="name" type="text" class="text-box text-box-large people-search-textbox" placeholder="Search for users..." <? if(isset($keyword)){ echo "value=\"$keyword\""; } ?> />
         <span class="search-button-image-container">
             <a  class="btn-small btn-primary" id="peoplesearch-search-button">Search Users</a>
-            <img id="peoplesearch-search-loading" style="display: none" src="http://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif" />
+            <img id="peoplesearch-search-loading" style="display: none" src="https://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif" />
         </span>
     </div>
     <div>
@@ -98,7 +98,7 @@ if(isset($_GET["keyword"])){
 
 <div id="ProcessingView" style="display:none">
     <div class="ProcessingModalBody">
-        <p class="processing-indicator"><img src='http://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Searching..." /></p>
+        <p class="processing-indicator"><img src='https://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif' alt="Searching..." /></p>
     </div>
 </div>
                                 <div style="clear:both"></div>

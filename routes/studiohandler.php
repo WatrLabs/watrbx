@@ -30,7 +30,7 @@ $router->get('/login/RequestAuth.ashx', function(){
     if($currentuser !== null && isset($_COOKIE["_ROBLOSECURITY"])){
         http_response_code(200);
         setcookie(".ROBLOSECURITY", $_COOKIE["_ROBLOSECURITY"], time() + 8600, "/", ".watrbx.wtf");
-        echo "http://www.watrbx.wtf/Login/Negotiate.ashx?suggest=" . $_COOKIE["_ROBLOSECURITY"];
+        echo "https://www.watrbx.wtf/Login/Negotiate.ashx?suggest=" . $_COOKIE["_ROBLOSECURITY"];
         die();
     } else {
         http_response_code(401);

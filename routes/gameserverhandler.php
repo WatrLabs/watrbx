@@ -140,7 +140,7 @@ $router->get('/api/v1/gameserver/pinger', function(){
                 die(createsuccess("killed"));
             } else {
                 $Grid = new watrbx\Grid\Grid;
-                $Url = "http://" . $serverInfo->wireguard_ip . ":" . $serverInfo->port;
+                $Url = "https://" . $serverInfo->wireguard_ip . ":" . $serverInfo->port;
 
                 $Renew = $Grid->Renew($Url);
                 $Renew->RenewLease($jobId, 60); // 60 Seconds.
@@ -450,7 +450,7 @@ $router->group('/api/v1/gameserver', function($router) {
 
             if($jobinfo !== null){
                 $halfcleaned = str_replace('<?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://watrbx.wtf/RCCServiceSoap" xmlns:ns1="http://watrbx.wtf/" xmlns:ns3="http://watrbx.wtf/RCCServiceSoap12"><SOAP-ENV:Body><ns1:OpenJobExResponse><ns1:OpenJobExResult><ns1:LuaValue><ns1:type>LUA_TSTRING</ns1:type><ns1:value>', '', $response);
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="https://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="https://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:ns2="https://watrbx.wtf/RCCServiceSoap" xmlns:ns1="https://watrbx.wtf/" xmlns:ns3="https://watrbx.wtf/RCCServiceSoap12"><SOAP-ENV:Body><ns1:OpenJobExResponse><ns1:OpenJobExResult><ns1:LuaValue><ns1:type>LUA_TSTRING</ns1:type><ns1:value>', '', $response);
                 $cleaned = str_replace('</ns1:value></ns1:LuaValue></ns1:OpenJobExResult></ns1:OpenJobExResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>', '', $halfcleaned);
 
                 $img = base64_decode($cleaned);

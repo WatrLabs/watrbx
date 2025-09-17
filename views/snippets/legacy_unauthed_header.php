@@ -14,7 +14,7 @@ if(isset($_SERVER['HTTP_USER_AGENT'])){
 ?>
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
     <!-- MachineID: WEB114 -->
     <title><?=$config["title"] ?? "Untitled Page" ?> - <?=$_ENV["APP_NAME"]?></title>
@@ -70,7 +70,7 @@ if(isset($_SERVER['HTTP_USER_AGENT'])){
 			var ga = document.createElement('script');
 			ga.type = 'text/javascript';
 			ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(ga, s);
 		})();
@@ -132,7 +132,7 @@ Roblox.Endpoints.Urls['/game/getauthticket'] = 'https://assetgame.watrbx.wtf/gam
 Roblox.Endpoints.Urls['/game/placelauncher.ashx'] = 'https://assetgame.watrbx.wtf/game/placelauncher.ashx';
 Roblox.Endpoints.Urls['/game/report-stats'] = 'https://assetgame.watrbx.wtf/game/report-stats';
 Roblox.Endpoints.Urls['/game/report-event'] = 'https://assetgame.watrbx.wtf/game/report-event';
-Roblox.Endpoints.Urls['/chat/chat'] = 'http://misc.watrbx.wtf/chat/chat';
+Roblox.Endpoints.Urls['/chat/chat'] = 'https://misc.watrbx.wtf/chat/chat';
 Roblox.Endpoints.Urls['/presence/users'] = '/presence/users';
 Roblox.Endpoints.Urls['/presence/user'] = '/presence/user';
 Roblox.Endpoints.Urls['/friends/list'] = '/friends/list';
@@ -218,7 +218,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             <div id="rbx-continue-shopping-btn" class="btn btn-medium btn-neutral rbx-btn-secondary-xs btn-more btn-continue-shopping">Continue to Shop</div>
         </div>
         <div class="fine-print">
-            The shop is not part of watrbx.wtf and is governed by a separate <a href="http://www.myplay.com/direct/cookie-policy?origin=desktop&permalink=shoproblox">privacy policy</a>.
+            The shop is not part of watrbx.wtf and is governed by a separate <a href="https://www.myplay.com/direct/cookie-policy?origin=desktop&permalink=shoproblox">privacy policy</a>.
         </div>
     </div>
 </div>

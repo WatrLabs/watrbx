@@ -96,7 +96,8 @@ class pagebuilder {
     public function buildheader() {
         
         $this->addmetatag("og:title", $_ENV["APP_NAME"] . " - " . $this->config['title']);
-        
+        $this->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=watrbx.css&t=2');
+
         // this HAS to be expanded in the future 
         if($this->authed){
             if($this->legacy){

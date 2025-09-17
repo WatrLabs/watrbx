@@ -7,7 +7,7 @@ vmwaresspyingalt = "ThomasTheDankEngine"
 
 function start(placeId, port, url, universeid)
 
-assetGameUrl = "http://assetgame.watrbx.wtf"
+assetGameUrl = "https://assetgame.watrbx.wtf"
 
 local apikey = "<?=$apikey?>"
 jobid = "<?=$jobid?>"
@@ -168,7 +168,7 @@ function onChatted(msg, speaker)
 
     if msg == ";ec" then
 		local sound = Instance.new("Sound")
-    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=17"
+    	sound.SoundId = "https://www.watrbx.wtf/asset/?id=17"
     	sound.Parent = speaker.Character.Torso
     	sound.Volume = 0.5
     	sound:Play()
@@ -177,7 +177,7 @@ function onChatted(msg, speaker)
 
 	if msg == ";raymonf" then
 		local sound = Instance.new("Sound")
-    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=19"
+    	sound.SoundId = "https://www.watrbx.wtf/asset/?id=19"
     	sound.Parent = speaker.Character.Torso
     	sound.Volume = 0.5
     	sound:Play()
@@ -231,7 +231,7 @@ pcall(function() print(game:HttpGet(url .. "/api/v1/gameserver/mark-active?jobid
 
 end
 
-start(<?=$place?>, <?=$port?>, "http://www.watrbx.wtf", <?=$universeid?>)
+start(<?=$place?>, <?=$port?>, "https://www.watrbx.wtf", <?=$universeid?>)
 
 while wait(15) do
 

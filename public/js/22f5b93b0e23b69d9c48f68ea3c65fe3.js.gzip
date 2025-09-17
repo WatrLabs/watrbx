@@ -3,13 +3,13 @@
 
 ; // leancore/libs/bootstrap.min.js
 /*!
- * Bootstrap v3.3.5 (http://getbootstrap.com)
+ * Bootstrap v3.3.5 (https://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=b8480475c6c7b955a207)
+ * Generated using the Bootstrap Customizer (https://getbootstrap.com/customize/?id=b8480475c6c7b955a207)
  * Config saved to config.json and https://gist.github.com/b8480475c6c7b955a207
  */
 if ("undefined" == typeof jQuery) throw new Error("Bootstrap's JavaScript requires jQuery"); + function(t) {
@@ -1355,7 +1355,7 @@ typeof Roblox == "undefined" && (Roblox = {}), typeof Roblox.DeveloperConsoleWar
 }());
 
 ; // leancore/iesupport/jquery.placeholder.js
-/*! http://mths.be/placeholder v2.0.8 by @mathias */
+/*! https://mths.be/placeholder v2.0.8 by @mathias */
 (function(n, t, i) {
     function y(n) {
         var t = {},
@@ -1453,11 +1453,11 @@ typeof Roblox == "undefined" && (Roblox = {}), typeof Roblox.DeveloperConsoleWar
 ; // jquery.ba-postmessage.min.js
 /*
  * jQuery postMessage - v0.5 - 9/11/2009
- * http://benalman.com/projects/jquery-postmessage-plugin/
+ * https://benalman.com/projects/jquery-postmessage-plugin/
  * 
  * Copyright (c) 2009 "Cowboy" Ben Alman
  * Dual licensed under the MIT and GPL licenses.
- * http://benalman.com/about/license/
+ * https://benalman.com/about/license/
  */
 (function($) {
     var g, d, j = 1,
@@ -5832,7 +5832,7 @@ Roblox = Roblox || {}, Roblox.Linkify = function() {
     var n = {
             enabled: !1,
             hasProtocolRegex: /(https?:\/\/)/,
-            defaultProtocol: "http://",
+            defaultProtocol: "https://",
             cssClass: "rbx-link"
         },
         t = !1,
@@ -5993,7 +5993,7 @@ typeof Roblox == "undefined" && (Roblox = {}), Roblox.VideoPreRollDFP = {
 
     },
     constructUrl: function() {
-        var n = "http://pubads.g.doubleclick.net/gampad/ads?impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]",
+        var n = "https://pubads.g.doubleclick.net/gampad/ads?impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]",
             t = "&sz=400x300",
             i = "&iu=" + this.adUnit,
             r = "&ciu_szs=300x250",
@@ -6374,7 +6374,7 @@ RobloxLaunch.RequestPlayWithParty = function(n, t, i, r) {
     }).done(f)) : f(r)
 }, RobloxLaunch.StartGameWork = function(n, t, i, r, u) {
     var o, f, s, e, h;
-    i = i.replace("http://", "https://"), n.indexOf("http") >= 0 && (n = typeof RobloxLaunch.SeleniumTestMode == "undefined" ? n + "&testmode=false" : n + "&testmode=true"), GoogleAnalyticsEvents && GoogleAnalyticsEvents.ViewVirtual("Visit/Try/" + t), RobloxLaunch.state = RobloxLaunchStates.StartingClient, RobloxLaunch.googleAnalyticsCallback !== null && RobloxLaunch.googleAnalyticsCallback(), o = null;
+    i = i.replace("https://", "https://"), n.indexOf("http") >= 0 && (n = typeof RobloxLaunch.SeleniumTestMode == "undefined" ? n + "&testmode=false" : n + "&testmode=true"), GoogleAnalyticsEvents && GoogleAnalyticsEvents.ViewVirtual("Visit/Try/" + t), RobloxLaunch.state = RobloxLaunchStates.StartingClient, RobloxLaunch.googleAnalyticsCallback !== null && RobloxLaunch.googleAnalyticsCallback(), o = null;
     try {
         if (typeof window.external != "undefined" && window.external.IsRoblox2App && (n.indexOf("visit") != -1 || u)) window.external.StartGame(r, i, n);
         else if (o = "RobloxProxy/", f = Roblox.Client.CreateLauncher(!0), f) {
@@ -6688,7 +6688,7 @@ RobloxABLaunch.RequestGame = function(n, t, i) {
 }, RobloxABLaunch.RequestGameJob = function(n, t, i) {
     RobloxPlaceLauncherService.LogJoinClick(), RobloxABLaunch.launcher === null && (RobloxABLaunch.launcher = new Roblox.ABPlaceLauncher), RobloxABLaunch.launcher.RequestGameJob(t, i)
 }, RobloxABLaunch.StartGame = function(n, t, i, r) {
-    i = i.replace("http://", "https://");
+    i = i.replace("https://", "https://");
     try {
         typeof window.external != "undefined" && window.external.IsRobloxABApp && window.external.StartGame(r, i, n)
     } catch (f) {
@@ -7145,7 +7145,7 @@ Roblox = Roblox || {}, Roblox.ProtocolHandlerClientInterface = function() {
     function i(n, t) {
         var i = " ",
             u, f, r;
-        return typeof Roblox.Endpoints != typeof undefined && typeof Roblox.Endpoints.Urls != typeof undefined && (i = Roblox.Endpoints.getAbsoluteUrl("/Game/PlaceLauncher.ashx") + "?"), i[0] != "h" && (u = "http://" + window.location.host, f = "/Game/PlaceLauncher.ashx?", i = u + f), i = i.replace("placelauncher", "PlaceLauncher"), r = {
+        return typeof Roblox.Endpoints != typeof undefined && typeof Roblox.Endpoints.Urls != typeof undefined && (i = Roblox.Endpoints.getAbsoluteUrl("/Game/PlaceLauncher.ashx") + "?"), i[0] != "h" && (u = "https://" + window.location.host, f = "/Game/PlaceLauncher.ashx?", i = u + f), i = i.replace("placelauncher", "PlaceLauncher"), r = {
             request: n,
             browserTrackerId: Roblox.Cookies.getBrowserTrackerId()
         }, $.extend(r, t), i + $.param(r)
@@ -7162,7 +7162,7 @@ Roblox = Roblox || {}, Roblox.ProtocolHandlerClientInterface = function() {
     function f(n, t, i, r) {
         var u = " ",
             f, e, o;
-        return typeof Roblox.Endpoints != typeof undefined && typeof Roblox.Endpoints.Urls != typeof undefined && (u = Roblox.Endpoints.getAbsoluteUrl("/Game/" + n) + "?"), u[0] != "h" && (f = "http://" + window.location.host, e = "/Game/" + n + "?", u = f + e), o = {
+        return typeof Roblox.Endpoints != typeof undefined && typeof Roblox.Endpoints.Urls != typeof undefined && (u = Roblox.Endpoints.getAbsoluteUrl("/Game/" + n) + "?"), u[0] != "h" && (f = "https://" + window.location.host, e = "/Game/" + n + "?", u = f + e), o = {
             placeId: t,
             upload: r ? t : "",
             universeId: i,
@@ -7412,7 +7412,7 @@ typeof Roblox == "undefined" && (Roblox = {}), typeof Roblox.ShopInterstitialMod
     function e(f) {
         var h, e, o, s;
         n.isOpen = !0, h = {}, f = $.extend({}, h, f), i.overlayClose = f.dismissable, i.escClose = f.dismissable, e = $(r), e.unbind(), e.bind("click", function() {
-            return t(), window.location.href = "http://www.shoproblox.com/", !1
+            return t(), window.location.href = "https://www.shoproblox.com/", !1
         }), o = $(u), o.unbind(), o.bind("click", function() {
             return t(), !1
         }), s = $("a.genericmodal-close"), s.unbind(), s.bind("click", function() {

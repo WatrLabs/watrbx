@@ -370,7 +370,7 @@ $pagebuilder->buildheader();
         </p>
         <h3>Buy ROBUX with</h3><br /><br />
         <a href="/rixtypin"><img src="/images/028e16231452041ab6d702ea467e96dd.png" alt="rixty" /></a><br /><br />
-        <a href="http://itunes.apple.com/us/app/roblox-mobile/id431946152?mt=8"><img src="/images/70deff83e869746b0bbc41a86f420844.png" alt="itunes" /></a>
+        <a href="https://itunes.apple.com/us/app/roblox-mobile/id431946152?mt=8"><img src="/images/70deff83e869746b0bbc41a86f420844.png" alt="itunes" /></a>
     </div>
         <div class="cell cellDivider">
             <h3>Gift Cards</h3><br />

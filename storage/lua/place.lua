@@ -2,7 +2,7 @@
 
 local assetId, FAKEDimensions, apikey, x, y = ...
 
-local baseUrl = "http://www.watrbx.wtf/"
+local baseUrl = "https://www.watrbx.wtf/"
 local assetUrl = baseUrl .. "asset/?id=" .. assetId .. "=" .. apikey
 local fileExtension = "PNG"
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")

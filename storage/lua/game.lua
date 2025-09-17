@@ -130,7 +130,7 @@ function onChatted(msg, speaker)
 
     if msg == ";ec" then
 		local sound = Instance.new("Sound")
-    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=17"
+    	sound.SoundId = "https://www.watrbx.wtf/asset/?id=17"
     	sound.Parent = speaker.Character.Torso
     	sound.Volume = 0.5
     	sound:Play()
@@ -139,7 +139,7 @@ function onChatted(msg, speaker)
 
 	if msg == ";raymonf" then
 		local sound = Instance.new("Sound")
-    	sound.SoundId = "http://www.watrbx.wtf/asset/?id=19"
+    	sound.SoundId = "https://www.watrbx.wtf/asset/?id=19"
     	sound.Parent = speaker.Character.Torso
     	sound.Volume = 0.5
     	sound:Play()

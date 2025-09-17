@@ -39,22 +39,22 @@ local message = Instance.new("Message")
 message.Parent = workspace
 message.archivable = false
 
-game:GetService("ScriptInformationProvider"):SetAssetUrl("http://www.watrbx.wtf/Asset/")
+game:GetService("ScriptInformationProvider"):SetAssetUrl("https://www.watrbx.wtf/Asset/")
 game:GetService("ContentProvider"):SetThreadPool(16)
-pcall(function() game:GetService("InsertService"):SetFreeModelUrl("http://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?type=fm&q=%s&pg=%d&rs=%d") end) -- Used for free model search (insert tool)
-pcall(function() game:GetService("InsertService"):SetFreeDecalUrl("http://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?type=fd&q=%s&pg=%d&rs=%d") end) -- Used for free decal search (insert tool)
+pcall(function() game:GetService("InsertService"):SetFreeModelUrl("https://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?type=fm&q=%s&pg=%d&rs=%d") end) -- Used for free model search (insert tool)
+pcall(function() game:GetService("InsertService"):SetFreeDecalUrl("https://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?type=fd&q=%s&pg=%d&rs=%d") end) -- Used for free decal search (insert tool)
 
 settings().Diagnostics:LegacyScriptMode()
 
-game:GetService("InsertService"):SetBaseSetsUrl("http://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?nsets=10&type=base")
-game:GetService("InsertService"):SetUserSetsUrl("http://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=")
-game:GetService("InsertService"):SetCollectionUrl("http://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?sid=")
-game:GetService("InsertService"):SetAssetUrl("http://www.watrbx.wtf/Asset/?id=")
-game:GetService("InsertService"):SetAssetVersionUrl("http://www.watrbx.wtf/Asset/?assetversionid=")
+game:GetService("InsertService"):SetBaseSetsUrl("https://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?nsets=10&type=base")
+game:GetService("InsertService"):SetUserSetsUrl("https://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?nsets=20&type=user&userid=")
+game:GetService("InsertService"):SetCollectionUrl("https://www.watrbx.wtf/Game/Tools/InsertAsset.ashx?sid=")
+game:GetService("InsertService"):SetAssetUrl("https://www.watrbx.wtf/Asset/?id=")
+game:GetService("InsertService"):SetAssetVersionUrl("https://www.watrbx.wtf/Asset/?assetversionid=")
 
-pcall(function() game:GetService("SocialService"):SetFriendUrl("http://www.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsFriendsWith&playerid=&userid=") end)
-pcall(function() game:GetService("SocialService"):SetBestFriendUrl("http://www.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsBestFriendsWith&playerid=&userid=") end)
-pcall(function() game:GetService("SocialService"):SetGroupUrl("http://www.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsInGroup&playerid=&groupid=") end)
+pcall(function() game:GetService("SocialService"):SetFriendUrl("https://www.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsFriendsWith&playerid=&userid=") end)
+pcall(function() game:GetService("SocialService"):SetBestFriendUrl("https://www.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsBestFriendsWith&playerid=&userid=") end)
+pcall(function() game:GetService("SocialService"):SetGroupUrl("https://www.watrbx.wtf/Game/LuaWebService/HandleSocialRequest.ashx?method=IsInGroup&playerid=&groupid=") end)
 pcall(function() game:SetCreatorID(0, Enum.CreatorType.User) end)
 
 pcall(function() game:SetScreenshotInfo("") end)
@@ -66,7 +66,7 @@ pcall(function() settings().Rendering.EnableFRM = true end)
 pcall(function() settings()["Task Scheduler"].PriorityMethod = Enum.PriorityMethod.AccumulatedError end)
 
 game:GetService("ChangeHistoryService"):SetEnabled(false)
-pcall(function() game:GetService("Players"):SetBuildUserPermissionsUrl("http://www.watrbx.wtf/Game/BuildActionPermissionCheck.ashx?assetId=0&userId=&isSolo=true") end)
+pcall(function() game:GetService("Players"):SetBuildUserPermissionsUrl("https://www.watrbx.wtf/Game/BuildActionPermissionCheck.ashx?assetId=0&userId=&isSolo=true") end)
 
 workspace:SetPhysicsThrottleEnabled(true)
 
@@ -102,7 +102,7 @@ function doVisit()
         player = game:GetService("Players"):CreateLocalPlayer(<?=$id?>)
         player.Name = [====[<?=$username?>]====]
     end
-    player.CharacterAppearance = "http://www.watrbx.wtf/CharacterFetch.aspx?userId=<?=$id?>&placeId=1"
+    player.CharacterAppearance = "https://www.watrbx.wtf/CharacterFetch.aspx?userId=<?=$id?>&placeId=1"
     local propExists, canAutoLoadChar = false
     propExists = pcall(function()  canAutoLoadChar = game.Players.CharacterAutoLoads end)
 
@@ -148,7 +148,7 @@ else
     wait(5)
     message.Text = "Error on visit: " .. err
     if true then
-        game:HttpPost("http://www.watrbx.wtf/Error/Lua.ashx?", "Visit.lua: " .. err)
+        game:HttpPost("https://www.watrbx.wtf/Error/Lua.ashx?", "Visit.lua: " .. err)
     end
 end
 <?php

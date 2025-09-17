@@ -418,7 +418,7 @@ $pagebuilder->buildheader();
                               <a href="//setup.watrbx.wtf/RobloxStudioLauncherBeta.exe" class="studio-launch" download="">Download</a>
                             </li>
                             <li>
-                              <a href="http://wiki.roblox.com/index.php/Studio">Visit Wiki</a>
+                              <a href="https://wiki.roblox.com/index.php/Studio">Visit Wiki</a>
                             </li>
                           </ul>
                         </div>
@@ -446,7 +446,7 @@ $pagebuilder->buildheader();
                   </td>
                   <td class="content-area">
                     <a href="/places/create" id="CreatePlace" class="create-new-button btn-medium btn-primary">Create New Place</a>
-                    <div id="AlertMessage" class="status-confirm">We've moved several configuration options from the places tab to the games tab. Click on the "Games" tab and then the gear icon next to a game to see where the options moved to. <div>&nbsp;</div>Please read <a href="http://devforum.roblox.com/t/the-future-of-filtering-enabled-experimental-mode/43613" target="_blank">this post</a> for an important update on Filtering Enabled and game discovery on Roblox </div>
+                    <div id="AlertMessage" class="status-confirm">We've moved several configuration options from the places tab to the games tab. Click on the "Games" tab and then the gear icon next to a game to see where the options moved to. <div>&nbsp;</div>Please read <a href="https://devforum.roblox.com/t/the-future-of-filtering-enabled-experimental-mode/43613" target="_blank">this post</a> for an important update on Filtering Enabled and game discovery on Roblox </div>
                     <table class="section-header">
                       <tbody>
                         <tr>

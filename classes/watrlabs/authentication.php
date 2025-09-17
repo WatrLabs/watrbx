@@ -700,7 +700,7 @@ class authentication {
     }
 
     public function geolocateip($ip){
-        $ch = curl_init('http://ipwho.is/'.$ip);
+        $ch = curl_init('https://ipwho.is/'.$ip);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
         $ipwhois = json_decode(curl_exec($ch), true);

@@ -1,0 +1,15 @@
+.disabled {
+    color: grey;
+    text-decoration: line-through;
+}
+
+.disabled span {
+    color: grey;
+    background-color: grey;
+    text-decoration: line-through;
+}
+
+.disabled p {
+    color: grey;
+    text-decoration: line-through;
+}

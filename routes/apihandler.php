@@ -358,7 +358,7 @@ $router->get("/avatar-thumbnail-3d/", function(){
 });
 
 $router->get('/avatar-thumbnail-3d/json', function(){
-    // {"Url":"https://web.archive.org/web/20150801002803/http://t5.rbxcdn.com/682ceca48cd03e698aa5e0dc65c758b7","Final":true}
+    // {"Url":"https://web.archive.org/web/20150801002803/https://t5.rbxcdn.com/682ceca48cd03e698aa5e0dc65c758b7","Final":true}
 
     header("Content-type: application/json");
 
@@ -384,7 +384,7 @@ $router->get('/avatar-thumbnail-3d/json', function(){
 });
 
 $router->get('/thumbnail/resolve-hash/{the}', function($the){
-    // {"Url":"https://web.archive.org/web/20150801002803/http://t5.rbxcdn.com/682ceca48cd03e698aa5e0dc65c758b7","Final":true}
+    // {"Url":"https://web.archive.org/web/20150801002803/https://t5.rbxcdn.com/682ceca48cd03e698aa5e0dc65c758b7","Final":true}
 
     header("Content-type: application/json");
 
@@ -831,13 +831,13 @@ $router->post('/api/v1/shirt-creator', function(){
             ]);
             $insertid = $db->table("assets")->insert($insert);
 
-            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+            $shirtxml = '<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
                         <External>null</External>
                         <External>nil</External>
                         <Item class="Shirt" referent="RBX0">
                             <Properties>
                             <Content name="ShirtTemplate">
-                                <url>http://www.watrbx.wtf/asset/?id='.$insertid.'</url>
+                                <url>https://www.watrbx.wtf/asset/?id='.$insertid.'</url>
                             </Content>
                             <string name="Name">Shirt</string>
                             <bool name="archivable">true</bool>
@@ -948,13 +948,13 @@ $router->post('/api/v1/pants-creator', function(){
             ]);
             $insertid = $db->table("assets")->insert($insert);
 
-            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+            $shirtxml = '<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
                         <External>null</External>
                         <External>nil</External>
                         <Item class="Pants" referent="RBX0">
                             <Properties>
                             <Content name="PantsTemplate">
-                                <url>http://www.watrbx.wtf/asset/?id='.$insertid.'</url>
+                                <url>https://www.watrbx.wtf/asset/?id='.$insertid.'</url>
                             </Content>
                             <string name="Name">Pants</string>
                             <bool name="archivable">true</bool>
@@ -1149,7 +1149,7 @@ $router->post('/api/v1/decal-creator', function(){
             ]);
             $insertid = $db->table("assets")->insert($insert);
 
-            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+            $shirtxml = '<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
                             <External>null</External>
                             <External>nil</External>
                             <Item class="Decal" referent="RBX0">
@@ -1158,7 +1158,7 @@ $router->post('/api/v1/decal-creator', function(){
                                     <string name="Name">Decal</string>
                                     <float name="Shiny">20</float>
                                     <float name="Specular">0</float>
-                                    <Content name="Texture"><url>http://www.watrbx.wtf/asset/?id='.$insertid.'</url></Content>
+                                    <Content name="Texture"><url>https://www.watrbx.wtf/asset/?id='.$insertid.'</url></Content>
                                     <float name="Transparency">0</float>
                                 </Properties>
                             </Item>
@@ -3053,7 +3053,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
         "jobid"              => null,
         "status"             => 12,
         "joinScriptUrl"      => null,
-        "authenticationUrl"  => "http://www.watrbx.wtf/Login/Negotiate.ashx",
+        "authenticationUrl"  => "https://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=> null,
         "message"            => "hi."
     ];
@@ -3067,7 +3067,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     $buildJoinResponse = function($db, $jobinfo, $serverinfo, $placeId, $placelauncher) use ($sendResponse) {
         $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
         $placelauncher["jobid"] = $jobinfo->jobid;
-        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
+        $placelauncher["joinScriptUrl"] = "https://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
         $placelauncher["status"] = 2;
         $sendResponse($placelauncher);
 
@@ -3152,7 +3152,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
         "jobid"              => null,
         "status"             => 12,
         "joinScriptUrl"      => null,
-        "authenticationUrl"  => "http://www.watrbx.wtf/Login/Negotiate.ashx",
+        "authenticationUrl"  => "https://www.watrbx.wtf/Login/Negotiate.ashx",
         "authenticationTicket"=> null,
         "message"            => "hi."
     ];
@@ -3166,7 +3166,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
     $buildJoinResponse = function($db, $jobinfo, $serverinfo, $placeId, $placelauncher) use ($sendResponse) {
         $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
         $placelauncher["jobid"] = $jobinfo->jobid;
-        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
+        $placelauncher["joinScriptUrl"] = "https://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
         $placelauncher["status"] = 2;
         $sendResponse($placelauncher);
 
@@ -3655,7 +3655,7 @@ $router->get('/CharacterFetch.aspx', function(){
         $allitems = $db->table("wearingitems")->where("userid", $id)->get();
 
         if(!empty($allitems)){
-            $charapp = "http://www.watrbx.wtf/Asset/BodyColors.ashx?Id=$id;";
+            $charapp = "https://www.watrbx.wtf/Asset/BodyColors.ashx?Id=$id;";
         }
 
         foreach ($allitems as $item){
@@ -3663,11 +3663,11 @@ $router->get('/CharacterFetch.aspx', function(){
 
             //if($assetinfo !== null){
             //    if($assetinfo->prodcategory !== 19){
-            //        $charapp .= "http://www.watrbx.wtf/asset/?id=". $item->itemid .";";
+            //        $charapp .= "https://www.watrbx.wtf/asset/?id=". $item->itemid .";";
             //    }
             //}
 
-            $charapp .= "http://www.watrbx.wtf/asset/?id=". $item->itemid .";";
+            $charapp .= "https://www.watrbx.wtf/asset/?id=". $item->itemid .";";
             
             
         }
@@ -3955,7 +3955,7 @@ $router->get('/Game/Join.ashx', function() {
         $port = $joincode->port;
         $pid = $joincode->placeid;
         $placeinfo = $db->table("assets")->where("id", $joincode->placeid)->first();
-        $charappurl = "http://www.watrbx.wtf/CharacterFetch.aspx?Id=" . $currentuser->id . "&placeId=" . $pid;
+        $charappurl = "https://www.watrbx.wtf/CharacterFetch.aspx?Id=" . $currentuser->id . "&placeId=" . $pid;
         
         $clientticket = $func->generateClientTicket($currentuser->id, $currentuser->username,$charappurl, $joincode->jobid, file_get_contents("../storage/PrivateNut.pem"));
 
@@ -3977,7 +3977,7 @@ $router->get('/Game/Join.ashx', function() {
             "PlaceId" => $pid,
             "MeasurementUrl" => "", // No telemetry here :)
             "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
-            "BaseUrl" => "http://www.watrbx.wtf/",
+            "BaseUrl" => "https://www.watrbx.wtf/",
             "ChatStyle" => "ClassicAndBubble",
             "VendorId" => "0",
             "ScreenShotInfo" => "",

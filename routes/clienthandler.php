@@ -18,7 +18,7 @@ $router->get('/place/{id}/fetch', function($id){
             $asset = $db->table("assets")->where("id", $id)->first();
 
             if($asset){
-                header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
+                header("Location: https://cdn.watrbx.wtf/" . $asset->fileid);
                 die();
             } else {
                 http_response_code(403);
@@ -57,7 +57,7 @@ $router->get('/asset/', function() {
                 $asset = $db->table("assets")->where("id", $id)->first();
 
                 if($asset){
-                    header("Location: http://cdn.watrbx.wtf/" . $asset->fileid);
+                    header("Location: https://cdn.watrbx.wtf/" . $asset->fileid);
                     die();
                 }
 
@@ -89,7 +89,7 @@ $router->get('/asset/', function() {
                     if($asset->owner == $currentuser->id){
                         try {
                             header("Content-type: application/octet-stream");
-                            $asset = file_get_contents("http://cdn.watrbx.wtf/" . $asset->fileid);
+                            $asset = file_get_contents("https://cdn.watrbx.wtf/" . $asset->fileid);
                             $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
                             $asset = str_replace("watrbx.xyz", "watrbx.wtf", $asset);
                             die($asset);
@@ -108,7 +108,7 @@ $router->get('/asset/', function() {
             } else {
                 header("Content-type: application/octet-stream");
                 try {
-                    $asset = file_get_contents("http://cdn.watrbx.wtf/" . $asset->fileid);
+                    $asset = file_get_contents("https://cdn.watrbx.wtf/" . $asset->fileid);
                     $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
                     $asset = str_replace("watrbx.xyz", "watrbx.wtf", $asset);
                     die($asset);
@@ -206,7 +206,7 @@ $router->get("/Asset/BodyColors.ashx", function(){
     $auth = new authentication();
     $bodycolors = $auth->get_body_colors($userid);
 
-    die('<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.watrbx.wtf/roblox.xsd" version="4">
+    die('<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.watrbx.wtf/roblox.xsd" version="4">
 <External>null</External>
 <External>nil</External>
 <Item class="BodyColors" referent="RBX2DC0258909A9441E8A72097F024F5FC7">
