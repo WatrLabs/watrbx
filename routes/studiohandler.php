@@ -24,6 +24,10 @@ $router->get("/game/GetCurrentUser.ashx", function() {
 
 });
 
+$router->post('/ide/publish/uploadnewasset', function(){ 
+    die();
+});
+
 $router->get('/login/RequestAuth.ashx', function(){
     global $currentuser;
 
