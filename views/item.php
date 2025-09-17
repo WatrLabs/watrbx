@@ -161,8 +161,8 @@ if($currentuser !== null){
                 
                         <div id="assetContainer">
                             <div id="Thumbnail">
-                                <div id="AssetThumbnail" class="thumbnail-holder" data-reset-enabled-every-page  data-url="/thumbnail/asset?assetId=<?=$assetidbackup?>&amp;thumbnailFormatId=254&amp;width=320&amp;height=320" style="width:320px; height:320px;">
-                                    <span class="thumbnail-span" ><img  class='' src='<?=$thumb?>' /></span>
+                                <div id="AssetThumbnail" class="thumbnail-holder"  <? if($asset->prodcategory == 8) { echo "data-3d-thumbs-enabled"; } ?> data-url="/thumbnail/asset?assetId=<?=$asset->id?>&amp;thumbnailFormatId=254&amp;width=320&amp;height=320" style="width:320px; height:320px;">
+                                    <span class="thumbnail-span" data-3d-url="/asset-thumbnail-3d/json?assetId=<?=$asset->id?>"  data-js-files='https://js.rbxcdn.com/2cdabe2b5b7eb87399a8e9f18dd7ea05.js' ><img  class='' src='<?=$thumb?>' /></span>
                                     <span class="enable-three-dee btn-control btn-control-small"></span>
                                 </div>
                             </div>
