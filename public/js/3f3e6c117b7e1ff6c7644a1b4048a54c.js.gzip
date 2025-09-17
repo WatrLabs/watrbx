@@ -37,11 +37,11 @@ $(function(){function i(i){$.address.hash(i.attr("contentid")),$(".WhiteSquareTa
 ;// jquery/jquery.address-1.5.min.js
 /*
  * jQuery Address Plugin v1.5
- * http://www.asual.com/jquery/address/
+ * https://www.asual.com/jquery/address/
  *
  * Copyright (c) 2009-2010 Rostislav Hristov
  * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
+ * https://jquery.org/license
  *
  * Date: 2012-11-18 23:51:44 +0200 (Sun, 18 Nov 2012)
  */

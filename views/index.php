@@ -94,7 +94,7 @@ if($auth->hasaccount()){
 			var ga = document.createElement('script');
 			ga.type = 'text/javascript';
 			ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(ga, s);
 		})();
@@ -114,64 +114,64 @@ if($auth->hasaccount()){
 if (typeof(Roblox) === "undefined") { Roblox = {}; }
 Roblox.Endpoints = Roblox.Endpoints || {};
 Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
-Roblox.Endpoints.Urls['/asset/'] = 'http://www.watrbx.wtf/asset/';
-Roblox.Endpoints.Urls['/client-status/set'] = 'http://www.watrbx.wtf/client-status/set';
-Roblox.Endpoints.Urls['/client-status'] = 'http://www.watrbx.wtf/client-status';
-Roblox.Endpoints.Urls['/game/'] = 'http://www.watrbx.wtf/game/';
-Roblox.Endpoints.Urls['/game/edit.ashx'] = 'http://www.watrbx.wtf/game/edit.ashx';
-Roblox.Endpoints.Urls['/game/getauthticket'] = 'http://www.watrbx.wtf/game/getauthticket';
-Roblox.Endpoints.Urls['/game/placelauncher.ashx'] = 'http://www.watrbx.wtf/game/placelauncher.ashx';
-Roblox.Endpoints.Urls['/game/report-stats'] = 'http://www.watrbx.wtf/game/report-stats';
-Roblox.Endpoints.Urls['/game/report-event'] = 'http://www.watrbx.wtf/game/report-event';
-Roblox.Endpoints.Urls['/chat/chat'] = 'http://www.watrbx.wtf/chat/chat';
-Roblox.Endpoints.Urls['/chat/party/setting'] = 'http://www.watrbx.wtf/chat/party/setting';
-Roblox.Endpoints.Urls['/chat/get.ashx'] = 'http://www.watrbx.wtf/chat/get.ashx';
-Roblox.Endpoints.Urls['/chat/party.ashx'] = 'http://www.watrbx.wtf/chat/party.ashx';
-Roblox.Endpoints.Urls['/chat/send.ashx'] = 'http://www.watrbx.wtf/chat/send.ashx';
-Roblox.Endpoints.Urls['/chat/utility.ashx'] = 'http://www.watrbx.wtf/chat/utility.ashx';
-Roblox.Endpoints.Urls['/chat/friendhandler.ashx'] = 'http://www.watrbx.wtf/chat/friendhandler.ashx';
-Roblox.Endpoints.Urls['/presence/users'] = 'http://www.watrbx.wtf/presence/users';
-Roblox.Endpoints.Urls['/presence/user'] = 'http://www.watrbx.wtf/presence/user';
-Roblox.Endpoints.Urls['/friends/list'] = 'http://www.watrbx.wtf/friends/list';
-Roblox.Endpoints.Urls['/navigation/getCount'] = 'http://www.watrbx.wtf/navigation/getCount';
-Roblox.Endpoints.Urls['/catalog/browse.aspx'] = 'http://www.watrbx.wtf/catalog/browse.aspx';
-Roblox.Endpoints.Urls['/catalog'] = 'http://www.watrbx.wtf/catalog';
-Roblox.Endpoints.Urls['/catalog/'] = 'http://www.watrbx.wtf/catalog/';
-Roblox.Endpoints.Urls['/catalog/html'] = 'http://www.watrbx.wtf/catalog/html';
-Roblox.Endpoints.Urls['/catalog/json'] = 'http://www.watrbx.wtf/catalog/json';
-Roblox.Endpoints.Urls['/catalog/contents'] = 'http://www.watrbx.wtf/catalog/contents';
-Roblox.Endpoints.Urls['/catalog/lists.aspx'] = 'http://www.watrbx.wtf/catalog/lists.aspx';
-Roblox.Endpoints.Urls['/asset-hash-thumbnail/image'] = 'http://www.watrbx.wtf/asset-hash-thumbnail/image';
-Roblox.Endpoints.Urls['/asset-hash-thumbnail/json'] = 'http://www.watrbx.wtf/asset-hash-thumbnail/json';
-Roblox.Endpoints.Urls['/asset-thumbnail-3d/json'] = 'http://www.watrbx.wtf/asset-thumbnail-3d/json';
-Roblox.Endpoints.Urls['/asset-thumbnail/image'] = 'http://www.watrbx.wtf/asset-thumbnail/image';
-Roblox.Endpoints.Urls['/asset-thumbnail/json'] = 'http://www.watrbx.wtf/asset-thumbnail/json';
-Roblox.Endpoints.Urls['/asset-thumbnail/url'] = 'http://www.watrbx.wtf/asset-thumbnail/url';
-Roblox.Endpoints.Urls['/asset/request-thumbnail-fix'] = 'http://www.watrbx.wtf/asset/request-thumbnail-fix';
-Roblox.Endpoints.Urls['/avatar-thumbnail-3d/json'] = 'http://www.watrbx.wtf/avatar-thumbnail-3d/json';
-Roblox.Endpoints.Urls['/avatar-thumbnail/image'] = 'http://www.watrbx.wtf/avatar-thumbnail/image';
-Roblox.Endpoints.Urls['/avatar-thumbnail/json'] = 'http://www.watrbx.wtf/avatar-thumbnail/json';
-Roblox.Endpoints.Urls['/avatar-thumbnails'] = 'http://www.watrbx.wtf/avatar-thumbnails';
-Roblox.Endpoints.Urls['/avatar/request-thumbnail-fix'] = 'http://www.watrbx.wtf/avatar/request-thumbnail-fix';
-Roblox.Endpoints.Urls['/bust-thumbnail/json'] = 'http://www.watrbx.wtf/bust-thumbnail/json';
-Roblox.Endpoints.Urls['/group-thumbnails'] = 'http://www.watrbx.wtf/group-thumbnails';
-Roblox.Endpoints.Urls['/headshot-thumbnail/json'] = 'http://www.watrbx.wtf/headshot-thumbnail/json';
-Roblox.Endpoints.Urls['/item-thumbnails'] = 'http://www.watrbx.wtf/item-thumbnails';
-Roblox.Endpoints.Urls['/outfit-thumbnail/json'] = 'http://www.watrbx.wtf/outfit-thumbnail/json';
-Roblox.Endpoints.Urls['/place-thumbnails'] = 'http://www.watrbx.wtf/place-thumbnails';
-Roblox.Endpoints.Urls['/thumbnail/avatar-headshot/'] = 'http://www.watrbx.wtf/thumbnail/avatar-headshot/';
-Roblox.Endpoints.Urls['/thumbnail/avatar-headshots/'] = 'http://www.watrbx.wtf/thumbnail/avatar-headshots/';
-Roblox.Endpoints.Urls['/thumbnail/place/'] = 'http://www.watrbx.wtf/thumbnail/place/';
-Roblox.Endpoints.Urls['/thumbnail/user-avatar/'] = 'http://www.watrbx.wtf/thumbnail/user-avatar/';
-Roblox.Endpoints.Urls['/thumbnail/asset/'] = 'http://www.watrbx.wtf/thumbnail/asset/';
-Roblox.Endpoints.Urls['/thumbnail/resolve-hash/'] = 'http://www.watrbx.wtf/thumbnail/resolve-hash/';
-Roblox.Endpoints.Urls['/thumbnail/get-asset-media'] = 'http://www.watrbx.wtf/thumbnail/get-asset-media';
-Roblox.Endpoints.Urls['/thumbnail/remove-asset-media'] = 'http://www.watrbx.wtf/thumbnail/remove-asset-media';
-Roblox.Endpoints.Urls['/thumbnail/set-asset-media-sort-order'] = 'http://www.watrbx.wtf/thumbnail/set-asset-media-sort-order';
-Roblox.Endpoints.Urls['/thumbnail/place-thumbnails'] = 'http://www.watrbx.wtf/thumbnail/place-thumbnails';
-Roblox.Endpoints.Urls['/thumbnail/place-thumbnails-partial'] = 'http://www.watrbx.wtf/thumbnail/place-thumbnails-partial';
-Roblox.Endpoints.Urls['/thumbnail_holder/g'] = 'http://www.watrbx.wtf/thumbnail_holder/g';
-Roblox.Endpoints.Urls['/groups/getprimarygroupinfo.ashx'] = 'http://www.watrbx.wtf/groups/getprimarygroupinfo.ashx';
+Roblox.Endpoints.Urls['/asset/'] = 'https://www.watrbx.wtf/asset/';
+Roblox.Endpoints.Urls['/client-status/set'] = 'https://www.watrbx.wtf/client-status/set';
+Roblox.Endpoints.Urls['/client-status'] = 'https://www.watrbx.wtf/client-status';
+Roblox.Endpoints.Urls['/game/'] = 'https://www.watrbx.wtf/game/';
+Roblox.Endpoints.Urls['/game/edit.ashx'] = 'https://www.watrbx.wtf/game/edit.ashx';
+Roblox.Endpoints.Urls['/game/getauthticket'] = 'https://www.watrbx.wtf/game/getauthticket';
+Roblox.Endpoints.Urls['/game/placelauncher.ashx'] = 'https://www.watrbx.wtf/game/placelauncher.ashx';
+Roblox.Endpoints.Urls['/game/report-stats'] = 'https://www.watrbx.wtf/game/report-stats';
+Roblox.Endpoints.Urls['/game/report-event'] = 'https://www.watrbx.wtf/game/report-event';
+Roblox.Endpoints.Urls['/chat/chat'] = 'https://www.watrbx.wtf/chat/chat';
+Roblox.Endpoints.Urls['/chat/party/setting'] = 'https://www.watrbx.wtf/chat/party/setting';
+Roblox.Endpoints.Urls['/chat/get.ashx'] = 'https://www.watrbx.wtf/chat/get.ashx';
+Roblox.Endpoints.Urls['/chat/party.ashx'] = 'https://www.watrbx.wtf/chat/party.ashx';
+Roblox.Endpoints.Urls['/chat/send.ashx'] = 'https://www.watrbx.wtf/chat/send.ashx';
+Roblox.Endpoints.Urls['/chat/utility.ashx'] = 'https://www.watrbx.wtf/chat/utility.ashx';
+Roblox.Endpoints.Urls['/chat/friendhandler.ashx'] = 'https://www.watrbx.wtf/chat/friendhandler.ashx';
+Roblox.Endpoints.Urls['/presence/users'] = 'https://www.watrbx.wtf/presence/users';
+Roblox.Endpoints.Urls['/presence/user'] = 'https://www.watrbx.wtf/presence/user';
+Roblox.Endpoints.Urls['/friends/list'] = 'https://www.watrbx.wtf/friends/list';
+Roblox.Endpoints.Urls['/navigation/getCount'] = 'https://www.watrbx.wtf/navigation/getCount';
+Roblox.Endpoints.Urls['/catalog/browse.aspx'] = 'https://www.watrbx.wtf/catalog/browse.aspx';
+Roblox.Endpoints.Urls['/catalog'] = 'https://www.watrbx.wtf/catalog';
+Roblox.Endpoints.Urls['/catalog/'] = 'https://www.watrbx.wtf/catalog/';
+Roblox.Endpoints.Urls['/catalog/html'] = 'https://www.watrbx.wtf/catalog/html';
+Roblox.Endpoints.Urls['/catalog/json'] = 'https://www.watrbx.wtf/catalog/json';
+Roblox.Endpoints.Urls['/catalog/contents'] = 'https://www.watrbx.wtf/catalog/contents';
+Roblox.Endpoints.Urls['/catalog/lists.aspx'] = 'https://www.watrbx.wtf/catalog/lists.aspx';
+Roblox.Endpoints.Urls['/asset-hash-thumbnail/image'] = 'https://www.watrbx.wtf/asset-hash-thumbnail/image';
+Roblox.Endpoints.Urls['/asset-hash-thumbnail/json'] = 'https://www.watrbx.wtf/asset-hash-thumbnail/json';
+Roblox.Endpoints.Urls['/asset-thumbnail-3d/json'] = 'https://www.watrbx.wtf/asset-thumbnail-3d/json';
+Roblox.Endpoints.Urls['/asset-thumbnail/image'] = 'https://www.watrbx.wtf/asset-thumbnail/image';
+Roblox.Endpoints.Urls['/asset-thumbnail/json'] = 'https://www.watrbx.wtf/asset-thumbnail/json';
+Roblox.Endpoints.Urls['/asset-thumbnail/url'] = 'https://www.watrbx.wtf/asset-thumbnail/url';
+Roblox.Endpoints.Urls['/asset/request-thumbnail-fix'] = 'https://www.watrbx.wtf/asset/request-thumbnail-fix';
+Roblox.Endpoints.Urls['/avatar-thumbnail-3d/json'] = 'https://www.watrbx.wtf/avatar-thumbnail-3d/json';
+Roblox.Endpoints.Urls['/avatar-thumbnail/image'] = 'https://www.watrbx.wtf/avatar-thumbnail/image';
+Roblox.Endpoints.Urls['/avatar-thumbnail/json'] = 'https://www.watrbx.wtf/avatar-thumbnail/json';
+Roblox.Endpoints.Urls['/avatar-thumbnails'] = 'https://www.watrbx.wtf/avatar-thumbnails';
+Roblox.Endpoints.Urls['/avatar/request-thumbnail-fix'] = 'https://www.watrbx.wtf/avatar/request-thumbnail-fix';
+Roblox.Endpoints.Urls['/bust-thumbnail/json'] = 'https://www.watrbx.wtf/bust-thumbnail/json';
+Roblox.Endpoints.Urls['/group-thumbnails'] = 'https://www.watrbx.wtf/group-thumbnails';
+Roblox.Endpoints.Urls['/headshot-thumbnail/json'] = 'https://www.watrbx.wtf/headshot-thumbnail/json';
+Roblox.Endpoints.Urls['/item-thumbnails'] = 'https://www.watrbx.wtf/item-thumbnails';
+Roblox.Endpoints.Urls['/outfit-thumbnail/json'] = 'https://www.watrbx.wtf/outfit-thumbnail/json';
+Roblox.Endpoints.Urls['/place-thumbnails'] = 'https://www.watrbx.wtf/place-thumbnails';
+Roblox.Endpoints.Urls['/thumbnail/avatar-headshot/'] = 'https://www.watrbx.wtf/thumbnail/avatar-headshot/';
+Roblox.Endpoints.Urls['/thumbnail/avatar-headshots/'] = 'https://www.watrbx.wtf/thumbnail/avatar-headshots/';
+Roblox.Endpoints.Urls['/thumbnail/place/'] = 'https://www.watrbx.wtf/thumbnail/place/';
+Roblox.Endpoints.Urls['/thumbnail/user-avatar/'] = 'https://www.watrbx.wtf/thumbnail/user-avatar/';
+Roblox.Endpoints.Urls['/thumbnail/asset/'] = 'https://www.watrbx.wtf/thumbnail/asset/';
+Roblox.Endpoints.Urls['/thumbnail/resolve-hash/'] = 'https://www.watrbx.wtf/thumbnail/resolve-hash/';
+Roblox.Endpoints.Urls['/thumbnail/get-asset-media'] = 'https://www.watrbx.wtf/thumbnail/get-asset-media';
+Roblox.Endpoints.Urls['/thumbnail/remove-asset-media'] = 'https://www.watrbx.wtf/thumbnail/remove-asset-media';
+Roblox.Endpoints.Urls['/thumbnail/set-asset-media-sort-order'] = 'https://www.watrbx.wtf/thumbnail/set-asset-media-sort-order';
+Roblox.Endpoints.Urls['/thumbnail/place-thumbnails'] = 'https://www.watrbx.wtf/thumbnail/place-thumbnails';
+Roblox.Endpoints.Urls['/thumbnail/place-thumbnails-partial'] = 'https://www.watrbx.wtf/thumbnail/place-thumbnails-partial';
+Roblox.Endpoints.Urls['/thumbnail_holder/g'] = 'https://www.watrbx.wtf/thumbnail_holder/g';
+Roblox.Endpoints.Urls['/groups/getprimarygroupinfo.ashx'] = 'https://www.watrbx.wtf/groups/getprimarygroupinfo.ashx';
 </script>
 
     <script type="text/javascript">
@@ -789,7 +789,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
                         <a href="//corp.watrbx.wtf" target="_blank">About Us</a>
                         <a href="//corp.watrbx.wtf/jobs" target="_blank">Jobs</a>
                     <a href="//blog.watrbx.wtf" target="_blank">Blog</a>
-                    <a href="http://www.watrbx.wtf/Info/Privacy.aspx" target="_blank">Privacy</a>
+                    <a href="https://www.watrbx.wtf/Info/Privacy.aspx" target="_blank">Privacy</a>
                     <a href="//corp.watrbx.wtf/parents" target="_blank">Parents</a>
                     <a href="//en.help.watrbx.wtf/" target="_blank">Help</a>
                 </div>
@@ -797,7 +797,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
             <div class="row">
                 <div id="FooterLegalText" class="col-xs-11 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-justify">
                     ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="//corp.watrbx.wtf">ROBLOX Corporation</a>, ©2015. Patents pending.
-                    ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended. Use of this site signifies your acceptance of the <a href="http://www.watrbx.wtf/info/terms-of-service" target="_blank">Terms and Conditions</a>.
+                    ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended. Use of this site signifies your acceptance of the <a href="https://www.watrbx.wtf/info/terms-of-service" target="_blank">Terms and Conditions</a>.
                 </div>
             </div>
         </div>

@@ -1,13 +1,29 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
+use watrbx\forums;
+use watrlabs\authentication;
 $pagebuilder = new pagebuilder();
+$forums = new forums();
+$auth = new authentication();
+
+if(isset($_GET["PostID"])){
+	$PostID = (int)$_GET["PostID"];
+
+    $postInfo = $forums->getPostInfo($PostID);
+    $authorinfo = $auth->getuserbyid($postInfo->userid);
+
+} else {
+	http_response_code(404);
+	$pagebuilder::get_template("status_codes/404");
+	die();
+}
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___52c69b42777a376ab8c76204ed8e75e2_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___f6e33d41f2d5a62b5a238c0bbdc70438_m.css');
 $pagebuilder->addresource('cssfiles', '/Forum/skins/default/style/default.css');
 $pagebuilder->addresource('jsfiles', '/js/92d454a11b2b7266829922801d327151.js');
 $pagebuilder->addresource('jsfiles', '/js/16994b0cbe9c1d943e0de0fade860343.js');
-$pagebuilder->set_page_name("Forum");
+$pagebuilder->set_page_name($postInfo->title);
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
@@ -67,13 +83,6 @@ $pagebuilder->buildheader();
         <div id="forum-nav" style="text-align: right">
             <a id="ctl00_cphRoblox_PostView1_ctl00_Navigationmenu1_ctl00_HomeMenu" class="menuTextLink first" href="/Forum/Default.aspx">Home</a>
             <a id="ctl00_cphRoblox_PostView1_ctl00_Navigationmenu1_ctl00_SearchMenu" class="menuTextLink" href="/Forum/Search/default.aspx">Search</a>
-            
-            
-            
-            
-            
-            
-            
         </div>
         </span>
             </td>
@@ -83,7 +92,7 @@ $pagebuilder->buildheader();
           </tr>
           <tr>
             <td align="left" colSpan="2">
-                <h2 id="ctl00_cphRoblox_PostView1_ctl00_PostTitle" CssClass="notranslate" style="margin-bottom:20px">Does your security lift?</h2>
+                <h2 id="ctl00_cphRoblox_PostView1_ctl00_PostTitle" CssClass="notranslate" style="margin-bottom:20px"><?=$postInfo->title?></h2>
             </td>
           </tr>
           <tr>
@@ -111,29 +120,37 @@ $pagebuilder->buildheader();
             </tr><tr class="forum-post">
                 <td class="forum-content-background" valign="top" style="width:150px;white-space:nowrap;"><table border="0">
                     <tr>
-                        <td><img src="/Forum/skins/default/images/user_IsOffline.gif" alt="MajorTom4321 is not online." style="border-width:0px;" />&nbsp;<a class="normalTextSmallBold notranslate" href="/users/1113299/profile">MajorTom4321</a><br></td>
+                        <td><img src="/Forum/skins/default/images/user_IsOffline.gif" alt="MajorTom4321 is not online." style="border-width:0px;" />&nbsp;<a class="normalTextSmallBold notranslate" href="/users/<?=$authorinfo->id?>/profile"><?=$authorinfo->username?></a><br></td>
                     </tr><tr>
-                        <td><a href="/users/1113299/profile" style="width:100px;height:100px;position:relative;"><img src="http://assetgame.roblox.com/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=MajorTom4321" style="border-width:0px;width:100px;height:100px;" /><img src="/Thumbs/BCOverlay.ashx?username=MajorTom4321" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
-                    </tr><tr>
+                        <td><a href="/users/1113299/profile" style="width:100px;height:100px;position:relative;"><img src="https://www.watrbx.wtf/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=<?=$authorinfo->username?>" style="border-width:0px;width:100px;height:100px;" /><img src="/Thumbs/BCOverlay.ashx?username=<?=$authorinfo->username?>" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
+                    </tr>
+                    
+                    <?php
+                        if($authorinfo->is_admin == 1){
+                            echo '<tr>
                         <td><img src="/Forum/skins/default/images/users_moderator.gif" alt="Forum Moderator" style="border-width:0px;" /></td>
+                    </tr>';
+                        }
+                    ?>
+
+                    <tr>
+                        <td><span class="normalTextSmaller"><b>Joined:</b> <?=date("d M Y", $authorinfo->regtime)?></span></td>
                     </tr><tr>
-                        <td><span class="normalTextSmaller"><b>Joined:</b> 20 Sep 2008</span></td>
+                        <td><span class="normalTextSmaller"><b>Total Posts: </b>1</span></td>
                     </tr><tr>
-                        <td><span class="normalTextSmaller"><b>Total Posts: </b>437</span></td>
-                    </tr><tr>
-                        <td style="height:20px;"><span class="normalTextSmaller primaryGroupInfo notranslate" username="MajorTom4321" style="display:none;"></span></td>
+                        <td style="height:20px;"><span class="normalTextSmaller primaryGroupInfo notranslate" username="<?=$authorinfo->username?>" style="display:none;"></span></td>
                     </tr>
                 </table></td><td class="forum-content-background" valign="top"><table cellspacing="0" cellpadding="3" border="0" style="width:100%;border-collapse:collapse;table-layout:fixed;overflow:hidden;word-wrap:break-word;">
                     <tr>
-                        <td colspan="2"><span class="normalTextSmaller">04 Sep 2013 06:56 PM<a name="112156401"/></span></td>
+                        <td colspan="2"><span class="normalTextSmaller"><?=date('d M Y h:i A', $postInfo->date);?></span></td>
                     </tr><tr>
-                        <td valign="top" colspan="2" style="height:125px;"><span class="normalTextSmall notranslate linkify"><br />**How can I Keep my Account Secure?**<br />(How many reps can you do?)<br /><br />The most important step to take is to never give out your info, like your password or sensitive computer information like cookies, files or even seemingly random bits of text or other information from your browser or your computer. Requests for this information are often combined with fake offers of free currency(Robux), items, or Builders Club.  They may claim to be an official ROBLOX survey or promotion (we cover how to know a real ROBLOX promotion/survey below).  The only thing you&#39;ll get from these fake offers is a stolen account with all your items and currency taken. <br /> <br />Important ways to keep your account secure:<br /><br /> - Have a strong password. ROBLOX requires a password be 6-20 characters long and have 2 numbers and 4 letters, but we also recommend using non-alphanumeric characters (e.g. @#%-).  Make sure your password cannot easily be guessed.  It should be something only you would know.  Including your user name as part of your password is never a good idea.<br /><br /> - Log out of your account any time you use a public/shared computer such as at school or a library, or after using a computer at another person&#39;s house.<br /><br /> - Never download any program or .exe file from an untrustworthy source and always have your parent&#39;s assistance and permission before downloading any file or program.<br /><br /> - Never change your email address on the account to someone else’s. Doing so, will allow that person to get password resets for your account.<br /><br /> - Verify your email address. Verifying your email address alerts you to changes in your password or email address on your account.<br /><br /> - Don’t fall for fake promotions, surveys or scams. ROBLOX promotions and surveys are always announced on our Official blog or via the Notification system and they will NEVER ask you for your password.  If anyone asks you for your password in a survey or an offer for free memberships or Robux, this is a scam to steal your account. ROBLOX Staff will NEVER ask you for your password.<br /><br />**Reporting Abuse**<br />(Phishers and scammers can’t lift this, bro.)<br /><br />If you see someone asking for passwords or other personal information, posting offsite links, or attempt to exploit or sharing exploits, please use the Report Abuse buttons located throughout the site.  Reporting allows our Moderators to remove the content and moderate the accounts. These are violations of the ROBLOX Terms of Service and Community Rules and Guidelines.<br /><br />**Further Reading**<br />(Lifts ovar 9000.)<br /><br />https://en.help.roblox.com/entries/21371961-Account-Security-Theft-Keep-your-Account-Safe-Don-t-get-Phished-<br />https://en.help.roblox.com/entries/222008-How-to-change-your-password<br /><br />https://en.help.roblox.com/entries/221991-Verify-Email-Address-Verified-Sign-Hat<br /><br />http://blog.roblox.com/2012/11/be-hack-proof-tips-to-keep-your-account-secure/</span></td>
+                        <td valign="top" colspan="2" style="height:125px;"><span class="normalTextSmall notranslate linkify"><br /><?=$postInfo->content?></td>
                     </tr><tr>
                         <td colspan="2"><span class="normalTextSmaller notranslate"></span></td>
                     </tr><tr>
                         <td style="height:2px;"></td>
                     </tr><tr>
-                        <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=112156401&amp;RedirectUrl=http%3a%2f%2fforum.roblox.com%2fForum%2fShowPost.aspx%3fPostID%3d112156401">Report Abuse</a></span></span></span></td>
+                        <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=">Report Abuse</a></span></span></span></td>
                     </tr>
                 </table></td>
             </tr><tr>
@@ -160,6 +177,11 @@ $pagebuilder->buildheader();
                 
             </td>
           </tr>
+          <tr>
+                <td colSpan="2"><div style="text-align: center; margin: 5px 0;">
+            <a href="/Forum/NewReply.aspx?PostID=<?=$postInfo->id?>" class="btn-control btn-control-medium verified-email-act" id="ctl00_cphRoblox_PostReply1_ctl00_NewPostReply">Add a Reply</a>
+            </div></td>
+            </tr>
           <tr>
             <td colSpan="2">&nbsp;</td>
           </tr>
@@ -284,17 +306,17 @@ $pagebuilder->buildheader();
             <div class="footer">
                 <ul class="row footer-links">
                         <li class="col-4 col-xs-2 footer-link">
-                            <a href="http://corp.roblox.com" class="text-footer-nav roblox-interstitial" target="_blank">
+                            <a href="https://corp.roblox.com" class="text-footer-nav roblox-interstitial" target="_blank">
                                 About Us
                             </a>
                         </li>
                         <li class="col-4 col-xs-2 footer-link">
-                            <a href="http://corp.roblox.com/jobs" class="text-footer-nav roblox-interstitial" target="_blank">
+                            <a href="https://corp.roblox.com/jobs" class="text-footer-nav roblox-interstitial" target="_blank">
                                 Jobs
                             </a>
                         </li>
                     <li class="col-4 col-xs-2 footer-link">
-                        <a href="http://blog.roblox.com" class="text-footer-nav" target="_blank">
+                        <a href="https://blog.roblox.com" class="text-footer-nav" target="_blank">
                             Blog
                         </a>
                     </li>
@@ -304,18 +326,18 @@ $pagebuilder->buildheader();
                         </a>
                     </li>
                     <li class="col-4 col-xs-2 footer-link">
-                        <a href="http://corp.roblox.com/parents" class="text-footer-nav roblox-interstitial" target="_blank">
+                        <a href="https://corp.roblox.com/parents" class="text-footer-nav roblox-interstitial" target="_blank">
                             Parents
                         </a>
                     </li>
                     <li class="col-4 col-xs-2 footer-link">
-                        <a href="http://en.help.roblox.com/" class="text-footer-nav roblox-interstitial" target="_blank">
+                        <a href="https://en.help.roblox.com/" class="text-footer-nav roblox-interstitial" target="_blank">
                             Help
                         </a>
                     </li>
                 </ul>
                 <p class="text-footer footer-note">
-                    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="http://corp.roblox.com" class="text-link roblox-interstitial">ROBLOX Corporation</a>, ©2016.
+                    ROBLOX, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of <a target="_blank" href="https://corp.roblox.com" class="text-link roblox-interstitial">ROBLOX Corporation</a>, ©2016.
                     Patents pending. ROBLOX is not sponsored, authorized or endorsed by any producer of plastic building bricks, including The LEGO Group, MEGA Brands, and K'Nex, and no resemblance to the products of these companies is intended.
                     Use of this site signifies your acceptance of the <a href="/info/terms-of-service" target="_blank" class="text-link">Terms and Conditions</a>.
                 </p>
@@ -380,7 +402,7 @@ $pagebuilder->buildheader();
         <div id="pluginObjDiv" style="height:1px;width:1px;visibility:hidden;position: absolute;top: 0;"></div>
         <iframe id="downloadInstallerIFrame" style="visibility:hidden;height:0;width:1px;position:absolute"></iframe>
         
-        <script type='text/javascript' src='http://js.rbxcdn.com/1ba208cf31fb5a6a592b902955c8770b.js'></script>
+        <script type='text/javascript' src='https://js.rbxcdn.com/1ba208cf31fb5a6a592b902955c8770b.js'></script>
         
         <script type="text/javascript">
             Roblox.Client._skip = '/install/unsupported.aspx';
@@ -419,7 +441,7 @@ $pagebuilder->buildheader();
              data-protocol-detection-enabled="true">
             <div class="modalPopup blueAndWhite PlaceLauncherModal" style="min-height: 160px">
                 <div id="Spinner" class="Spinner" style="padding:20px 0;">
-                    <img src="http://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
+                    <img src="https://images.rbxcdn.com/e998fb4c03e8c2e30792f2f3436e9416.gif" height="32" width="32" alt="Progress" />
                 </div>
                 <div id="status" style="min-height:40px;text-align:center;margin:5px 20px">
                     <div id="Starting" class="PlaceLauncherStatus MadStatusStarting" style="display:block">
@@ -439,14 +461,14 @@ $pagebuilder->buildheader();
         
                 </div>
                 <div class="ph-logo-row">
-                    <img src="http://images.rbxcdn.com/e060b59b57fdcc7874c820d13fdcee71.svg" width="90" height="90" alt="R" />
+                    <img src="https://images.rbxcdn.com/e060b59b57fdcc7874c820d13fdcee71.svg" width="90" height="90" alt="R" />
                 </div>
                 <div class="ph-areyouinstalleddialog-content">
                     <p class="larger-font-size">
                         ROBLOX is now loading. Get ready to play!
                     </p>
                     <div class="ph-startingdialog-spinner-row">
-                        <img src="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
+                        <img src="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif" width="82" height="24" />
                     </div>
                 </div>
             </div>
@@ -457,7 +479,7 @@ $pagebuilder->buildheader();
                     <span class="icon-close simplemodal-close"></span>
                 </div>
                 <div class="ph-logo-row">
-                    <img src="http://images.rbxcdn.com/e060b59b57fdcc7874c820d13fdcee71.svg" width="90" height="90" alt="R" />
+                    <img src="https://images.rbxcdn.com/e060b59b57fdcc7874c820d13fdcee71.svg" width="90" height="90" alt="R" />
                 </div>
                 <div class="ph-areyouinstalleddialog-content">
                     <p class="larger-font-size">
@@ -478,7 +500,7 @@ $pagebuilder->buildheader();
         <div id="ProtocolHandlerClickAlwaysAllowed" class="ph-clickalwaysallowed" style="display:none;">
             <p class="larger-font-size">
                 <span class="icon-moreinfo"></span>
-                Check <b>Remember my choice</b> and click <img src="http://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
+                Check <b>Remember my choice</b> and click <img src="https://images.rbxcdn.com/7c8d7a39b4335931221857cca2b5430b.png" alt="Launch Application" />  in the dialog box above to join games faster in the future!
             </p>
         </div>
         
@@ -637,19 +659,185 @@ $pagebuilder->buildheader();
                 });
             </script>
             <script>
-                var _comscore = _comscore || [];
-                _comscore.push({ c1: "2", c2: "6035605", c3: "", c4: "", c15: "" });
-        
-                (function() {
-                    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0];
-                    s.async = true;
-                    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
-                    el.parentNode.insertBefore(s, el);
-                })();
-            </script>
-            <noscript>
-                <img src="http://b.scorecardresearch.com/p?c1=2&c2=&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"/>
-            </noscript>
+
+        //hacky workaround until I can fix it not working on legacy pages
+        // leancore/Navigation.js
+$(function() {
+    "use strict";
+    function h() {
+        return $("#nav-friends").data().count
+    }
+    function e(n, t) {
+        if (n == 0)
+            return "";
+        if (n < t)
+            return n.toString();
+        switch (t) {
+        case f:
+            return "1k+";
+        case u:
+            return "99+";
+        default:
+            return ""
+        }
+    }
+    function o(n) {
+        var f = h(), i = n + f, t = $(".rbx-nav-collapse .rbx-nav-notification"), r;
+        if (i == 0 && !t.hasClass("hide")) {
+            t.addClass("hide");
+            return
+        }
+        r = e(i, u),
+        t.html(r),
+        i > 0 && t.removeClass("hide"),
+        t.attr("title", i)
+    }
+    function c() {
+        var n = "/navigation/getCount";
+        $.ajax({
+            url: n,
+            success: function(n) {
+                var t = $("#nav-friends")
+                  , i = t.find(".rbx-highlight");
+                t.attr("href", n.FriendNavigationUrl),
+                t.data("count", n.TotalFriendRequests),
+                i.html(n.DisplayCountFriendRequests),
+                i.attr("title", n.TotalFriendRequests),
+                o(n.TotalFriendRequests)
+            }
+        })
+    }
+    function a(n) {
+        var i = $('[data-behavior="univeral-search"] .rbx-navbar-search-option')
+          , t = -1;
+        $.each(i, function(n, i) {
+            $(i).hasClass("selected") && ($(i).removeClass("selected"),
+            t = n)
+        }),
+        t += n.which === 38 ? i.length - 1 : 1,
+        t %= i.length,
+        $(i[t]).addClass("selected")
+    }
+    var s;
+    ($(".rbx-left-col").length == 0 || $(".rbx-left-col").width() == 0) && ($("#header-login").length != 0 || $("#GamesListsContainer").length != 0) && ($("#navContent").css({
+        "margin-left": "0px",
+        width: "100%"
+    }),
+    $("#navContent").addClass("nav-no-left")),
+    $(window).resize(function() {
+        ($(".rbx-left-col").length == 0 || $(".rbx-left-col").width() == 0) && ($("#header-login").length != 0 || $("#GamesListsContainer").length != 0) ? ($("#navContent").css({
+            "margin-left": "0px",
+            width: "100%"
+        }),
+        $("#navContent").addClass("nav-no-left")) : $("#navContent").css({
+            "margin-left": "",
+            width: ""
+        })
+    });
+    var u = 99
+      , f = 1e3
+      , i = 1;
+    $(document).on("Roblox.Messages.CountChanged", function() {
+        var n = Roblox.websiteLinks.GetMyUnreadMessagesCountLink;
+        $.ajax({
+            url: n,
+            success: function(n) {
+                var t = $("#nav-message span.rbx-highlight")
+                  , i = e(n.count, f);
+                t.html(i),
+                t.attr("title", n.count),
+                o(n.count)
+            }
+        })
+    }).on("Roblox.Friends.CountChanged", c);
+    $('[data-behavior="nav-notification"]').click(function() {
+        $('[data-behavior="left-col"]').toggleClass("nav-show", 100)
+    });
+    var t = $("#navbar-universal-search")
+      , n = $("#navbar-universal-search #navbar-search-input")
+      , r = $("#navbar-universal-search .rbx-navbar-search-option")
+      , l = $("#navbar-universal-search #navbar-search-btn");
+    n.on("keydown", function(n) {
+        var t = $(this).val();
+        (n.which === 9 || n.which === 38 || n.which === 40) && t.length > 0 && (n.stopPropagation(),
+        n.preventDefault(),
+        a(n))
+    });
+    n.on("keyup", function(n) {
+        var r = $(this).val(), u, f;
+        n.which === 13 ? (n.stopPropagation(),
+        n.preventDefault(),
+        u = t.find(".rbx-navbar-search-option.selected"),
+        f = u.data("searchurl"),
+        r.length >= i && (window.location = f + encodeURIComponent(r))) : r.length > 0 ? (t.toggleClass("rbx-navbar-search-open", !0),
+        $('[data-toggle="dropdown-menu"] .rbx-navbar-search-string').text('"' + r + '"')) : t.toggleClass("rbx-navbar-search-open", !1)
+    });
+    l.click(function(t) {
+        t.stopPropagation(),
+        t.preventDefault();
+        var r = n.val()
+          , u = $("#navbar-universal-search .rbx-navbar-search-option.selected")
+          , f = u.data("searchurl");
+        r.length >= i && (window.location = f + encodeURIComponent(r))
+    });
+    r.on("click touchstart", function(t) {
+        var r, u;
+        t.stopPropagation(),
+        r = n.val(),
+        r.length >= i && (u = $(this).data("searchurl"),
+        window.location = u + encodeURIComponent(r))
+    });
+    r.on("mouseover", function() {
+        r.removeClass("selected"),
+        $(this).addClass("selected")
+    });
+    n.on("focus", function() {
+        var i = n.val();
+        i.length > 0 && t.addClass("rbx-navbar-search-open")
+    });
+    $('[data-toggle="toggle-search"]').on("click touchstart", function(n) {
+        return n.stopPropagation(),
+        $('[data-behavior="univeral-search"]').toggleClass("show"),
+        !1
+    });
+    $(".rbx-navbar-right").on("click touchstart", '[data-behavior="logout"]', function(n) {
+        var i, t;
+        n.stopPropagation(),
+        n.preventDefault(),
+        i = $(this),
+        typeof angular == "undefined" || angular.isUndefined(angular.element("#chat-container").scope()) || (t = angular.element("#chat-container").scope(),
+        t.$digest(t.$broadcast("Roblox.Chat.destroyChatCookie"))),
+        $.post(i.attr("data-bind"), {
+            redirectTohome: !1
+        }, function() {
+            window.location.href = "/"
+        })
+    });
+    $("#nav-robux-icon").on("show.bs.popover", function() {
+        $("body").scrollLeft(0)
+    });
+    s = function(n) {
+        var t, i;
+        n.indexOf("resize") != -1 && (t = n.split(","),
+        $("#iframe-login").css({
+            height: t[1]
+        })),
+        n.indexOf("fbRegister") != -1 && (t = n.split("^"),
+        i = "&fbname=" + encodeURIComponent(t[1]) + "&fbem=" + encodeURIComponent(t[2]) + "&fbdt=" + encodeURIComponent(t[3]),
+        window.location.href = "../Login/Default.aspx?iFrameFacebookSync=true" + i)
+    }
+    ,
+    $.receiveMessage(function(n) {
+        s(n.data)
+    });
+    $("body").on("click touchstart", function(n) {
+        $('[data-behavior="univeral-search"]').each(function() {
+            $(this).is(n.target) || $(this).has(n.target).length !== 0 || $(this).removeClass("rbx-navbar-search-open"),
+            $(this).has(n.target).length === 0 && $('[data-toggle="toggle-search"]').has(n.target).length === 0 && $('[data-behavior="univeral-search"]').css("display") === "block" && $('[data-behavior="univeral-search"]').removeClass("show")
+        })
+    })
+});    
+    </script>
         
         </body>                
         </html>

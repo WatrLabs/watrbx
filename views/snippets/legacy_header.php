@@ -494,12 +494,12 @@ if($ismobile == false){ ?>
                 </li>
                 <li>
                     <a href="/my/money.aspx#/#TradeItems_tab" id="nav-trade">
-                        <span class="rbx-icon-nav-trade"></span><span>Trade</span>
+                        <span class="rbx-icon-nav-trade"></span><span class="disabled">Trade</span>
                     </a>
                 </li>
                 <li>
                     <a href="/My/Groups.aspx" id="nav-group">
-                        <span class="rbx-icon-nav-group"></span><span>Groups</span>
+                        <span class="rbx-icon-nav-group"></span><span class="disabled">Groups</span>
                     </a>
                 </li>
                 <li>
@@ -509,7 +509,7 @@ if($ismobile == false){ ?>
                 </li>
                 <li>
                     <a href="#" id="nav-blog">
-                        <span class="rbx-icon-nav-blog"></span><span>Blog</span>
+                        <span class="rbx-icon-nav-blog"></span><span class="disabled">Blog</span>
                     </a>
                 </li>
                 <li class="rbx-upgrade-now">

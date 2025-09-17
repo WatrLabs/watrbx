@@ -120,7 +120,7 @@ $pagebuilder->buildheader();
                             <h2 class="light">
                                     <span class="robux">&nbsp;</span>
                                     <span>Robux</span>
-                                    <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="The principal currency of Robloxia, which Builders Club members receive a daily allowance of to live a comfortable life of leisure. For this and other benefits, join Builders Club! Alternately, you can purchase ROBUX using our secure payment system." />
+                                    <img src="https://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="The principal currency of Robloxia, which Builders Club members receive a daily allowance of to live a comfortable life of leisure. For this and other benefits, join Builders Club! Alternately, you can purchase ROBUX using our secure payment system." />
                             </h2>
                             <table class="table" cellpadding="0" cellspacing="0" border="0" >
                             <tr class="table-header">
@@ -161,7 +161,7 @@ $pagebuilder->buildheader();
                             </tr>
                             
                             <tr  >
-                                <td class="Categories">Pending Sales <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="As an anti fraud precaution, revenue from certain transactions, such as Game Pass sales, is held for a short period of time before being released to the seller." /></td>
+                                <td class="Categories">Pending Sales <img src="https://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="As an anti fraud precaution, revenue from certain transactions, such as Game Pass sales, is held for a short period of time before being released to the seller." /></td>
                                 <td class="Credit R_PendingSales">&nbsp;</td>
                             </tr> 
                             
@@ -181,7 +181,7 @@ $pagebuilder->buildheader();
                             <h2 class="light">
                                 <span class="tickets">&nbsp;</span>
                                 <span>Tickets</span>
-                                <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Similar to tickets won in an arcade - play the game, earn tickets, and get rewarded with fabulous prizes. Tickets are granted to citizens who help expand and improve Robloxia. The best way to get tickets is to attract a lot of visitors to a cool place that you create. You can also get the daily login bonus just by showing up!" />
+                                <img src="https://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Similar to tickets won in an arcade - play the game, earn tickets, and get rewarded with fabulous prizes. Tickets are granted to citizens who help expand and improve Robloxia. The best way to get tickets is to attract a lot of visitors to a cool place that you create. You can also get the daily login bonus just by showing up!" />
                             </h2>
                             <table class="table" cellpadding="0" cellspacing="0" border="0" >
                             <tr class="table-header">
@@ -203,7 +203,7 @@ $pagebuilder->buildheader();
                             
 
                             <tr  >
-                                <td class="Categories">Pending Sales <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="As an anti fraud precaution, revenue from certain transactions, such as Game Pass sales, is held for a short period of time before being released to the seller." /></td>
+                                <td class="Categories">Pending Sales <img src="https://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="As an anti fraud precaution, revenue from certain transactions, such as Game Pass sales, is held for a short period of time before being released to the seller." /></td>
                                 <td class="Credit T_PendingSales">&nbsp;</td>
                             </tr> 
                                 
@@ -740,7 +740,7 @@ $(function() {
     <div class="separator-horizontal"></div>
     <h2>
         New Visitors
-        <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Number of people who clicked on your links who have never been on ROBLOX before." />
+        <img src="https://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Number of people who clicked on your links who have never been on ROBLOX before." />
     </h2>
     <div class="separator-horizontal"></div>
     
@@ -763,7 +763,7 @@ $(function() {
     <div class="separator-horizontal"></div>
     <h2>
         Signups
-        <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Number of new visitors from your links who signed up." />
+        <img src="https://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="Number of new visitors from your links who signed up." />
     </h2>
     <div class="separator-horizontal"></div>
 
@@ -786,7 +786,7 @@ $(function() {
     <div class="separator-horizontal"></div>
     <h2>
         Promotional Revenue
-        <img src="http://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="ROBUX earned through your promotional links." />
+        <img src="https://images.rbxcdn.com/d3246f1ece35d773099f876a31a38e5a.png" class="tooltip" title="ROBUX earned through your promotional links." />
     </h2>
     <div class="separator-horizontal"></div>
 
@@ -827,7 +827,7 @@ $(function() {
             <span class="ad-identification">
                 Advertisement
             </span>
-                <a class="BadAdButton" href="http://www.roblox.com/Ads/ReportAd.aspx" title="click to report an offensive ad">Report</a>
+                <a class="BadAdButton" href="https://www.roblox.com/Ads/ReportAd.aspx" title="click to report an offensive ad">Report</a>
         </div>
     <script type="text/javascript">
         googletag.cmd.push(function () {

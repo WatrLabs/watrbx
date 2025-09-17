@@ -337,7 +337,7 @@ $pagebuilder->buildheader();
                             <div class="GroupMember" >
                         <div class="Avatar">
                                     <span class="OfflineStatus"><img id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl0_iOfflineStatus" src="../images/offline.png" alt="ROBLOX is offline (last seen at 12/25/2015 1:00:00 PM." style="border-width:0px;" /></span>
-                          <a id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl0_hlAvatar" class=" notranslate" title="ROBLOX" class=" notranslate" href="/users/1/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="http://t6.rbxcdn.com/c9055db1963c0afc0afe44ab1f28bebf" height="100" width="100" border="0" alt="ROBLOX" class=" notranslate" /></a>
+                          <a id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl0_hlAvatar" class=" notranslate" title="ROBLOX" class=" notranslate" href="/users/1/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="https://t6.rbxcdn.com/c9055db1963c0afc0afe44ab1f28bebf" height="100" width="100" border="0" alt="ROBLOX" class=" notranslate" /></a>
                                 </div>
                         <div class="Summary" >
                           <span class="Name"><a id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl0_hlMember" title="ROBLOX" class="NameText notranslate" href="/users/1/profile">ROBLOX</a></span>
@@ -347,7 +347,7 @@ $pagebuilder->buildheader();
                             <div class="GroupMember" >
                         <div class="Avatar">
                                     <span class="OnlineStatus"><img id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl1_iOnlineStatus" src="../images/online.png" alt="watrabi is online." style="border-width:0px;" /></span>
-                          <a id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl1_hlAvatar" class=" notranslate" title="watrabi" class=" notranslate" href="/users/2/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="http://t7.rbxcdn.com/8b9a35019ee3326b271e4513ba37d517" height="100" width="100" border="0" alt="watrabi" class=" notranslate" /></a>
+                          <a id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl1_hlAvatar" class=" notranslate" title="watrabi" class=" notranslate" href="/users/2/profile" style="display:inline-block;height:100px;width:100px;cursor:pointer;"><img src="https://t7.rbxcdn.com/8b9a35019ee3326b271e4513ba37d517" height="100" width="100" border="0" alt="watrabi" class=" notranslate" /></a>
                                 </div>
                         <div class="Summary" >
                           <span class="Name"><a id="ctl00_cphRoblox_rbxGroupRoleSetMembersPane_dlUsers_ctrl1_hlMember" title="watrabi" class="NameText notranslate" href="/users/2/profile">watrabi</a></span>
@@ -387,11 +387,11 @@ $pagebuilder->buildheader();
             
                     
                     <div style="width:42px;height:42px;padding:8px;float:left">
-                        <a id="ctl00_cphRoblox_rbxGroupAlliesPane_RelationshipsListView_ctrl0_AssetImage1" alt="Group Allie 1" title="Group Allie 1" href="/Groups/group.aspx?gid=2" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="http://t1.rbxcdn.com/fe6362bfcb3fcf162d3139963d276fd1" height="42" width="42" border="0" alt="Group Allie 1" /></a>
+                        <a id="ctl00_cphRoblox_rbxGroupAlliesPane_RelationshipsListView_ctrl0_AssetImage1" alt="Group Allie 1" title="Group Allie 1" href="/Groups/group.aspx?gid=2" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="https://t1.rbxcdn.com/fe6362bfcb3fcf162d3139963d276fd1" height="42" width="42" border="0" alt="Group Allie 1" /></a>
                     </div>
                 
                     <div style="width:42px;height:42px;padding:8px;float:left">
-                        <a id="ctl00_cphRoblox_rbxGroupAlliesPane_RelationshipsListView_ctrl1_AssetImage1" alt="Group Allie 2" title="Group Allie 2" href="/Groups/group.aspx?gid=3" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="http://t4.rbxcdn.com/a345e855e2bf0d1b164f68ba44d9adb3" height="42" width="42" border="0" alt="Group Allie 2" /></a>
+                        <a id="ctl00_cphRoblox_rbxGroupAlliesPane_RelationshipsListView_ctrl1_AssetImage1" alt="Group Allie 2" title="Group Allie 2" href="/Groups/group.aspx?gid=3" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="https://t4.rbxcdn.com/a345e855e2bf0d1b164f68ba44d9adb3" height="42" width="42" border="0" alt="Group Allie 2" /></a>
                     </div>
                 
                     <div style="clear:both;margin-bottom:10px;"></div>

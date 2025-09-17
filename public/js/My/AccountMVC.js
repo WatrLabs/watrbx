@@ -23,7 +23,7 @@ Roblox.ChangeUsername = function () {
         processingText = Roblox.ChangeUsername.Resources.processingText;
     };
 
-    //From: http://www.mredkj.com/javascript/numberFormat.html
+    //From: https://www.mredkj.com/javascript/numberFormat.html
     function addCommas(nStr) {
         nStr += '';
         var x = nStr.split('.');

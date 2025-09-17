@@ -19,7 +19,7 @@
             DialogMinimizeTemplate: "chat-dialog-minimize"
         };
         Roblox.Chat = {
-            SoundFile: "http://www.watrbx.wtf/Chat/sound/chatsound.mp3"
+            SoundFile: "https://www.watrbx.wtf/Chat/sound/chatsound.mp3"
         };
         Roblox.Party = {};
         Roblox.Party.SetGoogleAnalyticsCallback = function () {
@@ -43,13 +43,13 @@
      chat-library="chatLibrary"
      data-userid="<?=$currentuser->id?>"
      data-domain="watrbx.wtf"
-     data-gamespagelink="http://www.watrbx.wtf/games"
+     data-gamespagelink="https://www.watrbx.wtf/games"
      data-chatdomain="https://watrbx.wtf"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
-     data-spinner="http://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
+     data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
      data-notificationsdomain="https://notifications.watrbx.wtf/"
      data-devicetype="Computer"
      data-inapp=false

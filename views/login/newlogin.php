@@ -16,7 +16,7 @@ $pagebuilder->set_page_name("Login");
 $pagebuilder->setlegacy(true);
 
 $pagebuilder->buildheader();
-
+?>
                     <div id="BodyWrapper" class="">
                         <div id="RepositionBody">
                             <div id="Body" style="width:970px">
@@ -40,6 +40,7 @@ $pagebuilder->buildheader();
      data-verify-code-unauthenticated="/twostepverification/verify-unauthenticated"
      data-verify-code="/twostepverification/verify">
 </div>
+<!-- this reminds me we need to do twofa -->
 
 <div class="GenericModal modalPopup unifiedModal smallModal" style="display:none;">
     <div class="Title"></div>

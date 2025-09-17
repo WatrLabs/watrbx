@@ -401,15 +401,15 @@ $thumbs = new thumbnails();
         <h3>Legend</h3>
     </div>
     <div id="legendcontent" style="overflow: hidden;display:none">
-        <img src="http://images.rbxcdn.com/4fc3a98692c7ea4d17207f1630885f68.png" style="margin-left: -13px" />
+        <img src="https://images.rbxcdn.com/4fc3a98692c7ea4d17207f1630885f68.png" style="margin-left: -13px" />
         <div class="legendText"><b>Builders Club Only</b><br/>
         Only purchasable by Builders Club members.</div>
 
-        <img src="http://images.rbxcdn.com/793dc1fd7562307165231ca2b960b19a.png" style="margin-left: -13px" />
+        <img src="https://images.rbxcdn.com/793dc1fd7562307165231ca2b960b19a.png" style="margin-left: -13px" />
         <div class="legendText"><b>Limited Items</b><br/>
         Owners of these discontinued items can re-sell them to other users at any price.</div>
         
-        <img src="http://images.rbxcdn.com/d649b9c54a08dcfa76131d123e7d8acc.png" style="margin-left: -13px" />
+        <img src="https://images.rbxcdn.com/d649b9c54a08dcfa76131d123e7d8acc.png" style="margin-left: -13px" />
         <div class="legendText"><b>Limited Unique Items</b><br/>
         A limited supply originally sold by ROBLOX. Each unit is labeled with a serial number. Once sold out, owners can re-sell them to other users.
         </div>

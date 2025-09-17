@@ -1,4 +1,4 @@
 <?php
-header('Location: http://www.watrbx.wtf/');
+header('Location: https://www.watrbx.wtf/');
 exit;
 ?>

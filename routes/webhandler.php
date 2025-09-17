@@ -373,6 +373,12 @@ $router->get('/thumbnail/user-avatar', function(){
     die();
 });
 
+$router->get('/groupadmin', function(){ 
+    $page = new pagebuilder;
+    $page::get_template("groups/groupadmin");
+});
+
+
 $router->get('/EmailVerify.aspx', function(){
 
     $page = new pagebuilder;
@@ -709,7 +715,7 @@ $router->get('/grid-test', function(){
 
     echo $Close->CloseExpiredJobs();
 
-    //$RobloxGrid = new Grid("http://group-she.gl.at.ply.gg:49837");
+    //$RobloxGrid = new Grid("https://group-she.gl.at.ply.gg:49837");
     //$grid = $RobloxGrid->useGet();
 
     //$script = new \StructType\ScriptExecution("print(\"hi\")");

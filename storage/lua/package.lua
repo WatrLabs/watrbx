@@ -1,8 +1,8 @@
 -- Package v1.1.7
--- See http://wiki.roblox.com/index.php?title=R15_Compatibility_Guide#Package_Parts for details on how body parts work with R15
+-- See https://wiki.roblox.com/index.php?title=R15_Compatibility_Guide#Package_Parts for details on how body parts work with R15
 
 local assetUrl = "rbxassetid://%assetid%"
-local baseUrl = "http://www.watrbx.wtf/"
+local baseUrl = "https://www.watrbx.wtf/"
 local fileExtension = "PNG"
 local x, y = %x%, %y%
 local R6RigUrl = "rbxassetid://1785197"
@@ -103,17 +103,17 @@ end
 ThumbnailGenerator:AddProfilingCheckpoint("ObjectsLoaded")
 
 -- if the package doesn't contain animations, use this pose.
-poseAnimationId = poseAnimationId or "http://www.roblox.com/asset/?id=532421348"
+poseAnimationId = poseAnimationId or "https://www.roblox.com/asset/?id=532421348"
 
 -- Only use R6 if we found body parts that are only compatible with R15
 if #R6Assets ~= 0 and #R15Assets == 0 and #R15ArtistIntentAssets == 0 then
     useR15 = false
 end
 
-local R15RigUrl = "http://www.roblox.com/asset/?id=516159357"
+local R15RigUrl = "https://www.roblox.com/asset/?id=516159357"
 if useR15 and #R15ArtistIntentAssets > 0 then
 	useR15ArtistIntent = true
-	R15RigUrl = "http://www.roblox.com/asset/?id=1664543044"
+	R15RigUrl = "https://www.roblox.com/asset/?id=1664543044"
 end
 
 local mannequin
