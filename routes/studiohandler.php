@@ -302,7 +302,10 @@ $router->get('/my/settings/json', function() {
             "YouTube" => null
         ];
 
-        echo json_encode($settings);
+        echo json_encode($data);
+        die();
+    } else {
+        http_response_code(401);
         die();
     }
 
