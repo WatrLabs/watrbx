@@ -184,7 +184,7 @@ class sitefunctions {
     }
 
     // ty https://stackoverflow.com/questions/21671179/how-to-generate-a-new-guid
-    function createguid() {
+    public function createguid() {
         if (function_exists('com_create_guid') === true) {
             return trim(com_create_guid(), '{}');
         }
