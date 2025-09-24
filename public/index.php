@@ -12,6 +12,18 @@ try {
 
     try {
 
+        $alloweddomains = [
+            "www.watrbx.wtf",
+            "watrbx.wtf",
+            "sitetest1.watrbx.wtf",
+        ];
+        
+        $currentdomain = $_SERVER['HTTP_HOST'];
+
+        if(!in_array($currentdomain, $alloweddomains)){
+            //http_response_code(403);
+            //die();
+        }
         
         global $db;
         global $router;

@@ -304,6 +304,9 @@ $router->get('/my/settings/json', function() {
 
         echo json_encode($data);
         die();
+    } else {
+        http_response_code(401);
+        die();
     }
 
 });
