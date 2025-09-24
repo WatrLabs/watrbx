@@ -206,7 +206,7 @@ $router->get("/Asset/BodyColors.ashx", function(){
     $auth = new authentication();
     $bodycolors = $auth->get_body_colors($userid);
 
-    die('<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.watrbx.wtf/roblox.xsd" version="4">
+    die('<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.watrbx.wtf/roblox.xsd" version="4">
 <External>null</External>
 <External>nil</External>
 <Item class="BodyColors" referent="RBX2DC0258909A9441E8A72097F024F5FC7">

@@ -184,7 +184,7 @@ class thumbnails {
             return "//cdn.watrbx.wtf/" . $thumb->file;
         } else {
             $this->request_user_thumbnail($userid, $size, $type);
-            return "/images/defaultimage.png";
+            return "//cdn.watrbx.wtf/defaultimage.png";
         }
     }
 

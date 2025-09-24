@@ -101,7 +101,7 @@ $router->get('/comments/get-json', function (){
     $auth = new authentication();
     $thumbs = new thumbnails();
 
-    if(isset($_GET{"assetId"})){
+    if(isset($_GET["assetId"])){
         $assetId = (int)$_GET["assetId"];
         $offset = 0;
 
@@ -970,7 +970,7 @@ $router->post('/api/v1/shirt-creator', function(){
             ]);
             $insertid = $db->table("assets")->insert($insert);
 
-            $shirtxml = '<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
+            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
                         <External>null</External>
                         <External>nil</External>
                         <Item class="Shirt" referent="RBX0">
@@ -1087,7 +1087,7 @@ $router->post('/api/v1/pants-creator', function(){
             ]);
             $insertid = $db->table("assets")->insert($insert);
 
-            $shirtxml = '<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
+            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
                         <External>null</External>
                         <External>nil</External>
                         <Item class="Pants" referent="RBX0">
@@ -1288,7 +1288,7 @@ $router->post('/api/v1/decal-creator', function(){
             ]);
             $insertid = $db->table("assets")->insert($insert);
 
-            $shirtxml = '<roblox xmlns:xmime="https://www.w3.org/2005/05/xmlmime" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
+            $shirtxml = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.roblox.com/roblox.xsd" version="4">
                             <External>null</External>
                             <External>nil</External>
                             <Item class="Decal" referent="RBX0">

@@ -27,6 +27,58 @@ $router->get("/Forum/AddPost.aspx", function() {
     $page::get_template("forum/AddPost");
 });
 
+$router->get("/Forum/NewReply.aspx", function() {
+    $page = new pagebuilder;
+    $page::get_template("forum/AddReply");
+});
+
+$router->post("/Forum/NewReply.aspx", function() {
+    $page = new pagebuilder;
+    $forums = new forums;
+    global $db;
+    global $currentuser;
+    
+    if(isset($_POST["section_id"]) && isset($_POST["content"]) && $currentuser){
+        $content = htmlspecialchars($_POST["content"]);
+        $replyid = (int)$_POST["section_id"];
+
+        $postinfo = $forums->getPostInfo($replyid);
+
+        if(!$postinfo){
+            $page::get_template("forum/AddReply", ["message"=>"This forum doesn't exist!"]);
+            die();
+        }
+
+        if(strlen($content) > 50000){
+            $page::get_template("forum/AddReply", ["message"=>"Your content is more than 50,000 characters!"]);
+            die();
+        }
+
+        $ratelimit = time() - 30; // this is really generous
+
+        $created = $db->table("forum_replies")->where("userid", $currentuser->id)->where("date", ">", $ratelimit)->count();
+
+        if($created > 2){
+            http_response_code(429);
+            $page::get_template("forum/AddReply", ["message"=>"You're posting too fast!"]);
+            die();
+        }
+
+        $insert = [
+            "content"=>$content,
+            "userid"=>$currentuser->id,
+            "parent"=>$replyid,
+            "categoryid"=>$postinfo->parent,
+            "date"=>time()
+        ];
+
+        $insertid = $db->table("forum_replies")->insert($insert);
+        header("Location: /Forum/ShowPost.aspx?PostID=$replyid");
+        
+    }
+
+});
+
 $router->post("/Forum/AddPost.aspx", function() {
     $page = new pagebuilder;
     $forums = new forums;
