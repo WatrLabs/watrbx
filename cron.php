@@ -15,7 +15,7 @@ $gameserver = new gameserver();
 $serverinfo = $gameserver->get_closest_server();
 $url = $gameserver->get_server_url($serverinfo);
 
-$Grid = new watrbx\Grid\Grid();
+$Grid = new watrbx\Grid\Grid(null, "https://tjs-nut.pics/i/aj6uj.wsdl");
 $Close = $Grid->Close($url);
 
 $allofdem = $db->table('jobs')

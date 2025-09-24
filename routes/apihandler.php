@@ -477,7 +477,7 @@ $router->get('/asset-thumbnail-3d/json', function(){
     global $db;
 
     $json = array(
-        "Url"=>"https://watrbx.wtf/asset-thumbnail-3d/",
+        "Url"=>"/asset-thumbnail-3d/",
         "Final"=>true
     );
 
@@ -487,7 +487,7 @@ $router->get('/asset-thumbnail-3d/json', function(){
         $renderinfo = $db->table("assets")->where("id", $assetId)->first();
 
         if($renderinfo){
-            $json["Url"] = "https://watrbx.wtf/asset-thumbnail-3d/?assetId=$assetId";
+            $json["Url"] = "/asset-thumbnail-3d/?assetId=$assetId";
         }
 
     }
@@ -504,7 +504,7 @@ $router->get('/avatar-thumbnail-3d/json', function(){
     $auth = new authentication();
 
     $json = array(
-        "Url"=>"https://watrbx.wtf/avatar-thumbnail-3d/",
+        "Url"=>"/avatar-thumbnail-3d/",
         "Final"=>true
     );
 
@@ -514,7 +514,7 @@ $router->get('/avatar-thumbnail-3d/json', function(){
         $userinfo = $auth->getuserbyid($userId);
 
         if($userinfo){
-            $json["Url"] = "https://watrbx.wtf/avatar-thumbnail-3d/?userId=$userId";
+            $json["Url"] = "/avatar-thumbnail-3d/?userId=$userId";
         }
 
     }
