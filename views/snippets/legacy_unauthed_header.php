@@ -14,7 +14,7 @@ if(isset($_SERVER['HTTP_USER_AGENT'])){
 ?>
 
 <!DOCTYPE html>
-<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="https://www.facebook.com/2008/fbml">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
     <!-- MachineID: WEB114 -->
     <title><?=$config["title"] ?? "Untitled Page" ?> - <?=$_ENV["APP_NAME"]?></title>

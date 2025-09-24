@@ -24,4 +24,4 @@ location / {
 apache will be done one day
 
 > [!CAUTION]
-> help will not be given setting this up, what you see is what you get. (if there are any issues support will be provided but thats it)
+> help will not be given setting this up, what you see is what you get. (if there are any issues with the code itself support will be provided but thats it)

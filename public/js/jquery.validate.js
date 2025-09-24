@@ -361,7 +361,7 @@
                 }
 
                 // Add aria-required to any Static/Data/Class required fields before first validation
-                // Screen readers require this attribute to be present before the initial submission https://www.w3.org/TR/WCAG-TECHS/ARIA2.html
+                // Screen readers require this attribute to be present before the initial submission http://www.w3.org/TR/WCAG-TECHS/ARIA2.html
                 $(this.currentForm).find("[required], [data-rule-required], .required").attr("aria-required", "true");
             },
 

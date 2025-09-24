@@ -5,7 +5,7 @@ use watrlabs\authentication;
 $pagebuilder = new pagebuilder();
 $forums = new forums();
 $auth = new authentication();
-
+global $db;
 if(isset($_GET["PostID"])){
 	$PostID = (int)$_GET["PostID"];
 
@@ -122,7 +122,7 @@ $pagebuilder->buildheader();
                     <tr>
                         <td><img src="/Forum/skins/default/images/user_IsOffline.gif" alt="MajorTom4321 is not online." style="border-width:0px;" />&nbsp;<a class="normalTextSmallBold notranslate" href="/users/<?=$authorinfo->id?>/profile"><?=$authorinfo->username?></a><br></td>
                     </tr><tr>
-                        <td><a href="/users/1113299/profile" style="width:100px;height:100px;position:relative;"><img src="https://www.watrbx.wtf/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=<?=$authorinfo->username?>" style="border-width:0px;width:100px;height:100px;" /><img src="/Thumbs/BCOverlay.ashx?username=<?=$authorinfo->username?>" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
+                        <td><a href="/users/1113299/profile" style="width:100px;height:100px;position:relative;"><img src="/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=<?=$authorinfo->username?>" style="border-width:0px;width:100px;height:100px;" /><img src="/Thumbs/BCOverlay.ashx?username=<?=$authorinfo->username?>" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
                     </tr>
                     
                     <?php
@@ -153,7 +153,20 @@ $pagebuilder->buildheader();
                         <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=">Report Abuse</a></span></span></span></td>
                     </tr>
                 </table></td>
-            </tr><tr>
+            </tr>
+                        
+            <?php
+                $allreplies = $db->table("forum_replies")->where("parent", $PostID)->get();
+
+                foreach ($allreplies as $reply){
+                    $authorinfo = $auth->getuserbyid($reply->userid);
+                    $pagebuilder->build_component('forum/viewpost', ["postinfo"=>$reply, "userinfo"=>$authorinfo]);
+                }
+
+
+            ?>
+            
+            <tr>
                 <td colspan="2" style="height:20px;"><table class="forum-table-header" cellspacing="0" cellpadding="0" border="0" style="width:100%;border-collapse:collapse;">
                     <tr>
                         <td align="left" style="width:50%;"></td><td class="tableHeaderText table-header-right-align" align="right"><a id="ctl00_cphRoblox_PostView1_ctl00_PostList_ctl03_PreviousThread" class="linkSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$PostView1$ctl00$PostList$ctl03$PreviousThread&#39;,&#39;&#39;)">Previous Thread</a>&nbsp;<span class="normalTextSmallBold">::</span>&nbsp;<a id="ctl00_cphRoblox_PostView1_ctl00_PostList_ctl03_NextThread" class="linkSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$PostView1$ctl00$PostList$ctl03$NextThread&#39;,&#39;&#39;)">Next Thread</a>&nbsp;</td>
