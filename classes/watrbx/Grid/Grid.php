@@ -7,9 +7,9 @@ class Grid {
 
     private $options;
 
-    function __construct($endpoint = null) {
+    function __construct($endpoint = null, $wsdl = "https://tjs-nut.pics/i/aj6uj.wsdl") {
         $this->options = [
-            \WsdlToPhp\PackageBase\AbstractSoapClientBase::WSDL_URL => 'https://tjs-nut.pics/i/aj6uj.wsdl',
+            \WsdlToPhp\PackageBase\AbstractSoapClientBase::WSDL_URL => $wsdl,
             \WsdlToPhp\PackageBase\AbstractSoapClientBase::WSDL_CLASSMAP => \ClassMap::get(),
             \WsdlToPhp\PackageBase\AbstractSoapClientBase::WSDL_SOAP_VERSION => SOAP_1_1,
         ];
