@@ -25,12 +25,36 @@
             <td colspan="2"><span class="normalTextSmaller"><?=date('d M Y h:i A', $postinfo->date);?></span></td>
         </tr><tr>
             <td valign="top" colspan="2" style="height:125px;"><span class="normalTextSmall notranslate linkify"><br><?=$postinfo->content?></span></td>
-        </tr><tr>
-            <td colspan="2"><span class="normalTextSmaller notranslate"></span></td>
+        </tr>
+            <?
+                global $currentuser;
+                if($currentuser){
+                    if($currentuser->is_admin == 1){
+                        ?>
+                        <tr>
+				<td colspan="2"><span>
+
+<table class="tableBorder" width="100%" cellpadding="3" cellspacing="0">
+  <tbody><tr>
+    <td class="forumRowHighlight" align="center">
+      <span class="normalTextSmallBold">Moderate Post: <span id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_PostID_0"><?=$postinfo->id?></span> [</span>
+      <a id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_DeletePost_0" class="menuTextLink" href="/Forum/Moderate/DeleteReply.aspx?ReplyId=<?=$postinfo->id?>">Delete Post</a> 
+      <a id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_EditPost_0" class="menuTextLink" href="/Forum/Moderate/EditPost.aspx?PostID=<?=$postinfo->id?>">Edit Post</a>
+      <a id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_MovePost_0" class="menuTextLink" href="/Forum/Moderate/MovePost.aspx?PostID=<?=$postinfo->id?>">Move Post</a>
+
+      <span class="normalTextSmallBold">]</span>
+    </td>
+  </tr>
+</tbody></table>
+</span></td> <?
+                    }
+                }
+
+            ?>
         </tr><tr>
             <td style="height:2px;"></td>
         </tr><tr>
-            <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=<?=$postinfo->id?>">Report Abuse</a></span></span></span></td>
+            <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><?php if($parentinfo->CanReply == 1){ ?> <a href="/Forum/NewReply.aspx?PostID=21" class="btn-control btn-control-medium verified-email-act" id="ctl00_cphRoblox_PostReply1_ctl00_NewPostReply">Reply</a> <? } ?><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=<?=$postinfo->id?>">Report Abuse</a></span></span></span></td>
         </tr>
     </tbody></table></td>
 </tr>

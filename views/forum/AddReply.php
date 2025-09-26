@@ -1,13 +1,19 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
 use watrbx\forums;
+use watrlabs\authentication;
+$auth = new authentication();
+$auth->requiresession();
 $forums = new forums();
 $pagebuilder = new pagebuilder();
+
+global $currentuser;
 
 if(isset($_GET["PostID"])){
 	$PostID = (int)$_GET["PostID"];
 
 	$postInfo = $forums->getPostInfo($PostID);
+    $CreatorInfo = $auth->getuserbyid($postInfo->userid);
 
 	if($postInfo){
 
@@ -36,6 +42,8 @@ $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
 ?>
+<form method="POST">
+    <input style="display: none;" name="section_id" value="<?=$PostID?>">
 <div id="AdvertisingLeaderboard">
     
 
@@ -55,11 +63,7 @@ $pagebuilder->buildheader();
                 
                 <div id="RepositionBody">
                     <div id="Body" class='body-width'>
-                        
-    <td id="ctl00_cphRoblox_CenterColumn" width="95%" class="CenterColumn">
-                <br>
-                <span id="ctl00_cphRoblox_PostView1">
-<table cellPadding="0" width="100%">
+                        <table cellPadding="0" width="100%">
   <tr>
     <td align="left">
         <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1" NAME="Whereami1">
@@ -86,52 +90,74 @@ $pagebuilder->buildheader();
 	<a id='ctl00_cphRoblox_NavigationMenu2_ctl00_SearchMenu' class='menuTextLink' href='/Forum/MyForums.aspx'>MyForums</a>
 
 </div>
-</span>
 </td>
-  </tr>
-  <tr>
-    <td align="left" colSpan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td align="left" colSpan="2">
-        <h2 id="ctl00_cphRoblox_PostView1_ctl00_PostTitle" CssClass="notranslate" style="margin-bottom:20px">Reply to Post</h2>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" colSpan="2" class="table-header forum-table-header">
-    <a id="ctl00_cphRoblox_ForumGroupRepeater1_ctl01_GroupTitle" class="forumTitle" href="/Forum/ShowForumGroup.aspx?ForumGroupID=1">
-        Original Post
-    </a> 
-  </td>
-  </tr>
-  <tr>
-  <td align="left" colspan="2">
-  <form method="POST">
-    <?php
-        if(isset($message)){
-            $pagebuilder->build_component("status", ["status"=>"error", "msg"=>$message]);
-        }
-    ?>
-    <br>
-    <input type="hidden" name="section_id" value="<?=$PostID ?>">
-    <label for="content" style="display: inline-block; width: 80px; vertical-align: top;"><span class="normalTextSmallBold"  style="direction: rtl;">
-	50,000
-	Message:</span></label>
-    <textarea name="content" id="content" required style="width: 700px; height: 200px; padding: 4px; border: 1px solid #888;"></textarea><br><br>
-    <div style="margin-left: 80px; margin-top: 10px;">
-        <button type="button" onclick="window.location.href='/Forum/ShowPost.aspx?PostID=<?=$PostID ?>'"
-                style="padding: 3px 10px; margin-right: 4px;">Cancel</button>
-        <button type="button" onclick=""
-                style="padding: 3px 10px; margin-right: 4px;">Preview</button>
-        <button type="submit" style="padding: 3px 10px;">Post</button>
-    </div>
+<vr
+    <p>
+  <span id="Createeditpost1_PostForm_ReplyTo">
+      </span><span id="Createeditpost1_PostForm_Post">
+      </span><table class="tableBorder" cellspacing="1" cellpadding="3" width="100%">
+    <tbody><tr>
+      <th class="tableHeaderText" align="left" height="25">
+        &nbsp;<span id="Createeditpost1_PostForm_PostTitle">Reply to an Existing Message</span>
+      </th>
+    </tr>
+    <tr>
+        <td class="forumRow">
+          <table cellspacing="1" cellpadding="3">
+            <tbody><tr>
+              <td colspan="2"><span class="normalTextSmall">The message you are replying to: </span></td>
+            </tr>
+            <tr>
+              <td valign="top" nowrap="" align="right"><span class="normalTextSmallBold">Posted By: </span></td>
+              <td valign="top" align="left"><a id="Createeditpost1_PostForm_ReplyPostedBy" class="normalTextSmall" href="/users/<?=$CreatorInfo->id?>/profile"><?=$CreatorInfo->username?></a></td>
+            </tr>
+            <tr>
+              <td valign="top" align="right"><span class="normalTextSmallBold">Subject: </span></td>
+              <td valign="top" align="left"><a id="Createeditpost1_PostForm_ReplySubject" class="normalTextSmall" href="/AspNetForums/ShowPost.aspx?PostID=5"><?=$postInfo->title?></a></td>
+            </tr>
+            <tr>
+              <td valign="top" align="right"><span class="normalTextSmallBold">Message: </span></td>
+              <td valign="top" align="left"><span class="normalTextSmall"><span id="Createeditpost1_PostForm_ReplyBody"><?=$postInfo->content?></span>
+                </span></td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+      <tr>
+        <td class="forumAlternate">&nbsp;
+        </td>
+      </tr>
+    <tr>
+        <td class="forumRow">
+          <table cellspacing="1" cellpadding="3">
+            <tbody><tr>
+              <td valign="top" nowrap="" align="right"><span class="normalTextSmallBold">Author: </span></td>
+              <td valign="top" align="left" colspan="2"><span class="normalTextSmall"><span id="Createeditpost1_PostForm_PostAuthor"><?=$currentuser->username?></span>
+                </span></td>
+            </tr>
+
+            <tr>
+              <td valign="top" nowrap="" align="right"><span class="normalTextSmallBold">Message: </span></td>
+              <td valign="top" align="left"><textarea name="content" rows="20" cols="90" id="Createeditpost1_PostForm_PostBody"></textarea></td>
+              <td valign="top">&nbsp;</td>
+            </tr>
+
+            <tr>
+              <td valign="top" align="right" colspan="2"><input type="submit" name="Createeditpost1$PostForm$Cancel" value=" Cancel " id="Createeditpost1_PostForm_Cancel">&nbsp;
+                <input type="submit" name="Createeditpost1$PostForm$PreviewButton" value=" Preview &gt; " onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;Createeditpost1$PostForm$PreviewButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="Createeditpost1_PostForm_PreviewButton"></td>
+            </tr>
+            <tr>
+              <td valign="top" align="right" colspan="2">
+                <input type="submit" name="Createeditpost1$PostForm$PostButton" value=" Post " onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;Createeditpost1$PostForm$PostButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="Createeditpost1_PostForm_PostButton"></td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+    
+  </tbody></table>
+</p>
   </form>       
-        </table>
-                        <div style="clear:both"></div>
-                    </div>
-                </div>
-            </div> 
-            </div>
+        
             
                 
     <footer class="container-footer">

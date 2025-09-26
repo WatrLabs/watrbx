@@ -12,6 +12,40 @@ $router->get("/forum", function() {
     $page::get_template("forum/index");
 });
 
+$router->get('/Forum/Moderate/DeletePost.aspx', function(){
+
+    global $currentuser;
+    global $db;
+
+    if(isset($_GET["PostID"]) && $currentuser !== null){
+        $postId = (int)$_GET["PostID"];
+
+        if($currentuser->is_admin == 1){
+            $db->table("forum_posts")->where("id", $postId)->delete();
+            header("Location: /forum/");
+        }
+
+    }
+
+});
+
+$router->get('/Forum/Moderate/DeleteReply.aspx', function(){
+
+    global $currentuser;
+    global $db;
+
+    if(isset($_GET["ReplyId"]) && $currentuser !== null){
+        $ReplyId = (int)$_GET["ReplyId"];
+
+        if($currentuser->is_admin == 1){
+            $db->table("forum_replies")->where("id", $ReplyId)->delete();
+            header("Location: /forum/");
+        }
+
+    }
+
+});
+
 $router->get("/Forum/Default.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("forum/index");
@@ -51,6 +85,11 @@ $router->post("/Forum/NewReply.aspx", function() {
 
         if(strlen($content) > 50000){
             $page::get_template("forum/AddReply", ["message"=>"Your content is more than 50,000 characters!"]);
+            die();
+        }
+
+        if($postinfo->CanReply !== 1){
+            $page::get_template("forum/AddReply", ["message"=>"You cannot reply to this post!"]);
             die();
         }
 
@@ -125,6 +164,30 @@ $router->post("/Forum/AddPost.aspx", function() {
             "parent"=>$forumid,
             "date"=>time()
         ];
+
+        if(isset($_POST['pinneddays']) && $currentuser->is_admin == 1){
+            $pinneddays = (int)$_POST['pinneddays'];
+
+            if($pinneddays !== 0){
+                $future = 86400 * $pinneddays;
+                $pinneddays = time() + $future;
+
+                $insert["isStickied"] = "1";
+                $insert["StickiedDate"] = $pinneddays;
+                $insert["CanReply"] = 0;
+
+            }
+
+        }
+
+        if(isset($_POST['Createeditpost1$PostForm$AllowReplies'])){
+            $cantReply = $_POST['Createeditpost1$PostForm$AllowReplies'];
+
+            if($cantReply == "on"){
+                $insert["CanReply"] = 0;
+            }
+
+        }
 
         $insertid = $db->table("forum_posts")->insert($insert);
         header("Location: /Forum/ShowPost.aspx?PostID=$insertid");
