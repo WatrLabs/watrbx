@@ -78,7 +78,7 @@ $headers = $forums->getHeaders();
 
 						foreach($categories as $category){
 							$threadcount = $forums->getPostCount($category->id);
-							$replycount = $forums->getReplyCount($category->id);
+							$replycount = $forums->getCategoryReplyCount($category->id);
 							[$lastposter, $date] = $forums->getLastCategoryPoster($category->id);
 							$pagebuilder->build_component("forum/category", ["category"=>$category, "threadcount"=>$threadcount, "postcount"=>$replycount, "lastposter"=>$lastposter, "lastposterdate"=>$date]);
 						}

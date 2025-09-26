@@ -6,16 +6,35 @@ $pagebuilder = new pagebuilder();
 $forums = new forums();
 $auth = new authentication();
 global $db;
+
+$page = 1;
+
 if(isset($_GET["PostID"])){
 	$PostID = (int)$_GET["PostID"];
 
     $postInfo = $forums->getPostInfo($PostID);
-    $authorinfo = $auth->getuserbyid($postInfo->userid);
+
+    if($postInfo){
+        $authorinfo = $auth->getuserbyid($postInfo->userid);
+        $categoryinfo = $forums->getCategoryInfo($postInfo->parent);
+        $headerinfo = $forums->getHeaderInfo($categoryinfo->parent);
+    } else {
+        http_response_code(404);
+        $pagebuilder::get_template("status_codes/404");
+        die();
+    }
 
 } else {
 	http_response_code(404);
 	$pagebuilder::get_template("status_codes/404");
 	die();
+}
+
+if(isset($_GET["page"])){
+    $page = (int)$_GET["page"];
+    if($page < 1){
+        $page = 1;
+    }
 }
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___52c69b42777a376ab8c76204ed8e75e2_m.css');
@@ -60,23 +79,23 @@ $pagebuilder->buildheader();
                         <span id="ctl00_cphRoblox_PostView1">
         
         <table cellPadding="0" width="100%">
-          <tr>
-            <td align="left">
-                <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1" NAME="Whereami1">
-        <div>
-            <nobr>
-                <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkHome" class="linkMenuSink notranslate" href="/Forum/Default.aspx">ROBLOX Forum</a>
-            </nobr>
-            <nobr>
-                <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumGroupSeparator" class="normalTextSmallBold"> » </span>
-                <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForumGroup" class="linkMenuSink notranslate" href="/Forum/ShowForumGroup.aspx?ForumGroupID=8">Club Houses</a>
-            </nobr>
-            <nobr>
-                <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumSeparator" class="normalTextSmallBold"> » </span>
-                <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForum" class="linkMenuSink notranslate" href="/Forum/ShowForum.aspx?ForumID=13">ROBLOX Talk</a>
-            </nobr>
-        </div></span>
-            </td>
+          <table cellPadding="0" width="100%">
+  <tr>
+    <td align="left">
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1" NAME="Whereami1">
+<div>
+    <nobr>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkHome" class="linkMenuSink notranslate" href="/Forum/Default.aspx">ROBLOX Forum</a>
+    </nobr>
+    <nobr>
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumGroupSeparator" class="normalTextSmallBold"> » </span>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForumGroup" class="linkMenuSink notranslate" href="/Forum/ShowForumGroup.aspx?ForumGroupID=<?=$headerinfo->id?>"><?=$headerinfo->name?></a>
+    </nobr>
+    <nobr>
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumSeparator" class="normalTextSmallBold"> » </span>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForum" class="linkMenuSink notranslate" href="/Forum/ShowForum.aspx?ForumID=<?= $categoryinfo->id ?>"><?= $categoryinfo->title ?></a>
+    </nobr>
+</div></span>
             <td align="right">
                 <span id="ctl00_cphRoblox_PostView1_ctl00_Navigationmenu1">
         
@@ -147,20 +166,53 @@ $pagebuilder->buildheader();
                         <td valign="top" colspan="2" style="height:125px;"><span class="normalTextSmall notranslate linkify"><br /><?=$postInfo->content?></td>
                     </tr><tr>
                         <td colspan="2"><span class="normalTextSmaller notranslate"></span></td>
-                    </tr><tr>
-                        <td style="height:2px;"></td>
-                    </tr><tr>
+                    </tr><?
+                global $currentuser;
+                if($currentuser){
+                    if($currentuser->is_admin == 1){
+                        ?>
+                            <tr>
+                    <td colspan="2"><span>
+
+                    <table class="tableBorder" width="100%" cellpadding="3" cellspacing="0">
+                    <tbody><tr>
+                        <td class="forumRowHighlight" align="center">
+                        <span class="normalTextSmallBold">Moderate Post: <span id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_PostID_0"><?=$postInfo->id?></span> [</span>
+                        <a id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_DeletePost_0" class="menuTextLink" href="/Forum/Moderate/DeletePost.aspx?PostID=<?=$postInfo->id?>">Delete Post</a> 
+                        <a id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_EditPost_0" class="menuTextLink" href="/Forum/Moderate/EditPost.aspx?PostID=<?=$postInfo->id?>">Edit Post</a>
+                        <a id="PostView1_ctl00_PostList_ctl15_0_ctl00_0_MovePost_0" class="menuTextLink" href="/Forum/Moderate/MovePost.aspx?PostID=<?=$postInfo->id?>">Move Post</a>
+
+                        <span class="normalTextSmallBold">]</span>
+                        </td>
+                    </tr>
+                    </tbody></table>
+                    </span></td> <?
+                    }
+                }
+
+            ?><tr>
                         <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=">Report Abuse</a></span></span></span></td>
                     </tr>
                 </table></td>
             </tr>
                         
             <?php
-                $allreplies = $db->table("forum_replies")->where("parent", $PostID)->get();
+
+                $postcount = $forums->getReplyCount($PostID);
+
+                $currentpage = $page - 1;
+                $displaypage = $currentpage + 1;
+
+                $limit = 14;      
+
+                $allpages = ceil($postcount/$limit);
+                $offset = $currentpage * $limit;
+
+                $allreplies = $forums->getReplies($PostID, $limit, $offset);
 
                 foreach ($allreplies as $reply){
                     $authorinfo = $auth->getuserbyid($reply->userid);
-                    $pagebuilder->build_component('forum/viewpost', ["postinfo"=>$reply, "userinfo"=>$authorinfo]);
+                    $pagebuilder->build_component('forum/viewpost', ["postinfo"=>$reply, "userinfo"=>$authorinfo, "parentinfo"=>$postInfo]);
                 }
 
 
@@ -176,7 +228,17 @@ $pagebuilder->buildheader();
         </table>
                 <span id="ctl00_cphRoblox_PostView1_ctl00_Pager"><table cellspacing="0" cellpadding="0" border="0" style="width:100%;border-collapse:collapse;">
             <tr>
-                <td><span class="normalTextSmallBold">Page 1 of 1</span></td>
+                <td><span class="normalTextSmallBold">Page 1 of 1</span></td><td align="right"><span><span class="normalTextSmallBold">Goto to page: </span>
+
+            <?
+
+            for ($i = 1; $i <= $allpages; $i++) {
+                echo '<a href="?PostID='.$PostID.'&page='.$i.'">'.$i.'</a>,';
+            }
+        ?>
+
+        
+        </td>
             </tr>
         </table></span>
             </td>
@@ -190,32 +252,33 @@ $pagebuilder->buildheader();
                 
             </td>
           </tr>
-          <tr>
+          <?php if($postInfo->CanReply == 1){ ?> <tr>
                 <td colSpan="2"><div style="text-align: center; margin: 5px 0;">
             <a href="/Forum/NewReply.aspx?PostID=<?=$postInfo->id?>" class="btn-control btn-control-medium verified-email-act" id="ctl00_cphRoblox_PostReply1_ctl00_NewPostReply">Add a Reply</a>
             </div></td>
-            </tr>
+            </tr> <? } ?>
           <tr>
             <td colSpan="2">&nbsp;</td>
           </tr>
-          <tr>
-            <td align="left" colSpan="2">
-              <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami2" NAME="Whereami2">
-        <div>
-            <nobr>
-                <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami2_ctl00_LinkHome" class="linkMenuSink notranslate" href="/Forum/Default.aspx">ROBLOX Forum</a>
-            </nobr>
-            <nobr>
-                <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami2_ctl00_ForumGroupSeparator" class="normalTextSmallBold"> » </span>
-                <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami2_ctl00_LinkForumGroup" class="linkMenuSink notranslate" href="/Forum/ShowForumGroup.aspx?ForumGroupID=8">Club Houses</a>
-            </nobr>
-            <nobr>
-                <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami2_ctl00_ForumSeparator" class="normalTextSmallBold"> » </span>
-                <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami2_ctl00_LinkForum" class="linkMenuSink notranslate" href="/Forum/ShowForum.aspx?ForumID=13">ROBLOX Talk</a>
-            </nobr>
-        </div></span>
-            </td>
-          </tr>
+          <table cellPadding="0" width="100%">
+  <tr>
+    <td align="left">
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1" NAME="Whereami1">
+<div>
+    <nobr>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkHome" class="linkMenuSink notranslate" href="/Forum/Default.aspx">ROBLOX Forum</a>
+    </nobr>
+    <nobr>
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumGroupSeparator" class="normalTextSmallBold"> » </span>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForumGroup" class="linkMenuSink notranslate" href="/Forum/ShowForumGroup.aspx?ForumGroupID=<?=$headerinfo->id?>"><?=$headerinfo->name?></a>
+    </nobr>
+    <nobr>
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumSeparator" class="normalTextSmallBold"> » </span>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForum" class="linkMenuSink notranslate" href="/Forum/ShowForum.aspx?ForumID=<?= $categoryinfo->id ?>"><?= $categoryinfo->title ?></a>
+    </nobr>
+</div></span>
+    </td>
+    
         </table>
         </span>
                     </td>

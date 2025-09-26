@@ -35,10 +35,20 @@ class forums {
         return $db->table("forum_posts")->where("parent", $categoryId)->count();
     }
 
-    public function getPosts($categoryId){
+    public function getPosts($categoryId, $limit = null, $offset = null){
         global $db;
 
-        return $db->table("forum_posts")->where("parent", $categoryId)->orderBy("id", "DESC")->get();
+        $query = $db->table("forum_posts")->where("parent", $categoryId)->orderBy("id", "DESC");
+
+        if($limit){
+            $query->limit($limit);
+        }
+
+        if($offset){
+            $query->offset($offset);
+        }
+
+        return $query->get();
     }
 
     public function getReplyCount($postId){
@@ -47,16 +57,40 @@ class forums {
         return $db->table("forum_replies")->where("parent", $postId)->count();
     }
 
+    public function getCategoryReplyCount($categoryId){
+        global $db;
+
+        return $db->table("forum_replies")->where("categoryid", $categoryId)->count();
+    }
+
     public function getCategoryInfo($categoryId){
         global $db;
 
         return $db->table("forum_categories")->where('id', $categoryId)->first();
     }
 
-    public function getReplies($postId){
+    public function getStickiedPosts($categoryId){
         global $db;
 
-        return $db->table("forum_replies")->where("parent", $postId)->orderBy("id", "DESC")->get();
+        $query = $db->table("forum_posts")->where("parent", $categoryId)->where("StickiedDate", ">", time())->orderBy("id", "DESC");
+
+        return $query->get();
+    }
+
+    public function getReplies($postId, $limit = null, $offset = null){
+        global $db;
+
+        $query = $db->table("forum_replies")->where("parent", $postId)->orderBy("id", "DESC");
+
+        if($limit){
+            $query->limit($limit);
+        }
+
+        if($offset){
+            $query->offset($offset);
+        }
+
+        return $query->get();
     }
 
     public function getLastCategoryPoster($categoryId){

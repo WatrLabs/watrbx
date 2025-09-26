@@ -10,7 +10,8 @@
         "usmanhalalit/pixie": "^2.0",
         "phpmailer/phpmailer": "^6.10",
         "cocur/slugify": "^4.6",
-        "nesbot/carbon": "^3.10"
+        "nesbot/carbon": "^3.10",
+        "benhall14/php-pagination": "^1.2"
     },
     "autoload": {
         "psr-4": {

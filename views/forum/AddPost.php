@@ -1,6 +1,10 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
 use watrbx\forums;
+use watrlabs\authentication;
+$auth = new authentication();
+$auth->requiresession();
+global $currentuser;
 $forums = new forums();
 $pagebuilder = new pagebuilder();
 
@@ -85,46 +89,81 @@ $pagebuilder->buildheader();
 	<a id='ctl00_cphRoblox_NavigationMenu2_ctl00_SearchMenu' class='menuTextLink' href='/Forum/MyForums.aspx'>MyForums</a>
 
 </div>
-</span>
 </td>
-  </tr>
-  <tr>
-    <td align="left" colSpan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td align="left" colSpan="2">
-        <h2 id="ctl00_cphRoblox_PostView1_ctl00_PostTitle" CssClass="notranslate" style="margin-bottom:20px">New Post</h2>
-    </td>
-  </tr>
-  <tr>
-  <td align="left" colspan="2">
   <form method="POST">
-    <?php
-        if(isset($message)){
-            $pagebuilder->build_component("status", ["status"=>"error", "msg"=>$message]);
-        }
-    ?>
-    <br>
-    <input type="hidden" name="section_id" value="<?=$categoryinfo->id ?>">
-    <label for="title" style="display: inline-block; width: 90px; vertical-align: top;"><span class="normalTextSmallBold">Subject (60):</span></label>
-    <input type="text" name="title" id="title" required style="width: 700px; padding: 4px; border: 1px solid #888;"><br><br>
-    <label for="content" style="display: inline-block; width: 80px; vertical-align: top;"><span class="normalTextSmallBold"  style="direction: rtl;">
-	50,000
-	Message:</span></label>
-    <textarea name="content" id="content" required style="width: 700px; height: 200px; padding: 4px; border: 1px solid #888;"></textarea><br><br>
-    <div style="margin-left: 80px;">
-        <label>
-            <input type="checkbox" name="no_replies">
-            Do not allow replies to this post.
-        </label>
-    </div>
-    <div style="margin-left: 80px; margin-top: 10px;">
-        <button type="button" onclick="window.location.href='/Forum/ShowForum.aspx?ForumID=<?=$categoryinfo->id ?>'"
-                style="padding: 3px 10px; margin-right: 4px;">Cancel</button>
-        <button type="button" onclick=""
-                style="padding: 3px 10px; margin-right: 4px;">Preview</button>
-        <button type="submit" style="padding: 3px 10px;">Post</button>
-    </div>
+    <input style="display: none;" name="section_id" value="<?=$ForumID?>">
+    <p>
+  <span id="Createeditpost1_PostForm_Post">
+      </span><table class="tableBorder" cellspacing="1" cellpadding="3" width="100%">
+    <tbody><tr>
+      <th class="tableHeaderText" align="left" height="25">
+        &nbsp;<span id="Createeditpost1_PostForm_PostTitle">Post a New Message</span>
+      </th>
+    </tr>
+    <tr>
+        <td class="forumRow">
+          <span id="Createeditpost1_PostForm_AllowPinnedPosts">
+              </span><table cellspacing="1" cellpadding="3">
+            <tbody><tr>
+              <td valign="top" nowrap="" align="right"><span class="normalTextSmallBold">Author: </span></td>
+              <td valign="top" align="left" colspan="2"><span class="normalTextSmall"><span id="Createeditpost1_PostForm_PostAuthor"><?=$currentuser->username?></span>
+                </span></td>
+            </tr>
+            
+            <tr>
+              <td nowrap="" valign="center" align="right"><span class="normalTextSmallBold">Subject: </span></td>
+              <td valign="top" align="left"><input name="title" type="text" size="55" id="Createeditpost1_PostForm_PostSubject" autocomplete="off"></td>
+              <td><span id="Createeditpost1_PostForm_RequiredFieldValidator1" class="validationWarningSmall" style="visibility:hidden;">Subject required.</span></td>
+            </tr>
+            <tr>
+              <td valign="top" nowrap="" align="right"><span class="normalTextSmallBold">Message: </span></td>
+              <td valign="top" align="left"><textarea name="content" rows="20" cols="90" id="Createeditpost1_PostForm_PostBody"></textarea></td>
+              <td valign="top">&nbsp;</td>
+            </tr>
+            
+            <?php
+
+            if($currentuser->is_admin == 1){ ?>
+                 <tr>
+                <td valign="center" align="right" width="91"><span class="normalTextSmallBold">Pinned Post: 
+          </span></td>
+                <td valign="top" align="left"><span class="normalTextSmall"><select name="pinneddays" onchange="console.log('hi')" id="Createeditpost1_PostForm_PinnedPost">
+                    <option selected="selected" value="0">Do not pin post</option>
+                    <option value="1">1 Day</option>
+                    <option value="3">3 Days</option>
+                    <option value="7">1 Week</option>
+                    <option value="14">2 Weeks</option>
+                    <option value="30">1 Month</option>
+                    <option value="90">3 Months</option>
+                    <option value="180">6 Months</option>
+                    <option value="360">1 Year</option>
+                    <option value="999">Announcement</option>
+
+                </select>
+                                </span></td>
+              </tr>
+            <? } ?>
+           
+            
+            <tr>
+              <td valign="center" align="right" width="93"><span class="normalTextSmallBold">&nbsp;</span></td>
+              <td valign="top" align="left"><span class="normalTextSmall"><input id="Createeditpost1_PostForm_AllowReplies" type="checkbox" name="Createeditpost1$PostForm$AllowReplies"><label for="Createeditpost1_PostForm_AllowReplies"> Do not allow replies to this post.</label>
+                </span></td>
+            </tr>
+            <tr>
+              <td valign="top" align="right" colspan="2"><input type="submit" name="Createeditpost1$PostForm$Cancel" value=" Cancel " id="Createeditpost1_PostForm_Cancel">&nbsp;
+                <input type="submit" name="Createeditpost1$PostForm$PreviewButton" value=" Preview &gt; " onclick="" id="Createeditpost1_PostForm_PreviewButton"></td>
+            </tr>
+            <tr>
+              <td valign="top" align="right" colspan="2">
+                <input type="submit" name="Createeditpost1$PostForm$PostButton" value=" Post " onclick="" id="Createeditpost1_PostForm_PostButton"></td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+    
+  </tbody></table>
+</p>
   </form>       
         </table>
                         <div style="clear:both"></div>

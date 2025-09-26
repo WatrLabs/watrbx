@@ -4,6 +4,8 @@ use watrbx\forums;
 $pagebuilder = new pagebuilder();
 $forums = new forums();
 
+$page = 1;
+
 if(isset($_GET["ForumID"])){
 	$ForumID = (int)$_GET["ForumID"];
 
@@ -23,6 +25,13 @@ if(isset($_GET["ForumID"])){
 	http_response_code(404);
 	$pagebuilder::get_template("status_codes/404");
 	die();
+}
+
+if(isset($_GET["page"])){
+    $page = (int)$_GET["page"];
+    if($page < 1){
+        $page = 1;
+    }
 }
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___52c69b42777a376ab8c76204ed8e75e2_m.css');
@@ -103,7 +112,33 @@ $pagebuilder->buildheader();
 		<th align="left" colspan="3" style="height:25px;">&nbsp;Subject&nbsp;</th><th align="left" style="white-space:nowrap;">&nbsp;Author&nbsp;</th><th align="center">&nbsp;Replies&nbsp;</th><th align="center">&nbsp;Views&nbsp;</th><th align="center" style="white-space:nowrap;">&nbsp;Last Post&nbsp;</th>
 	</tr>
     <?php 
-        $allposts = $forums->getPosts($categoryinfo->id);
+        
+        $postcount = $forums->getPostCount($categoryinfo->id);
+
+        $currentpage = $page - 1;
+        $displaypage = $currentpage + 1;
+
+        $stickiedposts = [];
+        if ($displaypage == 1) {
+            $stickiedposts = $forums->getStickiedPosts($categoryinfo->id);
+        }
+
+        $limit = 15;      
+        $allpages = ceil($postcount / $limit);
+        $offset = $currentpage * $limit;
+
+        $allposts = $forums->getPosts($categoryinfo->id, $limit, $offset);
+
+        $allposts = array_merge($stickiedposts, $allposts);
+
+        $unique = [];
+        $allposts = array_filter($allposts, function($post) use (&$unique) {
+            if (in_array($post->id, $unique)) {
+                return false; 
+            }
+            $unique[] = $post->id;
+            return true;
+        });
 
         foreach($allposts as $post){
             [$postinfousername, $date] = $forums->getLastReplyPoster($post->id);
@@ -119,7 +154,26 @@ $pagebuilder->buildheader();
 </table>
             <span id="ctl00_cphRoblox_ThreadView1_ctl00_Pager"><table cellspacing="0" cellpadding="0" border="0" style="width:100%;border-collapse:collapse;">
 	<tr>
-		<td><span class="normalTextSmallBold">Page 1 of 1</span></td><td align="right"><span><span class="normalTextSmallBold">Goto to page: </span><a id="ctl00_cphRoblox_ThreadView1_ctl00_Pager_Page0" class="normalTextSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$ThreadView1$ctl00$Pager$Page0&#39;,&#39;&#39;)">1</a><span class="normalTextSmallBold">, </span><a id="ctl00_cphRoblox_ThreadView1_ctl00_Pager_Page1" class="normalTextSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$ThreadView1$ctl00$Pager$Page1&#39;,&#39;&#39;)">2</a><span class="normalTextSmallBold">, </span><a id="ctl00_cphRoblox_ThreadView1_ctl00_Pager_Page2" class="normalTextSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$ThreadView1$ctl00$Pager$Page2&#39;,&#39;&#39;)">3</a><span class="normalTextSmallBold"> ... </span><a id="ctl00_cphRoblox_ThreadView1_ctl00_Pager_Page198856" class="normalTextSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$ThreadView1$ctl00$Pager$Page198856&#39;,&#39;&#39;)">198,857</a><span class="normalTextSmallBold">, </span><a id="ctl00_cphRoblox_ThreadView1_ctl00_Pager_Page198857" class="normalTextSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$ThreadView1$ctl00$Pager$Page198857&#39;,&#39;&#39;)">198,858</a><span class="normalTextSmallBold">&nbsp;</span><a id="ctl00_cphRoblox_ThreadView1_ctl00_Pager_Next" class="normalTextSmallBold" href="javascript:__doPostBack(&#39;ctl00$cphRoblox$ThreadView1$ctl00$Pager$Next&#39;,&#39;&#39;)">Next</a></span></td>
+        <?
+            
+        ?>
+		<td><span class="normalTextSmallBold">Page 1 of 1</span></td><td align="right"><span><span class="normalTextSmallBold">Goto to page: </span>
+
+            <?
+
+            if ($page > 1) {
+                echo '<a href="?ForumID='.$ForumID.'&page='.($page-1).'">'.($page-1).'</a> ';
+            }
+
+            echo '<strong>'.$page.'</strong> ';
+
+            if ($page < $allpages) {
+                echo '<a href="?ForumID='.$ForumID.'&page='.($page+1).'">'.($page+1).'</a>';
+            }
+        ?>
+
+        
+        </td>
 	</tr>
 </table></span>
             
@@ -131,24 +185,25 @@ $pagebuilder->buildheader();
 			&nbsp;
 		</td>
 	</tr>
-	<tr>
-		<td align="left" valign="top">
-			<span id="ctl00_cphRoblox_ThreadView1_ctl00_Whereami2" NAME="Whereami2">
+	<table cellPadding="0" width="100%">
+  <tr>
+    <td align="left">
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1" NAME="Whereami1">
 <div>
     <nobr>
-        <a id="ctl00_cphRoblox_ThreadView1_ctl00_Whereami2_ctl00_LinkHome" class="linkMenuSink notranslate" href="/Forum/Default.aspx">ROBLOX Forum</a>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkHome" class="linkMenuSink notranslate" href="/Forum/Default.aspx">ROBLOX Forum</a>
     </nobr>
     <nobr>
-        <span id="ctl00_cphRoblox_ThreadView1_ctl00_Whereami2_ctl00_ForumGroupSeparator" class="normalTextSmallBold"> » </span>
-        <a id="ctl00_cphRoblox_ThreadView1_ctl00_Whereami2_ctl00_LinkForumGroup" class="linkMenuSink notranslate" href="/Forum/ShowForumGroup.aspx?ForumGroupID=8">Club Houses</a>
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumGroupSeparator" class="normalTextSmallBold"> » </span>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForumGroup" class="linkMenuSink notranslate" href="/Forum/ShowForumGroup.aspx?ForumGroupID=<?=$headerinfo->id?>"><?=$headerinfo->name?></a>
     </nobr>
     <nobr>
-        <span id="ctl00_cphRoblox_ThreadView1_ctl00_Whereami2_ctl00_ForumSeparator" class="normalTextSmallBold"> » </span>
-        <a id="ctl00_cphRoblox_ThreadView1_ctl00_Whereami2_ctl00_LinkForum" class="linkMenuSink notranslate" href="/Forum/ShowForum.aspx?ForumID=13">ROBLOX Talk</a>
+        <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_ForumSeparator" class="normalTextSmallBold"> » </span>
+        <a id="ctl00_cphRoblox_PostView1_ctl00_Whereami1_ctl00_LinkForum" class="linkMenuSink notranslate" href="/Forum/ShowForum.aspx?ForumID=<?= $categoryinfo->id ?>"><?= $categoryinfo->title ?></a>
     </nobr>
 </div></span>
-			
-		</td>
+    </td>
+    
 		<td align="right">
 			<span class="normalTextSmallBold">Display threads for: </span><select name="ctl00$cphRoblox$ThreadView1$ctl00$DisplayByDays" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$cphRoblox$ThreadView1$ctl00$DisplayByDays\&#39;,\&#39;\&#39;)&#39;, 0)" id="ctl00_cphRoblox_ThreadView1_ctl00_DisplayByDays">
 	<option selected="selected" value="0">All Days</option>

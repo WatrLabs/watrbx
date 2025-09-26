@@ -1,6 +1,12 @@
 <tr class="forum-table-row">
 	<td align="center" valign="middle" style="width:25px;">
-        <img title="Post (Not Read)" src="/images/Forums/thread-unread.png" style="border-width:0px;">
+        <?php
+            if($postinfo->CanReply == 0){
+                echo '<img title="Post (Locked)" src="/images/Forums/locked-unread.png" style="border-width:0px;">';
+            } else {
+                echo '<img title="Post (Locked)" src="/images/Forums/thread-unread.png" style="border-width:0px;">';
+            }
+        ?>
     </td>
     <td class="notranslate" style="height:25px;">
         <a class="post-list-subject" href="/Forum/ShowPost.aspx?PostID=<?=$postinfo->id?>">
