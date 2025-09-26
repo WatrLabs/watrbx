@@ -141,7 +141,7 @@ $pagebuilder->buildheader();
                     <tr>
                         <td><img src="/Forum/skins/default/images/user_IsOffline.gif" alt="MajorTom4321 is not online." style="border-width:0px;" />&nbsp;<a class="normalTextSmallBold notranslate" href="/users/<?=$authorinfo->id?>/profile"><?=$authorinfo->username?></a><br></td>
                     </tr><tr>
-                        <td><a href="/users/1113299/profile" style="width:100px;height:100px;position:relative;"><img src="/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=<?=$authorinfo->username?>" style="border-width:0px;width:100px;height:100px;" /><img src="/Thumbs/BCOverlay.ashx?username=<?=$authorinfo->username?>" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
+                        <td><a href="/users/<?=$authorinfo->id?>/profile" style="width:100px;height:100px;position:relative;"><img src="/Thumbs/Avatar.ashx?x=100&amp;y=100&amp;Format=Png&amp;username=<?=$authorinfo->username?>" style="border-width:0px;width:100px;height:100px;" /><img src="/Thumbs/BCOverlay.ashx?username=<?=$authorinfo->username?>" style="border-width:0px;position:absolute;left:0px;bottom:0px;" /></a></td>
                     </tr>
                     
                     <?php

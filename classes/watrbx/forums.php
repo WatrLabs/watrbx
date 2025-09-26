@@ -80,7 +80,7 @@ class forums {
     public function getReplies($postId, $limit = null, $offset = null){
         global $db;
 
-        $query = $db->table("forum_replies")->where("parent", $postId)->orderBy("id", "DESC");
+        $query = $db->table("forum_replies")->where("parent", $postId)->orderBy("id", "ASC");
 
         if($limit){
             $query->limit($limit);

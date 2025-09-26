@@ -54,7 +54,7 @@
         </tr><tr>
             <td style="height:2px;"></td>
         </tr><tr>
-            <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><?php if($parentinfo->CanReply == 1){ ?> <a href="/Forum/NewReply.aspx?PostID=21" class="btn-control btn-control-medium verified-email-act" id="ctl00_cphRoblox_PostReply1_ctl00_NewPostReply">Reply</a> <? } ?><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=<?=$postinfo->id?>">Report Abuse</a></span></span></span></td>
+            <td align="left" style="height:29px;"></td><td align="right"><span class="post-response-options"><?php if($parentinfo->CanReply == 1){ ?> <a href="/Forum/NewReply.aspx?PostID=<?=$parentinfo->id?>" class="btn-control btn-control-medium verified-email-act" id="ctl00_cphRoblox_PostReply1_ctl00_NewPostReply">Reply</a> <? } ?><span class="ReportAbuse"><span class="AbuseButton"><a href="/AbuseReport/ForumPost.aspx?PostID=<?=$postinfo->id?>">Report Abuse</a></span></span></span></td>
         </tr>
     </tbody></table></td>
 </tr>
