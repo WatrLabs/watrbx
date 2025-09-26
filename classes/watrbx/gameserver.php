@@ -29,7 +29,7 @@ class gameserver {
 
     private function get_grid($server){
 
-        $Grid = new \watrbx\Grid\Open\Service("https://" . $server->wireguard_ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         $this->grid = $Grid;
 
     }
@@ -73,7 +73,7 @@ class gameserver {
     }
 
     public function get_server_url($serverinfo){
-        return "https://" . $serverinfo->wireguard_ip . ":" . $serverinfo->port;
+        return "http://" . $serverinfo->wireguard_ip . ":" . $serverinfo->port;
     }
 
     public function get_closest_server(){
@@ -163,7 +163,7 @@ class gameserver {
         $server = $this->close_server;
         $Grid = new \watrbx\Grid\Grid;
         //$Grid = $Grid->Close("https://group-she.gl.at.ply.gg:49837");
-        $Grid = new \watrbx\Grid\Close\Service("https://" . $server->wireguard_ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Close\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         $Result = $Grid->CloseJob($jobid);
 
         $db->table("jobs")->where("jobid", $jobid)->delete();
@@ -216,7 +216,7 @@ class gameserver {
     public function execute_job($jobinfo, $scriptinfo){
 
         $server = $this->close_server;
-        $Grid = new \watrbx\Grid\Open\Service("https://" . $server->wireguard_ip . ":" . $server->port);
+        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         $Result = $Grid->OpenJobEx($jobinfo, $scriptinfo);
         return $Result; 
 
@@ -276,7 +276,7 @@ class gameserver {
                 "sleeptime"=>(int)10, // honestly don't know what this does
                 "access"=>$apikey,
                 "baseUrl"=>"watrbx.wtf",
-                "protocol"=>"https://",
+                "protocol"=>"http://",
                 "apiKey"=>$apikey,
                 "matchmakingContextId"=>$context,
                 "assetGameSubdomain"=>"assetgame."

@@ -13,10 +13,10 @@ if(isset($_GET["PostID"])){
 	$PostID = (int)$_GET["PostID"];
 
 	$postInfo = $forums->getPostInfo($PostID);
-    $CreatorInfo = $auth->getuserbyid($postInfo->userid);
+    
 
 	if($postInfo){
-
+        $CreatorInfo = $auth->getuserbyid($postInfo->userid);
 		$categoryinfo = $forums->getCategoryInfo($postInfo->parent);
         $headerinfo = $forums->getHeaderInfo($categoryinfo->parent);
 
