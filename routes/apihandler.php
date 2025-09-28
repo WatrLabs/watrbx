@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use watrlabs\logging\discord;
 use watrlabs\watrkit\pagebuilder;
 use watrbx\email;
+use watrlabs\pagination;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
@@ -2620,124 +2621,136 @@ $router->get('/notifications/api/get-notifications', function(){
     die();
 });
 
-$router->get('/users/friends/list-json', function(){
-
-    // TODO: Proper Pagination and maybe optimize because its a bit slow
-
+$router->get('/users/friends/list-json', function () {
     header("Content-type: application/json");
+
     $auth = new authentication();
     $thumbs = new thumbnails();
     $friends = new friends();
 
-    if($auth->hasaccount()){
-        if(isset($_GET["userId"]) && isset($_GET["friendsType"])){
-
-            $userid = (int)$_GET["userId"];
-            $type = $_GET["friendsType"];
-
-            $response = array(
-                "UserId"=>$userid,
-                "TotalFriends"=>0,
-                "CurrentPage"=>1,
-                "PageSize"=>18,
-                "FriendsType"=>$type,
-                "Friends"=>[],
-            );
-
-            
-            
-            switch ($type) {
-                case "AllFriends":
-                    $allfriends = $friends->get_friends($userid);
-                    
-                    foreach ($allfriends as $friend){
-                        $is_ingame = $auth->is_ingame($friend->id);
-                        $is_online = false;
-
-                        if($is_ingame !== true){
-                            $is_online ==$auth->is_online($friend->id);
-                        }
-
-                        $response["Friends"][] = [
-                            "UserId" => $friend->id,
-                            "AbsoluteURL" => "/users/$friend->id/profile/",
-                            "Username" => $friend->username,
-                            "AvatarUri" => $thumbs->get_user_thumb($friend->id, "512x512", "headshot"),
-                            "AvatarFinal" => true,
-                            "OnlineStatus" => [
-                                "LocationOrLastSeen" => "Website",
-                                "ImageUrl" => "~/images/online.png",
-                                "AlternateText" => $friend->username . " is online."
-                            ],
-                            "Thumbnail" => [
-                                "Final" => true,
-                                "Url" => "https://watrbx.wtf/images/defaultimage.png",
-                                "RetryUrl" => null
-                            ],
-                            "InvitationId" => 0,
-                            "LastLocation" => "",
-                            "PlaceId" => null,
-                            "AbsolutePlaceURL" => null,
-                            "IsOnline" => $is_online,
-                            "InGame" => $is_ingame,
-                            "InStudio" => false,
-                            "ItemVisible" => false,
-                            "FriendshipStatus" => 2,
-                        ];
-                    }
-                    $response["TotalFriends"] = count($allfriends);
-                    die(json_encode($response));
-                    break;
-
-                case "FriendRequests":
-                    $allrequests = $friends->get_requests($userid);
-                    foreach ($allrequests as $friend){
-                        $is_ingame = $auth->is_ingame($friend->user_id);
-                        $is_online = false;
-
-                        if($is_ingame !== true){
-                            $is_online ==$auth->is_online($friend->user_id);
-                        }
-                        $response["Friends"][] = [
-                            "UserId" => $friend->user_id,
-                            "AbsoluteURL" => "/users/$friend->user_id/profile/",
-                            "Username" => $friend->username,
-                            "AvatarUri" => $thumbs->get_user_thumb($friend->user_id, "512x512", "headshot"),
-                            "AvatarFinal" => true,
-                            "OnlineStatus" => [
-                                "LocationOrLastSeen" => "Website",
-                                "ImageUrl" => "~/images/online.png",
-                                "AlternateText" => $friend->username . " is online."
-                            ],
-                            "Thumbnail" => [
-                                "Final" => true,
-                                "Url" => $thumbs->get_user_thumb($friend->user_id   , "512x512", "headshot"),
-                                "RetryUrl" => null
-                            ],
-                            "incomingfriendrequestid" => $friend->invitation_id,
-                            "invitationID"=>$friend->invitation_id,
-                            "LastLocation" => "",
-                            "PlaceId" => null,
-                            "AbsolutePlaceURL" => null,
-                            "IsOnline" => $is_online,
-                            "InGame" => $is_ingame,
-                            "InStudio" => false,
-                            "ItemVisible" => true,
-                            "FriendshipStatus" => 0,
-                        ];
-                    }
-                    $response["TotalFriends"] = count($allrequests);
-                    die(json_encode($response));
-                    break;
-            }
-        }
-        
-    } else {
-        
+    if (!$auth->hasaccount()) {
+        die(json_encode([
+            "UserId" => 0,
+            "TotalFriends" => 0,
+            "CurrentPage" => 0,
+            "PageSize" => 0,
+            "TotalPages" => 0,
+            "FriendsType" => "AllFriends",
+            "Friends" => []
+        ]));
     }
 
-    die('{"UserId":1,"TotalFriends":0,"CurrentPage":0,"PageSize":0,"TotalPages":0,"FriendsType":"AllFriends","Friends":[]}');
+    if (!isset($_GET["userId"], $_GET["friendsType"])) {
+        die(json_encode(["error" => "Missing parameters"]));
+    }
+
+    $userid = (int)$_GET["userId"];
+    $type = $_GET["friendsType"];
+    $page = isset($_GET["currentPage"]) ? (int)$_GET["currentPage"] + 1 : 1;
+    $limit = isset($_GET["pageSize"]) ? (int)$_GET["pageSize"] : 18;
+    $offset = isset($_GET["currentPage"]) ? (int)$_GET["currentPage"] : 0;
+
+    $response = [
+        "UserId" => $userid,
+        "TotalFriends" => 0,
+        "CurrentPage" => $page - 1,
+        "PageSize" => $limit,
+        "FriendsType" => $type,
+        "Friends" => [],
+    ];
+
+    global $db;
+
+    switch ($type) {
+        case "AllFriends":
+            $query = $db->table("friends")
+            ->select("users.id", "users.username")
+            ->join("users", function ($join) use ($userid) {
+                $join->on("users.id", "=", "friends.userid")
+                    ->orOn("users.id", "=", "friends.friendid");
+            })
+            ->where(function ($q) use ($userid) {
+                $q->where("friends.userid", $userid)
+                ->orWhere("friends.friendid", $userid);
+            })
+            ->where("friends.status", "accepted")
+            ->groupBy("users.id");
+
+            $allfriends = $query->get();
+
+            $count = count($allfriends);
+            $response["TotalFriends"] = $count;
+            $response["TotalPages"] = ceil($count / $limit);
+
+            $allfriends = array_splice($allfriends, $offset, $limit);
+
+            foreach ($allfriends as $friend) {
+                $response["Friends"][] = jsonblock($friend->id, $friend->username, $auth, $thumbs);
+            }
+            break;
+
+        case "FriendRequests":
+            $allrequests = $friends->get_requests($userid);
+            $response["TotalFriends"] = count($allrequests);
+            $response["TotalPages"]   = ceil($response["TotalFriends"] / $limit);
+
+            foreach (array_slice($allrequests, $offset, $limit) as $friend) {
+                $response["Friends"][] = jsonblock(
+                    $friend->user_id,
+                    $friend->username,
+                    $auth,
+                    $thumbs,
+                    [
+                        "FriendshipStatus" => 0,
+                        "ItemVisible" => true,
+                        "InvitationId" => $friend->invitation_id
+                    ]
+                );
+            }
+            break;
+
+        default:
+            $response["FriendsType"] = "Unknown";
+            break;
+    }
+
+    die(json_encode($response));
 });
+
+function jsonblock($userId, $username, $auth, $thumbs, $overrides = []) {
+    $is_ingame = $auth->is_ingame($userId);
+    $is_online = !$is_ingame && $auth->is_online($userId);
+
+    $base = [
+        "UserId" => $userId,
+        "AbsoluteURL" => "/users/$userId/profile/",
+        "Username" => $username,
+        "AvatarUri" => $thumbs->get_user_thumb($userId, "512x512", "headshot"),
+        "AvatarFinal" => true,
+        "OnlineStatus" => [
+            "LocationOrLastSeen" => "Website",
+            "ImageUrl" => "~/images/online.png",
+            "AlternateText" => "$username is online."
+        ],
+        "Thumbnail" => [
+            "Final" => true,
+            "Url" => $thumbs->get_user_thumb($userId, "512x512", "headshot"),
+            "RetryUrl" => null
+        ],
+        "InvitationId" => 0,
+        "LastLocation" => "",
+        "PlaceId" => null,
+        "AbsolutePlaceURL" => null,
+        "IsOnline" => $is_online,
+        "InGame" => $is_ingame,
+        "InStudio" => false,
+        "ItemVisible" => false,
+        "FriendshipStatus" => 2,
+    ];
+
+    return array_merge($base, $overrides);
+}
+
 
 $router->get('/catalog/contents', function(){
     require("../storage/catalog.php");
@@ -3995,6 +4008,11 @@ $router->get('/users/inventory/list-json', function(){
     if(isset($_GET["userId"]) && isset($_GET["assetTypeId"])){
         $userid = (int)$_GET["userId"];
         $assettype = (int)$_GET["assetTypeId"];
+        $page = 0;
+
+        if(isset($_GET["pageNumber"])){
+            $page = (int)$_GET["pageNumber"];
+        }
 
         $auth = new authentication();
         $thumbs = new thumbnails();

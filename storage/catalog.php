@@ -59,6 +59,7 @@ $thumbs = new thumbnails();
     $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
 
     $page = 1;
+    $limit = 35;
 
     if(isset($_GET["Category"])){
         $category = (int)$_GET["Category"];
@@ -159,6 +160,15 @@ $thumbs = new thumbnails();
 
     }
 
+    $count = count($assets);
+
+    $currentpage = $page - 1;
+    $displaypage = $currentpage + 1;
+
+    $allpages = ceil($count / $limit);
+    $offset = $currentpage * $limit;
+
+    $assets = array_splice($assets, $offset, $limit);
     
 
 ?>
@@ -421,7 +431,7 @@ $thumbs = new thumbnails();
         <div id="secondRow">
             <div style="float:left;padding-top:5px">
 
-                    <span>Showing <span class="notranslate">1</span> - <span class="notranslate"><?=count($assets)?></span> of <span class="notranslate"><?=count($assets)?></span> results</span>
+                    <span>Showing <span class="notranslate"><?=$offset?></span> - <span class="notranslate"><?=$offset + $limit?></span> of <span class="notranslate"><?=$count?></span> results</span>
             </div>
 
             <div id="SortOptions">
@@ -459,7 +469,7 @@ $thumbs = new thumbnails();
             <div class="PagingContainerDivTop">
                 <span class="pager previous" id="pagingprevious"></span>
                 <span class="page text">
-                    Page <input class="Paging_Input translate" type="text" value="1"/> of 1
+                    Page <input class="Paging_Input translate" type="text" value="<?=$page?>"/> of <?=$allpages?>
                     <span class="paging_pagenums_container"></span>
                 </span>
                 <span class="pager next" id="pagingnext"></span>
@@ -499,7 +509,7 @@ $thumbs = new thumbnails();
 <script type="text/javascript">
     $(function () {
         Roblox.require(['Pages.Catalog', 'Pages.CatalogShared', 'Widgets.HierarchicalDropdown'], function (catalog) {
-            var pagestate = { "Category": 1, "CurrencyType": 0, "SortType": 0, "SortAggregation": 3, "SortCurrency": 0, "AssetTypes": null, "Gears": null, "Genres": null, "Keyword": null, "PageNumber": 1, "Creator": null, "PxMin": 0, "PxMax": 0 };
+            var pagestate = { "Category": <?=$category?>, <? if($subcategory !== 0) { echo '"Subcategory": ' . $subcategory . ","; }  ?> "CurrencyType": 0, "SortType": 0, "SortAggregation": 3, "SortCurrency": 0, "AssetTypes": null, "Gears": null, "Genres": null, "Keyword": null, "PageNumber": <?=$page?>, "Creator": null, "PxMin": 0, "PxMax": 0 };
             catalog.init(pagestate, 1);
             Roblox.Widgets.HierarchicalDropdown.init();
             if(Roblox.CatalogValues.ContainerID)
