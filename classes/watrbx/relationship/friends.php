@@ -12,7 +12,8 @@ class friends {
         $this->db = $db;
     }
 
-    private function buildFriendQuery($userid, $limit = null) {
+    private function buildFriendQuery($userid, $limit = null, $offset = null) {
+
         $q1 = $this->db->table("friends")
             ->select(["users.id", "users.username"])
             ->where("friends.userid", $userid)
@@ -29,6 +30,12 @@ class friends {
             $q1 = $q1->limit($limit);
             $q2 = $q2->limit($limit);
         }
+
+        if($offset){
+            $q1 = $q1->offset($offset);
+            $q2 = $q2->offset($offset);
+        }
+
         return [$q1, $q2];
     }
 
@@ -51,8 +58,8 @@ class friends {
         return $isfriends !== null;
     }
 
-    public function get_friends($userid, $limit = null) {
-        [$query1, $query2] = $this->buildFriendQuery($userid, $limit);
+    public function get_friends($userid, $limit = null, $offset = null) {
+        [$query1, $query2] = $this->buildFriendQuery($userid, $limit, $offset);
 
         $friends1 = $query1->get();
         $friends2 = $query2->get();
