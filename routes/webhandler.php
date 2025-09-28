@@ -588,8 +588,9 @@ $router->post('/my/character.aspx', function() {
                 setcookie("lastcategory", 11, time() + 9999999, "/", ".watrbx.wtf");
                 die();
             case "viewpants":
-                die($page::get_template("avatar", ["currentcategory"=>12]));
                 setcookie("lastcategory", 12, time() + 9999999, "/", ".watrbx.wtf");
+                $page::get_template("avatar", ["currentcategory"=>12]);
+                die();
             case "viewgear":
                 setcookie("lastcategory", 19, time() + 9999999, "/", ".watrbx.wtf");
                 die($page::get_template("avatar", ["currentcategory"=>19]));
