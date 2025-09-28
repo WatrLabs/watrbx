@@ -140,7 +140,7 @@ $router->get('/api/v1/gameserver/pinger', function(){
                 die(createsuccess("killed"));
             } else {
                 $Grid = new watrbx\Grid\Grid;
-                $Url = "https://" . $serverInfo->wireguard_ip . ":" . $serverInfo->port;
+                $Url = "http://" . $serverInfo->wireguard_ip . ":" . $serverInfo->port;
 
                 $Renew = $Grid->Renew($Url);
                 $Renew->RenewLease($jobId, 60); // 60 Seconds.
