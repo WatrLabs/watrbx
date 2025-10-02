@@ -1,6 +1,9 @@
 <?php
 use watrlabs\router\Routing;
 use watrlabs\authentication;
+use watrbx\thumbnails;
+$thumbs = new thumbnails();
+
 use watrbx\relationship\friends;
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -64,6 +67,31 @@ $router->get('/thumbnail/avatar-headshot',function(){
 });
 
 $router->get('/thumbnail/avatar-headshots',function(){
+
+    $result = [];
+    $thumbs = new thumbnails();
+
+    parse_str($_SERVER['QUERY_STRING'], $params);
+    foreach (explode('&', $_SERVER['QUERY_STRING']) as $part) {
+        if (str_starts_with($part, 'userIds=')) {
+            $userIds[] = substr($part, strlen('userIds='));
+        }
+    }
+
+    if(isset($userIds)){
+        foreach ($userIds as $userId){
+            $thumb = $thumbs->get_user_thumb($userId, "512x512", "headshot");
+
+            $result[] = [
+                "Url"=>$thumb,
+                "Final"=>true
+            ];
+
+        }
+        header("Content-type: application/json");
+        die(json_encode($result));
+    }
+    header("Content-type: application/json");
     die('[{"Url": "https://www.watrbx.wtf/images/defaultimage.png", "Final": true }]');
 });
 
