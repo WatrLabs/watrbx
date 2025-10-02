@@ -593,7 +593,8 @@ $router->post('/my/character.aspx', function() {
                 die();
             case "viewgear":
                 setcookie("lastcategory", 19, time() + 9999999, "/", ".watrbx.wtf");
-                die($page::get_template("avatar", ["currentcategory"=>19]));
+                $page::get_template("avatar", ["currentcategory"=>19]);w
+                die();
             default:
                 if(str_contains($event, "Wear")){
                     $exploded = explode("|", $event);
