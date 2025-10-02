@@ -17,620 +17,1523 @@ $pagebuilder->set_page_name("Groups");
 $pagebuilder->buildheader();
 ?>
 
-    <div id="BodyWrapper">
-            <div id="Body" style="">
-                
-    
-    <div class="MyRobloxContainer">
-        <div id="GroupTitle" class="StandardBox" style="text-align: center; padding: 5px 0px 5px 0px">
-            <div style="height: 20px; margin-bottom: 3px"><h1 style="font-size: 18px; font-weight:bold;">The second ROBLOXAIN army</h1></div>
-            <div style="color: darkgrey; height: 20px">Owned By: <a style="color: Purple; font-style: italic;" href="../user.aspx?id=14937833">Cubut</a></div>
-        </div>
-        <div id="LeftColumn" style="float:left; width: 640px; margin-right: 10px;">
-            <div id="top" style="margin-bottom: 10px;">
-                <div id="emblem" class="StandardBox" style="padding: 0px; width: 270px; float: left; text-align: center;">
-                    <div style="margin: 10px">
-			            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupEmblemImage" class="EmblemAdminImage" title="The second ROBLOXAIN army" href="/My/groups.aspx?gid=624572" style="display:inline-block;height:250px;width:250px;cursor:pointer;"><img src="https://t1ak.roblox.com/c38fb1d715e53579ee42f2af38ef4fd7" height="250" width="250" border="0" onerror="return Roblox.Controls.Image.OnError(this)" alt="The second ROBLOXAIN army"></a>
-			        </div>
-		            <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UploadNewEmblem" class="StandardBoxGrey" style="text-align: center; width: 250px; margin-bottom: 0px; border: none">
-		                <input type="file" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdateEmblemFileUpload" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdateEmblemFileUpload" style="width:230px;margin-bottom: 5px"><br>
-		                
-		                
-		                <input type="image" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$UploadNewEmblemButton" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UploadNewEmblemButton" title="Update Image" src="../images/Buttons/GroupSettingsUpdateButton.png" alt="Update Image" onclick="if ($(&lt;%# UpdateEmblemFileUpload.ClientID%&gt;).value == '') { $('&lt;%# NoUploadError.ClientID  %&gt;').Visible = true; return false; };WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$UploadNewEmblemButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" style="border-width:0px;">
-		            </div>    
-                </div>
-                <div id="description" style="width: 350px; float: left; margin-left: 10px;">
-                    <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_DescriptionHeader" class="StandardBoxHeader" style="width: 346px"><span>Description</span></div>
-                    <div class="StandardBox" style="width: 346px">
-                        <div style="padding: 0px; border: none;  border-style:none; width: 346px">
-                            
-                            <textarea name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupDescription" rows="2" cols="20" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupDescription" class="GroupDescriptionEdit" style="height:266px;width:346px;overflow: auto; padding: 0; margin: 0">Join us today!Our furturistic war is opon hand!Please join now!
-War:None
-News:We are currently heavly low on people!Next to people are recuirters!Halted plans with WWI,we need more members anyways!
-Abilty:No-Spy-Tech
-Abilty info:No-Spy-Tech makes guest not have any abilty at all.
-Pants:None yet
-Shirt:None yet
-Oldest T-Shirt:https://www.roblox.com/TSRA-Shirt-Version-0-01-OUTDATED-item?id=84625100
-T-Shirt:https://www.roblox.com/TSRA-Shirt-Version-0-02-item?id=85027516
-Picture created!</textarea>
-                        </div>
-                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_DescriptionUpdateBox" class="StandardBoxGrey" style="text-align: center; height: 30px; margin: 0 0 0 0; width: 326px; border: none">
-                            <input type="image" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdateGroupDescButton" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdateGroupDescButton" src="../images/Buttons/GroupSettingsUpdateButton.png" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdateGroupDescButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" style="border-width:0px;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdatePanelGroupMembers">
-	
-                    
 
-<script src="/js/groups-exileuser.js" type="text/javascript"></script>
-<script type="text/javascript" language="javascript">
-    function ChangeRoleSet(idOfDropDown, targetUserId) {
-        var w = document.getElementById(idOfDropDown).selectedIndex;
-        var newRoleSetId = document.getElementById(idOfDropDown).options[w].value;
-        $.ajax({
-            type: "GET",
-            async: true,
-            cache: false,
-            timeout: 50000,
-            url: "/Groups/RoleSetUpdater.ashx?groupId=" + groupId + "&newRoleSetId=" + newRoleSetId + "&targetUserId=" + targetUserId,
-            success: function(data)
-            {
-                if (data !== null)
-                {
-                    $("#" + idOfDropDown).selectedValue = newRoleSetId;
-                }
-            },
-            failure: function(data) 
-            {
-                if (data !== null) 
-                {
-                    $("#" + idOfDropDown).selectedValue = newRoleSetId;   // Get the roleset from the http response...        
-                }
-            }
-
-        });
-    }
-
-    var groupId = "624572";
-    Roblox.ExileModal.InitializeGlobalVars(3661054, 624572);
-</script>
-
-<div id="Members" style="clear: both;" class="GroupAdmin">
-    
-    <div id="ExileModal" class="modalPopup blueAndWhite" style="width: 380px; min-height: 50px; display: none;">
-		<div id="Div4" class="simplemodal-close">
-            <a class="ImageButton closeBtnCircle_35h" style="cursor: pointer; margin-left:385px; position:absolute; top:-18px; left:-10px;"></a>
-        </div>
-        <div style="text-align:center;">
-            <div class="titleBar">Warning!</div>
-            <div style="text-align: center; padding: 10px">
-		        <p>Are you sure you want to exile this user?</p>
-		        <div style="text-align: center; margin: 5px 10px 0px 0px">
-		            <a onclick="Roblox.ExileModal.Close();" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_CancelExile" class="GreenButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$CancelExile&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))" style="cursor: pointer"><span>Cancel</span></a>
-                    <a onclick="Roblox.ExileModal.Exile();" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_ContinueExile" class="RedButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$ContinueExile&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))" style="cursor:pointer;"><span>Exile</span></a>
-                    <p><input type="checkbox" id="deleteAllPostsByUser" value="1" name="deleteAllPostsByUser" onclick="Roblox.ExileModal.SetDeletePostsBool();"> Also delete all posts by this user. (Please allow some time.)</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="StandardBoxHeader"><span>Members</span></div>
-    <div class="StandardBox">
-        <div id="searchbox" style="float: right">
-            <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$MemberSearchText" type="text" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_MemberSearchText" style="width:150px;">
-            <select name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$RoleSetDropDownList" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_RoleSetDropDownList">
-		<option selected="selected" value="">Filter by rank</option>
-		<option value="3661056">Reciurt</option>
-		<option value="3664134">Light solider</option>
-		<option value="3664157">Heavy duty Solider</option>
-		<option value="3664160">Recuriter</option>
-		<option value="3661055">Captain</option>
-		<option value="3666955">Genreal</option>
-		<option value="3708547">Vice Presdient</option>
-		<option value="3661054">Presdient</option>
-
-	</select>
-            <input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$MemberSearchButton" value="Search" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$MemberSearchButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_MemberSearchButton">
-            <input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$MemberListReset" value="Show All Members" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$MemberListReset&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_MemberListReset">
-            <div><span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_CustomValidatorUserNameLength" style="color:Red;display:none;">Usernames must be between 0 and 20 characters long.</span></div>    
-        </div>
-        <hr style="clear: both">
-        
-        
-                
-                <div>
-                    
-                <div class="GroupMember" style="float: left; text-align: center; width: 100px; overflow: hidden;margin:0;">
-                    <div class="MemberThumbnail">
-                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_ctrl0_ctl00_hlAvatar" title="tailz13" href="/User.aspx?ID=26038176" style="display:inline-block;height:48px;width:48px;cursor:pointer;"><img src="https://t7ak.roblox.com/283bd30e18ba4e695f304559f49ac4e8" height="48" width="48" border="0" onerror="return Roblox.Controls.Image.OnError(this)" alt="tailz13"></a>
-                    </div>
-                    <div class="RepeaterText" style="margin-bottom: 10px;width:100%;">
-                        <div style="overflow: hidden;">
-                            <a href="/User.aspx?ID=26038176" title="tailz13">tailz13</a>
-                        </div>
-                        <a onclick="return Roblox.ExileModal.Show(26038176);" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_ctrl0_ctl00_LinkButton1" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$dlMembers$ctrl0$ctl00$LinkButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))" style="line-height:26px">&nbsp;•&nbsp;&nbsp;Exile User</a>
-                         
-                        <br>
+<div id="BodyWrapper">
                         
-                        <span><select style="width: 100px" onchange="ChangeRoleSet(&quot;DropDown-26038176&quot;, &quot;26038176&quot;)" id="DropDown-26038176"><option value="3661056" title="Reciurt">Reciurt</option><option value="3664134" title="Light solider">Light solider</option><option value="3664157" title="Heavy duty Solider">Heavy duty So...</option><option value="3664160" title="Recuriter" selected="">Recuriter</option><option value="3661055" title="Captain">Captain</option><option value="3666955" title="Genreal">Genreal</option><option value="3708547" title="Vice Presdient">Vice Presdient</option></select></span>
-                    </div>
-                </div>
-            
-                <div style="width: 20px; float: left"></div>
-            
-                <div class="GroupMember" style="float: left; text-align: center; width: 100px; overflow: hidden;margin:0;">
-                    <div class="MemberThumbnail">
-                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_ctrl0_ctl02_hlAvatar" title="SpasAttackM13" href="/User.aspx?ID=15043098" style="display:inline-block;height:48px;width:48px;cursor:pointer;"><img src="https://t7ak.roblox.com/3f13aed28fd59c9c8164b2928ca6084b" height="48" width="48" border="0" onerror="return Roblox.Controls.Image.OnError(this)" alt="SpasAttackM13"></a>
-                    </div>
-                    <div class="RepeaterText" style="margin-bottom: 10px;width:100%;">
-                        <div style="overflow: hidden;">
-                            <a href="/User.aspx?ID=15043098" title="SpasAttackM13">SpasAttackM13</a>
-                        </div>
-                        <a onclick="return Roblox.ExileModal.Show(15043098);" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_ctrl0_ctl02_LinkButton1" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$dlMembers$ctrl0$ctl02$LinkButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))" style="line-height:26px">&nbsp;•&nbsp;&nbsp;Exile User</a>
-                         
-                        <br>
-                        
-                        <span><select style="width: 100px" onchange="ChangeRoleSet(&quot;DropDown-15043098&quot;, &quot;15043098&quot;)" id="DropDown-15043098"><option value="3661056" title="Reciurt">Reciurt</option><option value="3664134" title="Light solider">Light solider</option><option value="3664157" title="Heavy duty Solider">Heavy duty So...</option><option value="3664160" title="Recuriter">Recuriter</option><option value="3661055" title="Captain" selected="">Captain</option><option value="3666955" title="Genreal">Genreal</option><option value="3708547" title="Vice Presdient">Vice Presdient</option></select></span>
-                    </div>
-                </div>
-            
-                <div style="width: 20px; float: left"></div>
-            
-                <div class="GroupMember" style="float: left; text-align: center; width: 100px; overflow: hidden;margin:0;">
-                    <div class="MemberThumbnail">
-                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_ctrl0_ctl04_hlAvatar" title="thedaniel3497" href="/User.aspx?ID=15278544" style="display:inline-block;height:48px;width:48px;cursor:pointer;"><img src="https://t7ak.roblox.com/0dabadcdb1cd8235fb9b29d71b80ae6c" height="48" width="48" border="0" onerror="return Roblox.Controls.Image.OnError(this)" alt="thedaniel3497"></a>
-                    </div>
-                    <div class="RepeaterText" style="margin-bottom: 10px;width:100%;">
-                        <div style="overflow: hidden;">
-                            <a href="/User.aspx?ID=15278544" title="thedaniel3497">thedaniel3497</a>
-                        </div>
-                        <a onclick="return Roblox.ExileModal.Show(15278544);" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_ctrl0_ctl04_LinkButton1" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupMemberAdminPane$dlMembers$ctrl0$ctl04$LinkButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))" style="line-height:26px">&nbsp;•&nbsp;&nbsp;Exile User</a>
-                         
-                        <br>
-                        
-                        <span><select style="width: 100px" onchange="ChangeRoleSet(&quot;DropDown-15278544&quot;, &quot;15278544&quot;)" id="DropDown-15278544"><option value="3661056" title="Reciurt">Reciurt</option><option value="3664134" title="Light solider">Light solider</option><option value="3664157" title="Heavy duty Solider">Heavy duty So...</option><option value="3664160" title="Recuriter">Recuriter</option><option value="3661055" title="Captain">Captain</option><option value="3666955" title="Genreal" selected="">Genreal</option><option value="3708547" title="Vice Presdient">Vice Presdient</option></select></span>
-                    </div>
-                </div>
-            
-                <div style="width: 20px; float: left"></div>
-            
-                <div class="GroupMember" style="float: left; text-align: center; width: 100px; overflow: hidden;margin:0;">
-                    <div class="MemberThumbnail">
-                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_ctrl0_ctl06_hlAvatar" title="Cubut" href="/User.aspx" style="display:inline-block;height:48px;width:48px;cursor:pointer;"><img src="https://t1ak.roblox.com/b6ef0a2e7c422816677c66e94fec634d" height="48" width="48" border="0" onerror="return Roblox.Controls.Image.OnError(this)" alt="Cubut"><img src="/images/icons/overlay_tbc_small.png" align="left" style="position:relative;top:-12px;"></a>
-                    </div>
-                    <div class="RepeaterText" style="margin-bottom: 10px;width:100%;">
-                        <div style="overflow: hidden;">
-                            <a href="/User.aspx?ID=14937833" title="Cubut">Cubut</a>
-                        </div>
-                        
-                         
-                        <br>
-                        
-                        <span></span>
-                    </div>
-                </div>
-            
-                </div>
-            
-            
-        <hr style="clear: both">
-        <div class="AdminFooterPager" style="clear: both; text-align: center">
-            <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupMemberAdminPane_dlMembers_Footer"><a disabled="disabled">First</a>&nbsp;<a disabled="disabled">Previous</a>&nbsp;<span>1</span>&nbsp;<a disabled="disabled">Next</a>&nbsp;<a disabled="disabled">Last</a>&nbsp;</span>
-        </div>
-    </div>
-</div>
-
-                
-</div>
-            <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_JoinRequests" style="clear: both;">
-                <div class="StandardBoxHeader"><span>Join Requests</span></div>
-                <div class="StandardBox">
-                    <div id="searchBoxJoinRequests" style="float: right">
-                        <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$JoinRequestsSearchBox" type="text" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_JoinRequestsSearchBox" style="width:150px;">
-                        <input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$JoinRequestSearchButton" value="Search" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$JoinRequestSearchButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_JoinRequestSearchButton">
-                        <input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$JoinRequestReset" value="Show All Join Requests" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$JoinRequestReset&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_JoinRequestReset">
-                        <div><span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_CustomValidatorGroupJoinRequestNameLength" style="color:Red;display:none;">Usernames must be between 0 and 20 characters long.</span></div>    
-                    </div>
-                    <hr style="clear: both">
-                    
-                    <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_NoGroupJoinRequests">
-	
-                            No results...
-                    
-</div>
-                    <hr style="clear: none">
-                    <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_Pager1_PanelPages" style="text-align:center;">
-	
-    Pages:
-    
-    
-</div>
-  
-                </div>
-            </div>
-            <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AlliesAndEnemiesUpdatePanel">
-	
-                    <div id="AlliesAndEnemies" style="width:890px">
-                        <div id="Allies" style="float:left;width:430px">
-                            <div class="StandardBoxHeader"><span>Allies</span></div>
-                            <div class="StandardBox">
-                                Group Name:
-                                <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyNameTextBox" type="text" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyNameTextBox">
-                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_RequestAlly" class="GreenButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$RequestAlly&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))"><span>Send Ally Request</span></a>
-                                <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_RequestAllyConfirmation" style="text-align:center;font-style:italic;margin:10px 0"></div>
-                                <hr>
-                                <div style="text-align:center;padding-bottom:20px">
-                                    Ally Requests
-                                    (<a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AcceptAllButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AcceptAllButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Accept All</a> |
-                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_DeclineAllButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$DeclineAllButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Decline All</a>)
-                                </div>
+                        <div id="RepositionBody">
+                            <div id="Body" class="body-width ">
                                 
-                                
-                                        <div style="margin-bottom:20px;text-align:center">No results...</div>
-                                    
-                                <hr>
-                                
-                                
-                                        
-                                        <div style="position:relative;height:42px;">
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AlliesListView_ctrl0_AssetImage3" onclick="__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AlliesListView$ctrl0$AssetImage3','')" style="display:inline-block;height:42px;width:42px;cursor:pointer;"><img src="https://t7ak.roblox.com/9fb2a5ecf3a5e459c6b2714403b94dc1" height="42" width="42" border="0" onerror="return Roblox.Controls.Image.OnError(this)"></a>
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AlliesListView_ctrl0_HyperLink1" href="../Groups/group.aspx?gid=342830" style="position: absolute; top: 12px; margin-left: 10px;">SpasAttackM13's SpasAttackers</a>
-                                            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AlliesListView_ctrl0_RemoveAlly" class="RedButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$AlliesListView$ctrl0$RemoveAlly&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))" style="position:absolute;top:5px;right:0"><span>Remove</span></a>
-                                        </div>
-                                      
-                                        <div style="text-align:center">
-                                            <span><a disabled="disabled">Previous</a>&nbsp;<a disabled="disabled">Next</a>&nbsp;</span>
-                                        </div>
-                                    
-                            </div>
-                        </div>
-                        
-                    </div>
-                
-</div>
-        </div>
-        <div id="RightColumn" style="float: left; width: 240px">
-            <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_SettingsHeader" class="StandardBoxHeader" style="width: 230px"><span>Settings</span></div>
-            <div class="StandardBox" style="width: 230px">
-                <div style="margin-bottom: 10px">Group Entry:
-                    <table id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllowPublicEntry" border="0">
-	<tbody><tr>
-		<td><input id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllowPublicEntry_0" type="radio" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllowPublicEntry" value="public"><label for="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllowPublicEntry_0">Anyone can join</label></td>
-	</tr><tr>
-		<td><input id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllowPublicEntry_1" type="radio" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllowPublicEntry" value="invite" checked="checked"><label for="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllowPublicEntry_1">Manual Approval</label></td>
-	</tr>
-</tbody></table>
-                    <input id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_BCOnlyJoin" type="checkbox" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$BCOnlyJoin"><label for="ctl00_ctl00_cphRoblox_cphMyRobloxContent_BCOnlyJoin">User must have Builders Club.</label><br>
-                    <input id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllowEnemiesCheckBox" type="checkbox" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllowEnemiesCheckBox"><label for="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllowEnemiesCheckBox">Allow Enemies</label>
-                </div>
-                <div style="text-align: center">
-                    <input type="image" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupSettingsUpdateButton" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupSettingsUpdateButton" src="../images/Buttons/GroupSettingsUpdateButton.png" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupSettingsUpdateButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" style="border-width:0px;">
-                </div>
-            </div>
-            <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GiveOwnership" class="StandardBox">
-	
-                <p style="text-align:center; font-size:12px">Change Group Owner</p>
-                Username:<br>
-                <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$ChangeOwnerTextBox" type="text" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_ChangeOwnerTextBox">
-                <input style="margin: 0 auto" type="button" value="Make Owner" onclick="ChangeOwnerPanel.open()">
-                <div style="color: Red"></div>
-            
-</div>
-         
-        </div>
-        <br style="clear: both">
-        
-        
-        <div class="StandardBox" style="float: left">
-            <table>
-                <thead>
-                    <tr>
-                        <td><b>Name</b></td>
-                        <td><b>Description</b></td>
-                        <td><b>Rank<br>(0-255)</b></td>
-                        <td><img src="/images/Groups/Permissions/CanDeletePosts-Icon.png" title="Can delete posts on group wall"></td><td><img src="/images/Groups/Permissions/CanPostToWall-Icon.png" title="Can post on group wall"></td><td><img src="/images/Groups/Permissions/CanInviteMembers-Icon.png" title="Can accept group join requests"></td><td><img src="/images/Groups/Permissions/CanPostToStatus-Icon.png" title="Can post to group status"></td><td><img src="/images/Groups/Permissions/CanBuildInGroupPlaces-Icon.png" title="Can build in group places"></td><td><img src="/images/Groups/Permissions/CanRemoveMembers-Icon.png" title="Can remove members from group with a lower rank"></td><td><img src="/images/Groups/Permissions/CanViewStatus-Icon.png" title="Can view the group status"></td><td><img src="/images/Groups/Permissions/CanViewWall-Icon.png" title="Can view the group wall"></td><td><img src="/images/Groups/Permissions/CanChangeRank-Icon.png" title="Can change ranks of lower-ranked members.  New rank can only be as high as the performer" s="" rank'=""></td><td><img src="/images/Groups/Permissions/CanAdvertise-Icon.png" title="Can advertise this group"></td><td><img src="/images/Groups/Permissions/CanManageRelationships-Icon.png" title="Can manage relationships with other groups"></td><td><img src="/images/Groups/Permissions/CanAddGroupPlaces-Icon.png" title="Can associate their places with the group"></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                            
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3661054-Name" value="Presdient">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3661054-Description" value="The most hardest worker yet.">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3661054-Rank" value="255" disabled="">&nbsp;</td>
-                                <td><input type="checkbox" name="3661054-Permission:CanDeletePosts" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanPostToWall" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanInviteMembers" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanPostToStatus" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanBuildInGroupPlaces" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanRemoveMembers" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanViewStatus" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanViewWall" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanChangeRank" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanAdvertise" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanManageRelationships" disabled="" checked="checked"></td><td><input type="checkbox" name="3661054-Permission:CanAddGroupPlaces" disabled="" checked="checked"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3708547-Name" value="Vice Presdient">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3708547-Description" value="More honored then genreal.">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3708547-Rank" value="254">&nbsp;</td>
-                                <td><input type="checkbox" name="3708547-Permission:CanDeletePosts" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanPostToWall" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanInviteMembers" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanPostToStatus" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanBuildInGroupPlaces" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanRemoveMembers" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanViewStatus" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanViewWall" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanChangeRank" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanAdvertise" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanManageRelationships" checked="checked"></td><td><input type="checkbox" name="3708547-Permission:CanAddGroupPlaces" checked="checked"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3666955-Name" value="Genreal">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3666955-Description" value="It is the most honored unit besides Vice Presdient.">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3666955-Rank" value="253">&nbsp;</td>
-                                <td><input type="checkbox" name="3666955-Permission:CanDeletePosts" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanPostToWall" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanInviteMembers"></td><td><input type="checkbox" name="3666955-Permission:CanPostToStatus" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanBuildInGroupPlaces" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanRemoveMembers" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanViewStatus" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanViewWall" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanChangeRank" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanAdvertise" checked="checked"></td><td><input type="checkbox" name="3666955-Permission:CanManageRelationships"></td><td><input type="checkbox" name="3666955-Permission:CanAddGroupPlaces"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3661055-Name" value="Captain">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3661055-Description" value="A hard working unit">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3661055-Rank" value="252">&nbsp;</td>
-                                <td><input type="checkbox" name="3661055-Permission:CanDeletePosts" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanPostToWall" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanInviteMembers"></td><td><input type="checkbox" name="3661055-Permission:CanPostToStatus" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanBuildInGroupPlaces" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanRemoveMembers"></td><td><input type="checkbox" name="3661055-Permission:CanViewStatus" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanViewWall" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanChangeRank"></td><td><input type="checkbox" name="3661055-Permission:CanAdvertise" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanManageRelationships" checked="checked"></td><td><input type="checkbox" name="3661055-Permission:CanAddGroupPlaces"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3664160-Name" value="Recuriter">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3664160-Description" value="Is allowed to reciurt.The abilty is special,and only one quatar will be get in this rank!">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3664160-Rank" value="251">&nbsp;</td>
-                                <td><input type="checkbox" name="3664160-Permission:CanDeletePosts" checked="checked"></td><td><input type="checkbox" name="3664160-Permission:CanPostToWall" checked="checked"></td><td><input type="checkbox" name="3664160-Permission:CanInviteMembers" checked="checked"></td><td><input type="checkbox" name="3664160-Permission:CanPostToStatus"></td><td><input type="checkbox" name="3664160-Permission:CanBuildInGroupPlaces"></td><td><input type="checkbox" name="3664160-Permission:CanRemoveMembers"></td><td><input type="checkbox" name="3664160-Permission:CanViewStatus" checked="checked"></td><td><input type="checkbox" name="3664160-Permission:CanViewWall" checked="checked"></td><td><input type="checkbox" name="3664160-Permission:CanChangeRank"></td><td><input type="checkbox" name="3664160-Permission:CanAdvertise" checked="checked"></td><td><input type="checkbox" name="3664160-Permission:CanManageRelationships"></td><td><input type="checkbox" name="3664160-Permission:CanAddGroupPlaces"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3664157-Name" value="Heavy duty Solider">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3664157-Description" value="Heavy indeed.Has a rocket launcher,pistol,minigun,Heavy AK47 and most of all,Shotgun.">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3664157-Rank" value="3">&nbsp;</td>
-                                <td><input type="checkbox" name="3664157-Permission:CanDeletePosts"></td><td><input type="checkbox" name="3664157-Permission:CanPostToWall" checked="checked"></td><td><input type="checkbox" name="3664157-Permission:CanInviteMembers"></td><td><input type="checkbox" name="3664157-Permission:CanPostToStatus"></td><td><input type="checkbox" name="3664157-Permission:CanBuildInGroupPlaces"></td><td><input type="checkbox" name="3664157-Permission:CanRemoveMembers"></td><td><input type="checkbox" name="3664157-Permission:CanViewStatus" checked="checked"></td><td><input type="checkbox" name="3664157-Permission:CanViewWall" checked="checked"></td><td><input type="checkbox" name="3664157-Permission:CanChangeRank"></td><td><input type="checkbox" name="3664157-Permission:CanAdvertise" checked="checked"></td><td><input type="checkbox" name="3664157-Permission:CanManageRelationships"></td><td><input type="checkbox" name="3664157-Permission:CanAddGroupPlaces"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3664134-Name" value="Light solider">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3664134-Description" value="A very light solider indeed,only has a minigun and pistol">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3664134-Rank" value="2">&nbsp;</td>
-                                <td><input type="checkbox" name="3664134-Permission:CanDeletePosts"></td><td><input type="checkbox" name="3664134-Permission:CanPostToWall" checked="checked"></td><td><input type="checkbox" name="3664134-Permission:CanInviteMembers"></td><td><input type="checkbox" name="3664134-Permission:CanPostToStatus"></td><td><input type="checkbox" name="3664134-Permission:CanBuildInGroupPlaces"></td><td><input type="checkbox" name="3664134-Permission:CanRemoveMembers"></td><td><input type="checkbox" name="3664134-Permission:CanViewStatus" checked="checked"></td><td><input type="checkbox" name="3664134-Permission:CanViewWall" checked="checked"></td><td><input type="checkbox" name="3664134-Permission:CanChangeRank"></td><td><input type="checkbox" name="3664134-Permission:CanAdvertise" checked="checked"></td><td><input type="checkbox" name="3664134-Permission:CanManageRelationships"></td><td><input type="checkbox" name="3664134-Permission:CanAddGroupPlaces"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3661056-Name" value="Reciurt">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3661056-Description" value="A reciurt">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3661056-Rank" value="1">&nbsp;</td>
-                                <td><input type="checkbox" name="3661056-Permission:CanDeletePosts"></td><td><input type="checkbox" name="3661056-Permission:CanPostToWall" checked="checked"></td><td><input type="checkbox" name="3661056-Permission:CanInviteMembers"></td><td><input type="checkbox" name="3661056-Permission:CanPostToStatus"></td><td><input type="checkbox" name="3661056-Permission:CanBuildInGroupPlaces"></td><td><input type="checkbox" name="3661056-Permission:CanRemoveMembers"></td><td><input type="checkbox" name="3661056-Permission:CanViewStatus" checked="checked"></td><td><input type="checkbox" name="3661056-Permission:CanViewWall" checked="checked"></td><td><input type="checkbox" name="3661056-Permission:CanChangeRank"></td><td><input type="checkbox" name="3661056-Permission:CanAdvertise" checked="checked"></td><td><input type="checkbox" name="3661056-Permission:CanManageRelationships"></td><td><input type="checkbox" name="3661056-Permission:CanAddGroupPlaces"></td>
-                            </tr>
-                        
-                        
-                            
-                            <tr>
-                                <td><input type="text" maxlength="100" size="10" name="3661057-Name" value="Guest" disabled="">&nbsp;</td>
-                                <td><input type="text" maxlength="999" name="3661057-Description" value="A non-group member." disabled="">&nbsp;</td>
-                                <td><input type="text" maxlength="3" size="3" name="3661057-Rank" value="0" disabled="">&nbsp;</td>
-                                <td><input type="checkbox" name="3661057-Permission:CanDeletePosts"></td><td><input type="checkbox" name="3661057-Permission:CanPostToWall"></td><td><input type="checkbox" name="3661057-Permission:CanInviteMembers"></td><td><input type="checkbox" name="3661057-Permission:CanPostToStatus"></td><td><input type="checkbox" name="3661057-Permission:CanBuildInGroupPlaces"></td><td><input type="checkbox" name="3661057-Permission:CanRemoveMembers"></td><td><input type="checkbox" name="3661057-Permission:CanViewStatus"></td><td><input type="checkbox" name="3661057-Permission:CanViewWall"></td><td><input type="checkbox" name="3661057-Permission:CanChangeRank"></td><td><input type="checkbox" name="3661057-Permission:CanAdvertise"></td><td><input type="checkbox" name="3661057-Permission:CanManageRelationships"></td><td><input type="checkbox" name="3661057-Permission:CanAddGroupPlaces"></td>
-                            </tr>
-                        
-                        
-                        
-                </tbody>
-            </table>
-            
-            
-            <br>
-            
-            <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$CreateNewRolesetButton" type="button" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_CreateNewRolesetButton" onclick="CreateRoleSetPanel.open()" value="Create">
-            <input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$UpdateButton" value="Update" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$UpdateButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_UpdateButton"> 
-        </div>
-        <div class="StandardBox" style="width: 200px; float: left; margin-left: 10px">
-            <b style="font-size:14px;color:#990000">LEGEND</b><br><br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanDeletePosts-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl01_Img1" title="Can delete posts on group wall">
-                        Can delete posts on group wall
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanPostToWall-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl03_Img1" title="Can post on group wall">
-                        Can post on group wall
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanInviteMembers-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl05_Img1" title="Can accept group join requests">
-                        Can accept group join requests
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanPostToStatus-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl07_Img1" title="Can post to group status">
-                        Can post to group status
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanBuildInGroupPlaces-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl09_Img1" title="Can build in group places">
-                        Can build in group places
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanRemoveMembers-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl11_Img1" title="Can remove members from group with a lower rank">
-                        Can remove members from group with a lower rank
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanViewStatus-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl13_Img1" title="Can view the group status">
-                        Can view the group status
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanViewWall-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl15_Img1" title="Can view the group wall">
-                        Can view the group wall
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanChangeRank-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl17_Img1" title="Can change ranks of lower-ranked members.  New rank can only be as high as the performer's rank">
-                        Can change ranks of lower-ranked members.  New rank can only be as high as the performer's rank
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanAdvertise-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl19_Img1" title="Can advertise this group">
-                        Can advertise this group
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanManageRelationships-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl21_Img1" title="Can manage relationships with other groups">
-                        Can manage relationships with other groups
-                    </div>
-                <br>
-                    <div style="vertical-align: middle">
-                        <img src="/images/Groups/Permissions/CanAddGroupPlaces-Icon.png" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PermissionLegend_ctl23_Img1" title="Can associate their places with the group">
-                        Can associate their places with the group
-                    </div>
-                
-        </div>
     
 
-<div id="NotEnoughRobuxModal" class="modalPopup blueAndWhite" style="width: 400px; min-height: 50px; display: none; position:absolute; top: -200px; color: Red">
-    <div id="Div2" class="simplemodal-close">
-        <a class="ImageButton closeBtnCircle_35h" style="cursor: pointer; margin-left:405px; position:absolute; top:-18px; left:-10px;"></a>
-    </div>
-    <div style="padding: 0px 0px 15px 0px; text-align:center;">
-        <div class="titleBar">
-            Insufficient Funds!
-        </div>
-        <div>
-        You do not have enough ROBUX to create a new RoleSet.  Purchase more <a href="/Upgrades/ROBUX.aspx">here</a>.
-        </div>
-    </div>
-</div>
-<div id="CreateRoleSetPanel" class="modalPopup blueAndWhite" style="width: 400px; min-height: 50px; display: none; position:absolute">
-    <div id="Div3" class="simplemodal-close">
-        <a class="ImageButton closeBtnCircle_35h" style="cursor: pointer; margin-left:405px; position:absolute; top:-18px; left:-10px;"></a>
-    </div>
-    <div style="padding: 0px 0px 15px 0px; text-align:center;">
-        <div class="titleBar">
-            Create New RoleSet
-        </div>
-        <div style="margin: 10px 0px 0px 10px">
-            <p>Purchasing a new RoleSet costs 25 ROBUX</p>
-            <p>Your current balance is:<span style="color: Red">34 ROBUX</span>.<br>Your new balance will be <span style="color: Red">9 ROBUX</span><br></p>
-            <table>
-                <thead>
-                </thead>
-                <tbody>
-                    <tr style="text-align:center">
-                        <td>Name:</td>
-                        <td>
-                            <input type="text" name="newRoleSetNameTextBox" maxlength="50" <="" td="">
-                    </td></tr>
-                    <tr>
-                        <td>Description:</td><td><input type="text" name="newRoleSetDescTextBox" maxlength="999"></td>
-                    </tr>
-                    <tr>
-                        <td>Rank (1-254):</td>
-                        <td>
-                            <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$newRoleSetRankTextBox" type="text" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_newRoleSetRankTextBox" maxlength="3">
-                        <br></td>
-                    </tr>
-                    
-                </tbody>
-            </table>
-            <span id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_Validator_Rank" style="color:Red;visibility:hidden;">Rank must be between 1 and 254!</span>
-            <br style="clear: both">
-            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_PurchaseButton" class="GreenButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$PurchaseButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))"><span>Purchase</span></a>
-            <a href="" id="Button2" class="RedButton simplemodal-close" style="cursor: pointer"><span>Cancel</span></a>
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript" language="javascript">
-
-    var CreateRoleSetPanel = {};
-    var NotEnoughRobuxModal = {};
-
-    NotEnoughRobuxModal.close = function () {
-        $.modal.close(".NotEnoughRobuxModal");
-    };
-
-    CreateRoleSetPanel.open = function () {
-        var modalProperties = { overlayClose: true, escClose: true, opacity: 80, overlayCss: { backgroundColor: "#000"}, containerId: 'CreateNewRoleSetModalContainer', onShow: function() { $('#CreateNewRoleSetModalContainer').appendTo($("#aspnetForm")) } };
-        
-            $("#CreateRoleSetPanel").modal(modalProperties);
-        
-    };
-
-    function validate_rank(source, arguments) {
-        var newRank = Number(arguments.Value);
-        if (isNaN(newRank)) {
-            arguments.IsValid = false;
-            return;
-        }
-        if (newRank < 1 || newRank > 254)
-            arguments.IsValid = false;
-        else
-            arguments.IsValid = true;
-    }
-
-</script>
-
-
-
-        <div style="text-align: center; clear:both">
-            <input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$BackButton" value="Back to My Groups" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$BackButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;Groups.aspx?gid=624572&quot;, false, false))" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_BackButton">
-        </div>
-        <div id="ad" style="clear: both">
-        </div>        
-    </div>
-    <style>
-        .YesButton
-        {
-            width: 100px;
-            margin-right: 10px;
-        }
-        .NoButton
-        {
-            width: 100px;
+    <style type="text/css">
+        #Body {
+            padding: 10px;
+            width: 970px;
         }
     </style>
-    <div id="ChangeOwnerPanel" class="modalPopup blueAndWhite" style="width: 400px; min-height: 50px; display: none; position:absolute; top: -200px;">
-		<div id="Div2" class="simplemodal-close">
-            <a class="ImageButton closeBtnCircle_35h" style="cursor: pointer; margin-left:405px; position:absolute; top:-18px; left:-10px;"></a>
+    <link onerror="Roblox.BundleDetector &amp;&amp; Roblox.BundleDetector.reportBundleError(this)" rel="stylesheet" data-bundlename="SocialLinksConfiguration" href="https://static.rbxcdn.com/css/e7f5277dafd409085646bfba709afdcbaeddf77069c8e0466bde8d81889d373e.css/fetch">
+
+
+    <script onerror="Roblox.BundleDetector &amp;&amp; Roblox.BundleDetector.reportBundleError(this)" data-monitor="true" data-bundlename="SystemFeedback" type="text/javascript" src="https://js.rbxcdn.com/aac542106f7f77697cbc3b36ab3cf0619bf9b69a1af0983e59dfeb6c36652d3b.js"></script>
+
+<script onerror="Roblox.BundleDetector &amp;&amp; Roblox.BundleDetector.reportBundleError(this)" data-monitor="true" data-bundlename="SocialLinksConfiguration" type="text/javascript" src="https://js.rbxcdn.com/2c83f2c7e2fe89bff5c5bff30debfe151a7d12a50bd13749b2d64e6716319af9.js"></script>
+
+
+    <div class="system-feedback">
+    <div class="alert-system-feedback">
+        <div class="alert alert-success"></div>
+    </div>
+    <div class="alert-system-feedback">
+        <div class="alert alert-warning"></div>
+    </div>
+</div>
+<div>
+        <h2>Dollar Tree</h2>
+    </div>
+    <div id="GroupTitle">
+        <div>Owned By: <a style="color: Purple; font-style: italic;" href="https://www.roblox.com/users/6803112/profile">zoeyrocks801</a></div>
+        <div>
+            Group Funds:
+                
+                    <span class="icon-robux-16x16"></span><span>1,000,000</span>
+                
+                
+                
         </div>
-        <div style="padding: 0px 0px 10px 0px; text-align:center;">
-            <div class="titleBar">
-                You are about to change group ownership.
+    </div>
+
+    <hr style="clear: both">
+
+    <div class="divider-right menu-area GroupAdminMenu">
+        <div class="verticaltab selected" id="membersTab"><a href="#nav-members">Members</a></div>
+        <div class="verticaltab" id="groupInfoTab"><a href="#nav-groupInfo">Group Info</a></div>
+        <div class="verticaltab" id="settingsTab"><a href="#nav-settings">Settings</a></div>
+        <div class="verticaltab" id="relationshipTab"><a href="#nav-relationship">Relationships</a></div>
+        <div class="verticaltab" id="rolesTab"><a href="#nav-roles">Roles</a></div>
+        
+        <div class="verticaltab" id="revenueTab"><a href="#nav-revenue">Revenue</a></div>
+        
+        <div class="verticaltab" id="payoutsTab"><a href="#nav-payouts">Payouts</a></div>
+        
+        <div class="verticaltab" id="socialLinksTab"><a href="#nav-socialLinks">Social Links</a></div>
+        
+        <div class="back-to-groups">
+            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_BackButton" class="btn-control btn-control-medium translate" href="https://www.roblox.com/groups/1078482/Averters">Back To My Groups</a>
+        </div>
+    </div>
+    <div id="content" class="content-area">
+        <div id="members" class="GroupAdminContent">
+            <div id="MembersContainer" class="GroupAdminSubsection">
+                
+
+<h2>Members</h2>
+<br>
+
+<div id="searchbox" style="margin-bottom:20px">
+    <input type="text" id="MemberSearchText">
+    <select data-val="true" data-val-number="The field RoleSetSearchId must be a number." id="RoleSetSearchId" name="RoleSetSearchId"><option value="">Filter By Rank</option>
+<option value="25537154">Peoples</option>
+<option value="25537153">Admin</option>
+<option value="25537152">Owner</option>
+</select>
+    <span class="btn-control btn-control-medium" id="MemberSearchButton">Search</span>
+    <span class="btn-control btn-control-medium" id="MemberListReset">Show All Members</span>
+    
+</div>
+
+<div style="clear:both">
+    <div class="ChangeRoleSetSuccess status-confirm" style="display:none;">RoleSet successfully changed.</div>
+    <div class="ChangeRoleSetFailure status-error" style="display:none;">RoleSet change failed.</div>
+    <div class="GroupAdmin">
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="919401830">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/8edea9dc0654d83e37c2b64ea575129b/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/919401830/profile" title="angeldontdir">angeldontdir</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-919401830&quot;, &quot;919401830&quot;)" id="DropDown-919401830">
+                                <option value="25537154" title="Peoples" selected="">Customer</option>
+                                <option value="25537153" title="Admin">Customer</option>
+                    </select>
             </div>
-            <div style="text-align: center; position: absolute 300px;">
-		        <p>This is a permanent change and you will lose all of the privileges of Group Ownership.</p>
-		        <p>Your new rank will be <span style="color: Red">Admin</span>.</p>
-		        <p>Would you like to make this change?</p>
-		        <div style="text-align: center;">
-                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_Yes" class="GreenButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$cphRoblox$cphMyRobloxContent$Yes&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))"><span>Yes</span></a>
-                    <a href="" id="No" class="RedButton simplemodal-close" style="cursor: pointer"><span>No</span></a>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="568707775">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/6d7683c3a6eca71e684ac0ab777f3b80/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/568707775/profile" title="vIrikss">vIrikss</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-568707775&quot;, &quot;568707775&quot;)" id="DropDown-568707775">
+                                <option value="25537154" title="Peoples" selected="">Customer</option>
+                                <option value="25537153" title="Admin">Admin</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="1128494099">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/95902fe27f74142ab0b2ec0d55f752fb/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/1128494099/profile" title="Plokld">Plokld</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-1128494099&quot;, &quot;1128494099&quot;)" id="DropDown-1128494099">
+                                <option value="25537154" title="Peoples">Customer</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="1179809041">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/58e97341acb4c4885b56cbb4f43abe7e/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/1179809041/profile" title="jessetheslayer3">jessetheslayer3</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-1179809041&quot;, &quot;1179809041&quot;)" id="DropDown-1179809041">
+                                <option value="25537154" title="Peoples">Customer</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="1179809041">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/0dca1c4643589688b79304b45e089c48/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/1179809041/profile" title="galaxydoge07245">galaxydoge07245</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-1179809041&quot;, &quot;1179809041&quot;)" id="DropDown-1179809041">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="535819150">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/e507a72a4d6ebf7c835672caab51cddb/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/535819150/profile" title="HiimELECTRO_PlayzYT">HiimELECTRO_PlayzYT</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-535819150&quot;, &quot;535819150&quot;)" id="DropDown-535819150">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="321891944">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/37ae768b25d0f1c4729bea8868fe28ab/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/321891944/profile" title="Talsalamy12345">Talsalamy12345</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-321891944&quot;, &quot;321891944&quot;)" id="DropDown-321891944">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="425203428">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/51bc69f24833ec6a2b1c2285bd48ea8d/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/425203428/profile" title="gatila1234">gatila1234</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-425203428&quot;, &quot;425203428&quot;)" id="DropDown-425203428">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="513013274">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/a938e0be62d0a4f0cdbf50616fb18876/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/513013274/profile" title="JasonNguyenD">JasonNguyenD</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-513013274&quot;, &quot;513013274&quot;)" id="DropDown-513013274">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="363579176">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/0455b0d7eeb6f451262f492eb77fde69/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/363579176/profile" title="ronelito30">ronelito30</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-363579176&quot;, &quot;363579176&quot;)" id="DropDown-363579176">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="505849327">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/f53935ac1b8e890625c7febc177a74e0/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/505849327/profile" title="rvatheking">rvatheking</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-505849327&quot;, &quot;505849327&quot;)" id="DropDown-505849327">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="460752720">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/57df137ab1fb5f14753ae67c50b11ea4/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/460752720/profile" title="XxghosthunterxX87">XxghosthunterxX87</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-460752720&quot;, &quot;460752720&quot;)" id="DropDown-460752720">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="344684931">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/77828ec78034dffc68d56513e22ec0cd/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/344684931/profile" title="RobloxRehman12">RobloxRehman12</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-344684931&quot;, &quot;344684931&quot;)" id="DropDown-344684931">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="486367498">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/d9b1be4bfcc190c2ffa2c1a8b1ee2315/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/486367498/profile" title="Hellomanlol922">Hellomanlol922</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-486367498&quot;, &quot;486367498&quot;)" id="DropDown-486367498">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="299777541">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/6a7b125649ddb2776dabae16b5f5f34e/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/299777541/profile" title="salehking123">salehking123</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-299777541&quot;, &quot;299777541&quot;)" id="DropDown-299777541">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="246259494">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/ab03cd26d71684a9e62fad48968b17ab/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/246259494/profile" title="nullary">nullary</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-246259494&quot;, &quot;246259494&quot;)" id="DropDown-246259494">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="475178116">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/936131d677767f5e304518c804b2f01c/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/475178116/profile" title="marialarida12345">marialarida12345</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-475178116&quot;, &quot;475178116&quot;)" id="DropDown-475178116">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="487282450">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/1b583b9076f2918ca0dbf14a93d2cdb9/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/487282450/profile" title="yastrek">yastrek</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-487282450&quot;, &quot;487282450&quot;)" id="DropDown-487282450">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="441975862">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/4e98cb57db566b77b3e0e8cf187e274b/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/441975862/profile" title="SecretiveBrosef101">SecretiveBrosef101</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-441975862&quot;, &quot;441975862&quot;)" id="DropDown-441975862">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+            <div class="GroupMember">
+                    <div id="gear-dropdown" class="dropdown">
+                        <div class="button gear init"></div>
+                        <ul class="dropdown-list" style="min-width: 40px; display: none;">
+                                <li><span class="exile-user" data-user-id="321719900">Kick User</span></li>
+                        </ul>
+                    </div>
+                <div class="MemberThumbnail">
+                    <span class="avatar avatar-headshot-sm card-plain">
+                        <img src="https://tr.rbxcdn.com/f01833803ff003a72f4d457b86ddf3e3/150/150/AvatarHeadshot/Png" class="avatar-card-image">
+                    </span>
+                </div>
+                <div class="RepeaterText">
+                    <div class="member-name-container">
+                        <a class="notranslate" href="/users/321719900/profile" title="konyol225">konyol225</a>
+                    </div>
+                </div>
+                    <select style="width:100px" onchange="ChangeRoleSet(&quot;DropDown-321719900&quot;, &quot;321719900&quot;)" id="DropDown-321719900">
+                                <option value="25537154" title="Peoples">Peoples</option>
+                                <option value="25537153" title="Admin" selected="">Customer</option>
+                    </select>
+            </div>
+            <div class="item-separator"></div>
+        
+            <div id="GroupMembersAdminFooter">
+                <div class="AdminFooterPager">
+                    <div class="pager pager" data-toggle="pager">
+                        <ul class="pager pager" data-toggle="pager">
+                            <li class="pager-prev disabled">
+                                    <span class="pager previous disabled"></span>
+                            </li>
+                            <li class="pager-cur">
+                                <input type="text" id="rbx-current-page" class="item " value="1">
+                            </li>
+                            <li class="pager-total">
+                                <span class="item">of</span>
+                                <span class="item" data-rbx-page="2">96</span>
+                            </li>
+                            <li class="pager-next">
+                                    <a class="pager next" data-rbx-page="2"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <!--[if IE]>
+            <script type="text/javascript">
+                if ($('.RoleSetDropDownList').width() > 220) {
+                    $('.RoleSetDropDownList').css('width', '220px');
+                }
+            </script>
+        <![endif]-->
+    </div>
+</div>
+            </div>
+            <div style="clear: both"></div>
+            <div id="JoinRequests" class="GroupAdminSubsection">
+                
+
+<h2>Join Requests</h2>
+<div></div>
+<div id="searchBoxJoinRequests" style="float: left; margin-bottom: 20px">
+    <input type="text" id="JoinRequestSearchText"> 
+    <span class="btn-control btn-control-medium" id="JoinRequestSearchButton">Search</span>
+    <span class="btn-control btn-control-medium" id="JoinRequestReset">Show All Join Requests</span>
+    
+</div>
+<div style="clear: both"></div>
+<div id="JoinRequestsList">
+        <div style="clear:both">
+            No results...
+        </div>
+</div>
+            </div>
+        </div>
+
+        <div id="groupInfo" class="GroupAdminContent" style="display: none;">
+            <div class="GroupAdminSubsection" style="display: inline-block">
+                <h2>Group Information</h2>
+                <br>
+                <div style="margin: 10px; width: 100%">
+                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupEmblemImage" class="EmblemAdminImage" title="R$ tree" href="https://www.roblox.com/groups/3734519/R-tree" style="display:inline-block;height:250px;width:250px;vertical-align:top;cursor:pointer;"><img src="https://t4.rbxcdn.com/626b41cdbf87466227ead9c63e0788ae" height="250" width="250" border="0" alt="R$ tree" class="EmblemAdminImage"></a>
+                    
+                    <textarea name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$GroupDescription" rows="2" cols="20" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_GroupDescription" class="GroupDescriptionEdit">bu grup ele geçirilmiştir</textarea>
+                </div>
+
+
+                <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UploadNewEmblem" style="text-align: left; margin-top: 20px;">
+                    <input type="file" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$UpdateEmblemFileUpload" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UpdateEmblemFileUpload">
+                </div>
+                <div style="clear: both; text-align: center">
+                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_UploadNewEmblemButton" class="AdminFooterPager btn-small btn-primary" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$UploadNewEmblemButton','')">Save</a>
+                </div>
+                <br>
+                
+                
+                
+
+            </div>
+
+        </div>
+
+        <div id="settings" class="GroupAdminContent" style="display: none;">
+            <div class="GroupAdminSubsection" id="SettingsContainer">
+                
+
+<h2>Settings</h2>
+<br>
+
+<div class="form-label">Require Approval</div>
+<table class="settings-subsection">
+    <tbody>
+        <tr><td><input type="radio" name="ApprovalRequired" value="false" id="SettingsAllowJoin" checked=""><label for="SettingsAllowJoin">Anyone can join</label></td></tr>
+        <tr><td><input type="radio" name="ApprovalRequired" value="true" id="SettingsManualApproval"><label for="SettingsManualApproval">Manual approval</label></td></tr>
+    </tbody>
+</table>
+
+<div class="form-label">Miscellaneous</div>
+<div class="settings-subsection">
+    <!-- The only option available for non-owners who have access to this page -->
+    <input type="checkbox" id="AllowEnemiesCheckBox">
+    <label for="AllowEnemiesCheckBox">Allow enemy declarations</label>
+    <br>
+        <input type="checkbox" id="AllowGroupFundsVisibleCheckBox">
+        <label for="AllowGroupFundsVisibleCheckBox">Group funds are publicly visible</label>
+        <br>
+        <input type="checkbox" id="GroupGamesVisibleCheckBox">
+        <label for="GroupGamesVisibleCheckBox">Group games are visible on the group home page</label>
+</div>
+<div>
+    <a class="btn-small btn-primary" id="GroupSettingsUpdateButton">Save</a>
+</div>
+            </div>
+
+            <div class="GroupAdminSubsection" id="GiveOwnership">
+                <h2>Change Group Owner</h2>
+<div style="clear: both"></div>
+<div class="form-label">Username:</div>
+<input type="text" id="ChangeOwnerTextBox"> 
+<input type="button" id="ChangeOwnerButton" value="Make Owner" class="btn-control btn-control-medium translate" onclick="ChangeOwnerPanel.open()">
+<div id="ChangeOwnerErrorText" style="display:none;" class="status-error">Invalid user.  The user must be a member of your group and be a Builders Club member.</div>
+            </div>
+        </div>
+
+        <div id="relationship" class="GroupAdminContent" style="display: none;">
+
+            <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AlliesAndEnemiesUpdatePanel" class="AlliesAndEnemiesUpdatePanel">
+	
+                    <div id="Allies" class="GroupAdminSubsection">
+                        <h2>Allies</h2>
+                        <br>
+                        <div>
+                            <div class="form-label" style="display: inline">Group Name:</div>
+                            <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyNameTextBox" type="text" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyNameTextBox" data-rbx-bound-btn="#RequestAlly">
+                            <a id="RequestAlly" class="btn-primary btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$RequestAlly','')"><span>Send Ally Request</span></a>
+                        </div>
+                        <br>
+                        
+                        <div id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsHeader" style="text-align: left; padding-bottom: 15px">
+                            <div class="form-label" style="float: left">Ally Requests</div>
+                            <div style="float: right">
+                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AcceptAllButton" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AcceptAllButton','')">Accept All</a>
+                                |
+                                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_DeclineAllButton" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$DeclineAllButton','')">Decline All</a>
+                            </div>
+                        </div>
+                        <br>
+                        
+                        
+                                
+                                <div style="position: relative;">
+                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl0_AssetImage1" title="goobies" href="https://www.roblox.com/groups/3990831/goobies" style="display:inline-block;cursor:pointer;"><img src="https://t2.rbxcdn.com/26a8b999aa32d4b99a2fe9d4786da6ab" height="42" width="42" border="0" alt="goobies"></a>
+                                    <a href="https://www.roblox.com/groups/3990831/goobies" style="position: absolute; top: 12px; margin-left: 10px;">goobies</a>
+                                    <div style="position: absolute; top: 10px; right: 0">
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl0_AcceptAllyRequest" class="btn-primary btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl0$AcceptAllyRequest','')"><span>Accept</span></a>
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl0_DeclineAllyRequest" class="btn-negative btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl0$DeclineAllyRequest','')"><span>Decline</span></a>
+                                    </div>
+                                </div>
+                            
+                                <div style="position: relative;">
+                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl1_AssetImage1" title="Idio Clothing :p" href="https://www.roblox.com/groups/5248606/Idio-Clothing-p" style="display:inline-block;cursor:pointer;"><img src="https://t4.rbxcdn.com/06565a465f339682e5d03304b53a3000" height="42" width="42" border="0" alt="Idio Clothing :p"></a>
+                                    <a href="https://www.roblox.com/groups/5248606/Idio-Clothing-p" style="position: absolute; top: 12px; margin-left: 10px;">Idio Clothing :p</a>
+                                    <div style="position: absolute; top: 10px; right: 0">
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl1_AcceptAllyRequest" class="btn-primary btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl1$AcceptAllyRequest','')"><span>Accept</span></a>
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl1_DeclineAllyRequest" class="btn-negative btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl1$DeclineAllyRequest','')"><span>Decline</span></a>
+                                    </div>
+                                </div>
+                            
+                                <div style="position: relative;">
+                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl2_AssetImage1" title="[ - The First Order - ]" href="https://www.roblox.com/groups/2729482/The-First-Order" style="display:inline-block;cursor:pointer;"><img src="https://t7.rbxcdn.com/73a6cd766aeaa1e8b23da457e48f8941" height="42" width="42" border="0" alt="[ - The First Order - ]"></a>
+                                    <a href="https://www.roblox.com/groups/2729482/The-First-Order" style="position: absolute; top: 12px; margin-left: 10px;">[ - The First Order - ]</a>
+                                    <div style="position: absolute; top: 10px; right: 0">
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl2_AcceptAllyRequest" class="btn-primary btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl2$AcceptAllyRequest','')"><span>Accept</span></a>
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl2_DeclineAllyRequest" class="btn-negative btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl2$DeclineAllyRequest','')"><span>Decline</span></a>
+                                    </div>
+                                </div>
+                            
+                                <div style="position: relative;">
+                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl3_AssetImage1" title="Sinatra " href="https://www.roblox.com/groups/2974419/Sinatra" style="display:inline-block;cursor:pointer;"><img src="https://t1.rbxcdn.com/8d3f7b2cb2730e1f2e13d6639a0cb0f0" height="42" width="42" border="0" alt="Sinatra "></a>
+                                    <a href="https://www.roblox.com/groups/2974419/Sinatra" style="position: absolute; top: 12px; margin-left: 10px;">Sinatra </a>
+                                    <div style="position: absolute; top: 10px; right: 0">
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl3_AcceptAllyRequest" class="btn-primary btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl3$AcceptAllyRequest','')"><span>Accept</span></a>
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl3_DeclineAllyRequest" class="btn-negative btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl3$DeclineAllyRequest','')"><span>Decline</span></a>
+                                    </div>
+                                </div>
+                            
+                                <div style="position: relative;">
+                                    <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl4_AssetImage1" title="Dank" href="https://www.roblox.com/groups/2629950/Dank" style="display:inline-block;cursor:pointer;"><img src="https://t0.rbxcdn.com/ba0639eb1c307d4c9b0d601a98777401" height="42" width="42" border="0" alt="Dank"></a>
+                                    <a href="https://www.roblox.com/groups/2629950/Dank" style="position: absolute; top: 12px; margin-left: 10px;">Dank</a>
+                                    <div style="position: absolute; top: 10px; right: 0">
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl4_AcceptAllyRequest" class="btn-primary btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl4$AcceptAllyRequest','')"><span>Accept</span></a>
+                                        <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AllyRequestsListView_ctrl4_DeclineAllyRequest" class="btn-negative btn-small" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$AllyRequestsListView$ctrl4$DeclineAllyRequest','')"><span>Decline</span></a>
+                                    </div>
+                                </div>
+                            
+                            
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    
+                
+</div>
+        </div>
+
+        <div id="roles" class="GroupAdminContent" style="display: none;">
+            <div class="GroupAdminSubsection">
+                <h2>Roles</h2>
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        <div>
+            <table class="table" cellpadding="0" cellspacing="0" border="0" id="rolesetTable">
+                <thead>
+                    <tr class="table-header">
+
+                        <th class="first">Name</th>
+                        <th class="RolesDescriptions">Description</th>
+                        <th class="RolesDescriptions">Rank (0-255)</th>
+                        
+                               <th class="RolesAllPermissions" style="text-align: center; display: none;">Posts</th>
+                           
+                               <th class="RolesAllPermissions" style="text-align: center; display: none;">Members</th>
+                           
+                               <th class="RolesAllPermissions" style="text-align: center; display: none;">Assets</th>
+                           
+                               <th class="RolesAllPermissions" style="text-align: center; display: none;">Miscellaneous</th>
+                           
+                        <th colspan="2" class="RolesDescriptions">
+                            <button type="button" id="ViewAllPerms" class="btn-control btn-control-medium translate RolesDescriptions">View All Permissions</button> 
+                        </th>
+                        <th class="RolesAllPermissions" style="display: none;">
+                            <button type="button" id="ViewDesc" class="btn-control btn-control-medium translate RolesAllPermissions" style="display: none;">View Descriptions</button> 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>
+                            <input type="text" maxlength="100" size="10" name="25537152-Name" value="Owner">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="999" name="25537152-Description" value="The group's owner." style="min-width:396px">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="3" style="width: 40px;" name="25537152-Rank" value="255" disabled="">&nbsp;  
+                        </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537152-Permission:CanViewWall" class="tooltip-right" disabled="" checked="checked" original-title="View group wall">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanViewStatus" class="tooltip-right" disabled="" checked="checked" original-title="View group status">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanPostToWall" class="tooltip-right" disabled="" checked="checked" original-title="Post on group wall">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanPostToStatus" class="tooltip-right" disabled="" checked="checked" original-title="Post group status">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanDeletePosts" class="tooltip-right" disabled="" checked="checked" original-title="Delete group wall posts">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537152-Permission:CanInviteMembers" class="tooltip-right" disabled="" checked="checked" original-title="Accept join requests">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanRemoveMembers" class="tooltip-right" disabled="" checked="checked" original-title="Kick lower-ranked members">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanChangeRank" class="tooltip-right" disabled="" checked="checked" original-title="Manage lower-ranked member ranks">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanManageRelationships" class="tooltip-right" disabled="" checked="checked" original-title="Manage allies and enemies">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537152-Permission:CanCreateItems" class="tooltip-right" disabled="" checked="checked" original-title="Create group items">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanManageItems" class="tooltip-right" disabled="" checked="checked" original-title="Configure group items">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanAdvertise" class="tooltip-right" disabled="" checked="checked" original-title="Advertise the group">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanSpendGroupFunds" class="tooltip-right" disabled="" checked="checked" original-title="Spend group funds">
+                                    
+                                        <input type="checkbox" name="25537152-Permission:CanManageGroupGames" class="tooltip-right" disabled="" checked="checked" original-title="Create and edit group games">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537152-Permission:CanViewAuditLog" class="tooltip-right" disabled="" checked="checked" original-title="View audit log">
+                                    
+                            </td>
+                        
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                        </td>
+                        <td class="RolesAllPermissions" style="display: none;"></td>
+                        
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <input type="text" maxlength="100" size="10" name="25537153-Name" value="Admin">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="999" name="25537153-Description" value="A group administrator." style="min-width:396px">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="3" style="width: 40px;" name="25537153-Rank" value="254">&nbsp;  
+                        </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537153-Permission:CanViewWall" class="tooltip-right" checked="checked" original-title="View group wall">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanViewStatus" class="tooltip-right" checked="checked" original-title="View group status">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanPostToWall" class="tooltip-right" checked="checked" original-title="Post on group wall">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanPostToStatus" class="tooltip-right" checked="checked" original-title="Post group status">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanDeletePosts" class="tooltip-right" checked="checked" original-title="Delete group wall posts">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537153-Permission:CanInviteMembers" class="tooltip-right" checked="checked" original-title="Accept join requests">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanRemoveMembers" class="tooltip-right" checked="checked" original-title="Kick lower-ranked members">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanChangeRank" class="tooltip-right" checked="checked" original-title="Manage lower-ranked member ranks">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanManageRelationships" class="tooltip-right" checked="checked" original-title="Manage allies and enemies">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537153-Permission:CanCreateItems" class="tooltip-right" checked="checked" original-title="Create group items">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanManageItems" class="tooltip-right" checked="checked" original-title="Configure group items">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanAdvertise" class="tooltip-right" original-title="Advertise the group">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanSpendGroupFunds" class="tooltip-right" checked="checked" original-title="Spend group funds">
+                                    
+                                        <input type="checkbox" name="25537153-Permission:CanManageGroupGames" class="tooltip-right" checked="checked" original-title="Create and edit group games">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537153-Permission:CanViewAuditLog" class="tooltip-right" checked="checked" original-title="View audit log">
+                                    
+                            </td>
+                        
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                                <button type="button" class="btn-control btn-control-medium translate RolesDescriptions" data-rbx-roleset-name="Admin" data-rbx-roleset-id="25537153">Permissions
+                                </button>
+                            
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                                            <span class="tooltip-left" original-title="There are some users in this RoleSet. You can't delete it."><div class="deleteRoleSetButtonDisabled" alt="help"></div></span>
+                                        
+                        </td>
+                        <td class="RolesAllPermissions SelectHorizontal" style="text-align: center; display: none;"><a>Toggle All</a></td>
+                        
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <input type="text" maxlength="100" size="10" name="25537154-Name" value="Peoples">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="999" name="25537154-Description" value="A regular group member." style="min-width:396px">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="3" style="width: 40px;" name="25537154-Rank" value="1">&nbsp;  
+                        </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537154-Permission:CanViewWall" class="tooltip-right" checked="checked" original-title="View group wall">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanViewStatus" class="tooltip-right" checked="checked" original-title="View group status">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanPostToWall" class="tooltip-right" checked="checked" original-title="Post on group wall">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanPostToStatus" class="tooltip-right" original-title="Post group status">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanDeletePosts" class="tooltip-right" original-title="Delete group wall posts">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537154-Permission:CanInviteMembers" class="tooltip-right" original-title="Accept join requests">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanRemoveMembers" class="tooltip-right" original-title="Kick lower-ranked members">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanChangeRank" class="tooltip-right" original-title="Manage lower-ranked member ranks">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanManageRelationships" class="tooltip-right" original-title="Manage allies and enemies">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537154-Permission:CanCreateItems" class="tooltip-right" original-title="Create group items">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanManageItems" class="tooltip-right" original-title="Configure group items">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanAdvertise" class="tooltip-right" original-title="Advertise the group">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanSpendGroupFunds" class="tooltip-right" original-title="Spend group funds">
+                                    
+                                        <input type="checkbox" name="25537154-Permission:CanManageGroupGames" class="tooltip-right" original-title="Create and edit group games">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537154-Permission:CanViewAuditLog" class="tooltip-right" original-title="View audit log">
+                                    
+                            </td>
+                        
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                                <button type="button" class="btn-control btn-control-medium translate RolesDescriptions" data-rbx-roleset-name="Peoples" data-rbx-roleset-id="25537154">Permissions
+                                </button>
+                            
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                                            <span class="tooltip-left" original-title="There are some users in this RoleSet. You can't delete it."><div class="deleteRoleSetButtonDisabled" alt="help"></div></span>
+                                        
+                        </td>
+                        <td class="RolesAllPermissions SelectHorizontal" style="text-align: center; display: none;"><a>Toggle All</a></td>
+                        
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <input type="text" maxlength="100" size="10" name="25537155-Name" value="Guest" disabled="">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="999" name="25537155-Description" value="A non-group member." disabled="" style="min-width:396px">&nbsp;
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            <input type="text" maxlength="3" style="width: 40px;" name="25537155-Rank" value="0" disabled="">&nbsp;  
+                        </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537155-Permission:CanViewWall" class="tooltip-right" checked="checked" original-title="View group wall">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanViewStatus" class="tooltip-right" checked="checked" original-title="View group status">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanPostToWall" class="tooltip-right" disabled="" original-title="Post on group wall">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanPostToStatus" class="tooltip-right" disabled="" original-title="Post group status">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanDeletePosts" class="tooltip-right" disabled="" original-title="Delete group wall posts">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537155-Permission:CanInviteMembers" class="tooltip-right" disabled="" original-title="Accept join requests">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanRemoveMembers" class="tooltip-right" disabled="" original-title="Kick lower-ranked members">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanChangeRank" class="tooltip-right" disabled="" original-title="Manage lower-ranked member ranks">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanManageRelationships" class="tooltip-right" disabled="" original-title="Manage allies and enemies">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537155-Permission:CanCreateItems" class="tooltip-right" disabled="" original-title="Create group items">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanManageItems" class="tooltip-right" disabled="" original-title="Configure group items">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanAdvertise" class="tooltip-right" disabled="" original-title="Advertise the group">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanSpendGroupFunds" class="tooltip-right" disabled="" original-title="Spend group funds">
+                                    
+                                        <input type="checkbox" name="25537155-Permission:CanManageGroupGames" class="tooltip-right" disabled="" original-title="Create and edit group games">
+                                    
+                            </td>
+                        
+                            <td class="RolesAllPermissions" style="text-align: center; display: none;">
+                                
+                                        <input type="checkbox" name="25537155-Permission:CanViewAuditLog" class="tooltip-right" disabled="" original-title="View audit log">
+                                    
+                            </td>
+                        
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                        </td>
+                        <td class="RolesDescriptions" style="text-align:center">
+                            
+                        </td>
+                        <td class="RolesAllPermissions" style="display: none;"></td>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
+            <div style="text-align: center">
+            <div id="CreateRoleSetButtonContainer">
+                <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_CreateNewRolesetButton" disabled="disabled" name="CreateNewRolesetButton" class="btn-small btn-primary translate" style="float:left">Create New</a>
+            </div>
+            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_UpdateButton" class="btn-small btn-primary translate" href="javascript:__doPostBack('ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$UpdateButton','')">Save</a>
+            </div>
+            <div class="info">Use RoleSets to grant status and administrative permissions to valued group members.</div>
+        </div>
+    
+<div id="rolesetPermissions" style="display: none; ">
+    <div class="accordion" style="text-align:left">
+        
+                <div class="accord-section"><div class="accord-header notranslate"><div class="accord-arrow">▶</div>Posts</div><div class="accord-content notranslate">
+                
+                            <div><label><input type="checkbox" name="CanViewWall">View group wall</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanViewStatus">View group status</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanPostToWall">Post on group wall</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanPostToStatus">Post group status</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanDeletePosts">Delete group wall posts</label></div>
+                   
+                </div></div>
+            
+                <div class="accord-section"><div class="accord-header notranslate"><div class="accord-arrow">▶</div>Members</div><div class="accord-content notranslate">
+                
+                            <div><label><input type="checkbox" name="CanInviteMembers">Accept join requests</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanRemoveMembers">Kick lower-ranked members</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanChangeRank">Manage lower-ranked member ranks</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanManageRelationships">Manage allies and enemies</label></div>
+                   
+                </div></div>
+            
+                <div class="accord-section"><div class="accord-header notranslate"><div class="accord-arrow">▶</div>Assets</div><div class="accord-content notranslate">
+                
+                            <div><label><input type="checkbox" name="CanCreateItems">Create group items</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanManageItems">Configure group items</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanAdvertise">Advertise the group</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanSpendGroupFunds">Spend group funds</label></div>
+                   
+                            <div><label><input type="checkbox" name="CanManageGroupGames">Create and edit group games</label></div>
+                   
+                </div></div>
+            
+                <div class="accord-section"><div class="accord-header notranslate"><div class="accord-arrow">▶</div>Miscellaneous</div><div class="accord-content notranslate">
+                
+                            <div><label><input type="checkbox" name="CanViewAuditLog">View audit log</label></div>
+                   
+                </div></div>
+            
+        </div>
+</div>
+<div id="CreateRoleSetPanel" class="modalPopup blueAndWhite" style="width: 400px; min-height: 50px; display: none; position: absolute">
+        <div id="CreateRoleSetPanelBody">
+            <div style="margin-bottom:10px">Purchasing a new RoleSet will cost <span class="icon-robux-16x16"></span><span>25</span>.</div>
+            
+            <table style="width: 100%">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr style="text-align: center">
+                        <td class="form-label" align="right">Name:</td>
+                        <td class="right-text-box">
+                            <input type="text" name="newRoleSetNameTextBox" maxlength="100">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-label" align="right">Description:</td><td class="right-text-box"><input type="text" name="newRoleSetDescTextBox" maxlength="999"></td>
+                    </tr>
+                    <tr>
+                        <td class="form-label" align="right">Rank (1-254):</td>
+                        <td class="right-text-box">
+                            <input name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$newRoleSetRankTextBox" type="text" id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_grouprolesetmodifier_newRoleSetRankTextBox" maxlength="3">
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div id="CreateRoleSetPanelFooter">
+            <div id="UserBalanceText" class="UserBalanceText">Your balance after this transaction will be <span class="icon-robux-16x16"></span><span>75</span><br></div>
+            
+        </div>
+    </div>
+<input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$PurchaseButton" value="" id="PurchaseButton" class="btn-primary btn-medium" style="display: none">
+<input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$DeleteRolesetButton" value="" id="DeleteRolesetButton" class="btn-neutral btn-medium" style="display:none">
+<input type="submit" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$UpdatePermissionsButton" value="" id="UpdatePermissionsButton" style="display:none">
+<input type="hidden" name="ctl00$ctl00$cphRoblox$cphMyRobloxContent$grouprolesetmodifier$RoleSetToDeleteId" id="RoleSetToDeleteId">
+        
+<script type="text/javascript" language="javascript">
+    CreateRoleSetPanel = {};
+    CreateRoleSetPanel.open = function () {
+        
+        var clonedPanel = $('#CreateRoleSetPanelBody').clone().removeAttr('id');
+        clonedPanel.on("keyup", "[name]", function () {
+            $('#CreateRoleSetPanelBody').find('[name="' + $(this).attr('name') + '"]').filter(":first").val($(this).val());
+        });
+        var clonedFooter = $('#CreateRoleSetPanelFooter').clone().removeAttr('id');
+        $('.UseGroupBalanceInput',clonedPanel).change(function () {
+            $(".UserBalanceText",clonedFooter).toggle();
+            $(".GroupBalanceText", clonedFooter).toggle();
+            $("#CreateRoleSetPanelBody .UseGroupBalanceInput").prop("checked", function (i, val) {
+                return !val;
+            });
+        });
+        Roblox.GenericConfirmation.open({
+            titleText: "Create New Roleset",
+            allowHtmlContentInBody: true,
+            bodyContent: clonedPanel,
+            allowHtmlContentInFooter: true,
+            footerText: clonedFooter,
+            acceptColor: Roblox.GenericConfirmation.green,
+            declineColor: Roblox.GenericConfirmation.gray,
+            acceptText: "Purchase",
+            declineText: "Cancel",
+            onAccept: function () {
+                $('#PurchaseButton').click();
+            }
+        });
+        
+        return false;
+    };
+</script>
+
+
+
+            </div>
+        </div>
+
+        <div id="revenue" style="display: none;">
+            <ul class="nav nav-pills">
+    <li class="active" data-content-class="summary"><a>Summary</a></li>
+    <li data-content-class="line-item"><a>Line Item</a></li>
+</ul>
+<div class="summary" data-economy-summary-url="https://economy.roblox.com/v1/groups/3734519/revenue/summary">
+    <div class="timePeriod">
+        <span class="label">Time Period: </span>
+        <select>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+        </select>
+    </div>
+    <div class="summary-container">
+        <div class="columns-container">
+            <div class="column">
+                <div class="status-error">Sorry, an error occurred. Please try again.</div>
+                <div class="summary-table">
+                    <h2>Robux</h2>
+                    <table class="table" cellpadding="0" cellspacing="0" border="0">
+                        <tbody>
+                        <tr class="table-header">
+                            <th class="categories first">Categories</th>
+                            <th class="credit">Amount</th>
+                        </tr>
+                            <tr>
+                                <td class="categories">Sale of Goods</td>
+                                <td class="credit SaleOfGoods"></td>
+                            </tr>
+                            <tr>
+                                <td class="categories">Pending Sales</td>
+                                <td class="credit PendingSales"></td>
+                            </tr>
+                            <tr>
+                                <td class="categories">Group Revenue Payout</td>
+                                <td class="credit GroupPayouts"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="total robux-total">
+                        <span>TOTAL</span>
+                            <span class="icon-robux-16x16"></span><span class="total-number"></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <script type="text/javascript" language="javascript">
+</div>
+<div class="line-item" data-get-url="/currency/line-items/479971626">
+    <h2>Sales</h2>
+    <table class="table" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr class="table-header">
+                <th class="first date">Date</th>
+                <th class="avatar">Purchaser</th>
+                <th class="description">Description</th>
+                <th class="amount">Amount</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div class="error" style="display:none;">
+        Sorry, an error occurred. Please try again.
+    </div>
+</div>
 
-        var ChangeOwnerPanel = {};
-        ChangeOwnerPanel.open = function () {
-            var modalProperties = { overlayClose: true, escClose: true, opacity: 80, overlayCss: { backgroundColor: "#000"} };
-            $("#ChangeOwnerPanel").modal(modalProperties);
-        };
+<script type="text/javascript">
+    Roblox = Roblox || {};
+    Roblox.RevenueReport = Roblox.RevenueReport || {};
+    Roblox.RevenueReport.Resources = {
+        //<sl:translate>
+        errorMsg: "Sorry, an error occurred. Please try again."
+        //</sl:translate>
+    };
+</script>
+        </div>
+        <div id="payouts" style="display: none;">
+            <div class="one-time">
+    <h2>One-Time Payout</h2>
+    <div class="distribute-btn">
+        <span class="btn-medium btn-neutral" id="distribute-btn">Distribute</span>
+    </div>
+</div>
+<div class="recurring">
+    <h2>Recurring Payout</h2>
+    <br>
+    <h3>
+        Distributing &nbsp;
+            <span class="icon-robux-16x16">&nbsp;</span>
+    </h3>
 
-    </script>
+    <div class="recurring-payouts">
+        <div class="entries">
 
-    
-    
+                <span>Group revenue is not being distributed.</span>
+        </div>
+        <div class="error-msg" style="display:none;">
+            <span class="status-error">Error: Percentages must add up to 100%</span>
+        </div>
+        <div class="remainder">
+            Revenue going to group fund: <span class="label">100%</span>
+        </div>
+        <div class="update">
+            <a class="btn-medium btn-neutral">Configure</a>
+        </div>
+    </div>
+</div>
 
-                <div style="clear:both"></div>
+<div style="display:none;">
+    <div id="payout-form" class="PurchaseModal simplemodal-data">
+        <div class="titleBar">
+            One-Time Payout
+        </div>
+        <div class="PurchaseModalBody">
+            <div class="PurchaseModalMessage">
+                <div class="group-search-members" data-url="/groups/3734519/search-members">
+                    <h3>Add Group Members:</h3>
+                    <div class="search-container">
+                        <input> <span class="btn-control btn-control-medium search-btn">Search Members</span>
+                    </div>
+                    <div class="results">
+
+                    </div>
+                </div>
+
+                <div class="filters">
+                    Distributing &nbsp;&nbsp;&nbsp;
+                    <span class="currency" value="1">Robux</span>    
+                    &nbsp;&nbsp;&nbsp; by &nbsp;&nbsp;&nbsp;
+                    <select class="distribution-type">
+                        <option value="amount">Amount</option>
+                        <option value="percentage">Percentage</option>
+                    </select>
+                </div>
+                <div class="available-robux">
+                    Available
+                        <span class="icon-robux-16x16">&nbsp;</span><span>:&nbsp;</span>
+                    <span class="available-amount">0</span>
+                </div>
+                <div class="entries">
+                </div>
+                <div class="remainder">
+                    Total to be paid out: 
+                    <span class="label">
+                        <span class="remainder-span">0</span>
+                        &nbsp;&nbsp;&nbsp;
+                            <span class="currency-type icon-robux-16x16">&nbsp;</span>
+                        <span class="percent-sign" style="display:none;">%</span>
+                    </span>
+                    <span class="total-by-amount" style="display:none;">&nbsp;(<span class="robuxIcon" data-new-robux-icon-enabled="True"></span><span class="robuxAmount"></span>)</span>
+                </div>
+                <div class="error-message" style="display: none;"></div>
+            </div>
+            <div class="PurchaseModalButtonContainer">
+                <span class="btn-medium btn-neutral" data-post-url="/groups/3734519/one-time-payout">Pay</span>
+                <span class="btn-medium btn-negative">Cancel</span>
             </div>
         </div>
+    </div>
+    <div id="update-distribution-form" class="PurchaseModal simplemodal-data">
+        <div class="titleBar">
+            Recurring Distribution
+        </div>
+        <div class="PurchaseModalBody">
+            <div class="PurchaseModalMessage">
+                <div class="group-search-members" data-url="/groups/3734519/search-members">
+                    <h3>Add Group Members:</h3>
+                    <div class="search-container">
+                        <input> <span class="btn-control btn-control-medium search-btn">Search Members</span>
+                    </div>
+                    <div class="results">
+
+                    </div>
+                </div>
+
+                <div class="filters">
+                    Distributing &nbsp; 
+                        <span class="icon-robux-16x16">&nbsp;</span>
+                </div>
+                <div class="entries">
+
+                </div>
+                <div class="remainder">
+                    Revenue going to group fund: <span class="label"><span class="remainder-span">100</span>%</span>
+                </div>
+                <div class="error-message" style="display: none;"></div>
+            </div>
+            <div class="PurchaseModalButtonContainer">
+                <span class="btn-medium btn-neutral" data-post-url="/groups/3734519/recurring-payout">Update</span>
+                <span class="btn-medium btn-negative">Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="entry template">
+    <div class="avatar-wrapper"></div>
+    <div class="username"></div>
+    <div class="percentage">
+        <input placeholder="0"> <span class="percent-sign">%</span>
+    </div>
+    <div class="remove">
+        <span class="btn-control btn-control-medium">Remove</span>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        Roblox.require('Widgets.AvatarImage', function (item) {
+            item.populate();
+        });
+
+        //<sl:translate>
+        Roblox.Group.Search.Resources = {
+            noResults: "No results found.",
+            error: "Sorry, an error occurred.",
+            duplicateMember: "That user has already been added."
+        };
+        Roblox.Group.Payout.Resources = {
+            error: "Sorry, an error occurred.",
+            invalidInput: "Invalid input.",
+            invalidPercentage: "Total percentage cannot be over 100.",
+            notAllAmountsPositive: "You must enter a positive amount before paying out.",
+            notEnoughInFund: "You do not have that much in your group fund.",
+            success: "Success!",
+            noUserProvided: "Please provide at least one member for a payout.",
+            tooManyUsers: "You have reached the maximum members for a payout."
+        };
+        //</sl:translate>
+        Roblox.Group.Payout.MaxPayoutMembers = 20;
+    });
+</script>
+        </div>
+        
+        <div id="socialLinks" ng-modules="robloxApp, socialLinksConfiguration" class="ng-scope" style="display: none;">
+            <social-links-configuration target-type="group" target-id="3734519" social-link-limit="3" class="ng-isolate-scope"><!-- ngIf: !$ctrl.v2 --><div ng-if="!$ctrl.v2" id="social-links-configuration" class="ng-scope"> <div id="social-links" class="social-links-container"> <div class="headline"> <h2 ng-bind="'HeadingSocialLinks' | translate" class="ng-binding">Social Links</h2> <div class="universe-configure-status status-confirm ng-binding ng-hide status-error" ng-class="{ 'status-confirm': $ctrl.feedbackSuccess, 'status-error': !$ctrl.feedbackSuccess }" ng-show="$ctrl.feedbackMessage" ng-bind="$ctrl.feedbackMessage"></div> </div> <div class="count-notification ng-binding" ng-bind="'Label.Limits' | translate : { socialLinkLimit: $ctrl.socialLinkLimit }">You can add up to 3 social links.</div> <div> <!-- ngRepeat: socialLink in $ctrl.socialLinks --> <button type="button" class="btn btn-default add-button ng-binding" ng-show="$ctrl.canAddSocialLink()" ng-click="$ctrl.addSocialLink()" ng-bind="'Action.AddLink' | translate">Add Link</button> </div> </div> </div><!-- end ngIf: !$ctrl.v2 --> <!-- ngIf: $ctrl.v2 --></social-links-configuration>
+        </div>
+        
+    </div>
+
+
+    <div id="ad" style="clear: both">
+    </div>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            Roblox.ExileModal.InitializeGlobalVars(6970288, 1078482);
+
+            var contents = $('#content');
+            //remove empty tabs
+            contents.children('div').each(function () {
+                if (!$.trim($(this).text())) {
+                    $('#' + this.id + "Tab").remove();
+                }
+            });
+            //link tabs to content
+            $('.divider-right.menu-area .verticaltab').on("click", function () {
+                var selId = $(this).attr('id');
+                $('.divider-right.menu-area .verticaltab').each(function () {
+                    ($(this).attr('id') == selId) ? $(this).addClass('selected') : $(this).removeClass('selected');
+                });
+                contents.children('div').each(function () {
+                    ($(this).attr('id') + "Tab" == selId) ? $(this).show() : $(this).hide();
+                });
+            });
+            if (location.hash && contents.children('#' + location.hash.substr(5)).length) {
+                $('#' + location.hash.substr(5) + "Tab").click();
+            } else {
+                $('.divider-right.menu-area .verticaltab').first().click();
+            }
+        });
+        if (typeof Roblox === "undefined") {
+            Roblox = {};
+        }
+        if (typeof Roblox.FileUploadUnsupported === "undefined") {
+            Roblox.FileUploadUnsupported = {};
+        }
+        Roblox.FileUploadUnsupported.Resources = {
+            //<sl:translate>
+            notSupported: " This device does not support file upload."
+            //</sl:translate>
+        };
+    </script>
+    <script type="text/javascript">
+    $(function() {
+        Roblox.GroupAdmin.InitializeGlobalVars(
+            1078482,
+            "/groups/1078482/groupmembers-html",
+            "/groups/1078482/joinrequests-html",
+            "/groups/1078482/groupsettings-html",
+            true,
+            "https://www.roblox.com/groups/1078482",
+            "Member"
+        );
+    });
+</script>
+    
+    
+
+                                <div style="clear:both"></div>
+                            </div>
+                        </div>
+                    </div>
 
 
 <? $pagebuilder->build_footer(); ?>
