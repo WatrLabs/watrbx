@@ -1726,13 +1726,13 @@ $pagebuilder->buildheader();
      data-userid="<? if($currentuser !== null){ echo $currentuser->id; } ?>"
      data-domain="watrbx.wtf"
      data-gamespagelink="/games"
-     data-chatdomain="https://chat.watrbx.wtf"
+     data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://notifications.watrbx.wtf/"
+     data-notificationsdomain="/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true

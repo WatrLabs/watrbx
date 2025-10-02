@@ -986,7 +986,7 @@ $pagebuilder->buildheader();
      data-userid="<?=$userinfo->id?>"
      data-domain="watrbx.wtf"
      data-gamespagelink="/games"
-     data-chatdomain="https://www.watrbx.wtf"
+     data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"

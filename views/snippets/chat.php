@@ -44,7 +44,7 @@
      data-userid="<?=$currentuser->id?>"
      data-domain="watrbx.wtf"
      data-gamespagelink="https://www.watrbx.wtf/games"
-     data-chatdomain="https://watrbx.wtf"
+     data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
