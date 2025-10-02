@@ -333,6 +333,16 @@ $router->get("/catalog", function() {
    $page::get_template("catalog");
 });
 
+$router->get("/catalogbrowse.aspx", function() {
+   $page = new pagebuilder;
+   $page::get_template("catalogbrowse");
+});
+
+$router->get("/catalog/browse.aspx", function() {
+   $page = new pagebuilder;
+   $page::get_template("catalogbrowse");
+});
+
 $router->get("/Login/iFrameLogin.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("login/iframelogin");
