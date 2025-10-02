@@ -182,35 +182,25 @@ class gameserver {
     static function get_visits($userid, $limit = null){
         global $db;
 
-        $query = $db->table("visits")
+        $rows = $db->table("visits")
             ->select($db->raw("MAX(id) as id"))
             ->where("userid", $userid)
-            ->groupBy("universeid");
-            
-        if($limit){
-            $query->limit($limit);
-        }
+            ->groupBy("universeid")
+            ->limit($limit ?: 1000) 
+            ->get();
 
-        $rows = $query->get();
-            
         if(empty($rows)){
             return false;
         }
 
-        $unqiue = array_map(function($row) {
-            return $row->id;
-        }, $rows);
-    
+        $ids = array_map(fn($row) => $row->id, $rows);
 
-        $query2 = $db->table("visits")
-            ->whereIn("id", $unqiue)
-            ->orderBy("id", "desc");
-            
-        if($limit){
-            $query2->limit($limit);
-        }
+        $visits = $db->table("visits")
+            ->whereIn("id", $ids)
+            ->orderBy("id", "desc")
+            ->get();
 
-        return $query2->get();
+        return $visits;
     }
 
     public function execute_job($jobinfo, $scriptinfo){

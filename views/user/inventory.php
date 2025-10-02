@@ -295,7 +295,7 @@ $auth->requiresession();
      data-userid="62402235"
      data-domain="watrbx.wtf"
      data-gamespagelink="https://www.roblox.com/games"
-     data-chatdomain="https://www.watrbx.wtf"
+     data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"

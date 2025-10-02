@@ -105,30 +105,6 @@ $pagebuilder->buildheader();
         </div>
 
         <? } ?>
-
-          <div id="recently-visited-places" class="col-xs-12 container-list home-games">
-                  <div class="container-header">
-                    <h3>Recommended Games</h3>
-                    <a href="/games?sortFilter=6" class="rbx-btn-secondary-xs btn-more">See All</a>
-                  </div>
-                  <ul class="hlist game-list">
-                    <?php
-                    
-
-                    $query = $db
-                        ->table("universes")
-                        ->where("public", 1)
-                        ->limit(6)
-                        ->orderBy($db->Raw("RAND()"));
-
-                    $allgames = $query->get();
-
-                    foreach ($allgames as $game) {
-                        echo $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
-                    }
-                    ?>
-                  </ul>
-                </div>
                 
 
     <div class="col-xs-12 col-sm-6 home-right-col">
@@ -300,7 +276,7 @@ $pagebuilder->buildheader();
      data-userid="<?= $userinfo->id ?>"
      data-domain="watrbx.wtf"
      data-gamespagelink="/games"
-     data-chatdomain="watrbx.wtf"
+     data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
@@ -1328,7 +1304,7 @@ $pagebuilder->buildheader();
     <script type='text/javascript' src='/js/22f5b93b0e23b69d9c48f68ea3c65fe3.js.gzip'></script> 
     <script type='text/javascript' src='/js/6385cae49dc708a8f2f93167ad17466d.js.gzip'></script>
     <script type='text/javascript' src='/js/59e30cf6dc89b69db06bd17fbf8ca97c.js.gzip'></script>
-    <script type='text/javascript' src='/js/f3251ed8271ce1271b831073a47b65e3.js.gzip'></script>
+    <script type='text/javascript' src='/js/f3251ed8271ce1271b831073a47b65e3.js.gzip?t=1'></script>
     <script type='text/javascript' src='/js/045483c002abdefee9f2e9598ac48d08.js.gzip'></script>
     
     <script type='text/javascript'>Roblox.config.externalResources = [];Roblox.config.paths['Pages.Catalog'] = 'https://js.rbxcdn.com/c1d70e1b98c87fcdb85e894b5881f60c.js.gzip';Roblox.config.paths['Pages.CatalogShared'] = 'https://js.rbxcdn.com/bd76a582ffb966eb0af3f16d61defa7f.js.gzip';Roblox.config.paths['Pages.Messages'] = 'https://js.rbxcdn.com/b123274ceba7c65d8415d28132bb2220.js.gzip';Roblox.config.paths['Resources.Messages'] = 'https://js.rbxcdn.com/6307f9bd9c09fa9d88c76291f3b68fda.js.gzip';Roblox.config.paths['Widgets.AvatarImage'] = 'https://js.rbxcdn.com/64f4ed4d4cf1c0480690bc39cbb05b73.js.gzip';Roblox.config.paths['Widgets.DropdownMenu'] = 'https://js.rbxcdn.com/5cf0eb71249768c86649bbf0c98591b0.js.gzip';Roblox.config.paths['Widgets.GroupImage'] = 'https://js.rbxcdn.com/556af22c86bce192fb12defcd4d2121c.js.gzip';Roblox.config.paths['Widgets.HierarchicalDropdown'] = 'https://js.rbxcdn.com/7689b2fd3f7467640cda2d19e5968409.js.gzip';Roblox.config.paths['Widgets.ItemImage'] = 'https://js.rbxcdn.com/d689e41830fba6bc49155b15a6acd020.js.gzip';Roblox.config.paths['Widgets.PlaceImage'] = 'https://js.rbxcdn.com/45d46dd8e2bd7f10c17b42f76795150d.js.gzip';Roblox.config.paths['Widgets.SurveyModal'] = 'https://js.rbxcdn.com/56ad7af86ee4f8bc82af94269ed50148.js.gzip';</script>
