@@ -166,7 +166,7 @@ $router->get('/Game/Tools/InsertAsset.ashx', function(){
 
     $queryparams = http_build_query($_GET);
 
-    header("Location: https://sets.pizzaboxer.xyz/Game/Tools/InsertAsset.ashx?$queryparams");
+    header("Location: https://sets.pizzaboxer.xyz/Game/Tools/InsertAsset.ashx?$queryparams"); // * Pizzaboxer makes api * W Pizzaboxer
     die();
 });
 
@@ -223,7 +223,7 @@ $router->get("/Asset/BodyColors.ashx", function(){
 </roblox>');
 });
 
-$router->post('/game/validate-machine', function(){
+$router->post('/game/validate-machine', function(){ // TODO: Implement this if we even do want to
     header("Content-type: application/json");
     echo json_encode(array("success"=>true));
     die();
@@ -242,7 +242,7 @@ $router->get('/Error/Grid.ashx', function(){
 $router->post('/Error/Grid.ashx', function(){
     die();
 });
-
+// TODO: Check api key
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
     die('{"data":["0.2.0pcplayer","INTERNALiosapp"]}');
@@ -254,11 +254,11 @@ $router->get('/GetAllowedMD5Hashes/', function(){
     die('{"data":["3f5585ee49c5923e79a4332d005112e2","439d18dcc7f4b21b6e310608fec71a94"]}');
 });
 
-$router->get('/game/LoadPlaceInfo.ashx', function(){
+$router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)
     die('');
 });
 
-$router->get('/gen-hash', function(){
+$router->get('/gen-hash', function(){ // cool
     $prefix = "version-";
     $basething = time() . bin2hex(random_bytes(8));
     $hash = sha1($basething);
