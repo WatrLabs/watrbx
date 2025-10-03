@@ -290,6 +290,44 @@ class authentication {
         $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
         $discord->internal_log("New account: " . $username . "\nIP: $ip\nPossible Alts: $possiblealts", "New Signup!");
 
+        $fastflags = new fastflags();
+        if($fastflags::get("StarterPlaceOnAccountCreation")){ // TODO: make it update to the starter place the right way (man im new in this)
+            global $s3_client;
+    
+            $starterfile = file_get_contents(__DIR__ . "/../../storage/StartingPlace.rbxl");
+            $fileid = md5($starterfile);
+
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $fileid,
+                'Body' => $starterfile,
+            ]);
+
+            $placeinsert = array(
+                "prodcategory"=>9,
+                "name"=>$username . "'s Place",
+                "description"=>"",
+                "robux"=>null,
+                "tix"=>null,
+                "fileid"=>$fileid,
+                "created"=>time(),
+                "updated"=>time(),
+                "owner"=>$insertid
+            );
+
+            $assetid = $db->table("assets")->insert($placeinsert);
+
+            $universeinsert = array(
+                "title"=>$username . "'s Place",
+                "description"=>"",
+                "owner"=>$insertid,
+                "assetid"=>$assetid,
+                "public"=>1
+            );
+
+            $db->table("universes")->insert($universeinsert);
+        }
+
         return array("code"=>"200");
         
 

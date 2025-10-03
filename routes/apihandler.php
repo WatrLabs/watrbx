@@ -3840,8 +3840,86 @@ $router->get('/Game/LuaWebService/HandleSocialRequest.ashx', function(){
 
 $router->get('/leaderboards/game/json', function(){
     header("Content-type: application/json");
-    die('[]');
-}); 
+    global $db;
+
+    if(!isset($_GET['distributorTargetId']) || !isset($_GET['targetType'])){
+        die('[]');
+    }
+
+    $placeid = (int)$_GET['distributorTargetId'];
+    $targetType = (int)$_GET['targetType'];
+    $startIndex = isset($_GET['startIndex']) ? (int)$_GET['startIndex'] : 0;
+    $max = isset($_GET['max']) ? (int)$_GET['max'] : 20;
+
+    if($targetType !== 0){
+        die('[]');
+    }
+
+    $assetinfo = $db->table("assets")->where("id", $placeid)->where("prodcategory", 9)->first();
+    if(!$assetinfo){
+        die('[]');
+    }
+
+    $query = $db->table("playerpoints")
+        ->select("userid", $db->raw("SUM(balance) as total_points"))
+        ->where("placeid", $placeid)
+        ->groupBy("userid")
+        ->orderBy("total_points", "DESC")
+        ->limit($max)
+        ->offset($startIndex);
+
+    $results = $query->get();
+    $json = [];
+    $rank = $startIndex;
+    $auth = new authentication();
+    $thumbs = new thumbnails();
+
+    foreach($results as $row){
+        $rank++;
+        $userinfo = $auth->getuserbyid($row->userid);
+        
+        if(!$userinfo){
+            continue;
+        }
+
+        //$points = $row->total_points;
+        $points = (int)$row->total_points;
+        
+        if($points < 10000){
+            $displayPoints = number_format($points);
+        } elseif($points < 1000000){
+            $displayPoints = number_format($points / 1000, 1) . 'K';
+        } elseif($points < 1000000000){
+            $displayPoints = number_format($points / 1000000, 1) . 'M';
+        } else {
+            $displayPoints = number_format($points / 1000000000, 1) . 'B';
+        }
+
+        $json[] = [
+            "Rank" => $rank,
+            "DisplayRank" => (string)$rank,
+            "FullRank" => null,
+            "WasRankTruncated" => false,
+            "Name" => $userinfo->username,
+            "UserId" => $userinfo->id,
+            "TargetId" => $userinfo->id,
+            "ProfileUri" => "/users/{$userinfo->id}/profile",
+            "ClanName" => null,
+            "ClanUri" => null,
+            "Points" => $points,
+            "DisplayPoints" => $displayPoints,
+            "FullPoints" => number_format($points),
+            "WasPointsTruncated" => $points >= 10000,
+            "ClanEmblemID" => 0,
+            "UserImageUri" => $thumbs->get_user_thumb($userinfo->id, "48x48", "headshot"),
+            "UserImageFinal" => true,
+            "ClanImageUri" => "",
+            "ClanImageFinal" => false
+        ];
+    }
+
+    die(json_encode($json));
+});
 
 $router->post('/marketplace/submitpurchase', function(){ // todo implement
     header("Content-type: application/json");
