@@ -67,7 +67,7 @@ $router->get('/api/v1/get-players', function(){
     ob_clean();
     die(create_success("Succesfully got players!", ["players"=>$playercount]));
 });
- 
+
 $router->get('/Login/Negotiate.ashx', function() {
     $auth = $_GET["suggest"] ?? 0;
     
@@ -2782,9 +2782,62 @@ $router->get('/messages/api/get-my-unread-messages-count', function(){
 });
 
 $router->get('/presence/users', function() {
-    header("Content-type: application/jsom");
-    json_encode(array());
-    die();
+    header("Content-type: application/json");
+    
+    $auth = new authentication();
+    $presenceData = [];
+    // alr..
+    if(isset($_GET["userIds"])){
+        $userIds = $_GET["userIds"];
+        
+        if(!is_array($userIds)){
+            $userIds = [$userIds];
+        }
+        
+        foreach($userIds as $userId){
+            $userId = (int)$userId;
+            $userinfo = $auth->getuserbyid($userId);
+            
+            if($userinfo !== null){
+                $isInGame = $auth->is_ingame($userId);
+                $isOnline = $auth->is_online($userId);
+                
+                $userPresenceType = 0;
+                $lastLocation = "Offline";
+                $placeId = null;
+                $gameId = null;
+                
+                if($isInGame){
+                    global $db;
+                    $playerInfo = $db->table("activeplayers")->where("userid", $userId)->first();
+                    
+                    if($playerInfo){
+                        $userPresenceType = 2;
+                        $assetinfo = $db->table("assets")->where("id", $placeId)->first();
+                        $lastLocation = $assetinfo ? "Playing " . $assetinfo->name : "Playing ???"; //idk how it looks like, please correct it watrabi if so
+                        $placeId = $playerInfo->placeid;
+                        $gameId = $playerInfo->jobid;
+                    }
+                } elseif($isOnline){
+                    $userPresenceType = 1;
+                    $lastLocation = "Website";
+                }
+                
+                $presenceData[] = [
+                    "UserPresenceType" => $userPresenceType,
+                    "LastLocation" => $lastLocation,
+                    "AbsolutePlaceUrl" => $placeId ? "/games/$placeId/-" : null,
+                    "PlaceId" => $placeId,
+                    "GameId" => $gameId,
+                    "IsGamePlayableOnCurrentDevice" => false,
+                    "UserId" => $userId,
+                    "EndpointType" => "Presence"
+                ];
+            }
+        }
+    }
+    
+    die(json_encode($presenceData));
 });
 
 $router->post('/game-instances/shutdown', function(){
@@ -3027,12 +3080,17 @@ $router->get('/private-server/instance-list-json', function() {
     die('{"Instances": [], "CurrentPage": 1, "TotalPages": 0 }'); 
 });
 
+// TODO: make an actual ticket system so kids dont get hacked bruh
 $router->get('/game/getauthticket', function() {
-   die($_COOKIE["_ROBLOSECURITY"]); 
+   die($_COOKIE["_ROBLOSECURITY"]);  //... why WHYY
 });
 
 $router->post('/client-status/set', function(){
     die('0'); // TODO   
+});
+
+$router->get('/client-status', function(){
+    die('{"status":"LeftGame"}'); // TODO   
 });
 
 //$router->get('/client-status', function(){
@@ -3785,7 +3843,7 @@ $router->get('/leaderboards/game/json', function(){
     die('[]');
 }); 
 
-$router->post('/marketplace/submitpurchase', function(){
+$router->post('/marketplace/submitpurchase', function(){ // todo implement
     header("Content-type: application/json");
 
     die('{"success": true, "receipt": "hi" }');
@@ -3978,6 +4036,41 @@ $router->post('/api/v1/upload-place', function(){
     } else {
         http_response_code(400);
     }
+});
+
+$router->get('/api/v1/recently-played', function(){
+    header("Content-type: application/json");
+    
+    $auth = new authentication();
+    global $currentuser;
+    global $db;
+    
+    if(!$currentuser){
+        die(json_encode(["games"=>[], "success"=>false]));
+    }
+    
+    $gameserver = new gameserver();
+    $thumbs = new thumbnails();
+    $slugify = new Slugify();
+    
+    $visits = $gameserver->get_visits($currentuser->id, 6);
+    $games = [];
+    
+    foreach($visits as $visit){
+        $universeinfo = $db->table("universes")->where("assetid", $visit->universeid)->first();
+        if($universeinfo){
+            $playing = $gameserver->get_player_count($universeinfo->assetid);
+            $games[] = [
+                "universeId"=>$universeinfo->id,
+                "name"=>$universeinfo->title,
+                "thumbnail"=>$thumbs->get_asset_thumb($universeinfo->assetid),
+                "slug"=>$slugify->slugify($universeinfo->title), // TODO: let javascript decide
+                "playing"=>$playing
+            ];
+        }
+    }
+    
+    die(json_encode(["games"=>$games, "success"=>true]));
 });
 
 $router->get('/users/inventory/list-json', function(){
