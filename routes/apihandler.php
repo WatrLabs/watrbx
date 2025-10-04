@@ -902,6 +902,11 @@ $router->post('/api/item.ashx', function(){
     }
 });
 
+$router->post('/catalog/impression', function(){ // TODO: Implement catalog impression tracking
+    http_response_code(200);
+    die();
+});
+
 $router->post('/api/v1/shirt-creator', function(){
 
     $router = new Routing();
