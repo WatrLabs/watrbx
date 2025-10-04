@@ -21,6 +21,7 @@ $startrows = isset($_GET["StartRows"]) ? (int)$_GET["StartRows"] : 0;
 $maxrows = isset($_GET["MaxRows"]) ? (int)$_GET["MaxRows"] : 20;
 
 $usealgorithm = fastflags::get("UseAlgorithmForGames");
+$usenewsearch = fastflags::get("UseNewSearch");
 
 if($sort === 3){
     $featuredgames = $db->table("featuredgames")->get(); // hardcoded be like
@@ -91,19 +92,42 @@ if($usealgorithm){
     $query->select("universes.*", "game_recommendations.score")
         ->join("game_recommendations", "game_recommendations.universeid", "=", "universes.assetid")
         ->where("universes.public", 1);
-    
-    if(!empty($keyword)){
-        $query->where("universes.title", "LIKE", "%" . strtolower($keyword) . "%");
-    }
-    
+
+   /* if($usenewsearch){
+        if(!empty($keyword)){
+            $fuzzyPattern = '%' . implode('%', str_split(strtolower($keyword))) . '%';
+            
+            $query->where(function($q) use ($keyword, $fuzzyPattern) {
+                $q->where("title", "LIKE", "%" . strtolower($keyword) . "%")
+                ->orWhere("description", "LIKE", "%" . strtolower($keyword) . "%")
+                //"mm2" -> "Murder Mystery 2"
+                ->orWhere("title", "LIKE", $fuzzyPattern);
+            });
+        }
+    } else {*/
+        if(!empty($keyword)){
+            $query->where("universes.title", "LIKE", "%" . strtolower($keyword) . "%");
+        }
+    //}
     $query->orderBy("game_recommendations.score", "DESC");
 } else {
     $query->where("public", 1);
-    
-    if(!empty($keyword)){
-        $query->where("title", "LIKE", "%" . strtolower($keyword) . "%");
+     if($usenewsearch){
+        if(!empty($keyword)){
+            $fuzzyPattern = '%' . implode('%', str_split(strtolower($keyword))) . '%';
+            
+            $query->where(function($q) use ($keyword, $fuzzyPattern) {
+                $q->where("title", "LIKE", "%" . strtolower($keyword) . "%")
+                ->orWhere("description", "LIKE", "%" . strtolower($keyword) . "%")
+                //"mm2" -> "Murder Mystery 2"
+                ->orWhere("title", "LIKE", $fuzzyPattern);
+            });
+        }
+    } else {
+        if(!empty($keyword)){
+            $query->where("title", "LIKE", "%" . strtolower($keyword) . "%");
+        }
     }
-    
     $query->orderBy($db->raw("RAND()"));
 }
 
