@@ -71,7 +71,20 @@ if($sort === 1){
     }
     die();
 }
+/*
 
+if(!empty($keyword)){
+    $fuzzyPattern = '%' . implode('%', str_split(strtolower($keyword))) . '%';
+    
+    $query->where(function($q) use ($keyword, $fuzzyPattern) {
+        $q->where("title", "LIKE", "%" . strtolower($keyword) . "%")
+          ->orWhere("description", "LIKE", "%" . strtolower($keyword) . "%")
+          //"mm2" -> "Murder Mystery 2"
+          ->orWhere("title", "LIKE", $fuzzyPattern);
+    });
+}
+
+*/
 $query = $db->table("universes");
 
 if($usealgorithm){
