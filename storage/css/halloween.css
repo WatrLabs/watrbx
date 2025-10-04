@@ -1,0 +1,62 @@
+.rbx-header { background: url(/images/RevisedHeader/bg-obc_header.png) no-repeat center top;
+    background-size: 100% 100%; 
+    color: white !important;
+}
+
+.rbx-btn-secondary-xs, .rbx-btn-secondary-sm, .chat-windows-header, .table-header, th, .chat-header-title {
+    background-color: #ff7f00 !important;
+    border: none;
+}
+
+.rbx-navbar-search-text {
+    background-color: #242424 !important;
+}
+
+.container-main, .nav-content-inner, .content {
+    background-image: linear-gradient(0deg, rgb(34, 34, 34), rgb(88, 84, 84)) !important;
+
+}
+
+.rbx-header .logo-transitional {
+    background-image: url("/images/Logo/logo_R_HALLOWEEN.svg");
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    background-size: 30px;
+}
+
+
+@media(min-width: 1320px) {
+    .rbx-header .rbx-nav-collapse {
+        display:none;
+    }
+
+    .rbx-header .rbx-navbar-header {
+        max-width: 120px;
+    }
+
+    .rbx-header .logo {
+        background-image: url("/images/NextStyleGuide/logo_ROBLOX_120x30.svg");
+        background-repeat: no-repeat;
+        background-size: auto auto;
+        width: 118px;
+        height: 30px;
+        display: inline-block;
+    }
+
+    .rbx-header .logo-transitional {
+        background-image: url("/images/Logo/roblox_logo_H.svg");
+        background-repeat: no-repeat;
+        background-size: auto auto;
+        width: 118px;
+        height: 30px;
+        display: inline-block;
+        background-size: 118px 30px;
+    }
+
+    .rbx-header .nav-container .nav-icon {
+        display: none;
+    }
+}
