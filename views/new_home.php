@@ -85,23 +85,12 @@ $pagebuilder->buildheader();
     
         <? if(!empty($recentlyvisited)){ ?>
 
-        <div id="recently-visited-places" class="col-xs-12 container-list home-games">
+        <div id="recently-visited-places" class="col-xs-12 container-list home-games" style="display:none;">
             <div class="container-header">
                 <h3>Recently Played</h3>
                 <a href="/games?sortFilter=6" class="rbx-btn-secondary-xs btn-more">See All</a>
             </div>
-            <ul class="hlist game-list">
-
-            
-            <?  foreach($recentlyvisited as $visit){
-                
-                $universeinfo = $db->table("universes")->where("assetid", $visit->universeid)->first();
-                if($universeinfo !== null){
-                    $pagebuilder->build_component("game", ["game" => $universeinfo, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
-                }
-            } ?>
-
-            </ul>
+            <ul class="hlist game-list"></ul>
         </div>
 
         <? } ?>
@@ -169,7 +158,69 @@ $pagebuilder->buildheader();
     </div>
 
 </div>
+        <script type="text/javascript">
+        // recently played
+        (function(){
+        var container=document.getElementById("recently-visited-places");
+        if(!container)return;
+        var xhr=new XMLHttpRequest();
+        xhr.open("GET","/api/v1/recently-played",true);
+        xhr.onreadystatechange=function(){
+        if(xhr.readyState===4&&xhr.status===200){
+        try{
+        var data=JSON.parse(xhr.responseText);
+        if(data.games&&data.games.length>0){
+        var list=container.querySelector(".game-list");
+        list.innerHTML="";
+        for(var i=0;i<data.games.length;i++){
+        var game=data.games[i];
+        var li=document.createElement("li");
+        li.className="game-card";
+        li.innerHTML='<a href="/games/'+game.universeId+'/'+game.slug+'"><div class="game-card-thumb"><img src="'+game.thumbnail+'"/></div><div class="game-card-name">'+game.name+'</div><div class="game-card-info"><span class="info-label icon-status-game"></span><span class="info-label">'+game.playing+' Playing</span></div></a>';
+        list.appendChild(li);
+        }}
+        }catch(e){
+        console.log("error loading games:",e);
+        }}};
+        xhr.send();
+        })();
 
+        // friends presence
+        (function(){
+        var friendsContainer=document.querySelector(".friends-container");
+        if(!friendsContainer)return;
+        function updatePresence(){
+        var friendIds=[];
+        var friendElements=friendsContainer.querySelectorAll("[data-user-id]");
+        for(var i=0;i<friendElements.length;i++){
+        friendIds.push(friendElements[i].getAttribute("data-user-id"));
+        }
+        if(friendIds.length===0)return;
+        var xhr=new XMLHttpRequest();
+        var url="/presence/users?"+friendIds.map(function(id){return "userIds="+id;}).join("&");
+        xhr.open("GET",url,true);
+        xhr.onreadystatechange=function(){
+        if(xhr.readyState===4&&xhr.status===200){
+        try{
+        var presences=JSON.parse(xhr.responseText);
+        for(var j=0;j<presences.length;j++){
+        var p=presences[j];
+        var elem=friendsContainer.querySelector("[data-user-id='"+p.UserId+"']");
+        if(elem){
+        var statusElem=elem.querySelector(".friend-presence");
+        if(statusElem){
+        statusElem.textContent=p.LastLocation;
+        statusElem.className="friend-presence presence-"+p.UserPresenceType;
+        }}}}
+        }catch(e){
+        console.log("error updating presence:",e);
+        }}};
+        xhr.send();
+        }
+        updatePresence();
+        //setInterval(updatePresence,30000); // later i guess..
+        })();
+        </script>
 
                 <div id="Skyscraper-Adp-Right" class="abp abp-container right-abp">
                     

@@ -19,6 +19,7 @@ $router->get('/game/GetAllowedExperimentalFeatures', function(){
     die("{}");
 });
 
+// TODO: Make this less messier
 $router->get('/marketplace/productinfo', function(){
     header("Content-type: application/json");
 
@@ -27,7 +28,9 @@ $router->get('/marketplace/productinfo', function(){
     if(isset($_GET["assetId"])){
         $auth = new authentication();
         $assetid = (int)$_GET["assetId"];
-        
+        /* 2025
+        {"TargetId":1818,"ProductType":"User Product","AssetId":1818,"ProductId":1305046,"Name":"Classic: Crossroads","Description":"The classic ROBLOX level is back!","AssetTypeId":9,"Creator":{"Id":1,"Name":"Roblox","CreatorType":"User","CreatorTargetId":1,"HasVerifiedBadge":true},"IconImageAssetId":607948062,"Created":"2007-05-01T01:07:04.78Z","Updated":"2024-01-29T22:05:10.417Z","PriceInRobux":null,"PriceInTickets":null,"Sales":0,"IsNew":false,"IsForSale":false,"IsPublicDomain":false,"IsLimited":false,"IsLimitedUnique":false,"Remaining":null,"MinimumMembershipLevel":0,"ContentRatingTypeId":0,"SaleAvailabilityLocations":null,"SaleLocation":null,"CollectibleItemId":null,"CollectibleProductId":null,"CollectiblesItemDetails":null}
+        */
         $productinfo = array(
             "Name" => "Unknown",
             "Description" => "[\r\n[52, 57, 57, 52, 56, 49, 57, 51],\r\n[50, 52, 57, 53, 55, 50, 55, 58],\r\n[56, 56, 52, 51, 52, 58, 57, 53],\r\n[52, 56, 54, 55, 53, 50, 52, 51],\r\n[52, 53, 58, 53, 55, 53, 54, 57],\r\n[55, 49, 51, 53, 51, 53, 57, 57],\r\n[54, 58, 57, 51, 58, 55, 54, 56],\r\n[53, 52, 51, 57, 51, 49, 50, 58]\r\n]",

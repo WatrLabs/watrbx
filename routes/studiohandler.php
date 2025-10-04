@@ -66,12 +66,12 @@ $router->get('/ide/update', function(){
     $pagebuilder::get_template("ide/update");
 });
 
-$router->get('/places/{placeid}/settings', function($Placeid){
+$router->get('/places/{placeid}/settings', function($Placeid){ // todo
     header("Content-type: application/json");
     die("{}");
 });
 
-$router->get('/developerproducts/list', function(){
+$router->get('/developerproducts/list', function(){ //todo
     header("Content-type: application/json");
     die('{
   "data": [

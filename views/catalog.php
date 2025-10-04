@@ -26,6 +26,8 @@ global $db;
 
 $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->limit(35)->get();
 
+$assetIds = array_column($assets, 'id');
+$idsCsv = implode(',', $assetIds);
 ?>
 <style>
         .original-image {
@@ -211,7 +213,7 @@ $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2
             Roblox.CatalogValues.CatalogContext = 1;
         
         
-            var idsCsv = '332747438,315618053,332744676,332744443,332748371,287039152,330296924,20573086,63043890,1073690,1029025,11297708,188703010,330295337,78730532,106690045,16630147,1028859,192557913,27847645,151784320,19380685';
+            var idsCsv = '<?= $idsCsv; ?>';
             var url =  '/catalog/impression';
             Roblox.Catalog.ImpressionCounter.fireImpression(idsCsv, url);
     });

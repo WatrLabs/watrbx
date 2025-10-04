@@ -53,9 +53,7 @@ class discord {
             "username" => $username,
             "tts" => false,
             "embeds" => $embed
-
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
-
 
         $ch = curl_init( $url );
         curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
@@ -66,9 +64,18 @@ class discord {
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
 
         $response = curl_exec( $ch );
-        curl_close( $ch );
 
-        return true; // TODO: Error Handling
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($ch);
+
+        curl_close( $ch );
+        // done the todo
+        if($curl_error || $http_code < 200 || $http_code >= 300){
+            error_log("watrbx.wtf, discord webhook failed: HTTP $http_code - $curl_error"); // il just do this
+            return false;
+        }
+
+        return true;
     }
 
 }

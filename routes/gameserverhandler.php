@@ -269,7 +269,8 @@ $router->get("/api/v1/gameserver/client-presence", function(){
 
                     $visitsinsert = array(
                         "userid"=>$userid,
-                        "universeid"=>$jobinfo->assetid // I need a better way of doing universes & assets
+                        "universeid"=>$jobinfo->assetid, // I need a better way of doing universes & assets
+                        "time"=>time()
                     );
 
                     $update = [

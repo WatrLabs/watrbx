@@ -200,3 +200,65 @@ $router->get("/Forum/ShowPost.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("forum/showpost");
 });
+/*
+https://github.com/WatrLabs/watrbx/issues/16 - hope this works
+*/
+$router->post("/Forum/ShowPost.aspx", function(){
+    global $db;
+    
+    if(!isset($_POST["__EVENTTARGET"])){ // watrabi u do u
+        http_response_code(400);
+        die();
+    }
+    
+    $target = $_POST["__EVENTTARGET"];
+    $postid = isset($_GET["PostID"]) ? (int)$_GET["PostID"] : 0;
+    
+    if($postid == 0){
+        http_response_code(400);
+        die();
+    }
+    
+    $forums = new forums();
+    $postinfo = $forums->getPostInfo($postid);
+    
+    if(!$postinfo){
+        http_response_code(404);
+        die();
+    }
+    
+    $categoryid = $postinfo->parent;
+    
+    if(strpos($target, "NextThread") !== false){
+        $nextpost = $db->table("forum_posts")
+            ->where("parent", $categoryid)
+            ->where("id", ">", $postid)
+            ->orderBy("id", "ASC")
+            ->first();
+        
+        if($nextpost){
+            header("Location: /Forum/ShowPost.aspx?PostID=" . $nextpost->id);
+            die();
+        } else {
+            header("Location: /Forum/ShowPost.aspx?PostID=" . $postid);
+            die();
+        }
+    } elseif(strpos($target, "PreviousThread") !== false){
+        $prevpost = $db->table("forum_posts")
+            ->where("parent", $categoryid)
+            ->where("id", "<", $postid)
+            ->orderBy("id", "DESC")
+            ->first();
+        
+        if($prevpost){
+            header("Location: /Forum/ShowPost.aspx?PostID=" . $prevpost->id);
+            die();
+        } else {
+            header("Location: /Forum/ShowPost.aspx?PostID=" . $postid);
+            die();
+        }
+    } else {
+        http_response_code(400);
+        die();
+    }
+});
