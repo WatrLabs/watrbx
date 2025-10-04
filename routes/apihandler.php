@@ -14,7 +14,6 @@ use watrlabs\logging\discord;
 use watrlabs\watrkit\pagebuilder;
 use watrbx\email;
 use watrlabs\pagination;
-
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
 
@@ -1353,6 +1352,11 @@ $router->post('/api/v1/asset-upload', function(){
     if($currentuser == null){
         header("Location: /newlogin");
         die();
+    } else {
+        if($currentuser->is_admin !== 1){
+            $router = new Routing();
+            die($router->return_status(403));
+        }
     }
 
     $auth = new authentication();

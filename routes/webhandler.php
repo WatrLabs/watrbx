@@ -336,6 +336,16 @@ $router->get("/catalog", function() {
    $page::get_template("catalog");
 });
 
+$router->get("/catalogbrowse.aspx", function() {
+   $page = new pagebuilder;
+   $page::get_template("catalogbrowse");
+});
+
+$router->get("/catalog/browse.aspx", function() {
+   $page = new pagebuilder;
+   $page::get_template("catalogbrowse");
+});
+
 $router->get("/Login/iFrameLogin.aspx", function() {
     $page = new pagebuilder;
     $page::get_template("login/iframelogin");
@@ -430,6 +440,8 @@ $router->post("/my/account", function() {
     global $currentuser;
     global $db;
     $func = new sitefunctions();
+    $page = new pagebuilder;
+    $auth = new authentication();
 
     if(isset($_POST["PersonalBlurb"]) && $currentuser){
 
@@ -441,10 +453,31 @@ $router->post("/my/account", function() {
         ];
 
         $db->table("users")->where("id", $currentuser->id)->update($update);
+        $currentuser = $auth->getuserbyid($currentuser->id);
+
+        $page::get_template("my/account", ["newblurb"=>$blurb]);
     }
 
-    $page = new pagebuilder;
-    $page::get_template("my/account", ["newblurb"=>$blurb]);
+    if(isset($_POST["currenttheme"]) && $currentuser){
+
+        $newtheme = (int)$_POST["currenttheme"];
+
+        $themes = new \watrbx\themes();
+        $themeinfo = $themes->getThemeInfo($newtheme);
+
+        $update = [
+            "currenttheme"=>$newtheme
+        ];
+
+        if($themeinfo){
+            $db->table("users")->where("currenttheme", $currentuser->id)->update($update);
+        }
+
+        $currentuser = $auth->getuserbyid($currentuser->id);
+    }
+
+    $page::get_template("my/account");
+    
 });
 
 $router->get("/download", function() {

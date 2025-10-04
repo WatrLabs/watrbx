@@ -26,6 +26,8 @@ $pagebuilder->set_page_name("Account");
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
+$allthemes = (new \watrbx\themes())->getAllThemes();
+
 if(isset($newblurb)){
   $blurb = $newblurb;
 } else {
@@ -47,6 +49,7 @@ if(isset($newblurb)){
             <div class="tab-container">
               <div class="tab active" data-id="settings_tab">Settings</div>
               <div class="tab" data-id="privacy_tab">Privacy</div>
+              <div class="tab" data-id="preferences_tab">Preferences</div>
             </div>
             <input name="__RequestVerificationToken" type="hidden" value="Eyz0_gyuXxwx74Q6xigT8xOa7HTcrkFCdIXAsP3-5gCh1tvGtCpyPjgdVNGOAAdyxvlOpnrvwDNEiLM29Nn9DCIjp0EaLvoCixZwWQeHglUrLNswAzzeVOCNof8-qDSK-IPHJddxujB2d15i1oRWR55t4yg1" />
             <div class="tab-content active" id="settings_tab">
@@ -375,6 +378,29 @@ if(isset($newblurb)){
                   <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn" onclick="__doPostBack('', '')">Update</a>
                 </div>
               </div>
+            </div>
+            <div class="tab-content" id="preferences_tab">
+                <div id="AccountSettings" class="settings-section">
+                  <div id="ChatSetting" class="SettingSubTitle">
+                    <span class="form-label">Current Theme:</span>
+                    <span>
+                      <select class="form-select" name="currenttheme">
+                          <option value='None'>None</option>
+                        <?php
+                            foreach($allthemes as $theme){
+                                $selected = ($currentuser->currenttheme == $theme->id) ? 'selected="selected"' : '';
+                                echo "<option value='$theme->id' $selected>$theme->theme_name</option>";
+                            }
+                        ?>
+                        
+                      </select>
+                      <span class="field-validation-valid" data-valmsg-for="ChatVisibilityPrivacy" data-valmsg-replace="true"></span>
+                    </span>
+                  </div>
+                  <div style="clear: both;">
+                    <a class="btn-medium btn-neutral updateSettingsBtn btn-update btn-neutral btn-medium" id="UpdateSettingsBtn" onclick="__doPostBack('', '')">Update</a>
+                  </div>
+                </div>
             </div>
           </form>
         </div>
