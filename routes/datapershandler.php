@@ -4,7 +4,7 @@ use watrbx\sitefunctions;
 $gameserver = new gameserver();
 $func = new sitefunctions();
 global $router;
-
+// TODO: + Check accesskey
 function checkauth(){
     $gameserver = new gameserver();
     $func = new sitefunctions();
