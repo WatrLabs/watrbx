@@ -385,7 +385,7 @@ if(isset($newblurb)){
                     <span class="form-label">Current Theme:</span>
                     <span>
                       <select class="form-select" name="currenttheme">
-                          <option value='None'>None</option>
+                          <option value='0'>None</option>
                         <?php
                             foreach($allthemes as $theme){
                                 $selected = ($currentuser->currenttheme == $theme->id) ? 'selected="selected"' : '';

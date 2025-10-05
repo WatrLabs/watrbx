@@ -106,7 +106,7 @@ class pagebuilder {
                 if($currentuser->currenttheme){
                     $themeinfo = $themes->getThemeInfo($currentuser->currenttheme);
                     if($themeinfo){
-                        if($themeinfo->cssfile){
+                        if($themeinfo->theme_url){
                             $this->addresource('cssfiles', $themeinfo->theme_url);
                         }
                     }
