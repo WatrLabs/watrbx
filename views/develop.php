@@ -2,6 +2,8 @@
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrbx\thumbnails;
+use Cocur\Slugify\Slugify;
+$slugify = new slugify();
 $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder();
@@ -201,18 +203,23 @@ $pagebuilder->buildheader();
 
                         foreach ($allgames as $game){ 
                           $thumbnail = $thumbs->get_asset_thumb($game->id, "200x200");
+                          $universeinfo = $db->table("universes")->where("assetid", $game->id)->first();
+                          $universeid = $universeinfo ? $universeinfo->id : 0; // pls dont fail
+
+                          $totalvisits = $db->table("visits")->where("universeid", $game->id)->count();
+                          // pls watrabi, store multiple visits rows so i can track 7 days and much more features
                         ?>
 
-                        <table class="item-table" data-item-id="<?=$game->id?>" data-type="game" data-universeid="0">
+                        <table class="item-table" data-item-id="<?=$universeid?>" data-type="game" data-universeid="<?=$game->id?>">
                         <tbody>
                           <tr>
                             <td class="image-col">
-                              <a href="/games/3/roblox" class="game-image">
+                              <a href="/games/<?=$universeid?>/<?=$slugify->slugify($game->name)?>" class="game-image">
                                 <img src="<?=$thumbnail?>" alt="<?=$game->name?>" width="70" height="70">
                               </a>
                             </td>
                             <td class="name-col">
-                              <a class="title notranslate" href="/games/995100333/New-Robloxia-City-v1-00-ALPHA"><?=$game->name?></a>
+                              <a class="title notranslate" href="/games/<?=$universeid?>/<?=$slugify->slugify($game->name)?>"><?=$game->name?></a>
                               <table class="details-table">
                                 <tbody>
                                   <tr>
@@ -230,7 +237,7 @@ $pagebuilder->buildheader();
                               </table>
                             </td>
                             <td class="stats-col-games">
-                              <div class="totals-label">Total Visitors: <span>0</span>
+                              <div class="totals-label">Total Visitors: <span><?=$totalvisits?></span>
                               </div>
                               <div class="totals-label">Last 7 days: <span>0</span>
                               </div>
