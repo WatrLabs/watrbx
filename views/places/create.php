@@ -7,9 +7,16 @@ $auth = new authentication();
 $auth->requiresession();
 
 global $currentuser;
+global $db;
 
 $userinfo = $currentuser;
 
+$existingplaces = $db->table("assets")
+    ->where("owner", $currentuser->id)
+    ->where("prodcategory", 9)
+    ->count();
+
+$placenumber = $existingplaces + 1; // count them..
 
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___7000c43d73500e63554d81258494fa21_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___91ce90e508d798217cc5452e978970d5_m.css');
@@ -45,7 +52,7 @@ $pagebuilder->buildheader();
                         <br><br><br>
                         <form>
                             <label>Name:</label><br>
-                            <input type="text" name="name" value="<?=$currentuser->username?>'s Place Number: 1" style="width: 300px;">
+                            <input type="text" name="name" value="<?=$currentuser->username?>'s Place Number: <?=$placenumber?>" style="width: 300px;">
                             <br><br>
                             <label>Description:</label><br>
                             <textarea type="text" name="description" style="width: 300px; height: 50px;"></textarea>
@@ -182,4 +189,57 @@ $pagebuilder->buildheader();
         </div>
     </div>
 </div>
+<script type="text/javascript">
+function __doPostBack() {
+var name = document.getElementsByName('name')[0].value;
+var description = document.getElementsByName('description')[0].value;
+// TODO: use custom warning instead of alert func
+if(!name || name.length < 1) {
+alert('Please enter a place name');
+return false;
+}
+
+document.getElementById('ProcessingView').style.display = 'block';
+
+var params = 'title=' + encodeURIComponent(name) + '&info=' + encodeURIComponent(description);
+
+var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+xhr.open('POST', '/api/v1/create-place', true);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+xhr.onreadystatechange = function() {
+if(xhr.readyState == 4) {
+if(xhr.status == 200) {
+window.location.href = '/develop';
+} else {
+document.getElementById('ProcessingView').style.display = 'none';
+alert(xhr.responseText || 'Error creating place');
+}
+}
+};
+
+xhr.send(params);
+return false;
+}
+
+var tabs = ['BasicSettings', 'Access', 'AdvancedSettings'];
+var links = ['BasicSettingsLink', 'AccessLink', 'AdvancedSettingsLink'];
+
+for(var i = 0; i < links.length; i++) {
+(function(idx) {
+var link = document.getElementById(links[idx]);
+if(link) {
+link.onclick = function() {
+for(var j = 0; j < tabs.length; j++) {
+var tab = document.getElementById(tabs[j]);
+var tabLink = document.getElementById(links[j]);
+if(tab) tab.style.display = j === idx ? 'block' : 'none';
+if(tabLink) tabLink.className = j === idx ? 'tab-active' : '';
+}
+};
+}
+})(i);
+}
+</script>
 <? $pagebuilder->build_footer(); ?>

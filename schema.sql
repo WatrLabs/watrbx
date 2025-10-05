@@ -717,6 +717,8 @@ CREATE TABLE `visits` (
   `universeid` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+ALTER TABLE `visits` ADD `time` INT NOT NULL AFTER `universeid`; -- use this watrabi
+
 -- --------------------------------------------------------
 
 --
@@ -727,6 +729,22 @@ CREATE TABLE `wearingitems` (
   `id` int NOT NULL,
   `itemid` int NOT NULL,
   `userid` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `game_recommendations`
+--
+
+CREATE TABLE `game_recommendations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `universeid` int NOT NULL,
+  `score` float NOT NULL DEFAULT '0',
+  `last_updated` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `universeid` (`universeid`),
+  KEY `score` (`score`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
