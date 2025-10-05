@@ -11,6 +11,7 @@ use watrbx\relationship\friends;
 use Aws\S3\S3Client;
 use Carbon\Carbon;
 use watrlabs\logging\discord;
+use watrlabs\fastflags;
 use watrlabs\watrkit\pagebuilder;
 use watrbx\email;
 use watrlabs\pagination;
@@ -4102,6 +4103,16 @@ $router->post('/api/v1/upload-place', function(){
                     'Key' => $md5,
                     'Body' => $file,
                 ]);
+
+                $fastflags = new fastflags();
+                if($fastflags::get("EnableVersionHistory") !== false){
+                    $historyinsert = [
+                        "assetid"=>$placeid,
+                        "fileid"=>$md5,
+                        "created"=>time()
+                    ];
+                    $db->table("asset_history")->insert($historyinsert);
+                }
 
                 $update = [
                     "fileid"=>$md5,
