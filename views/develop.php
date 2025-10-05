@@ -2,6 +2,8 @@
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
 use watrbx\thumbnails;
+use Cocur\Slugify\Slugify;
+$slugify = new slugify();
 $auth = new authentication();
 $auth->requiresession();
 $pagebuilder = new pagebuilder();
