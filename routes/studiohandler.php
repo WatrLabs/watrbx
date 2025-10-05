@@ -112,7 +112,7 @@ $router->get('/universes/get-info', function(){
                 "RootPlace" => 1,
                 "StudioAccessToApisAllowed" => true,
                 "CurrentUserHasEditPermissions" => true,
-                "UniverseAvatarType" => "MorphToR6"
+                "UniverseAvatarType" => "MorphToR6"  //  todo
             ];
             header("Content-type: application/json");
             die(json_encode($data));

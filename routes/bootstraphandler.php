@@ -2,7 +2,7 @@
 use watrlabs\router\Routing;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
-
+# TODO: make this easier
 $router->get('/version-2niqaerqcb6351zx7-RobloxVersion.txt', function(){
     echo "1, 6, 3, 61076";
 });
