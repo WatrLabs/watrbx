@@ -4019,7 +4019,7 @@ $router->post('/api/v1/create-place', function(){
             "description"=>$description,
             "robux"=>null,
             "tix"=>null,
-            "fileid"=>"e70415fb81c7715e1985afc2967b9605",
+            "fileid"=>"e70415fb81c7715e1985afc2967b9605", // TODO: Fetch from storage instead
             "created"=>time(),
             "updated"=>time(),
             "owner"=>$currentuser->id
