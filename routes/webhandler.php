@@ -452,7 +452,7 @@ $router->post("/my/account", function() {
         $db->table("users")->where("id", $currentuser->id)->update($update);
         $currentuser = $auth->getuserbyid($currentuser->id);
 
-        $page::get_template("my/account", ["newblurb"=>$blurb]);
+        
     }
 
     if(isset($_POST["currenttheme"]) && $currentuser){
@@ -467,14 +467,21 @@ $router->post("/my/account", function() {
         ];
 
         if($themeinfo){
-            $db->table("users")->where("currenttheme", $currentuser->id)->update($update);
+            $db->table("users")->where("id", $currentuser->id)->update($update);
+        } else {
+            $db->table("users")->where("id", $currentuser->id)->update(["currenttheme"=>NULL]);
         }
 
         $currentuser = $auth->getuserbyid($currentuser->id);
     }
 
-    $page::get_template("my/account");
-    
+
+    if(isset($blurb)){
+        $page::get_template("my/account", ["newblurb"=>$blurb]);
+    } else {
+        $page::get_template("my/account");
+    }
+
 });
 
 $router->get("/download", function() {
