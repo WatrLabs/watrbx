@@ -3920,7 +3920,7 @@ $router->get('/leaderboards/game/json', function(){
             "FullPoints" => number_format($points),
             "WasPointsTruncated" => $points >= 10000,
             "ClanEmblemID" => 0,
-            "UserImageUri" => $thumbs->get_user_thumb($userinfo->id, "48x48", "headshot"),
+            "UserImageUri" => $thumbs->get_user_thumb($userinfo->id, "512x512", "headshot"),
             "UserImageFinal" => true,
             "ClanImageUri" => "",
             "ClanImageFinal" => false
@@ -4018,7 +4018,7 @@ $router->post('/api/v1/create-place', function(){
             "description"=>$description,
             "robux"=>null,
             "tix"=>null,
-            "fileid"=>"None",
+            "fileid"=>"e70415fb81c7715e1985afc2967b9605",
             "created"=>time(),
             "updated"=>time(),
             "owner"=>$currentuser->id

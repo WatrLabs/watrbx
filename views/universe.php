@@ -927,7 +927,7 @@ $pagebuilder->buildheader();
 
 <div id="rbx-leaderboard-container-player" class="section rbx-leaderboard-container rbx-leaderboard-player" data-associated-leaderboard-more="rbx-leaderboard-btn-player">
     <div class="rbx-leaderboard-data"
-         data-distributor-target-id="47545"
+         data-distributor-target-id="<?=$assetinfo->id?>"
          data-max="20"
          data-rank-max="4"
          data-target-type="0"
