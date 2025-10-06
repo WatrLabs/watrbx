@@ -38,7 +38,7 @@
         </div>
         
     <div id="textDisplay">
-    <div class="CatalogItemName notranslate"><a class="name notranslate" href="/<?=$slugify->slugify($asset->name);?>-item?id=<?=$asset->id?>" title="<?=$asset->name?>"><?=$asset->name?></a></div>
+    <div class="CatalogItemName notranslate"><a class="name notranslate" href="/<?=$slugify->slugify($asset->name);?>-item?id=<?=$asset->id?>" title="<?=$asset->name?>"><?=htmlspecialchars($asset->name, ENT_QUOTES, 'UTF-8')?></a></div>
         <?php if($asset->publicdomain == 1){ ?>
                 <? if($asset->robux == 0){ ?>
                     <div class="robux-price"><span class="robux notranslate">FREE</span></div>

@@ -339,7 +339,7 @@ $pagebuilder->buildheader();
                 }?>
 
             
-            <h1 class="rbx-para-overflow game-name" title="<?=$gameinfo->title?>"><?=$gameinfo->title?></h1>
+            <h1 class="rbx-para-overflow game-name" title="<?=htmlspecialchars($gameinfo->title, ENT_QUOTES, 'UTF-8')?>"><?=htmlspecialchars($gameinfo->title, ENT_QUOTES, 'UTF-8')?></h1>
             <h4 class="game-creator"><span>By</span> <a class="rbx-link" href="/users/<?=$creator->id?>/profile"><?=$creator->username?></a></h4>
             <div class="game-play-buttons" data-autoplay="false">
 
@@ -540,7 +540,7 @@ $pagebuilder->buildheader();
             <div class="tab-pane active" id="about">
                 <div class="section game-about-container">
                     <h3>Description</h3>
-                    <p class="game-description linkify"><?=$gameinfo->description?></p>
+                    <p class="game-description linkify"><?=htmlspecialchars($gameinfo->description, ENT_QUOTES, 'UTF-8')?></p>
 
                     <ul class="game-stats-container">
                         <li class="game-stat">

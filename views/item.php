@@ -250,8 +250,8 @@ if($currentuser !== null){
                         </div>
                         <div id="ctl00_cphRoblox_DescriptionPanel" class="DescriptionPanel notranslate">
 	
-                            <pre class="Description Full text"> <?=$highlighteddesc?> </pre>
-                            <pre class="Description body text"><span class="description-content"><?=$highlighteddesc?></span><span class="description-more-container"></span></pre>
+                            <pre class="Description Full text"> <?=htmlspecialchars($highlighteddesc, ENT_QUOTES, 'UTF-8')?> </pre>
+                            <pre class="Description body text"><span class="description-content"><?=htmlspecialchars($highlighteddesc, ENT_QUOTES, 'UTF-8')?></span><span class="description-more-container"></span></pre>
                         
 </div>
                         <div class="ReportAbuse">

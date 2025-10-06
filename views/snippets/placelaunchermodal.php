@@ -14,7 +14,7 @@
      data-is-protocol-handler-launch-enabled="True"
      data-is-user-logged-in="True"
      data-os-name="Windows"
-     data-protocol-name-for-client="roblox-player"
+     data-protocol-name-for-client="watrbx-player"
      data-protocol-name-for-studio="watrbx-studio"
      data-protocol-url-includes-launchtime="true"
      data-protocol-detection-enabled="true">

@@ -94,9 +94,21 @@ $wearingitems = [];
 
 //$currentlywearing = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
 
-
+//STATS BACKEND
 
 $allfriends = $friends->get_friends($userid);
+
+$allplaces = $db->table("assets")
+    ->where("prodcategory", 9)
+    ->where("owner", $userinfo->id)
+    ->pluck("id");
+
+$totalvisits = 0;
+foreach($allplaces as $placeid){
+    $totalvisits += $db->table("visits")->where("universeid", $placeid)->count();
+}
+$forumposts = $db->table("forumposts")->where("userid", $userinfo->id)->count();
+
 $pagebuilder->set_page_name($userinfo->username);
 $pagebuilder->buildheader();
 
@@ -186,7 +198,7 @@ $pagebuilder->buildheader();
                     }
                 });
             </script>
-                     <?=$status?>
+                     <?=htmlspecialchars($status, ENT_QUOTES, 'UTF-8')?>
         </div>
         <div class="header-title">
             <h1><?=$userinfo->username?></h1>
@@ -451,7 +463,7 @@ $pagebuilder->buildheader();
            truncate
            layout-content="layoutContent">
            
-            <span class="profile-about-content-text" ng-non-bindable><?=$userinfo->about?></span>
+            <span class="profile-about-content-text" ng-non-bindable><?=htmlspecialchars($userinfo->about)?></span>
         </p>
         <span class="rbx-font-bold show-more-link"
               ng-show="layoutContent.hasMoreContent"
@@ -730,11 +742,11 @@ $pagebuilder->buildheader();
         </li>
         <li class="profile-stat">
             <p class="stat-title">Place Visits</p>
-            <p class="rbx-lead">0</p>
+            <p class="rbx-lead"><?=number_format($totalvisits)?></p>
         </li>
         <li class="profile-stat">
             <p class="stat-title">Forum Posts</p>
-            <p class="rbx-lead">0</p>
+            <p class="rbx-lead"><?=number_format($forumposts)?></p>
         </li>
     </ul>
 </div>
@@ -759,55 +771,77 @@ $pagebuilder->buildheader();
             <ul class="hlist game-list" style="max-height: {{containerHeight}}px" horizontal-scroll-bar="loadMore()">
                         <div class="game-container" data-index="0" ng-class="{'shown': 0 < visibleItems}">
 
+<?php
+$usergames = $db->table("assets")
+    ->where("prodcategory", 9)
+    ->where("owner", $userinfo->id)
+    ->get();
 
-<li class="list-item card game">
-    <a href="/games/1/work-at-a-pizza-place" class="card-item game-item">
-        <span class="card-thumb-content game-thumb-content">
-            <span class="card-thumb-wrapper game-thumb-wrapper"
-                  >
-                <img class="card-thumb game-thumb" src="https://watrbx.wtf/place.png" alt="Work At A Pizza Place!"
-                     thumbnail='{"Final":true,"Url":"https://watrbx.wtf/place.png","RetryUrl":null}' image-retry />
-            </span>
-        </span>
-        <span class="rbx-text-overflow rbx-game-title card-title" title="Work At A Pizza Place!" ng-non-bindable>
-        Work At A Pizza Place!
-        </span>
-        <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-            0 Playing
-        </span>
-        <span class="rbx-votes">
-            <div class="vote-bar">
-                <div class="thumbs-up">
-                    <span class="rbx-icon-thumbs-up"></span>
-                </div>
-                <div class="voting-container"
-                     data-upvotes="0"
-                     data-downvotes="0"
-                     data-voting-processed="false">
-                    <div class="background no-votes"></div>
-                    <div class="votes"></div>
-                    <div class="mask">
-                        <div class="segment seg-one"></div>
-                        <div class="segment seg-two"></div>
-                        <div class="segment seg-three"></div>
-                        <div class="segment seg-four"></div>
+if(count($usergames) > 0){
+    foreach($usergames as $game){
+        $thumbnail = $thumbs->get_asset_thumb($game->id, "200x200");
+        $universeinfo = $db->table("universes")->where("assetid", $game->id)->first();
+        $universeid = $universeinfo ? $universeinfo->id : 0;
+        
+        $totalvisits = $db->table("visits")->where("universeid", $game->id)->count();
+        $activeplayers = $db->table("activeplayers")->where("universeid", $game->id)->count();
+        
+        //TODO: add this, im lazy theers xss vulns dude
+        $upvotes = 0; 
+        $downvotes = 0;
+        ?>
+        <li class="list-item card game">
+            <a href="/games/<?=$universeid?>/<?=$slugify->slugify($game->name)?>" class="card-item game-item">
+                <span class="card-thumb-content game-thumb-content">
+                    <span class="card-thumb-wrapper game-thumb-wrapper">
+                        <img class="card-thumb game-thumb" src="<?=$thumbnail?>" alt="<?=htmlspecialchars($game->name)?>"
+                             thumbnail='{"Final":true,"Url":"<?=$thumbnail?>","RetryUrl":null}' image-retry />
+                    </span>
+                </span>
+                <span class="rbx-text-overflow rbx-game-title card-title" title="<?=htmlspecialchars($game->name)?>" ng-non-bindable>
+                    <?=htmlspecialchars($game->name)?>
+                </span>
+                <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
+                    <?=$activeplayers?> Playing
+                </span>
+                <span class="rbx-votes">
+                    <div class="vote-bar">
+                        <div class="thumbs-up">
+                            <span class="rbx-icon-thumbs-up"></span>
+                        </div>
+                        <div class="voting-container"
+                             data-upvotes="<?=$upvotes?>"
+                             data-downvotes="<?=$downvotes?>"
+                             data-voting-processed="false">
+                            <div class="background no-votes"></div>
+                            <div class="votes"></div>
+                            <div class="mask">
+                                <div class="segment seg-one"></div>
+                                <div class="segment seg-two"></div>
+                                <div class="segment seg-three"></div>
+                                <div class="segment seg-four"></div>
+                            </div>
+                        </div>
+                        <div class="thumbs-down">
+                            <span class="rbx-icon-thumbs-down"></span>
+                        </div>
                     </div>
-                </div>
-                <div class="thumbs-down">
-                    <span class="rbx-icon-thumbs-down"></span>
-                </div>
-            </div>
-            <div class="vote-counts">
-                <div class="down-votes-count rbx-font-xs">0</div>
-                <div class="up-votes-count rbx-font-xs">0</div>
-
-            </div>
-        </span>
-        <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-            by <cite class="rbx-link-sm" data-href="/users/<?=$userinfo->id?>/profile"><?=$userinfo->username?></cite>
-        </span>
-    </a>
-</li>
+                    <div class="vote-counts">
+                        <div class="down-votes-count rbx-font-xs"><?=$downvotes?></div>
+                        <div class="up-votes-count rbx-font-xs"><?=$upvotes?></div>
+                    </div>
+                </span>
+                <span class="rbx-text-overflow rbx-developer rbx-font-xs">
+                    by <cite class="rbx-link-sm" data-href="/users/<?=$userinfo->id?>/profile"><?=htmlspecialchars($userinfo->username)?></cite>
+                </span>
+            </a>
+        </li>
+        <?
+    }
+} else {
+    echo '<p class="section-content-off">This user has no public creations.</p>';
+}
+?>
 
 
                         </div>
