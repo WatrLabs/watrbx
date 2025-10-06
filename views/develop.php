@@ -215,11 +215,11 @@ $pagebuilder->buildheader();
                           <tr>
                             <td class="image-col">
                               <a href="/games/<?=$universeid?>/<?=$slugify->slugify($game->name)?>" class="game-image">
-                                <img src="<?=$thumbnail?>" alt="<?=$game->name?>" width="70" height="70">
+                                <img src="<?=$thumbnail?>" alt="<?=htmlspecialchars($game->name)?>" width="70" height="70">
                               </a>
                             </td>
                             <td class="name-col">
-                              <a class="title notranslate" href="/games/<?=$universeid?>/<?=$slugify->slugify($game->name)?>"><?=$game->name?></a>
+                              <a class="title notranslate" href="/games/<?=$universeid?>/<?=$slugify->slugify($game->name)?>"><?=htmlspecialchars($game->name)?></a>
                               <table class="details-table">
                                 <tbody>
                                   <tr>
