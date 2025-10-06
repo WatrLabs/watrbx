@@ -8,7 +8,7 @@ use watrlabs\watrkit\pagebuilder;
 
 class sitefunctions {
     
-    public $key = 'kzjdL3lbXc4ZpHP571VLUrbxWHCIeGEP';
+    public $key = 'kzjdL3lbXc4ZpHP571VLUrbxWHCIeGEP'; // TODO: DO NOT SHOW THIS HERE
     public $method = 'AES-128-CTR'; 
     public $iv = '5449494959313423';
     
