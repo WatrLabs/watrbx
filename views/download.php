@@ -312,7 +312,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     </div> 
     <div class="clear"></div>
     <div class="instructions-text">
-        Still need help? Our Technical Support Forum is a great resource to <a href="/Forum/ShowForum.aspx?ForumID=14">your questions.</a>
+        Still need help? Our Technical Support Forum is a great resource to <a href="/Forum/ShowForum.aspx?ForumID=2">your questions.</a>
     </div> 
 </div> 
 
