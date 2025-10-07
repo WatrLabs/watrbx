@@ -487,6 +487,21 @@ $router->post("/my/account", function() {
 
 });
 
+$router->get('/Help/Builderman.aspx', function(){
+    
+    $page = new pagebuilder;
+
+    $fastflags = new fastflags();
+    
+    if($fastflags::get("RedirectHelpToSubdomain")){
+        header('Location: https://help.watrbx.wtf');
+        die();
+    }
+    
+    http_response_code(404);
+    $page::get_template("status_codes/404");
+});
+
 $router->get("/download", function() {
     $page = new pagebuilder;
     $page::get_template("download");

@@ -23,8 +23,56 @@ $assetidbackup = $asset->id;
 $query = $db->table("assets")->where("publicdomain", 1)->where("featured", 1)->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->limit(10)->orderBy($db->Raw("RAND()"));
 $randomitems = $query->get();
 
-$randomitems1 = array_slice($randomitems, 0, 5);
-$randomitems2 = array_slice($randomitems, 5);
+$recommendationQuery = $db->table("assets")->where("publicdomain", 1)->where("featured", 1)->where("id", "!=", $asset->id);
+
+$sameCategoryItems = (clone $recommendationQuery)->where("prodcategory", $asset->prodcategory)->orderBy($db->Raw("RAND()"))->limit(10)->get();
+
+$recommendations = [];
+// TODO: recommend also stuff the user has mostly bought and is related with it.
+if(count($sameCategoryItems) >= 10){
+    $recommendations = $sameCategoryItems;
+} else {
+    $recommendations = $sameCategoryItems;
+    $needed = 10 - count($recommendations);
+    
+    $titleWords = array_filter(explode(' ', strtolower($asset->name)), function($word){
+        return strlen($word) > 3 && !in_array($word, ['roblox', 'free', 'item', 'the', 'and', 'for']);
+    });
+    
+    if(count($titleWords) > 0 && $needed > 0){
+        $titleQuery = (clone $recommendationQuery)->whereNotIn("id", array_column($recommendations, 'id'));
+        
+        foreach($titleWords as $word){
+            $titleQuery->orWhere("name", "LIKE", "%{$word}%");
+        }
+        
+        $titleMatches = $titleQuery->orderBy($db->Raw("RAND()"))->limit($needed)->get();
+        
+        $recommendations = array_merge($recommendations, $titleMatches);
+        $needed = 10 - count($recommendations);
+    }
+    
+    if($needed > 0){
+        $creatorItems = (clone $recommendationQuery)->where("owner", $asset->owner)->whereNotIn("id", array_column($recommendations, 'id'))->orderBy($db->Raw("RAND()"))->limit($needed)->get();
+        
+        $recommendations = array_merge($recommendations, $creatorItems);
+        $needed = 10 - count($recommendations);
+    }
+    
+    if($needed > 0){
+        $relatedCategories = [2, 8, 11, 12, 17, 18, 19, 32];
+        
+        $fillerItems = (clone $recommendationQuery)->whereIn("prodcategory", $relatedCategories)->whereNotIn("id", array_column($recommendations, 'id'))->orderBy($db->Raw("RAND()"))->limit($needed)->get();
+        
+        $recommendations = array_merge($recommendations, $fillerItems);
+    }
+}
+
+// REAL experience
+$recommendations = array_slice($recommendations, 0, 10);
+
+$randomitems1 = array_slice($recommendations, 0, 5);
+$randomitems2 = array_slice($recommendations, 5);
 
 $highlighteddesc = $asset->description;
 $highlighteddesc = preg_replace('#\bhttps?://[^\s<]+#i','<a href="$0" target="_blank" rel="noopener">$0</a>',$highlighteddesc);
@@ -202,8 +250,8 @@ if($currentuser !== null){
                         </div>
                         <div id="ctl00_cphRoblox_DescriptionPanel" class="DescriptionPanel notranslate">
 	
-                            <pre class="Description Full text"> <?=$highlighteddesc?> </pre>
-                            <pre class="Description body text"><span class="description-content"><?=$highlighteddesc?></span><span class="description-more-container"></span></pre>
+                            <pre class="Description Full text"> <?=htmlspecialchars($highlighteddesc, ENT_QUOTES, 'UTF-8')?> </pre>
+                            <pre class="Description body text"><span class="description-content"><?=htmlspecialchars($highlighteddesc, ENT_QUOTES, 'UTF-8')?></span><span class="description-more-container"></span></pre>
                         
 </div>
                         <div class="ReportAbuse">
