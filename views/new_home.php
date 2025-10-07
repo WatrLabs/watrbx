@@ -85,12 +85,23 @@ $pagebuilder->buildheader();
     
         <? if(!empty($recentlyvisited)){ ?>
 
-        <div id="recently-visited-places" class="col-xs-12 container-list home-games" style="display:none;">
+        <div id="recently-visited-places" class="col-xs-12 container-list home-games">
             <div class="container-header">
                 <h3>Recently Played</h3>
                 <a href="/games?sortFilter=6" class="rbx-btn-secondary-xs btn-more">See All</a>
             </div>
-            <ul class="hlist game-list"></ul>
+            <ul class="hlist game-list">
+
+            
+            <?  foreach($recentlyvisited as $visit){
+                
+                $universeinfo = $db->table("universes")->where("assetid", $visit->universeid)->first();
+                if($universeinfo !== null){
+                    $pagebuilder->build_component("game", ["game" => $universeinfo, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
+                }
+            } ?>
+
+            </ul>
         </div>
 
         <? } ?>

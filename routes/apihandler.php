@@ -3992,6 +3992,9 @@ $router->post('/api/v1/create-place', function(){
         $title = $sitefunc->filter_text($title);
         $description = $sitefunc->filter_text($description);
 
+        $title = htmlspecialchars($title);
+        $description = htmlspecialchars($description); 
+
         $currenttime = time();
 
         $threemins = $currenttime - 60*3;
