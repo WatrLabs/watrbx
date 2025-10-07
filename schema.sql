@@ -131,6 +131,18 @@ CREATE TABLE `assets` (
   `fileid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+-- tell watrabi to add this or skill issue with errors
+CREATE TABLE `asset_history` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `assetid` int NOT NULL,
+  `fileid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `created` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `assetid` (`assetid`),
+  CONSTRAINT `asset_history_ibfk_1` FOREIGN KEY (`assetid`) REFERENCES `assets` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+
 -- --------------------------------------------------------
 
 --

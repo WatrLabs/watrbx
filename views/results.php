@@ -22,7 +22,7 @@ $maxrows = isset($_GET["MaxRows"]) ? (int)$_GET["MaxRows"] : 20;
 
 $usealgorithm = fastflags::get("UseAlgorithmForGames");
 $usenewsearch = fastflags::get("UseNewSearch");
-
+// look how tuff my crap is
 if($sort === 3){
     $featuredgames = $db->table("featuredgames")->get(); // hardcoded be like
     $universeids = [];

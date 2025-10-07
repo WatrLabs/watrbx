@@ -2,10 +2,10 @@
 	<td colspan="2" style="width:80%;">
         <a class="forum-summary" href="/Forum/ShowForum.aspx?ForumID=<?=$category->id?>">
             <div class="forumTitle">
-		        <?=$category->title?>
+		        <?=htmlspecialchars($category->title, ENT_QUOTES, 'UTF-8')?>
 	        </div>
             <div>
-		        <?=$category->description?>
+		        <?=htmlspecialchars($category->description, ENT_QUOTES, 'UTF-8')?>
 	        </div>
         </a>
     </td>

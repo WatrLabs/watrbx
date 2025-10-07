@@ -12,7 +12,7 @@ $feedentry->content = preg_replace('#\bhttps?://[^\s<]+#i','<a href="$0" target=
     <div class="list-body">
         <p class="list-content">
             <a href='/users/<?=$poster->id?>/profile'><?=$poster->username?></a>
-            <div class='feedtext linkify'>"<?=$feedentry->content?>"</div>
+            <div class='feedtext linkify'>"<?=htmlspecialchars($feedentry->content, ENT_QUOTES, 'UTF-8')?>"</div>
         </p>
         <span class="rbx-text-notes rbx-font-sm"><?=date("n/j/Y \a\\t g:i A", $feedentry->date);?></span>
         <a href="/abusereport/Feed?id=<?=$feedentry->id?>">

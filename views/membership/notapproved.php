@@ -82,7 +82,7 @@ $pagebuilder->buildheader();
         <h2><?=$header?></h2>
         <p>Our content monitors have determined that your behavior at ROBLOX has been in violation of our Terms of Service. <? if($baninfo->banneduntil !== null){ echo "We will terminate your account if you do not abide by the rules."; } ?></p>
         <p>Reviewed: <span style="font-weight: bold"><?=date('n/j/Y g:i:s A', $baninfo->reviewed);?></span></p>
-        <p>Moderator Note: <span style="font-weight: bold"><?=$baninfo->moderatornote?></span></p>
+        <p>Moderator Note: <span style="font-weight: bold"><?=htmlspecialchars($baninfo->moderatornote, ENT_QUOTES, 'UTF-8')?></span></p>
         <!--
         -->
         
@@ -95,7 +95,7 @@ $pagebuilder->buildheader();
                 <p style="text-align: left;">
                     <span style="font-weight: bold">Offensive Item:</span> 
                     <br><br>
-                    <span style="margin: 35px;"><?=$offensivechat->filtered?></span>
+                    <span style="margin: 35px;"><?=htmlspecialchars($offensivechat->filtered, ENT_QUOTES, 'UTF-8')?></span>
                 </p>
             </div>
 

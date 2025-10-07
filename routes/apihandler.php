@@ -11,6 +11,7 @@ use watrbx\relationship\friends;
 use Aws\S3\S3Client;
 use Carbon\Carbon;
 use watrlabs\logging\discord;
+use watrlabs\fastflags;
 use watrlabs\watrkit\pagebuilder;
 use watrbx\email;
 use watrlabs\pagination;
@@ -4018,7 +4019,7 @@ $router->post('/api/v1/create-place', function(){
             "description"=>$description,
             "robux"=>null,
             "tix"=>null,
-            "fileid"=>"e70415fb81c7715e1985afc2967b9605",
+            "fileid"=>"e70415fb81c7715e1985afc2967b9605", // TODO: Fetch from storage instead
             "created"=>time(),
             "updated"=>time(),
             "owner"=>$currentuser->id
@@ -4102,6 +4103,16 @@ $router->post('/api/v1/upload-place', function(){
                     'Key' => $md5,
                     'Body' => $file,
                 ]);
+
+                $fastflags = new fastflags();
+                if($fastflags::get("EnableVersionHistory") !== false){
+                    $historyinsert = [
+                        "assetid"=>$placeid,
+                        "fileid"=>$md5,
+                        "created"=>time()
+                    ];
+                    $db->table("asset_history")->insert($historyinsert);
+                }
 
                 $update = [
                     "fileid"=>$md5,
@@ -4312,8 +4323,8 @@ $router->get('/Game/Join.ashx', function() {
             "ClientTicket" => $clientticket,
             "GameId" => $pid,
             "PlaceId" => $pid,
-            "MeasurementUrl" => "", // No telemetry here :)
-            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2",
+            "MeasurementUrl" => "", // No telemetry here :) (pls add telemetry)
+            "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2", // todo: generate uuid
             "BaseUrl" => "https://www.watrbx.wtf/",
             "ChatStyle" => "ClassicAndBubble",
             "VendorId" => "0",
@@ -4326,10 +4337,10 @@ $router->get('/Game/Join.ashx', function() {
             "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
             "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
             "CookieStoreEnabled" => true,
-            "IsRobloxPlace" => false,
+            "IsRobloxPlace" => false,//implement for events
             "GenerateTeleportJoin" => false,
             "IsUnknownOrUnder13" => false,
-            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null",
+            "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null", // todo: implement this (mostly used to also track what device you play)
             "DataCenterId" => 0,
             "UniverseId" => 3,
             "BrowserTrackerId" => 0,

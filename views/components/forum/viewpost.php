@@ -24,7 +24,7 @@
         <tbody><tr>
             <td colspan="2"><span class="normalTextSmaller"><?=date('d M Y h:i A', $postinfo->date);?></span></td>
         </tr><tr>
-            <td valign="top" colspan="2" style="height:125px;"><span class="normalTextSmall notranslate linkify"><br><?=$postinfo->content?></span></td>
+            <td valign="top" colspan="2" style="height:125px;"><span class="normalTextSmall notranslate linkify"><br><?=htmlspecialchars($postinfo->content, ENT_QUOTES, 'UTF-8')?></span></td>
         </tr>
             <?
                 global $currentuser;
