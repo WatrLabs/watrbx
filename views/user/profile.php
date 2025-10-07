@@ -1,14 +1,19 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\router\Routing;
+use watrbx\gameserver;
+use Cocur\Slugify\Slugify;
 use watrlabs\authentication;
-use watrbx\relationship\friends;
 use watrbx\thumbnails;
-$thumbs = new thumbnails();
+use watrlabs\fastflags;
+use watrbx\gamealgorithm;
+use watrbx\relationship\friends;
 $friends = new friends();
-$pagebuilder = new pagebuilder();
+$thumbs = new thumbnails();
+$slugify = new Slugify();
 $auth = new authentication();
-
+$pagebuilder = new pagebuilder();
+$gameserver = new gameserver();
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=leanbase___213b3e760be9513b17fafaa821f394bf_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___5c81dac2107fac0cca40ea7d6cfd0c89_m.css');
 $pagebuilder->addresource('jsfiles', '/js/2580e8485e871856bb8abe4d0d297bd2.js.gzip');
@@ -100,14 +105,13 @@ $allfriends = $friends->get_friends($userid);
 
 $allplaces = $db->table("assets")
     ->where("prodcategory", 9)
-    ->where("owner", $userinfo->id)
-    ->pluck("id");
+    ->where("owner", $userinfo->id);
 
 $totalvisits = 0;
 foreach($allplaces as $placeid){
     $totalvisits += $db->table("visits")->where("universeid", $placeid)->count();
 }
-$forumposts = $db->table("forumposts")->where("userid", $userinfo->id)->count();
+$forumposts = $db->table("forum_posts")->where("userid", $userinfo->id)->count();
 
 $pagebuilder->set_page_name($userinfo->username);
 $pagebuilder->buildheader();
@@ -198,7 +202,7 @@ $pagebuilder->buildheader();
                     }
                 });
             </script>
-                     <?=htmlspecialchars($status, ENT_QUOTES, 'UTF-8')?>
+                     <?=$status?>
         </div>
         <div class="header-title">
             <h1><?=$userinfo->username?></h1>
@@ -772,71 +776,14 @@ $pagebuilder->buildheader();
                         <div class="game-container" data-index="0" ng-class="{'shown': 0 < visibleItems}">
 
 <?php
-$usergames = $db->table("assets")
-    ->where("prodcategory", 9)
+$usergames = $db->table("universes")
     ->where("owner", $userinfo->id)
+    ->limit(6)
     ->get();
 
 if(count($usergames) > 0){
     foreach($usergames as $game){
-        $thumbnail = $thumbs->get_asset_thumb($game->id, "200x200");
-        $universeinfo = $db->table("universes")->where("assetid", $game->id)->first();
-        $universeid = $universeinfo ? $universeinfo->id : 0;
-        
-        $totalvisits = $db->table("visits")->where("universeid", $game->id)->count();
-        $activeplayers = $db->table("activeplayers")->where("universeid", $game->id)->count();
-        
-        //TODO: add this, im lazy theers xss vulns dude
-        $upvotes = 0; 
-        $downvotes = 0;
-        ?>
-        <li class="list-item card game">
-            <a href="/games/<?=$universeid?>/<?=$slugify->slugify($game->name)?>" class="card-item game-item">
-                <span class="card-thumb-content game-thumb-content">
-                    <span class="card-thumb-wrapper game-thumb-wrapper">
-                        <img class="card-thumb game-thumb" src="<?=$thumbnail?>" alt="<?=htmlspecialchars($game->name)?>"
-                             thumbnail='{"Final":true,"Url":"<?=$thumbnail?>","RetryUrl":null}' image-retry />
-                    </span>
-                </span>
-                <span class="rbx-text-overflow rbx-game-title card-title" title="<?=htmlspecialchars($game->name)?>" ng-non-bindable>
-                    <?=htmlspecialchars($game->name)?>
-                </span>
-                <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
-                    <?=$activeplayers?> Playing
-                </span>
-                <span class="rbx-votes">
-                    <div class="vote-bar">
-                        <div class="thumbs-up">
-                            <span class="rbx-icon-thumbs-up"></span>
-                        </div>
-                        <div class="voting-container"
-                             data-upvotes="<?=$upvotes?>"
-                             data-downvotes="<?=$downvotes?>"
-                             data-voting-processed="false">
-                            <div class="background no-votes"></div>
-                            <div class="votes"></div>
-                            <div class="mask">
-                                <div class="segment seg-one"></div>
-                                <div class="segment seg-two"></div>
-                                <div class="segment seg-three"></div>
-                                <div class="segment seg-four"></div>
-                            </div>
-                        </div>
-                        <div class="thumbs-down">
-                            <span class="rbx-icon-thumbs-down"></span>
-                        </div>
-                    </div>
-                    <div class="vote-counts">
-                        <div class="down-votes-count rbx-font-xs"><?=$downvotes?></div>
-                        <div class="up-votes-count rbx-font-xs"><?=$upvotes?></div>
-                    </div>
-                </span>
-                <span class="rbx-text-overflow rbx-developer rbx-font-xs">
-                    by <cite class="rbx-link-sm" data-href="/users/<?=$userinfo->id?>/profile"><?=htmlspecialchars($userinfo->username)?></cite>
-                </span>
-            </a>
-        </li>
-        <?
+        $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
     }
 } else {
     echo '<p class="section-content-off">This user has no public creations.</p>';
