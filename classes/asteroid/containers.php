@@ -5,7 +5,8 @@ namespace asteroid;
 class containers {
 
     // TODO: Potentially implement the ability to create containers?
-
+    // ok i might do TODO, watrabi give guide 
+    
     private $containerurl = 0;
     private $containerport = 0;
     private $containeradminkey = "";
@@ -67,7 +68,7 @@ class containers {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Content-type: application/json",
-            "Authorization: " . $this->containerkey,
+            "Authorization: " . $this->containerkey, 
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
@@ -113,7 +114,7 @@ class containers {
     }
 
     // TODO: Add the ability for multiple files
-
+    // ok bet ten add batch api
     public function upload_file($filepath = '', $base64 = '', $filename = '', $location = ''){
 
         if($filename == ''){
