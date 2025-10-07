@@ -339,7 +339,7 @@ $pagebuilder->buildheader();
                 }?>
 
             
-            <h1 class="rbx-para-overflow game-name" title="<?=$gameinfo->title?>"><?=$gameinfo->title?></h1>
+            <h1 class="rbx-para-overflow game-name" title="<?=htmlspecialchars($gameinfo->title, ENT_QUOTES, 'UTF-8')?>"><?=htmlspecialchars($gameinfo->title, ENT_QUOTES, 'UTF-8')?></h1>
             <h4 class="game-creator"><span>By</span> <a class="rbx-link" href="/users/<?=$creator->id?>/profile"><?=$creator->username?></a></h4>
             <div class="game-play-buttons" data-autoplay="false">
 
@@ -540,7 +540,7 @@ $pagebuilder->buildheader();
             <div class="tab-pane active" id="about">
                 <div class="section game-about-container">
                     <h3>Description</h3>
-                    <p class="game-description linkify"><?=$gameinfo->description?></p>
+                    <p class="game-description linkify"><?=htmlspecialchars($gameinfo->description, ENT_QUOTES, 'UTF-8')?></p>
 
                     <ul class="game-stats-container">
                         <li class="game-stat">
@@ -751,16 +751,53 @@ $pagebuilder->buildheader();
 <?php
                     global $db;
 
-                    $query = $db
-                        ->table("universes")
-                        ->where("public", 1)
-                        ->whereNot("id", $id)
-                        ->limit(6)
-                        ->orderBy($db->Raw("RAND()"));
+                    // awesome
+                    $recommendationQuery = $db->table("universes")->where("public", 1)->whereNot("id", $id);
 
-                    $allgames = $query->get();
+                    $sameCategoryGames = (clone $recommendationQuery)->where("genre", $gameinfo->genre)->orderBy($db->Raw("RAND()"))->limit(6)->get();
 
-                    foreach ($allgames as $game) {
+                    $recommendations = [];
+
+                    if(count($sameCategoryGames) >= 6){
+                        $recommendations = $sameCategoryGames;
+                    } else {
+                        $recommendations = $sameCategoryGames;
+                        $needed = 6 - count($recommendations);
+                        
+                        $titleWords = array_filter(explode(' ', strtolower($gameinfo->title)), function($word){
+                            return strlen($word) > 3 && !in_array($word, ['game', 'play', 'free', 'the', 'and', 'for', 'roblox']);
+                        });
+                        
+                        if(count($titleWords) > 0 && $needed > 0){
+                            $titleQuery = (clone $recommendationQuery)->whereNotIn("id", array_column($recommendations, 'id'));
+                            
+                            foreach($titleWords as $word){
+                                $titleQuery->orWhere("title", "LIKE", "%{$word}%");
+                            }
+                            
+                            $titleMatches = $titleQuery->orderBy($db->Raw("RAND()"))->limit($needed)->get();
+                            
+                            $recommendations = array_merge($recommendations, $titleMatches);
+                            $needed = 6 - count($recommendations);
+                        }
+                        
+                        if($needed > 0){
+                            $creatorGames = (clone $recommendationQuery)->where("owner", $gameinfo->owner)->whereNotIn("id", array_column($recommendations, 'id'))->orderBy($db->Raw("RAND()"))->limit($needed)->get();
+                            
+                            $recommendations = array_merge($recommendations, $creatorGames);
+                            $needed = 6 - count($recommendations);
+                        }
+                        
+                        if($needed > 0){
+                            $fillerGames = (clone $recommendationQuery)->whereNotIn("id", array_column($recommendations, 'id'))->orderBy($db->Raw("RAND()"))->limit($needed)->get();
+                            
+                            $recommendations = array_merge($recommendations, $fillerGames);
+                        }
+                    }
+
+                    $allgames = array_slice($recommendations, 0, 6);
+
+                    foreach($allgames as $game){
                         echo $pagebuilder->build_component("game", [
                             "game" => $game,
                             "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver

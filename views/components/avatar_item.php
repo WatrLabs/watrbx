@@ -14,7 +14,7 @@
     </div>
     <div class="AssetDetails">
         <div class="AssetName">
-            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl02_AssetNameHyperLink" title="click to view" class="notranslate" href="/<?=$slugify->slugify($assetinfo->name);?>-item?id=<?=$assetinfo->id?>"><?=$assetinfo->name?></a>
+            <a id="ctl00_ctl00_cphRoblox_cphMyRobloxContent_AccoutrementsListView_ctrl1_ctl02_AssetNameHyperLink" title="click to view" class="notranslate" href="/<?=$slugify->slugify($assetinfo->name);?>-item?id=<?=$assetinfo->id?>"><?=htmlspecialchars($assetinfo->name, ENT_QUOTES, 'UTF-8')?></a>
         </div>
         <div class="AssetType">
             <span class="Label">Type:</span> <span class="Detail">

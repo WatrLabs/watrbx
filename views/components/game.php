@@ -21,7 +21,7 @@ $bad = false;
             </span>
         </span>
         <span class="rbx-text-overflow rbx-game-title card-title" title="<?=$game->title?>" ng-non-bindable>
-            <?=$game->title?>
+            <?=htmlspecialchars($game->title, ENT_QUOTES, 'UTF-8')?>
         </span>
         <span class="rbx-game-text-notes rbx-font-xs card-text-notes">
             <?=$gameserver->get_active_players($game->assetid)?> Players Online

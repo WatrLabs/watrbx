@@ -18,7 +18,7 @@
         </div>
         <div class="AssetDetails">
             <div class="AssetName noTranslate">
-                <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_AssetNameHyperLinkPortrait" href="/<?=$slugify->slugify($asset->name);?>-item?id=<?=$asset->id?>"><?=$asset->name?></a>
+                <a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_AssetNameHyperLinkPortrait" href="/<?=$slugify->slugify($asset->name);?>-item?id=<?=$asset->id?>"><?=htmlspecialchars($asset->name, ENT_QUOTES, 'UTF-8')?></a>
             </div>
             <div class="AssetCreator">
                 <span class="stat-label">Creator:</span> <span class="Detail stat"><a id="ctl00_cphRoblox_AssetRec_dlAssets_ctl01_CreatorHyperLinkPortrait" class="notranslate" href="/users/<?=$creator->id?>/profile"><?=$creator->username?></a></span>

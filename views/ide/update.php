@@ -28,7 +28,7 @@
    <div id="UploadContainer">
      <div id="StartUpload">
        <div class="boxed-body">
-         <h3 id="progresstexxt">Do you wish to update <?=$assetinfo->name?>?</h3> 
+         <h3 id="progresstexxt">Do you wish to update <?=htmlspecialchars($assetinfo->name, ENT_QUOTES, 'UTF-8')?>?</h3> 
 	       <div id="progressBarWrapper"><div id="uploadProgressBar">
 		        <div id="progressAmount" class="progress-blue-bar" style="width: 0%;">
 			</div>
@@ -40,7 +40,7 @@
 	 </div>
 	<div id="UploadSuccess" style="display:none;">
        <div class="boxed-body">
-         <h3>Uploading to <?=$assetinfo->name?></h3> 
+         <h3>Uploading to <?=htmlspecialchars($assetinfo->name, ENT_QUOTES, 'UTF-8')?></h3> 
 	       <div id="progressBarWrapper"><div id="uploadProgressBar">
 		        <div id="progressAmount" class="progress-blue-bar" style="width: 100%;">
 			</div>

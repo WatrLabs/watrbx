@@ -228,8 +228,8 @@ $router->post("/Forum/ShowPost.aspx", function(){
     }
     
     $categoryid = $postinfo->parent;
-    
-    if(strpos($target, "NextThread") !== false){
+    // TODO: Fix next thread, previous thread only works
+    if(strpos($target, "NextThread") !== false){ 
         $nextpost = $db->table("forum_posts")
             ->where("parent", $categoryid)
             ->where("id", ">", $postid)
