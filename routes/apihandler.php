@@ -4294,6 +4294,74 @@ $router->get('/Game/Join.ashx', function() {
     $func = new sitefunctions();
     global $db;
     global $currentuser;
+
+    if(isset($_GET["universeId"])){
+        $universeId = (int)$_GET["universeId"];
+
+
+        if($universeId == 0){
+
+            $port = 53640;
+
+            if(isset($_GET["serverPort"])){
+                $port = (int)$_GET["serverPort"];
+            } 
+
+            $charappurl = "https://www.watrbx.wtf/CharacterFetch.aspx?Id=1&placeId=1";
+
+            header("Content-Type: application/json");
+            // Construct joinscript
+            $joinscript = [
+                "ClientPort" => 0,
+                "MachineAddress" => "localhost",
+                "ServerPort" => $port,
+                "PingUrl" => "",
+                "PingInterval" => 20,
+                "UserName" => "Player1",
+                "SeleniumTestMode" => false,
+                "UserId" => 69420,
+                "SuperSafeChat" => true,
+                "CharacterAppearance" => $charappurl,
+                "ClientTicket" => "",
+                "GameId" => 0,
+                "PlaceId" => 0,
+                "MeasurementUrl" => "", // No telemetry here :) (pls add telemetry)
+                "WaitingForCharacterGuid" => "26eb3e21-aa80-475b-a777-b43c3ea5f7d2", // todo: generate uuid
+                "BaseUrl" => "https://www.watrbx.wtf/",
+                "ChatStyle" => "ClassicAndBubble",
+                "VendorId" => "0",
+                "ScreenShotInfo" => "",
+                "VideoInfo" => "",
+                "CreatorId" => 1,
+                "CreatorTypeEnum" => "User",
+                "MembershipType" => "None",
+                "AccountAge" => "3000000",
+                "CookieStoreFirstTimePlayKey" => "rbx_evt_ftp",
+                "CookieStoreFiveMinutePlayKey" => "rbx_evt_fmp",
+                "CookieStoreEnabled" => true,
+                "IsRobloxPlace" => false,//implement for events
+                "GenerateTeleportJoin" => false,
+                "IsUnknownOrUnder13" => false,
+                "SessionId" => "39412c34-2f9b-436f-b19d-b8db90c2e186|00000000-0000-0000-0000-000000000000|0|190.23.103.228|8|2021-03-03T17:04:47+01:00|0|null|null", // todo: implement this (mostly used to also track what device you play)
+                "DataCenterId" => 0,
+                "UniverseId" => 3,
+                "BrowserTrackerId" => 0,
+                "UsePortraitMode" => false,
+                "FollowUserId" => 1416,
+                "characterAppearanceId" => 1
+            ];
+
+            // Encode it!
+            $data = json_encode($joinscript, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+
+            // Sign joinscript
+            $signature = get_signature("\r\n" . $data);
+
+            // exit
+            exit("--rbxsig%". $signature . "%\r\n" . $data);
+        }
+
+    }
     
     if(isset($_GET["joincode"]) && $auth->hasaccount()){
 

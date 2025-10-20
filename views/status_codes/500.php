@@ -40,5 +40,5 @@ $pagebuilder->buildheader();
 
                 ?>
             
-                    </div>
-                    <? $pagebuilder->build_footer(); ?>
+            </div>
+            <? $pagebuilder->build_footer(); ?>
