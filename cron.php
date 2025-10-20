@@ -15,7 +15,7 @@ $gameserver = new gameserver();
 $serverinfo = $gameserver->get_closest_server();
 $url = $gameserver->get_server_url($serverinfo);
 
-$Grid = new watrbx\Grid\Grid(null, "https://tjs-nut.pics/i/aj6uj.wsdl"); // this isnt recommended...
+$Grid = new watrbx\Grid\Grid(null, "https://tjs-nut.pics/i/aj6uj.wsdl");
 $Close = $Grid->Close($url);
 
 $allofdem = $db->table('jobs')
@@ -31,44 +31,49 @@ foreach ($allofdem as $job) {
     $result = $thumbnail->render_asset($job);
     if($result[0] == true){
         try {
-            if(isset($result[1][0])){
-                $base64 = $result[1][0]->getValue();
-                $img = base64_decode($base64);
-                if($img){
-                    $md5 = md5($img);
+            try {
+                if(isset($result[1][0])){
+                    $base64 = $result[1][0]->getValue();
+                    $img = base64_decode($base64);
+                    if($img){
+                        $md5 = md5($img);
 
-                    try {
-                        global $s3_client;
-                        $s3_client->putObject([
-                            'Bucket' => $_ENV["R2_BUCKET"],
-                            'Key' => $md5,
-                            'Body' => $img,
-                            'ContentType' => "image/png"
-                        ]);
+                        try {
+                            global $s3_client;
+                            $s3_client->putObject([
+                                'Bucket' => $_ENV["R2_BUCKET"],
+                                'Key' => $md5,
+                                'Body' => $img,
+                                'ContentType' => "image/png"
+                            ]);
 
-                        $insert = [
-                            "dimensions"=>$job->dimensions,
-                            "file"=>$md5
-                        ];
+                            $insert = [
+                                "dimensions"=>$job->dimensions,
+                                "file"=>$md5
+                            ];
 
-                        if(isset($job->userid)){
-                            $insert["userid"] = $job->userid;
-                            $insert["mode"] = $job->jobtype;
+                            if(isset($job->userid)){
+                                $insert["userid"] = $job->userid;
+                                $insert["mode"] = $job->jobtype;
+                            }
+
+                            if(isset($job->assetid)){
+                                $insert["assetid"] = $job->assetid;
+                            }
+
+                            $insertid = $db->table("thumbnails")->insert($insert);
+                            $db->table("jobs")->where("jobid", $job->jobid)->delete();
+                            echo "\nJob $job->jobid done.";
+
+                        } catch(Exception $e){
+                            echo "\nSomething went wrong with $job->jobid! $e";
+                            $db->table("jobs")->where("jobid", $job->jobid)->delete();
                         }
-
-                        if(isset($job->assetid)){
-                            $insert["assetid"] = $job->assetid;
-                        }
-
-                        $insertid = $db->table("thumbnails")->insert($insert);
-                        $db->table("jobs")->where("jobid", $job->jobid)->delete();
-                        echo "\nJob $job->jobid done.";
-
-                    } catch(Exception $e){
-                        echo "\nSomething went wrong with $job->jobid! $e";
-                        $db->table("jobs")->where("jobid", $job->jobid)->delete();
                     }
                 }
+            } catch (ErrorException $e){
+                $db->table("jobs")->where("jobid", $job->jobid)->delete();
+                echo "\nSomething went wrong with $job->jobid!\n$e";
             }
         } catch(Error $e){
             $db->table("jobs")->where("jobid", $job->jobid)->delete();

@@ -21,6 +21,7 @@ class thumbnails {
         "18" => "face.lua",
         "19" => "gear.lua",
         "24" => "decal.lua",
+        "21" => "decal.lua",
         "full" => "user.lua",
         "headshot" => "user_headshot.lua"
     ];

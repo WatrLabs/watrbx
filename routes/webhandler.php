@@ -445,7 +445,7 @@ $router->post("/my/account", function() {
 
     if(isset($_POST["PersonalBlurb"]) && $currentuser){
 
-        $blurb = htmlspecialchars($_POST["PersonalBlurb"]);
+        $blurb = $_POST["PersonalBlurb"];
         $blurb =  $func::filter_text($blurb);
 
         $update = [

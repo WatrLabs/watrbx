@@ -56,6 +56,12 @@ $router->get('/game/visit.ashx', function(){
     die(require("../storage/visit.php"));
 });
 
+$router->get('/game/gameserver.ashx', function(){
+    header("Content-type: text/lua");
+    http_response_code(200);
+    die(require("../storage/studiogameserver.php"));
+});
+
 $router->get('/ide/welcome', function(){
     header("Location: /newlogin");
     die();
