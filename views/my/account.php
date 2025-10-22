@@ -263,7 +263,7 @@ if(isset($newblurb)){
                 <div id="PersonalBlurbSetting" class="SettingSubTitle">
                   <span class="settingLabel form-label">Personal blurb:</span>
                   <div id="BlurbDesc">
-                    <textarea class="roblox-blurb-default-text accountPageChangeMonitor text" cols="20" data-val="true" data-val-length="The field PersonalBlurb must be a string with a maximum length of 1000." data-val-length-max="1000" id="blurbText" name="PersonalBlurb" rows="2" title="Describe yourself here"><?=htmlspecialchars($blurb, ENT_QUOTES, 'UTF-8')?></textarea>
+                    <textarea class="roblox-blurb-default-text accountPageChangeMonitor text" cols="20" data-val="true" data-val-length="The field PersonalBlurb must be a string with a maximum length of 1000." data-val-length-max="1000" id="blurbText" name="PersonalBlurb" rows="2" title="Describe yourself here"><?=$blurb?></textarea>
                     <span class="field-validation-valid" data-valmsg-for="PersonalBlurb" data-valmsg-replace="true"></span>
                     <br />
                     <div id="blurbSubtext" class="footnote"> Do not provide any details that can be used to identify you outside ROBLOX. <span class="footnote">
