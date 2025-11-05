@@ -1821,7 +1821,7 @@ $router->get('/ide/toolbox/items', function(){
             if(isset($_GET["keyword"])){
                 $keyword = $_GET["keyword"];
                 if($keyword !== ""){
-                    $query->where("name", "LIKE", "%".$keyword."%");
+                    $query->where("name", "LIKE", $keyword);
                 }
             }
 
@@ -1948,41 +1948,6 @@ $router->post('/user/multi-following-exists', function(){
     die('{"followings": []}');
 });
 
-$router->post('/api/v1/cdn-upload', function(){
-    $router = new Routing();
-    global $currentuser;
-
-    if($currentuser !== null){
-        if($currentuser->is_admin !== 1){
-            die($router->return_status(403));
-        }
-    } else {
-        die($router->return_status(403));
-    }
-    if(isset($_POST["path"]) && isset($_FILES["file"])){
-
-        $path = $_POST["path"];
-        $file = $_FILES["file"];
-        $path = $path . $file["name"];
-
-        global $s3_client;
-
-        try {
-
-            $s3_client->putObject([
-                'Bucket' => $_ENV["R2_BUCKET"],
-                'Key' => $file["name"],
-                'SourceFile' => $_FILES["file"]["tmp_name"]
-            ]);
-
-        } catch(Exception $e){
-            die("Failed to upload to CDN!");
-        }
-
-        die("Uploaded at path: " . $path);
-    }
-});
-
 $router->post('/api/v1/universe-creator', function(){
 
     $auth = new authentication();
@@ -2075,6 +2040,30 @@ $router->post('/messages/api/mark-messages-read', function(){
 
 });
 
+$router->get('/incoming-items/counts', function(){
+    global $currentuser;
+
+    $friends = new friends();
+    global $db;
+
+
+    if($currentuser){
+        $msgcount = $db->table("messages")
+        ->where("userto", $currentuser->id)
+        ->where("hasread", 0)
+        ->count();
+        $pendingfq = count($friends->get_requests($currentuser->id));
+
+        $response = [
+            "unreadMessages"=>$msgcount,
+            "unansweredFriendRequests"=>$pendingfq
+        ];
+
+        header("Content-type: application/json");
+        die(json_encode($response));
+    }
+});
+
 $router->get('/messages/api/get-messages', function(){
     header("Content-type: application/json");
 
@@ -2085,14 +2074,34 @@ $router->get('/messages/api/get-messages', function(){
         "PageSize"=>20,
     ];
 
+    $tabarrays = [
+        "Inbox"=>0,
+        "Sent"=>1
+    ];
+
     $auth = new authentication();
     $thumbs = new thumbnails();
     global $db;
 
-    if(isset($_GET["messageTab"]) && isset($_GET["pageNumber"]) && isset($_GET["pageSize"]) && $auth->hasaccount()){
-        $messagetab = (int)$_GET["messageTab"];
+    if(isset($_GET["pageNumber"]) && isset($_GET["pageSize"]) && $auth->hasaccount()){
+        $messagetab = 0;
         $pagenum = (int)$_GET["pageNumber"];
         $pagesize = (int)$_GET["pageSize"];
+
+        if(isset($_GET["messageTab"])){
+            $messagetab = (int)$_GET["messageTab"];
+        }
+
+        if(isset($_GET["MessageTab"])){
+            // this is coming from mobile app
+
+            $mobiletab = $_GET["MessageTab"];
+
+            if(in_array($mobiletab, $tabarrays)){
+                $messagetab = $tabarrays[$mobiletab];
+            }
+
+        }
 
         global $currentuser;
 
@@ -2129,6 +2138,8 @@ $router->get('/messages/api/get-messages', function(){
                             "Url"=>$thumbs->get_user_thumb($senderinfo->id, "512x512", "headshot"),
                             "Final"=>true,
                         ],
+                        "RecipientUserId"=>$currentuser->id,
+                        "RecipientUserName"=>$currentuser->id,
                         "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
                         "IsReportAbuseDisplayed"=>True,
                         "AbuseReportAbsoluteUrl"=>"/abusereport/message?id=$message->id",
@@ -2173,6 +2184,8 @@ $router->get('/messages/api/get-messages', function(){
                             "UserId"=>$recipientinfo->id,
                             "UserName"=>$recipientinfo->username,
                         ],
+                        "RecipientUserId"=>$currentuser->id,
+                        "RecipientUserName"=>$currentuser->id,
                         "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
                         "IsReportAbuseDisplayed"=>False,
                         "Subject"=>$message->subject,

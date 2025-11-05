@@ -1,4 +1,5 @@
 <?php
+    die();
     use watrlabs\router\Routing;
     $router = new Routing();
     global $currentuser;

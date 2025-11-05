@@ -76,6 +76,9 @@ if url~=nil then
 	pcall(function() game:GetService("Players"):SetChatFilterUrl(url .. "/Game/ChatFilter.ashx") end)
 	-- scriptinformationprovider service --
 	pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(url .. "/Asset/") end)
+
+	
+	pcall(function() game:GetService("Players"):SetSysStatsUrl(url .. "/Game/ReportSystats.ashx") end)
 	
 	-- contentprovider service --
 	pcall(function() game:GetService("ContentProvider"):SetBaseUrl(url .. "/") end)

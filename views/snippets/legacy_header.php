@@ -10,10 +10,20 @@ global $currentuser;
 
 $ismobile = false;
 
-$useragent = $_SERVER['HTTP_USER_AGENT'];
+if(isset($_SERVER['HTTP_USER_AGENT'])){
+    $useragent = $_SERVER['HTTP_USER_AGENT'];
 
-if(strpos($useragent, "Android")){
-    $ismobile = true;
+    if(strpos($useragent, "ROBLOX iOS App")){
+        $ismobile = true;
+    }
+
+    if(strpos($useragent, "WebView")){
+        $ismobile = true;
+    }
+
+    if(strpos($useragent, "ROBLOX Android App")){
+        $ismobile = true;
+    }
 }
 
 $pendingfq = count($friends->get_requests($currentuser->id));

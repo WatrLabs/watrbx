@@ -122,7 +122,7 @@ $pagebuilder->buildheader();
     <div class="footer">
         <ul class="row footer-links">
                 <li class="col-xs-4 col-sm-2 footer-link">
-                    <a href="//corp.roblox.com" class="roblox-interstitial" target="_blank">
+                    <a href="/login123" class="roblox-interstitial" target="_blank">
                         <h2>About Us</h2>
                     </a>
                 </li>

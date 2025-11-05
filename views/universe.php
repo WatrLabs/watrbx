@@ -22,6 +22,14 @@ if(strpos($useragent, "Android")){
     $ismobile = true;
 }
 
+if(strpos($useragent, "ROBLOX iOS App")){
+    $ismobile = true;
+}
+
+if(strpos($useragent, "WebView")){
+    $ismobile = true;
+}
+
 
 
 global $db;
@@ -349,7 +357,7 @@ $pagebuilder->buildheader();
                 
             <?php
                 if($ismobile){
-                    echo '<a class="rbx-btn-primary-lg" onclick="location.href=\'games/start?placeid='.$gameinfo->assetid.'\'">Play</a>';
+                    echo '<a class="rbx-btn-primary-lg" onclick="location.href=\'/games/start?placeid='.$gameinfo->assetid.'\'">Play</a>';
                 } else {
                     echo '<div id="MultiplayerVisitButton" class="VisitButton VisitButtonPlayPH" placeid="'.$gameinfo->assetid.'" data-action="play" data-is-membership-level-ok="true"><a class="rbx-btn-primary-lg">Play</a> </div>';        
                 }

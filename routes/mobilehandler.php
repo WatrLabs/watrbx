@@ -49,7 +49,6 @@ $router->post('/mobileapi/login', function(){
 
                     die(json_encode($loginarray));
                 } else {
-                    http_response_code(400);
                     $baninfo = $auth->get_ban_info($banresult);
                     $errorresponse["Status"] = "AccountNotApproved";
                     $errorresponse["PunishmentInfo"] = [
@@ -58,6 +57,10 @@ $router->post('/mobileapi/login', function(){
                         "BeginDateString"=>date('n/j/Y g:i:s A', $baninfo->reviewed),
                         "EndDateString"=>date('n/j/Y g:i:s A', $baninfo->banneduntil),
                     ];
+                    $errorresponse["UserInfo"]["UserName"] = $userinfo->username;
+                    $errorresponse["UserInfo"]["RobuxBalance"] = $userinfo->robux;
+                    $errorresponse["UserInfo"]["TicketsBalance"] = $userinfo->tix;
+                    $errorresponse["UserInfo"]["UserID"] = $userinfo->id;
                     die(json_encode($errorresponse));
                 }
             } else {

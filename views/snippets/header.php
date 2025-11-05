@@ -16,8 +16,23 @@ $msgcount = $db->table("messages")
     ->count();
 $count = $pendingfq + $msgcount;
 
-$useragent = $_SERVER['HTTP_USER_AGENT'] ?? '';
-$ismobile = strpos($useragent, "Android") !== false;
+$ismobile = false;
+
+if(isset($_SERVER['HTTP_USER_AGENT'])){
+    $useragent = $_SERVER['HTTP_USER_AGENT'];
+
+    if(strpos($useragent, "ROBLOX iOS App")){
+        $ismobile = true;
+    }
+
+    if(strpos($useragent, "WebView")){
+        $ismobile = true;
+    }
+
+    if(strpos($useragent, "ROBLOX Android App")){
+        $ismobile = true;
+    }
+}
 
 $obc = ($userinfo->membership === "OutrageousBuildersClub")
     ? '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC3.css">'

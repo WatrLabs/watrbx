@@ -51,7 +51,8 @@ if($sort === 3){
 if($sort === 1){
     $query = $db->table("universes")->where("public", 1);
     if(!empty($keyword)){
-        $query->where("title", "LIKE", "%" . strtolower($keyword) . "%");
+        $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
+        $query->where("title", "LIKE", $safeKeyword);
     }
     $allgames = $query->get();
 
@@ -106,7 +107,8 @@ if($usealgorithm){
         }
     } else {*/
         if(!empty($keyword)){
-            $query->where("universes.title", "LIKE", "%" . strtolower($keyword) . "%");
+            $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
+            $query->where("universes.title", "LIKE", $safeKeyword);
         }
     //}
     $query->orderBy("game_recommendations.score", "DESC");
@@ -114,18 +116,20 @@ if($usealgorithm){
     $query->where("public", 1);
      if($usenewsearch){
         if(!empty($keyword)){
-            $fuzzyPattern = '%' . implode('%', str_split(strtolower($keyword))) . '%';
+            $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
+            $safeFuzzyPattern = '%' . implode('%', str_split(str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)))) . '%';
             
-            $query->where(function($q) use ($keyword, $fuzzyPattern) {
-                $q->where("title", "LIKE", "%" . strtolower($keyword) . "%")
-                ->orWhere("description", "LIKE", "%" . strtolower($keyword) . "%")
+            $query->where(function($q) use ($safeKeyword, $safeFuzzyPattern) {
+                $q->where("title", "LIKE", $safeKeyword)
+                ->orWhere("description", "LIKE", $safeKeyword)
                 //"mm2" -> "Murder Mystery 2"
-                ->orWhere("title", "LIKE", $fuzzyPattern);
+                ->orWhere("title", "LIKE", $safeFuzzyPattern);
             });
         }
     } else {
         if(!empty($keyword)){
-            $query->where("title", "LIKE", "%" . strtolower($keyword) . "%");
+            $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
+            $query->where("title", "LIKE", $safeKeyword);
         }
     }
     $query->orderBy($db->raw("RAND()"));

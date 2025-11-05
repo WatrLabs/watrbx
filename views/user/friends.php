@@ -20,6 +20,10 @@ if($auth->hasaccount()){
 
 $thepageuser = $auth->getuserbyid($userid);
 
+if(!$thepageuser){
+    $thepageuser = $currentuser;
+}
+
 ?>
 
 <div class="content  ">
