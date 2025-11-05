@@ -101,6 +101,7 @@ $router->get('/agree', function(){
 });
 
 $router->get("/temp/cdn-upload", function(){
+    die();
     $page = new pagebuilder;
     $page::get_template("temp/cdn-upload");
 });
@@ -331,6 +332,12 @@ $router->get('/newlogin', function() {
    $page::get_template("login/newlogin");
 });
 
+$router->get('/login123', function() {
+   $page = new pagebuilder;
+   $page::get_template("login/newlogin");
+});
+
+
 $router->get("/catalog", function() {
    $page = new pagebuilder;
    $page::get_template("catalog");
@@ -379,6 +386,11 @@ $router->get("/logout", function() {
 $router->get("/home", function() {
     $page = new pagebuilder;
     $page::get_template("new_home");
+});
+
+$router->get("/UploadMedia/UploadVideo.aspx", function() {
+    $page = new pagebuilder;
+    $page::get_template("UploadMedia/uploadvideo");
 });
 
 $router->get('/thumbnail/user-avatar', function(){ 
@@ -447,6 +459,7 @@ $router->post("/my/account", function() {
 
         $blurb = $_POST["PersonalBlurb"];
         $blurb =  $func::filter_text($blurb);
+        $blurb = htmlspecialchars($blurb);
 
         $update = [
             "about"=>$blurb

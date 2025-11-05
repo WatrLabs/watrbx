@@ -18,7 +18,7 @@ if(isset($_GET["keyword"])){
     $keyword = $_GET["keyword"];
 
     global $db;
-    $allusers = $db->table("users")->where("username", "LIKE", "%".$keyword."%")->get();
+    $allusers = $db->table("users")->where("username", "LIKE", $keyword)->get();
 
 }
 
@@ -33,7 +33,7 @@ if(isset($_GET["keyword"])){
 <div id="PeopleSearchContainer" class="people-search-container" data-searchpageurl="/search/users" data-dosearchurl= "/search/do-search">
     <div>
         <span class="form-label">Search:</span>
-        <input id="people-search-keyword" autofocus autocomplete="off" name="name" type="text" class="text-box text-box-large people-search-textbox" placeholder="Search for users..." <? if(isset($keyword)){ echo "value=\"$keyword\""; } ?> />
+        <input id="people-search-keyword" autofocus autocomplete="off" name="name" type="text" class="text-box text-box-large people-search-textbox" placeholder="Search for users..." <? if(isset($keyword)){ echo "value=\"". htmlspecialchars($keyword) . "\""; } ?> />
         <span class="search-button-image-container">
             <a  class="btn-small btn-primary" id="peoplesearch-search-button">Search Users</a>
             <img id="peoplesearch-search-loading" style="display: none" src="https://images.rbxcdn.com/ec4e85b0c4396cf753a06fade0a8d8af.gif" />

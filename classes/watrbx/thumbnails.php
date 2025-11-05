@@ -185,7 +185,7 @@ class thumbnails {
             return "//cdn.watrbx.wtf/" . $thumb->file;
         } else {
             $this->request_user_thumbnail($userid, $size, $type);
-            return "//cdn.watrbx.wtf/defaultimage.png";
+            return "//cdn.watrbx.wtf/defaultimage.png?t=1";
         }
     }
 
@@ -197,7 +197,7 @@ class thumbnails {
         }
 
         return match ($asset->moderation_status) {
-            "Pending" => "/images/defaultimage.png",
+            "Pending" => "/images/defaultimage.png?t=1",
             "Deleted" => "//cdn/watrbx.wtf/94d99af3ba4bc501d80b51580ffa9b4a3031560c.png",
             default   => null,
         };
@@ -252,7 +252,7 @@ class thumbnails {
             }
 
             $this->request_asset_thumbnail($id, $size);
-            return "//watrbx.wtf/images/defaultimage.png";
+            return "//watrbx.wtf/images/defaultimage.png?t=1";
         }
 
     }

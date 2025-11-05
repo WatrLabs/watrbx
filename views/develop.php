@@ -210,7 +210,7 @@ $pagebuilder->buildheader();
                           // pls watrabi, store multiple visits rows so i can track 7 days and much more features
                         ?>
 
-                        <table class="item-table" data-item-id="<?=$universeid?>" data-type="game" data-universeid="<?=$game->id?>">
+                        <table class="item-table" data-item-id="<?=$game->id?>" data-type="game" data-universeid="<?=$universeinfo->id?>">
                         <tbody>
                           <tr>
                             <td class="image-col">

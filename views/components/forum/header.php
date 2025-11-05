@@ -1,7 +1,7 @@
 <tr class="table-header forum-table-header">
 	<th class="first" colspan="2">
         <a id="ctl00_cphRoblox_ForumGroupRepeater1_ctl01_GroupTitle" class="forumTitle" href="/Forum/ShowForumGroup.aspx?ForumGroupID=<?=$id?>">
-            <?=htmlspecialchars($title, ENT_QUOTES, 'UTF-8')?>
+            <?=$title?>
         </a>
     </th>
     <th style="width:50px;white-space:nowrap;">&nbsp;&nbsp;Threads&nbsp;&nbsp;</th>

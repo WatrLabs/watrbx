@@ -96,7 +96,7 @@ class pagebuilder {
     public function buildheader() {
         
         $this->addmetatag("og:title", $_ENV["APP_NAME"] . " - " . $this->config['title']);
-        $this->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=watrbx.css&t=4');
+        $this->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=watrbx.css&t=6');
 
         global $currentuser;
         $themes = new \watrbx\themes();

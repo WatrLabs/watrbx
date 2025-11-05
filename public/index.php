@@ -110,10 +110,8 @@ try {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri = strtolower($uri);
         $method = $_SERVER['REQUEST_METHOD'];
-        $start = microtime(true);
+        
         $response = $router->dispatch($uri, $method);
-        $end = microtime(true);
-        error_log("Routing took " . round(($end - $start) * 1000, 2) . "ms");
 
         ob_end_flush();
 

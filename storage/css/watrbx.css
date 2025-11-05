@@ -34,7 +34,7 @@
     background-size: 30px;
 }
 
-@media(min-width: 1320px) {
+@media(min-width: 1690px) {
     .rbx-header .rbx-nav-collapse {
         display:none;
     }

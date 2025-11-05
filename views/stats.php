@@ -2,7 +2,7 @@
 
 global $db;
 
-$usercount = $db->table("users")->count();
+$usercount = $db->table('users')->count();
 $assetcount = $db->table("assets")->count();
 $thumbnailcount = $db->table("thumbnails")->count();
 $friendshipcount = $db->table("friends")->where("status", "accepted")->count();

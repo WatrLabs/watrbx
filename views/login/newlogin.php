@@ -81,6 +81,7 @@ $pagebuilder->buildheader();
                             <div id="signInButtonPanel" data-use-apiproxy-signin="False" data-sign-on-api-path="/api/v1/login">
                                 <a  roblox-js-onclick class="btn-medium btn-neutral">Sign In</a>
                                 <a  roblox-js-oncancel class="btn-medium btn-negative">Cancel</a>
+                                <button>Legacy Sign In</button>
                             </div>
                             <div class="clearFloats">
                             </div>

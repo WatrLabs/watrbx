@@ -12,7 +12,7 @@
         <a class="post-list-subject" href="/Forum/ShowPost.aspx?PostID=<?=$postinfo->id?>">
             <div class="thread-link-outer-wrapper">
                 <div class="thread-link-container notranslate">
-                    <?=htmlspecialchars($postinfo->title, ENT_QUOTES, 'UTF-8')?>
+                    <?=$postinfo->title?>
                 </div>
 		    </div>
         </a>
@@ -31,7 +31,7 @@
         <span class="normalTextSmaller"><?=$replycount?></span>
     </td>
     <td align="center" style="width:50px;">
-        <span class="normalTextSmaller"><?=htmlspecialchars($postinfo->views, ENT_QUOTES, 'UTF-8')?></span>
+        <span class="normalTextSmaller"><?=$postinfo->views?></span>
     </td>
     <td align="center" style="width:100px;white-space:nowrap;">
         <a class="last-post" href="/Forum/ShowPost.aspx?PostID=<?=$postinfo->id?>">

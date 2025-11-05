@@ -2,6 +2,7 @@
 use watrlabs\router\Routing;
 use watrlabs\authentication;
 use watrbx\gameserver;
+use watrbx\sitefunctions;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -242,20 +243,60 @@ $router->get('/Error/Grid.ashx', function(){
 $router->post('/Error/Grid.ashx', function(){
     die();
 });
+
+$router->get('/Game/ReportSystats.ashx', function() {
+
+    $gameserver = new gameserver();
+    $auth = new authentication();
+    $sitefunc = new sitefunctions();
+
+    $ip = $sitefunc->getip();
+    $isgameserver = $gameserver->is_gameserver_ip($ip);
+
+
+    if(isset($_GET["UserID"]) && isset($_GET["Message"]) && $ip){
+        
+        $message = $_GET["Message"];
+        $userid = $_GET["UserID"];
+
+        $cheater = $auth->getuserbyid($userid);
+        
+        if($cheater){
+            $discord = new discord();
+            //$logging->logwebhook("Possible Cheater Detected!\nUser: " . $cheater["username"] . "\nCode: $message");
+            $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $cheater->username . " - Code " . $message);
+            http_response_code(200);
+        } 
+        
+    } else {
+        http_response_code(400);
+        die();
+    }
+    
+});
+
 // TODO: Check api key
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
-    die('{"data":["0.2.0pcplayer","INTERNALiosapp"]}');
+    die('{"data":["0.2.0pcplayer","INTERNALiosapp", "2.238.0x uwpapp"]}');
 });
 
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["3f5585ee49c5923e79a4332d005112e2","439d18dcc7f4b21b6e310608fec71a94"]}');
+    die('{"data":["3f5585ee49c5923e79a4332d005112e2","439d18dcc7f4b21b6e310608fec71a94", "8a10ba9868a05198863fbd6d579c0557"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)
     die('');
+});
+
+$router->get('/Error/Dmp.ashx', function(){
+    die("True");
+});
+
+$router->post('/Error/Dmp.ashx', function(){
+    die("True");
 });
 
 $router->get('/gen-hash', function(){ // cool
