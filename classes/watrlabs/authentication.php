@@ -252,24 +252,6 @@ class authentication {
             return array("code"=>"400", "message"=>"Username has special characters.");
         }
 
-        $password = password_hash($password, PASSWORD_DEFAULT);
-
-        $insert = array(
-            "username"=>$username,
-            "password"=>$password,
-            "gender"=>$gender,
-            "regtime"=>time(),
-            "register_ip"=>$func->encrypt($ip)
-        );
-
-        $insertid = $db->table("users")->insert($insert);
-
-        if($this->havesession()){
-            $this->relateaccount($insertid);
-        } else {
-            $this->createsession($insertid);
-        }
-
         $allalts1 = $db->table("users")->where("register_ip", $func->encrypt($ip))->get();
         $allalts2 = $db->table("users")->where("last_login_ip", $func->encrypt($ip))->get();
 
@@ -287,9 +269,34 @@ class authentication {
 
         $possiblealts = implode(", ", $alts);
 
+        $altcount = count($alts);
+
+        if($altcount > 5){
+            setcookie("noregister", 1, time() + 9999999, "/", ".watrbx.wtf");
+            return array("code"=>"400", "message"=>"You have too many alts!");
+        }
+
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
+        $insert = array(
+            "username"=>$username,
+            "password"=>$password,
+            "gender"=>$gender,
+            "regtime"=>time(),
+            "register_ip"=>$func->encrypt($ip)
+        );
+
+        $insertid = $db->table("users")->insert($insert);
+
         $discord = new discord();
         $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
         $discord->internal_log("New account: " . $username . "\nIP: $ip\nPossible Alts: $possiblealts", "New Signup!");
+
+        if($this->havesession()){
+            $this->relateaccount($insertid);
+        } else {
+            $this->createsession($insertid);
+        }
 
         $fastflags = new fastflags();
         if($fastflags::get("StarterPlaceOnAccountCreation")){ // TODO: make it update to the starter place the right way (man im new in this)
