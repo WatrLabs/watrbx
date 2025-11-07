@@ -3,6 +3,8 @@
 // watrbx cron job
 // for now it just does renders but likely will have more
 
+
+use watrbx\sitefunctions;
 use watrbx\thumbnails;
 use watrbx\gameserver;
 
@@ -11,6 +13,15 @@ global $db;
 
 $thumbnail = new thumbnails();
 $gameserver = new gameserver();
+$func = new sitefunctions();
+
+$isRunning = $func->get_setting("CRON_RUNNING");
+
+if($isRunning == "true"){
+    die("\nCron is already running!");
+}
+
+$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"true"]);
 
 $serverinfo = $gameserver->get_closest_server();
 $url = $gameserver->get_server_url($serverinfo);
@@ -84,3 +95,5 @@ foreach ($allofdem as $job) {
 
     $Close->CloseJob($job->jobid);
 }
+
+$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);

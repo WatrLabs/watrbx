@@ -111,7 +111,6 @@ $router->get('/comments/get-json', function (){
         }
 
         header("Content-type: application/json");
-        $ismoderator = $currentuser->is_admin == 1;
 
         $ismoderator = false;
 

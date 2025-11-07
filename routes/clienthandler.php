@@ -179,7 +179,20 @@ $router->get('/Game/Tools/ThumbnailAsset.ashx', function(){
 
     $assetid = $_GET['aid'];
     if(isset($_GET['aid'])){
-        $jsonstuff = @json_decode(file_get_contents('https://thumbnails.ttblox.mom/v1/assets?assetids='.$assetid.'&size=420x420&format=Png&isCircular=false'));
+
+        // veri clean code trust
+
+        try {
+            $jsonstuff = @json_decode(file_get_contents('https://thumbnails.ttblox.mom/v1/assets?assetids='.$assetid.'&size=420x420&format=Png&isCircular=false'));
+        } catch (ErrorException $e){
+            sleep(10);
+            try {
+                $jsonstuff = @json_decode(file_get_contents('https://thumbnails.ttblox.mom/v1/assets?assetids='.$assetid.'&size=420x420&format=Png&isCircular=false'));
+            } catch (ErrorException $e){
+                http_response_code(429); // im just gonna assume we're getting rate limited
+                die();
+            }
+        }
         if($jsonstuff){
             foreach ($jsonstuff->data as $jsonsthing) {
                 header("Location: $jsonsthing->imageUrl");
