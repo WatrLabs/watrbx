@@ -9,6 +9,7 @@ $Carbon = new Carbon();
 $pagebuilder = new pagebuilder();
 $auth = new authentication();
 $thumbs = new thumbnails();
+$category = 1;
     global $db;
 
     $limit = 42;
@@ -149,7 +150,7 @@ $thumbs = new thumbnails();
                 // All Decals
 
                 $alltext = "All Decals";
-                $assets = $db->table("assets")->where("publicdomain",)->where("prodcategory", 13)->orderBy("created", "DESC")->get();
+                $assets = $db->table("assets")->where("publicdomain", 1)->where("prodcategory", 13)->orderBy("created", "DESC")->get();
         }elseif($category == 9){
                 // All Audio
 

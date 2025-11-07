@@ -205,12 +205,14 @@ $pagebuilder->buildheader();
                           $thumbnail = $thumbs->get_asset_thumb($game->id, "200x200");
                           $universeinfo = $db->table("universes")->where("assetid", $game->id)->first();
                           $universeid = $universeinfo ? $universeinfo->id : 0; // pls dont fail
+                          $placeid = $game ? $game->id : 0; // pls dont fail
 
                           $totalvisits = $db->table("visits")->where("universeid", $game->id)->count();
                           // pls watrabi, store multiple visits rows so i can track 7 days and much more features
+                          
                         ?>
 
-                        <table class="item-table" data-item-id="<?=$game->id?>" data-type="game" data-universeid="<?=$universeinfo->id?>">
+                        <table class="item-table" data-item-id="<?=$placeid?>" data-type="game" data-universeid="<?=$universeid?>">
                         <tbody>
                           <tr>
                             <td class="image-col">
