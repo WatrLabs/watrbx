@@ -138,8 +138,7 @@ CREATE TABLE `asset_history` (
   `fileid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `created` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `assetid` (`assetid`),
-  CONSTRAINT `asset_history_ibfk_1` FOREIGN KEY (`assetid`) REFERENCES `assets` (`id`) ON DELETE CASCADE
+  KEY `assetid` (`assetid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 

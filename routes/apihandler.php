@@ -4663,7 +4663,7 @@ $router->post('/api/v1/signup', function() {
                 $result = $auth->createuser($username, $pass, $gender);
                 
                 if($result["code"] == 200){
-                    $db->table("captchaverified")->where("token", $token)->delete();
+                    $db->table("captchaverified")->where("token", $token->token)->delete();
                     die(create_success("Account Created!"));
                 } else {
                     die(create_error($result["message"], "", $result["code"]));
