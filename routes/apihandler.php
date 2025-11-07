@@ -4045,7 +4045,8 @@ $router->post('/api/v1/create-place', function(){
             "fileid"=>"e70415fb81c7715e1985afc2967b9605", // TODO: Fetch from storage instead
             "created"=>time(),
             "updated"=>time(),
-            "owner"=>$currentuser->id
+            "owner"=>$currentuser->id, 
+            "moderation_status"=>"Approved"
         );
 
         $universeinsert = array(
@@ -4631,7 +4632,7 @@ $router->post('/api/v1/signup', function() {
         die();
     }
     
-    if(isset($_POST["username"]) && isset($_POST["password"])){
+    if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_COOKIE["token"])){
         
         global $db;
         
@@ -4669,14 +4670,14 @@ $router->post('/api/v1/signup', function() {
                     die(create_error($result["message"], "", $result["code"]));
                 }
             } else {
-                die(create_error("Captcha session provided is invalid."));
+                die(create_error("Captcha session provided is invalid.", [], 400));
             }
         } else {
-            die(create_error("Captcha session provided is invalid."));
+            die(create_error("Captcha session provided is invalid.", [], 400));
         }
         
     } else {
-        die(create_error("Something wasn't provided."));
+        die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));
     }
     
 });

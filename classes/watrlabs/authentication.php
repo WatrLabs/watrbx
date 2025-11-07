@@ -313,7 +313,8 @@ class authentication {
                 "fileid"=>$fileid,
                 "created"=>time(),
                 "updated"=>time(),
-                "owner"=>$insertid
+                "owner"=>$insertid,
+                "moderation_status"=>"Approved"
             );
 
             $assetid = $db->table("assets")->insert($placeinsert);
