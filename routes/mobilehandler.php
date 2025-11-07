@@ -96,5 +96,5 @@ $router->post("/device/initialize", function() {
 // TODO: Make this for events
 $router->get('/sponsoredpage/list-json', function(){
     header("Content-type: application/json");
-    die('{"success":true}'); // why?
+    die('[]'); // why?
 });

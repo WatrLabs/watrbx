@@ -239,7 +239,7 @@ class sitefunctions {
         
         $encoded = json_encode($message);
         $encrypted = $this->encrypt($encoded);
-        setcookie("msg", $encrypted, time() + 500, '');
+        setcookie("msg", $encrypted, time() + 500, "/", ".watrbx.wtf");
         return $encrypted;
     }
     
@@ -256,12 +256,12 @@ class sitefunctions {
             
             if($decoded["type"] == "error"){
                 $page->build_component("status", ["status"=>"error", "msg"=>$decoded["message"]]);
-                setcookie("msg", $msg, time() - 500, '');
+                setcookie("msg", $msg, time() - 500, "/", ".watrbx.wtf");
             } elseif($decoded["type"] == "notice"){
                 $page->build_component("status", ["status"=>"confirm", "msg"=>$decoded["message"]]);
-                setcookie("msg", $msg, time() - 500, '');
+                setcookie("msg", $msg, time() - 500, "/", ".watrbx.wtf");
             } else {
-                //throw new Exception('Invalid message type!');
+                throw new Exception('Invalid message type!');
             }
             
         } else {

@@ -2138,11 +2138,18 @@ $router->get('/messages/api/get-messages', function(){
                             "Url"=>$thumbs->get_user_thumb($senderinfo->id, "512x512", "headshot"),
                             "Final"=>true,
                         ],
+                        "RecipientThumbnail"=>[
+                            "Url"=>$thumbs->get_user_thumb($recipientinfo->id, "512x512", "headshot"),
+                            "Final"=>true,
+                        ],
+                        "Recipient"=>[
+                            "UserId"=>$recipientinfo->id,
+                            "UserName"=>$recipientinfo->username,
+                        ],
                         "RecipientUserId"=>$currentuser->id,
                         "RecipientUserName"=>$currentuser->id,
                         "SenderAbsoluteUrl"=>"/users/$senderinfo->id/profile",
-                        "IsReportAbuseDisplayed"=>True,
-                        "AbuseReportAbsoluteUrl"=>"/abusereport/message?id=$message->id",
+                        "IsReportAbuseDisplayed"=>False,
                         "Subject"=>$message->subject,
                         "Body"=>nl2br($message->body),
                         "IsRead"=>$isread,
@@ -4640,7 +4647,7 @@ $router->post('/api/v1/signup', function() {
         $func = new sitefunctions();
         if($func::isbadtext($username)){
             http_response_code(400);
-            die("Username has innapropriate words in it.");
+            die(create_error("Username is not allowed."));
         }
         
         if(isset($_POST["gender"])){
@@ -4656,12 +4663,12 @@ $router->post('/api/v1/signup', function() {
                 $result = $auth->createuser($username, $pass, $gender);
                 
                 if($result["code"] == 200){
+                    $db->table("captchaverified")->where("token", $token)->delete();
                     die(create_success("Account Created!"));
                 } else {
                     die(create_error($result["message"], "", $result["code"]));
                 }
             } else {
-                $db->table("captchaverified")->where("token", $token)->delete();
                 die(create_error("Captcha session provided is invalid."));
             }
         } else {
