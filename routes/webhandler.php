@@ -19,6 +19,10 @@ $router->get('/game/GetAllowedExperimentalFeatures', function(){
     die("{}");
 });
 
+$router->get('/inbox', function() {
+    header("Location: /my/messages");
+});
+
 // TODO: Make this less messier
 $router->get('/marketplace/productinfo', function(){
     header("Content-type: application/json");

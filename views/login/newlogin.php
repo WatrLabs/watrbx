@@ -59,6 +59,7 @@ $pagebuilder->buildheader();
 </div>
 <form action="/api/v1/login" id="loginForm" method="post">            
     <?=$func->get_message();?>
+    <br>
     <div id="loginarea" class="divider-bottom" data-is-captcha-on="False">
                 <div id="leftArea">
                     <div id="loginPanel">
@@ -79,9 +80,8 @@ $pagebuilder->buildheader();
                                 <a class="text-link" href="/Login/ResetPasswordRequest.aspx" target="_blank">Forgot your password?</a>
                             </div>
                             <div id="signInButtonPanel" data-use-apiproxy-signin="False" data-sign-on-api-path="/api/v1/login">
-                                <a  roblox-js-onclick class="btn-medium btn-neutral">Sign In</a>
-                                <a  roblox-js-oncancel class="btn-medium btn-negative">Cancel</a>
-                                <button>Legacy Sign In</button>
+                                <button class="btn-medium btn-primary">Sign In</button>
+                                
                             </div>
                             <div class="clearFloats">
                             </div>
