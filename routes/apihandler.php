@@ -4630,6 +4630,10 @@ $router->post('/api/v1/signup', function() {
         header("Location: /Membership/CreationDisabled.aspx");
         die();
     }
+
+    if(isset($_COOKIE["noregister"])){
+        die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));
+    }
     
     if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_COOKIE["token"])){
         
