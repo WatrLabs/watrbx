@@ -29,8 +29,10 @@ class gameserver {
 
     private function get_grid($server){
 
-        $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
-        $this->grid = $Grid;
+        if($server){
+            $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
+            $this->grid = $Grid;
+        }
 
     }
 
