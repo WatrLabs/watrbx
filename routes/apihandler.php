@@ -2127,6 +2127,7 @@ $router->get('/messages/api/get-messages', function(){
                     }
 
                     $senderinfo = $auth->getuserbyid($message->userfrom);
+                    $recipientinfo = $auth->getuserbyid($message->userto);
                     $response["Collection"][] = [
                         "Id"=>$message->id,
                         "Sender"=>[

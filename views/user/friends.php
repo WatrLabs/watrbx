@@ -24,6 +24,10 @@ if(!$thepageuser){
     $thepageuser = $currentuser;
 }
 
+if(!$currentuser){
+    header("Location: /newlogin");
+}
+
 ?>
 
 <div class="content  ">

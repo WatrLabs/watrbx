@@ -191,6 +191,10 @@ class thumbnails {
 
     public function check_moderation_status($asset) {
         global $db;
+
+        if(!$asset){
+            return "/images/defaultimage.png?t=1";
+        }
         
         if (is_int($asset)) {
             $asset = $db->table("assets")->where("id", $asset)->first();
