@@ -316,7 +316,8 @@ $router->get('/{slug}-item', function($thing){
         }
 
     } else {
-        die($router->return_status(404));
+        $router->return_status(404);
+        die();
     }
 
 });

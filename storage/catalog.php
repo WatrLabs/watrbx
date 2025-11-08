@@ -510,7 +510,7 @@ $category = 1;
 <script type="text/javascript">
     $(function () {
         Roblox.require(['Pages.Catalog', 'Pages.CatalogShared', 'Widgets.HierarchicalDropdown'], function (catalog) {
-            var pagestate = { "Category": <?=$category?>, <? if($subcategory !== 0) { echo '"Subcategory": ' . $subcategory . ","; }  ?> "CurrencyType": 0, "SortType": 0, "SortAggregation": 3, "SortCurrency": 0, "AssetTypes": null, "Gears": null, "Genres": null, "Keyword": null, "PageNumber": <?=$page?>, "Creator": null, "PxMin": 0, "PxMax": 0 };
+            var pagestate = { "Category": <?=$category?>, <? if(isset($subcategory)) { echo '"Subcategory": ' . $subcategory . ","; }  ?> "CurrencyType": 0, "SortType": 0, "SortAggregation": 3, "SortCurrency": 0, "AssetTypes": null, "Gears": null, "Genres": null, "Keyword": null, "PageNumber": <?=$page?>, "Creator": null, "PxMin": 0, "PxMax": 0 };
             catalog.init(pagestate, 1);
             Roblox.Widgets.HierarchicalDropdown.init();
             if(Roblox.CatalogValues.ContainerID)

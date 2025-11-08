@@ -28,13 +28,15 @@ $incomingfriendrequestid = 0;
 $userinfo = $db->table("users")->where("id", $userid)->first();
 
 if($userinfo == null){
-    die($router->return_status(404));
+    $router->return_status(404);
+    die();
 }
 
 $is_deleted = $db->table("moderation")->where("userid", $userinfo->id)->where("type", "deleted")->first();
 
 if($is_deleted !== null){
-    die($router->return_status(404));
+    die();
+    $router->return_status(404);
 }
 
 $status = "";
