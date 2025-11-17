@@ -284,8 +284,8 @@ class authentication {
         $altcount = count($alts);
 
         if($altcount > 5){
-            //setcookie("noregister", 1, time() + 9999999, "/", ".watrbx.wtf");
-            //return array("code"=>400, "message"=>"You have too many alts!");
+            setcookie("noregister", 1, time() + 9999999, "/", ".watrbx.wtf");
+            return array("code"=>400, "message"=>"You have too many alts!");
         }
 
         $isVPN = $this->isVPN($ip);
