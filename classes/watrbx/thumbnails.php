@@ -35,13 +35,18 @@ class thumbnails {
         global $db;
 
         if ($jobinfo->userid !== null) {
-            return file_get_contents("./storage/lua/" . $this->luaFiles[$jobinfo->jobtype]);
+            if(isset($this->luaFiles[$jobinfo->jobtype])){
+                return file_get_contents("./storage/lua/" . $this->luaFiles[$jobinfo->jobtype]);
+            }
+            
         }
 
         if ($jobinfo->assetid !== null) {
             $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
             if($assetinfo){
-                return file_get_contents("./storage/lua/" . $this->luaFiles[$assetinfo->prodcategory]);
+                if(isset($this->luaFiles[$jobinfo->jobtype])){
+                    return file_get_contents("./storage/lua/" . $this->luaFiles[$assetinfo->prodcategory]);
+                }
             }
         }
 
@@ -192,18 +197,19 @@ class thumbnails {
     public function check_moderation_status($asset) {
         global $db;
 
-        if(!$asset){
-            return "/images/defaultimage.png?t=1";
-        }
-        
         if (is_int($asset)) {
             $asset = $db->table("assets")->where("id", $asset)->first();
+        }
+
+        if(!$asset){
+            return "/images/defaultimage.png?t=1";
         }
 
         return match ($asset->moderation_status) {
             "Pending" => "/images/defaultimage.png?t=1",
             "Deleted" => "//cdn/watrbx.wtf/94d99af3ba4bc501d80b51580ffa9b4a3031560c.png",
-            default   => null,
+            "Approved" => null,
+            default   => "/images/defaultimage.png?t=1",
         };
     }
 

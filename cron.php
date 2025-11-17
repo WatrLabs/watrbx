@@ -17,11 +17,11 @@ $func = new sitefunctions();
 
 $isRunning = $func->get_setting("CRON_RUNNING");
 
-if($isRunning == "true"){
-    die("\nCron is already running!");
-}
+//if($isRunning == "true"){
+//    die("\nCron is already running!");
+//}
 
-$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"true"]);
+//$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"true"]);
 
 $serverinfo = $gameserver->get_closest_server();
 $url = $gameserver->get_server_url($serverinfo);
@@ -35,6 +35,7 @@ $allofdem = $db->table('jobs')
         ->orWhereNotNull('userid');
     })
     ->where("type", 2)
+    ->limit(1) // this is temorary because of worlds best code
     ->get();
 
 foreach ($allofdem as $job) {
@@ -95,5 +96,5 @@ foreach ($allofdem as $job) {
 
     $Close->CloseJob($job->jobid);
 }
-
-$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);
+echo "\nCron done.";
+//$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);

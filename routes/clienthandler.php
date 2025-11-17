@@ -3,6 +3,8 @@ use watrlabs\router\Routing;
 use watrlabs\authentication;
 use watrbx\gameserver;
 use watrbx\sitefunctions;
+use watrlabs\api;
+
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -276,14 +278,46 @@ $router->get('/Game/ReportSystats.ashx', function() {
         
         if($cheater){
             $discord = new discord();
+            $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $cheater->username . " - Code " . $message);
+            http_response_code(200);
+        } 
+        
+    } else {
+        $api = new api;
+        http_response_code(400);
+        die(create_error("I don't think you're a gameserver.", [], 400));
+    }
+    
+});
+
+$router->post('/Game/ReportSystats.ashx', function() {
+
+    $gameserver = new gameserver();
+    $auth = new authentication();
+    $sitefunc = new sitefunctions();
+
+    $ip = $sitefunc->getip();
+    $isgameserver = $gameserver->is_gameserver_ip($ip);
+
+
+    if(isset($_GET["UserID"]) && isset($_GET["Message"]) && $ip){
+        
+        $message = $_GET["Message"];
+        $userid = $_GET["UserID"];
+
+        $cheater = $auth->getuserbyid($userid);
+        
+        if($cheater){
+            $discord = new discord();
             //$logging->logwebhook("Possible Cheater Detected!\nUser: " . $cheater["username"] . "\nCode: $message");
             $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $cheater->username . " - Code " . $message);
             http_response_code(200);
         } 
         
     } else {
+        $api = new api;
         http_response_code(400);
-        die();
+        die(create_error("I don't think you're a gameserver.", [], 400));
     }
     
 });
@@ -297,7 +331,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["3f5585ee49c5923e79a4332d005112e2","439d18dcc7f4b21b6e310608fec71a94", "8a10ba9868a05198863fbd6d579c0557"]}');
+    die('{"data":["8840546af2ac2613a46a133721e10a27"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)
