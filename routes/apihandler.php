@@ -1,4 +1,5 @@
 <?php
+
 use watrbx\thumbnails;
 use watrlabs\router\Routing;
 use watrlabs\watrkit\sanitize;
@@ -1479,7 +1480,7 @@ $router->post('/moderation/filtertext/', function(){
 
         $db->table("chatlogs")->insert($insert);
 
-        $discord->send_webhook($_ENV["CHATLOG_WEBHOOK"], "Chat Log", $staterinfo->username . ": " . $textfiltered . "\n" . $staterinfo->username . " (Unfiltered): " . $text);
+        $discord->send_webhook($_ENV["CHATLOG_WEBHOOK"], "Chat Log", $staterinfo->username . ": `" . $textfiltered . "`\n" . $staterinfo->username . " (Unfiltered):` " . $text . "`");
 
         $return = json_encode([
             "success" => true,
@@ -3304,6 +3305,19 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
         die(json_encode($data));
     };
 
+    $func = new sitefunctions();
+    $canplay = $func->get_setting("GAMES_ENABLED");
+
+    if($canplay == "false"){
+        if($currentuser){
+            if($currentuser->is_admin !== 1){
+                $sendResponse($placelauncher, 403);
+            }
+        } else {
+            $sendResponse($placelauncher, 403);
+        }
+    }
+
     $buildJoinResponse = function($db, $jobinfo, $serverinfo, $placeId, $placelauncher) use ($sendResponse) {
         $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
         $placelauncher["jobid"] = $jobinfo->jobid;
@@ -3402,6 +3416,19 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
         header("Content-type: application/json");
         die(json_encode($data));
     };
+
+    $func = new sitefunctions();
+    $canplay = $func->get_setting("GAMES_ENABLED");
+
+    if($canplay == "false"){
+        if($currentuser){
+            if($currentuser->is_admin !== 1){
+                $sendResponse($placelauncher, 403);
+            }
+        } else {
+            $sendResponse($placelauncher, 403);
+        }
+    }
 
     $buildJoinResponse = function($db, $jobinfo, $serverinfo, $placeId, $placelauncher) use ($sendResponse) {
         $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);

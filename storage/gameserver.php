@@ -77,9 +77,6 @@ if url~=nil then
 	-- scriptinformationprovider service --
 	pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(url .. "/Asset/") end)
 
-	
-	pcall(function() game:GetService("Players"):SetSysStatsUrl(url .. "/Game/ReportSystats.ashx") end)
-	
 	-- contentprovider service --
 	pcall(function() game:GetService("ContentProvider"):SetBaseUrl(url .. "/") end)
 	
@@ -105,6 +102,8 @@ if url~=nil then
 	pcall(function() game:GetService("MarketplaceService"):SetDevProductInfoUrl("https://api.watrbx.wtf/marketplace/productDetails?productId=%d") end)
 	pcall(function() game:GetService("MarketplaceService"):SetPlayerOwnsAssetUrl("https://api.watrbx.wtf/ownership/hasasset?userId=%d&assetId=%d") end)
 end
+
+pcall(function() game:GetService("Players"):SetSysStatsUrl("https://www.watrbx.wtf/Game/ReportSystats.ashx") end)
 
 --pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 settings().Diagnostics.LuaRamLimit = 0

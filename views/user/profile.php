@@ -469,7 +469,7 @@ $pagebuilder->buildheader();
            truncate
            layout-content="layoutContent">
            
-            <span class="profile-about-content-text" ng-non-bindable><? if($userinfo->about) { echo htmlspecialchars($userinfo->about); }?></span>
+            <span class="profile-about-content-text" ng-non-bindable><? if($userinfo->about) { echo $userinfo->about; }?></span>
         </p>
         <span class="rbx-font-bold show-more-link"
               ng-show="layoutContent.hasMoreContent"
