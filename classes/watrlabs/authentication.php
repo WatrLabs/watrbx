@@ -394,6 +394,8 @@ class authentication {
 
         global $db;
 
+        $vpntext = "No";
+
         $discord = new discord();
         $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
         $func = new sitefunctions();
@@ -438,6 +440,12 @@ class authentication {
                     } 
                 }, $allalts);
 
+                 $isVPN = $this->isVPN($ip);
+
+                if($isVPN == 1){
+                    $vpntext = "Yes";
+                }
+
                 $possiblealts = implode(", ", $alts);
                 $db->table("users")->where("id", $user->id)->update($update);
 
@@ -448,7 +456,7 @@ class authentication {
                         "message"=>"Login Success."
                     );
                     
-                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nPossible Alts: $possiblealts", "Login");
+                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts", "Login");
                     return $errorjson;
                 } else {
                     $this->createsession($user->id);
