@@ -222,17 +222,24 @@ class authentication {
 
     public function createuser($username, $password, $gender = null){
 
+        $vpntext = "No";
+
         $func = new sitefunctions();
         $sanitize = new sanitize();
+
+        $discord = new discord();
+        $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
         
         $ip = $func->getip();
 
         if(strlen($username) > 20){
-            return array("code"=>"400", "message"=>"Username is too long.");
+            $discord->internal_log($username . " was too long.", "Failed Signup");
+            return array("code"=>400, "message"=>"Username is too long.");
         }
 
         if(strlen($username) < 3){
-            return array("code"=>"400", "message"=>"Username is too short.");
+            $discord->internal_log($username . " was too short.", "Failed Signup");
+            return array("code"=>400, "message"=>"Username is too short.");
         }
 
         global $db;
@@ -241,15 +248,18 @@ class authentication {
         $result = $query->first();
 
         if($result !== NULL){
-            return array("code"=>"400", "message"=>"Username has already been taken.");
+            $discord->internal_log($username . " was already taken!", "Failed Signup");
+            return array("code"=>400, "message"=>"Username has already been taken.");
         }
 
         if (preg_match('/[^a-zA-Z0-9\s]/', $username)) {
-            return array("code"=>"400", "message"=>"Username has special characters.");
+            $discord->internal_log("Special Usernames detected. :robot:", "Failed Signup");
+            return array("code"=>400, "message"=>"Username has special characters.");
         }
 
         if (ctype_space($username)) {
-            return array("code"=>"400", "message"=>"Username has special characters.");
+            $discord->internal_log("Special Usernames detected. :robot:", "Failed Signup");
+            return array("code"=>400, "message"=>"Username has special characters.");
         }
 
         $allalts1 = $db->table("users")->where("register_ip", $func->encrypt($ip))->get();
@@ -267,13 +277,28 @@ class authentication {
             } 
         }, $allalts);
 
+        $allalts = array_unique($allalts);
+
         $possiblealts = implode(", ", $alts);
 
         $altcount = count($alts);
 
         if($altcount > 5){
-            setcookie("noregister", 1, time() + 9999999, "/", ".watrbx.wtf");
-            return array("code"=>"400", "message"=>"You have too many alts!");
+            //setcookie("noregister", 1, time() + 9999999, "/", ".watrbx.wtf");
+            //return array("code"=>400, "message"=>"You have too many alts!");
+        }
+
+        $isVPN = $this->isVPN($ip);
+
+        if($isVPN == 1){
+            $vpntext = "Yes";
+            $func = new sitefunctions();
+            $canregister = $func->get_setting("CAN_SIGNUP_WITH_VPN");
+
+            if($canregister !== "true"){
+                $discord->internal_log($username . " tried signing up with a vpn.", "Failed Signup");
+                return array("code"=>400, "message"=>"Registering with vpns is currently disabled!");
+            }
         }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
@@ -288,9 +313,7 @@ class authentication {
 
         $insertid = $db->table("users")->insert($insert);
 
-        $discord = new discord();
-        $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
-        $discord->internal_log("New account: " . $username . "\nIP: $ip\nPossible Alts: $possiblealts", "New Signup!");
+        $discord->internal_log("New account: " . $username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts", "New Signup!");
 
         if($this->havesession()){
             $this->relateaccount($insertid);
@@ -744,6 +767,27 @@ class authentication {
         }
     
         return false;
+    }
+
+    public function isVPN($ip){
+
+        try {
+            $ch = curl_init('http://v2.api.iphub.info/ip/'.$ip);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'X-Key: ' . $_ENV["IPHUB_APIKEY"],
+            ]);
+
+            $response = json_decode(curl_exec($ch), true);
+            curl_close($ch);
+
+            $isVPN = $response["block"] == 1;
+
+        } catch (ErrorExcpetion $e) {
+            return true; // would rather not have people signup while api is down, might change 
+        }
+
+        return $isVPN;
     }
 
     public function geolocateip($ip){
