@@ -3321,7 +3321,7 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
     $buildJoinResponse = function($db, $jobinfo, $serverinfo, $placeId, $placelauncher) use ($sendResponse) {
         $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
         $placelauncher["jobid"] = $jobinfo->jobid;
-        $placelauncher["joinScriptUrl"] = "https://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
+        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
         $placelauncher["status"] = 2;
         $sendResponse($placelauncher);
 
@@ -3433,7 +3433,7 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
     $buildJoinResponse = function($db, $jobinfo, $serverinfo, $placeId, $placelauncher) use ($sendResponse) {
         $joincode = genJoinCode($serverinfo->ip, $jobinfo->port, $jobinfo->jobid, $placeId);
         $placelauncher["jobid"] = $jobinfo->jobid;
-        $placelauncher["joinScriptUrl"] = "https://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
+        $placelauncher["joinScriptUrl"] = "http://www.watrbx.wtf/Game/Join.ashx?joincode={$joincode}";
         $placelauncher["status"] = 2;
         $sendResponse($placelauncher);
 
@@ -4698,7 +4698,7 @@ $router->post('/api/v1/signup', function() {
                     $db->table("captchaverified")->where("token", $token->token)->delete();
                     die(create_success("Account Created!"));
                 } else {
-                    die(create_error($result["message"], "", $result["code"]));
+                    die(create_error($result["message"], "", 400));
                 }
             } else {
                 die(create_error("Captcha session provided is invalid.", [], 400));
@@ -4710,5 +4710,7 @@ $router->post('/api/v1/signup', function() {
     } else {
         die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));
     }
+
+    die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));    
     
 });

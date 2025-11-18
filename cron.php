@@ -3,10 +3,11 @@
 // watrbx cron job
 // for now it just does renders but likely will have more
 
-
 use watrbx\sitefunctions;
 use watrbx\thumbnails;
 use watrbx\gameserver;
+
+echo "Starting Cron";
 
 require('./init.php');
 global $db;
@@ -15,7 +16,7 @@ $thumbnail = new thumbnails();
 $gameserver = new gameserver();
 $func = new sitefunctions();
 
-$isRunning = $func->get_setting("CRON_RUNNING");
+//$isRunning = $func->get_setting("CRON_RUNNING");
 
 //if($isRunning == "true"){
 //    die("\nCron is already running!");
@@ -35,11 +36,12 @@ $allofdem = $db->table('jobs')
         ->orWhereNotNull('userid');
     })
     ->where("type", 2)
-    ->limit(1) // this is temorary because of worlds best code
+    ->orderBy("id", "DESC")
     ->get();
 
+
 foreach ($allofdem as $job) {
-    sleep(5); // too many too quick overloads arbiter, especially with games running
+    echo "\nRunning $job->jobid";
     $result = $thumbnail->render_asset($job);
     if($result[0] == true){
         try {
@@ -81,7 +83,14 @@ foreach ($allofdem as $job) {
                             echo "\nSomething went wrong with $job->jobid! $e";
                             $db->table("jobs")->where("jobid", $job->jobid)->delete();
                         }
+                    } else {
+                        echo "\nSomething went wrong with $job->jobid\n";
+                        $db->table("jobs")->where("jobid", $job->jobid)->delete();
+                        var_dump($result);
                     }
+                } else {
+                    echo "\nSomething went wrong with $job->jobid!\n";
+                    $db->table("jobs")->where("jobid", $job->jobid)->delete();
                 }
             } catch (ErrorException $e){
                 $db->table("jobs")->where("jobid", $job->jobid)->delete();
@@ -96,5 +105,5 @@ foreach ($allofdem as $job) {
 
     $Close->CloseJob($job->jobid);
 }
-echo "\nCron done.";
+echo "\nCron done.\n";
 //$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);

@@ -415,7 +415,7 @@ if($ismobile == false){ ?>
                     </a>
                 </li>
                 <li><a href="/Help/Builderman.aspx" target="_blank">Help</a></li>
-                <li><a data-behavior="logout" data-bind="/authentication/logout">Logout</a></li>
+                <li><a data-behavior="logout" href="/logout" data-bind="/logout">Logout</a></li>
             </ul>
         </div>
     </li>

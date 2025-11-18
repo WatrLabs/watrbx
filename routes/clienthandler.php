@@ -50,6 +50,7 @@ $router->get('/asset/', function() {
     $id = basename(isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0));
     $exploded = explode("=", $id);
 
+
     if($exploded){
         if(isset($exploded[0]) && isset($exploded[1])){
             (int)$id = $exploded[0];
@@ -60,6 +61,13 @@ $router->get('/asset/', function() {
                 $asset = $db->table("assets")->where("id", $id)->first();
 
                 if($asset){
+
+                    if($exploded[0] == 2696){
+                        if(file_exists("../storage/asset_cache/6700000000")){
+                            die(file_get_contents("../storage/asset_cache/6700000000"));
+                        }
+                    }
+
                     header("Location: https://cdn.watrbx.wtf/" . $asset->fileid);
                     die();
                 }
