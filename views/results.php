@@ -23,13 +23,17 @@ $maxrows = isset($_GET["MaxRows"]) ? (int)$_GET["MaxRows"] : 20;
 $usealgorithm = fastflags::get("UseAlgorithmForGames");
 $usenewsearch = fastflags::get("UseNewSearch");
 // look how tuff my crap is
+
+// featured games
 if($sort === 3){
     $featuredgames = $db->table("featuredgames")->get(); // hardcoded be like
+    shuffle($featuredgames);
     $universeids = [];
     foreach ($featuredgames as $featured){
         $universeids[] = $featured->universeid;
     }
     $allgames = $db->table("universes")->where("public", 1)->whereIn("id", $universeids)->offset($startrows)->limit($maxrows)->get();
+    shuffle($allgames); // how is this a built in php function
     foreach ($allgames as $game) {
       $pagebuilder->build_component("game", ["game" => $game, "thumbs"=>$thumbs, "slugify"=>$slugify, "auth"=>$auth, "gameserver"=>$gameserver]);
     }
@@ -47,6 +51,8 @@ if($sort === 3){
     }
     die();
 }*/
+
+// popular
 
 if($sort === 1){
     $query = $db->table("universes")->where("public", 1);

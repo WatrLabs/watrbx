@@ -187,6 +187,13 @@ class authentication {
         }
         
         $session = $func->genstring(250);
+
+        $sessionexists = $db->table("sessions")->where("session", $session)->first();
+
+        if($sessionexists !== null){
+            // this is really fucking rare
+            die("You should go to the lottery.");
+        }
         
         if($author == 0){
             
@@ -252,7 +259,7 @@ class authentication {
             return array("code"=>400, "message"=>"Username has already been taken.");
         }
 
-        if (preg_match('/[^a-zA-Z0-9\s]/', $username)) {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
             $discord->internal_log("Special Usernames detected. :robot:", "Failed Signup");
             return array("code"=>400, "message"=>"Username has special characters.");
         }
@@ -394,6 +401,8 @@ class authentication {
 
         global $db;
 
+        $vpntext = "No";
+
         $discord = new discord();
         $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
         $func = new sitefunctions();
@@ -438,6 +447,12 @@ class authentication {
                     } 
                 }, $allalts);
 
+                 $isVPN = $this->isVPN($ip);
+
+                if($isVPN == 1){
+                    $vpntext = "Yes";
+                }
+
                 $possiblealts = implode(", ", $alts);
                 $db->table("users")->where("id", $user->id)->update($update);
 
@@ -448,7 +463,7 @@ class authentication {
                         "message"=>"Login Success."
                     );
                     
-                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nPossible Alts: $possiblealts", "Login");
+                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts", "Login");
                     return $errorjson;
                 } else {
                     $this->createsession($user->id);
@@ -457,7 +472,7 @@ class authentication {
                         "message"=>"Login Success."
                     );
                                         
-                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nPossible Alts: $possiblealts", "Login");
+                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts", "Login");
                     return $errorjson;
                 }
             } else {

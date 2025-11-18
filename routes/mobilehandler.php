@@ -65,12 +65,12 @@ $router->post('/mobileapi/login', function(){
                 }
             } else {
                 http_response_code(400);
-                $errorresponse["Status"] = "InvalidUsername";
+                $errorresponse["Status"] = "InvalidPassword";
                 die(json_encode($errorresponse));
             }
         } else {
             http_response_code(400);
-            $errorresponse["Status"] = "";
+            $errorresponse["Status"] = "BadCookieTryAgain";
             die(json_encode($errorresponse));
         }
 

@@ -15,8 +15,12 @@ class Service {
         $Grid = new Grid;
         $config = $Grid->getConfig();
 
-        $this->Service = new \ServiceType\Open($config);
-        $this->Service->setLocation($Target);
+        try {
+            $this->Service = new \ServiceType\Open($config);
+            $this->Service->setLocation($Target);
+        } catch (\SoapFault $e) {
+            return;
+        }
 
     }
 

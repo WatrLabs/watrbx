@@ -388,6 +388,11 @@ $router->get("/logout", function() {
     header("Location: /newlogin");
 });
 
+$router->post("/logout", function() {
+    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+    header("Location: /newlogin");
+});
+
 $router->get("/home", function() {
     $page = new pagebuilder;
     $page::get_template("new_home");
