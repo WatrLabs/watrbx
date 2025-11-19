@@ -26,6 +26,8 @@ $pagebuilder->set_page_name("Account");
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
 
+$auth->createcsrf("account");
+
 $allthemes = (new \watrbx\themes())->getAllThemes();
 
 if(isset($newblurb)){

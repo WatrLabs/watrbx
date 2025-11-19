@@ -894,7 +894,8 @@ class authentication {
             setcookie("csrftoken", $csrf, time() + 900, '/'); // csrf tokens and messages have the same expire time :zany:
             
         } else {
-            die(header("Location: /login")); // this should never be run but just in case 
+            header("Location: /login");
+            die(); // this should never be run but just in case 
         }
         
     }

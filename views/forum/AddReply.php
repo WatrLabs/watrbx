@@ -32,6 +32,8 @@ if(isset($_GET["PostID"])){
 	die();
 }
 
+$auth->createcsrf("addreply");
+
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=main___52c69b42777a376ab8c76204ed8e75e2_m.css');
 $pagebuilder->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=page___f6e33d41f2d5a62b5a238c0bbdc70438_m.css');
 $pagebuilder->addresource('cssfiles', '/Forum/skins/default/style/default.css');
@@ -64,6 +66,15 @@ $pagebuilder->buildheader();
                 <div id="RepositionBody">
                     <div id="Body" class='body-width'>
                         <table cellPadding="0" width="100%">
+                            <tr><td style="width: 100%; margin-bottom: 15px; width: 100%;" ><div style="width: 100%; width: 100%;">
+    <?php
+        if(isset($message)){
+            $pagebuilder->build_component("status", ["status"=>"error", "msg"=>$message]);
+        }
+    ?>
+</div></td></tr>
+    </table>
+    <table cellPadding="0" width="100%">
   <tr>
     <td align="left">
         <span id="ctl00_cphRoblox_PostView1_ctl00_Whereami1" NAME="Whereami1">
@@ -91,7 +102,8 @@ $pagebuilder->buildheader();
 
 </div>
 </td>
-<vr
+</tr>
+
     <p>
   <span id="Createeditpost1_PostForm_ReplyTo">
       </span><span id="Createeditpost1_PostForm_Post">

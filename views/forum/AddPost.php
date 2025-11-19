@@ -7,6 +7,8 @@ $auth->requiresession();
 global $currentuser;
 $forums = new forums();
 $pagebuilder = new pagebuilder();
+$auth = new authentication;
+$auth->createcsrf("addpost");
 
 if(isset($_GET["ForumID"])){
 	$ForumID = (int)$_GET["ForumID"];
@@ -58,6 +60,16 @@ $pagebuilder->buildheader();
                 
                 <div id="RepositionBody">
                     <div id="Body" class='body-width'>
+
+                    <table cellPadding="0" width="100%">
+                            <tr><td style="width: 100%; margin-bottom: 15px; width: 100%;" ><div style="width: 100%; width: 100%;">
+    <?php
+        if(isset($message)){
+            $pagebuilder->build_component("status", ["status"=>"error", "msg"=>$message]);
+        }
+    ?>
+</div></td></tr>
+    </table>
                         
     <td id="ctl00_cphRoblox_CenterColumn" width="95%" class="CenterColumn">
                 <br>
@@ -90,6 +102,8 @@ $pagebuilder->buildheader();
 
 </div>
 </td>
+</tr>
+</table>
   <form method="POST">
     <input style="display: none;" name="section_id" value="<?=$ForumID?>">
     <p>

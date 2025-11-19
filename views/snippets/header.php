@@ -89,6 +89,11 @@ $obc = ($userinfo->membership === "OutrageousBuildersClub")
             height: 85px;
             width: 85px;
         }
+
+        .avatarcomment {
+            height: 100px;
+            width: 100px;
+        }
     </style>
     
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />

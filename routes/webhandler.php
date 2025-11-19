@@ -465,6 +465,16 @@ $router->post("/my/account", function() {
     $page = new pagebuilder;
     $auth = new authentication();
 
+    if(isset($_COOKIE["csrftoken"])){
+        if(!$auth->verifycsrf($_COOKIE["csrftoken"], "account")){
+            $page::get_template("my/account");
+            die();
+        }
+    } else {
+        $page::get_template("my/account");
+        die();
+    }
+
     if(isset($_POST["PersonalBlurb"]) && $currentuser){
 
         $blurb = $_POST["PersonalBlurb"];
@@ -593,6 +603,7 @@ $router->get("/my/character.aspx", function() {
 
 $router->post('/my/character.aspx', function() {
     $page = new pagebuilder;
+    $auth = new authentication;
 
     $lastcategory = "7";
 
@@ -618,6 +629,16 @@ $router->post('/my/character.aspx', function() {
 
     global $db;
     global $currentuser;
+
+    if(isset($_COOKIE["csrftoken"])){
+        if(!$auth->verifycsrf($_COOKIE["csrftoken"], "avatar")){
+            $page::get_template("avatar", ["currentcategory"=>$lastcategory]);
+            die();
+        }
+    } else {
+        $page::get_template("avatar", ["currentcategory"=>$lastcategory]);
+        die();
+    }
 
     if(isset($_POST["__EVENTTARGET"])){
         $event = $_POST["__EVENTTARGET"];
