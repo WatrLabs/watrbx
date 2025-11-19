@@ -11,6 +11,9 @@ echo "Starting Cron";
 
 require('./init.php');
 global $db;
+global $isCron;
+
+$isCron = true;
 
 $thumbnail = new thumbnails();
 $gameserver = new gameserver();
@@ -41,7 +44,13 @@ $allofdem = $db->table('jobs')
 
 
 foreach ($allofdem as $job) {
-    echo "\nRunning $job->jobid";
+    if($job->assetid !== null){
+        $id = $job->assetid;
+    }
+    if($job->userid !== null){
+        $id = $job->userid;
+    }
+    echo "\nRunning $job->jobid (ID: $id)";
     $result = $thumbnail->render_asset($job);
     if($result[0] == true){
         try {
@@ -101,6 +110,10 @@ foreach ($allofdem as $job) {
             echo "\nSomething went wrong with $job->jobid!\n$e";
         }
         
+    } else {
+        echo "\nSomething went wrong with $job->jobid\n";
+        $db->table("jobs")->where("jobid", $job->jobid)->delete();
+        var_dump($result);
     }
 
     $Close->CloseJob($job->jobid);

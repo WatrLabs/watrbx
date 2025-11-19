@@ -143,7 +143,7 @@ $router->get('/comments/get-json', function (){
                     "AssetId"=> $assetId,
                     "AssetHash"=>null,
                     "AssetTypeId"=> 0,
-                    "Url"=>$thumbs->get_user_thumb($comment->userid, "250x250"),
+                    "Url"=>$thumbs->get_user_thumb($comment->userid, "1024x1024"),
                     "IsFinal"=>false
                 ]
             ];
@@ -4006,15 +4006,13 @@ $router->get('/CharacterFetch.aspx', function(){
         foreach ($allitems as $item){
             $assetinfo = $db->table("assets")->where("id", $item->itemid)->first();
 
-            //if($assetinfo !== null){
-            //    if($assetinfo->prodcategory !== 19){
-            //        $charapp .= "https://www.watrbx.wtf/asset/?id=". $item->itemid .";";
-            //    }
-            //}
-
-            $charapp .= "https://www.watrbx.wtf/asset/?id=". $item->itemid .";";
-            
-            
+            if ($assetinfo === null) {
+                $charapp .= "https://www.watrbx.wtf/asset/?id=". $item->itemid .";";
+            } else {
+                if (!($assetinfo->prodcategory == 19 && $placeid == 933)) {
+                    $charapp .= "https://www.watrbx.wtf/asset/?id=". $item->itemid .";";
+                }
+            }
         }
     }
 
@@ -4024,9 +4022,20 @@ $router->get('/CharacterFetch.aspx', function(){
 $router->post('/api/v1/create-place', function(){
     
     $sitefunc = new sitefunctions();
+    $auth = new authentication();
 
     global $currentuser;
     global $db;
+
+    if(isset($_COOKIE["csrftoken"])){
+        if(!$auth->verifycsrf($_COOKIE["csrftoken"], "createplace")){
+            http_response_code(400);
+            die("Required data wasn't provided.");
+        }
+    } else {
+        http_response_code(400);
+        die("Required data wasn't provided.");
+    }
 
     if($currentuser == null){
         http_response_code(401);
@@ -4093,6 +4102,9 @@ $router->post('/api/v1/create-place', function(){
         $page = new pagebuilder;
         $page::get_template("ide/createdplace", ["assetinsertid"=>$assetinsertid]);
 
+    } else {
+        http_response_code(400);
+        die("Required data wasn't provided.");
     }
 });
 

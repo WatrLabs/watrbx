@@ -77,6 +77,11 @@ if($userinfo->membership == "OutrageousBuildersClub"){
             height: 100px;
             width: 100px;
         }
+
+        .avatarcomment {
+            height: 120px;
+            width: 120px;
+        }
     </style>
     
 	<script type="text/javascript">

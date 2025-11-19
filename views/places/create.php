@@ -32,6 +32,8 @@ $pagebuilder->set_page_name("Create New Place");
 
 $pagebuilder->setlegacy(true);
 $pagebuilder->buildheader();
+
+$auth->createcsrf("createplace");
 ?>
 <div id="AdvertisingLeaderboard">
     <iframe allowtransparency="true" frameborder="0" height="110" scrolling="no" src="/userads/1" width="728" data-js-adtype="iframead"></iframe>

@@ -12,9 +12,9 @@ $thumbs = new thumbnails();
 $auth = new authentication();
 $pagebuilder = new pagebuilder();
 
-
-
 $auth->requiresession();
+
+$auth->createcsrf("avatar");
 
 global $currentuser;
 

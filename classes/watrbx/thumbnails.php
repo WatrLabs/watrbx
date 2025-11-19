@@ -33,10 +33,16 @@ class thumbnails {
     private function getLua($jobinfo) {
 
         global $db;
+        global $isCron;
 
         if ($jobinfo->userid !== null) {
-            if(isset($this->luaFiles[$jobinfo->jobtype])){
-                return file_get_contents("./storage/lua/" . $this->luaFiles[$jobinfo->jobtype]);
+            if(isset($this->luaFiles["$jobinfo->jobtype"])){
+
+                if($isCron){
+                    echo "\n./storage/lua/" . $this->luaFiles["$jobinfo->jobtype"];
+                }
+
+                return file_get_contents("./storage/lua/" . $this->luaFiles["$jobinfo->jobtype"]);
             }
             
         }
@@ -44,13 +50,21 @@ class thumbnails {
         if ($jobinfo->assetid !== null) {
             $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
             if($assetinfo){
-                if(isset($this->luaFiles[$jobinfo->jobtype])){
-                    return file_get_contents("./storage/lua/" . $this->luaFiles[$assetinfo->prodcategory]);
+                if(isset($this->luaFiles["$jobinfo->jobtype"])){
+
+                    if($isCron){
+                        echo "\n./storage/lua/" . $this->luaFiles["$assetinfo->prodcategory"];
+                    } 
+
+                    return file_get_contents("./storage/lua/" . $this->luaFiles["$assetinfo->prodcategory"]);
                 }
             }
         }
 
-        return "print('Failed to find lua.')";
+        if($isCron){
+            echo "\nReturning Hour Glass...";
+        }
+        return 'return "/9j/4AAQSkZJRgABAQEASABIAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wgARCAABAAEDAREAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAX8P/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABBQJ//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPwF//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPwF//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQAGPwJ//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPyF//9oADAMBAAIAAwAAABAf/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPxB//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPxB//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxB//9k="';
     }
 
     public function render_3d_user($userid){

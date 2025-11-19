@@ -69,8 +69,19 @@ $router->get("/Forum/NewReply.aspx", function() {
 $router->post("/Forum/NewReply.aspx", function() {
     $page = new pagebuilder;
     $forums = new forums;
+    $auth = new authentication;
     global $db;
     global $currentuser;
+
+    if(isset($_COOKIE["csrftoken"])){
+        if(!$auth->verifycsrf($_COOKIE["csrftoken"], "addreply")){
+            $page::get_template("forum/AddReply", ["message"=>"An unexpected error occured!"]);
+            die();
+        }
+    } else {
+        $page::get_template("forum/AddReply", ["message"=>"An unexpected error occured!"]);
+        die();
+    }
     
     if(isset($_POST["section_id"]) && isset($_POST["content"]) && $currentuser){
         $content = htmlspecialchars($_POST["content"]);
@@ -121,8 +132,19 @@ $router->post("/Forum/NewReply.aspx", function() {
 $router->post("/Forum/AddPost.aspx", function() {
     $page = new pagebuilder;
     $forums = new forums;
+    $auth = new authentication;
     global $db;
     global $currentuser;
+
+    if(isset($_COOKIE["csrftoken"])){
+        if(!$auth->verifycsrf($_COOKIE["csrftoken"], "addpost")){
+            $page::get_template("forum/AddPost", ["message"=>"An unexpected error occured!"]);
+            die();
+        }
+    } else {
+        $page::get_template("forum/AddPost", ["message"=>"An unexpected error occured!"]);
+        die();
+    }
     
     if(isset($_POST["section_id"]) && isset($_POST["title"]) && isset($_POST["content"]) && $currentuser){
         $title = htmlspecialchars($_POST["title"]);

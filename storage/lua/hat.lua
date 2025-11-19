@@ -3,7 +3,7 @@
 local assetId = ...
 
 local assetUrl = "rbxassetid://" .. assetId 
-local baseUrl = "https://www.watrbx.wtf"
+local baseUrl = "http://www.watrbx.wtf"
 local fileExtension = "PNG"
 local x, y = 1024, 1024
 
@@ -20,5 +20,5 @@ accoutrement.Parent = workspace
 local focusParts = {}
 local extentsMinMax
 
-local result, requestedUrls = ThumbnailGenerator:Click(fileExtension, x, y, --[[hideSky = ]] true, --[[crop =]] true, extentsMinMax)
+local result, requestedUrls = ThumbnailGenerator:Click(fileExtension, x, y, --[[hideSky = ]] true, --[[crop =]] false)
 return result

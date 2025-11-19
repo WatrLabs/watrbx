@@ -187,10 +187,12 @@ $router->get('/Game/Tools/ThumbnailAsset.ashx', function(){
 
     $queryparams = http_build_query($_GET);
 
-    $assetid = $_GET['aid'];
+    
     if(isset($_GET['aid'])){
 
         // veri clean code trust
+
+        $assetid = $_GET['aid'];
 
         try {
             $jsonstuff = @json_decode(file_get_contents('https://thumbnails.ttblox.mom/v1/assets?assetids='.$assetid.'&size=420x420&format=Png&isCircular=false'));

@@ -4,7 +4,7 @@
 local assetId = ...
 
 local assetUrl = "rbxassetid://" .. assetId
-local baseUrl = "https://www.watrbx.wtf"
+local baseUrl = "http://www.watrbx.wtf"
 local fileExtension = "PNG"
 
 local ThumbnailGenerator = game:GetService("ThumbnailGenerator")
