@@ -78,7 +78,10 @@ $category = 1;
         $query = $db->table("assets")->whereIn("prodcategory", $prodCategories)->orderBy("created", "DESC");
         if ($featured) $query = $query->where("featured", 1);
         if ($publicdomain) $query = $query->where("publicdomain", 1);
-        if ($keyword) $query = $query->where("name", "LIKE", $keyword);
+        if(isset($_GET["Keyword"])){
+            $query = $query->where('name', 'LIKE', "%{$keyword}%")
+                   ->orWhere('description', 'LIKE', "%{$keyword}%");
+        }
         return $query->get();
     }
 
