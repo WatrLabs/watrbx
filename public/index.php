@@ -11,19 +11,6 @@ require_once '../init.php';
 try {
 
     try {
-
-        $alloweddomains = [
-            "www.watrbx.wtf",
-            "watrbx.wtf",
-            "sitetest1.watrbx.wtf",
-        ];
-        
-        $currentdomain = $_SERVER['HTTP_HOST'];
-
-        if(!in_array($currentdomain, $alloweddomains)){
-            //http_response_code(403);
-            //die();
-        }
         
         global $db;
         global $router;
@@ -64,7 +51,7 @@ try {
                 $validmaintcode = $db->table("maintcodes")->where("code", $maintcode)->first();
 
                 if($validmaintcode){
-                    setcookie("maint_bypass", $maintcode, $validmaintcode->expires, "", ".watrbx.wtf");
+                    setcookie("maint_bypass", $maintcode, $validmaintcode->expires, "", "." . $_ENV["APP_DOMAIN"]);
                     $canbypass = true;
                 }
             }

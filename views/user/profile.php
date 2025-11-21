@@ -967,7 +967,7 @@ if(count($usergames) > 0){
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="<?=$userinfo->id?>"
-     data-domain="watrbx.wtf"
+     data-domain="<?=$_ENV["APP_DOMAIN"]?>"
      data-gamespagelink="/games"
      data-chatdomain="/"
      data-numberofmembersforpartychrome="6"

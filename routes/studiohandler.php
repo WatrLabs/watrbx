@@ -15,7 +15,7 @@ $router->get("/game/GetCurrentUser.ashx", function() {
             echo $userinfo->id;
             die();
         } else {
-            setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+            setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
             die();
         }
     }
@@ -33,12 +33,12 @@ $router->get('/login/RequestAuth.ashx', function(){
 
     if($currentuser !== null && isset($_COOKIE["_ROBLOSECURITY"])){
         http_response_code(200);
-        setcookie(".ROBLOSECURITY", $_COOKIE["_ROBLOSECURITY"], time() + 8600, "/", ".watrbx.wtf");
+        setcookie(".ROBLOSECURITY", $_COOKIE["_ROBLOSECURITY"], time() + 8600, "/", "." . $_ENV["APP_DOMAIN"]);
         echo "https://www.watrbx.wtf/Login/Negotiate.ashx?suggest=" . $_COOKIE["_ROBLOSECURITY"];
         die();
     } else {
         http_response_code(401);
-        setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+        setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
         die("User is not authorized.");
     }
     
@@ -318,7 +318,7 @@ $router->get('/my/settings/json', function() {
 });
 
 $router->get('/game/logout.aspx', function() {
-    setcookie(".ROBLOSECURITY", "ThisIsInvalid!!!!", time() - 9999999, "/", ".watrbx.wtf");
+    setcookie(".ROBLOSECURITY", "ThisIsInvalid!!!!", time() - 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
     header("Location: /newlogin");
     die("[]");
 });

@@ -103,7 +103,7 @@ class pagebuilder {
 
         if($currentuser){
             if($currentuser !== null){
-                if($currentuser->currenttheme){
+                if(isset($currentuser->currenttheme)){
                     $themeinfo = $themes->getThemeInfo($currentuser->currenttheme);
                     if($themeinfo){
                         if($themeinfo->theme_url){

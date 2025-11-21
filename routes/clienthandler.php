@@ -101,8 +101,8 @@ $router->get('/asset/', function() {
                         try {
                             header("Content-type: application/octet-stream");
                             $asset = file_get_contents("https://cdn.watrbx.wtf/" . $asset->fileid);
-                            $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
-                            $asset = str_replace("watrbx.xyz", "watrbx.wtf", $asset);
+                            $asset = str_replace("roblox.com", $_ENV["APP_DOMAIN"], $asset);
+                            $asset = str_replace("watrbx.xyz", $_ENV["APP_DOMAIN"], $asset);
                             die($asset);
                         } catch (ErrorException){
                             http_response_code(500);
@@ -120,8 +120,8 @@ $router->get('/asset/', function() {
                 header("Content-type: application/octet-stream");
                 try {
                     $asset = file_get_contents("https://cdn.watrbx.wtf/" . $asset->fileid);
-                    $asset = str_replace("roblox.com", "watrbx.wtf", $asset);
-                    $asset = str_replace("watrbx.xyz", "watrbx.wtf", $asset);
+                    $asset = str_replace("roblox.com", $_ENV["APP_DOMAIN"], $asset);
+                    $asset = str_replace("watrbx.xyz", $_ENV["APP_DOMAIN"], $asset);
                     die($asset);
                 } catch (ErrorException){
                     http_response_code(500);
@@ -151,7 +151,7 @@ $router->get('/asset/', function() {
 
                     file_put_contents("../storage/asset_cache/$id", $decoded); # THIS IS INSECURE!!!!!! (except for the fact I cast id to int & basename it)
 
-                    $decoded = str_replace("roblox.com", "watrbx.wtf", $decoded);
+                    $decoded = str_replace("roblox.com", $_ENV["APP_DOMAIN"], $decoded);
                     header("Content-type: application/octet-stream");
                     die($decoded);
                     

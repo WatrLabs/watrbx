@@ -79,7 +79,7 @@ $router->get('/Login/Negotiate.ashx', function() {
     $session = $db->table("sessions")->where("session", $auth)->first();
 
     if($session !== null){
-        setcookie(".ROBLOSECURITY", $session->session, time() + 8600, "/", ".watrbx.wtf");
+        setcookie(".ROBLOSECURITY", $session->session, time() + 8600, "/", "." . $_ENV["APP_DOMAIN"]);
         //echo "$session->session";
         die();
     } else {
@@ -4674,8 +4674,18 @@ $router->post('/api/v1/signup', function() {
     if(isset($_COOKIE["noregister"])){
         die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));
     }
-    
-    if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_COOKIE["token"])){
+
+    $captchaEnabled = $func->get_setting("CaptchaEnabled");
+
+    if($captchaEnabled == "true"){
+        if(!isset($_COOKIE["token"])){
+            die(create_error("You must provide a captcha token."));
+            http_response_code(400);
+        }
+    }
+
+
+    if(isset($_POST["username"]) && isset($_POST["password"])){
         
         global $db;
         
@@ -4683,7 +4693,6 @@ $router->post('/api/v1/signup', function() {
         // gender 1 = female
         // gender 2 = male
         
-        $token = $_COOKIE["token"];
         $username = $_POST["username"];
         $pass = $_POST["password"];
         $gender = null;
@@ -4697,32 +4706,48 @@ $router->post('/api/v1/signup', function() {
         if(isset($_POST["gender"])){
             $gender = (int)$_POST["gender"];
         }
-        
-        $query = $db->table("captchaverified")->where("token", $token);
-        $token = $query->first();
-        
-        if($token !== null){
-            if(!$token->time < time()){
-                $auth = new authentication();
-                $result = $auth->createuser($username, $pass, $gender);
-                
-                if($result["code"] == 200){
-                    $db->table("captchaverified")->where("token", $token->token)->delete();
-                    die(create_success("Account Created!"));
+
+        if($captchaEnabled == "true"){
+
+            $token = $_COOKIE["token"];
+
+            $query = $db->table("captchaverified")->where("token", $token);
+            $token = $query->first();
+            
+            if($token !== null){
+                if(!$token->time < time()){
+                    $auth = new authentication();
+                    $result = $auth->createuser($username, $pass, $gender);
+                    
+                    if($result["code"] == 200){
+                        $db->table("captchaverified")->where("token", $token->token)->delete();
+                        die(create_success("Account Created!"));
+                    } else {
+                        die(create_error($result["message"], "", 400));
+                    }
                 } else {
-                    die(create_error($result["message"], "", 400));
+                    die(create_error("Captcha session provided is invalid.", [], 400));
                 }
             } else {
                 die(create_error("Captcha session provided is invalid.", [], 400));
             }
         } else {
-            die(create_error("Captcha session provided is invalid.", [], 400));
+            $auth = new authentication();
+            $result = $auth->createuser($username, $pass, $gender);
+            
+            if($result["code"] == 200){
+                die(create_success("Account Created!"));
+            } else {
+                die(create_error($result["message"], "", 400));
+            }
         }
+
+        die(create_error("Something went wrong.", [], 500));
         
     } else {
         die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));
     }
 
-    die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));    
+    die(create_error("Something went wrong.", [], 500));    
     
 });

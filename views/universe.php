@@ -1771,7 +1771,7 @@ $pagebuilder->buildheader();
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="<? if($currentuser !== null){ echo $currentuser->id; } ?>"
-     data-domain="watrbx.wtf"
+     data-domain="<?=$_ENV["APP_DOMAIN"]?>"
      data-gamespagelink="/games"
      data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
