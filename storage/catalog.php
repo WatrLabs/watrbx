@@ -68,6 +68,13 @@ $category = 1;
     }
 
     function getCatalogQuery($db, $prodCategories, $featured = false, $publicdomain = false) {
+
+        $keyword = null;
+
+        if(isset($_GET["Keyword"])){
+            $keyword = $_GET["Keyword"];
+        }
+
         $query = $db->table("assets")->whereIn("prodcategory", $prodCategories)->orderBy("created", "DESC");
         if ($featured) $query = $query->where("featured", 1);
         if ($publicdomain) $query = $query->where("publicdomain", 1);
