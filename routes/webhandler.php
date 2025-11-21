@@ -511,6 +511,26 @@ $router->post("/my/account", function() {
         $currentuser = $auth->getuserbyid($currentuser->id);
     }
 
+    if(isset($_POST["selectedserver"]) && $currentuser){
+
+        $selectedserver = $_POST["selectedserver"];
+
+        $gameserver = new \watrbx\gameserver();
+        $serverinfo = $gameserver->get_server_info($selectedserver);
+
+        $update = [
+            "gs_preference"=>$selectedserver
+        ];
+
+        if($serverinfo){
+            $db->table("users")->where("id", $currentuser->id)->update($update);
+        } else {
+            $db->table("users")->where("id", $currentuser->id)->update(["gs_preference"=>NULL]);
+        }
+
+        $currentuser = $auth->getuserbyid($currentuser->id);
+    }
+
 
     if(isset($blurb)){
         $page::get_template("my/account", ["newblurb"=>$blurb]);

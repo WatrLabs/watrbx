@@ -1,6 +1,8 @@
 <?php 
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\authentication;
+use watrbx\gameserver;
+$gameserver = new gameserver();
 $pagebuilder = new pagebuilder();
 $auth = new authentication();
 $auth->requiresession();
@@ -28,6 +30,7 @@ $pagebuilder->buildheader();
 
 $auth->createcsrf("account");
 
+$allservers = $gameserver->get_all_servers();
 $allthemes = (new \watrbx\themes())->getAllThemes();
 
 if(isset($newblurb)){
@@ -396,6 +399,24 @@ if(isset($newblurb)){
                         ?>
                         
                       </select>
+                      <span class="field-validation-valid" data-valmsg-for="ChatVisibilityPrivacy" data-valmsg-replace="true"></span>
+                    </span>
+                  </div>
+                  <div id="ChatSetting" class="SettingSubTitle">
+                    <span class="form-label">Server Preference</span>
+                    <span>
+                      <select class="form-select" name="selectedserver">
+                          <option value='none'>None</option>
+                        <?php
+                            foreach($allservers as $server){
+                                $selected = ($currentuser->gs_preference == $server->server_id) ? 'selected="selected"' : '';
+                                echo "<option value='$server->server_id' $selected>$server->server_id</option>";
+                            }
+                        ?>
+                        
+                      </select>
+                      <br>
+                      <small>(only takes effect when launching a server)</small>
                       <span class="field-validation-valid" data-valmsg-for="ChatVisibilityPrivacy" data-valmsg-replace="true"></span>
                     </span>
                   </div>
