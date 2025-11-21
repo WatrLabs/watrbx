@@ -22,8 +22,8 @@ class gameserver {
         $auth = new authentication();
         $this->connecting_user = $auth->geolocateip($ip);
 
-        $this->close_server = $this->get_closest_server();
-        $this->grid = $this->get_grid($this->close_server);
+        $this->server = $this->get_user_server();
+        $this->grid = $this->get_grid($this->server);
 
     }
 
@@ -76,6 +76,36 @@ class gameserver {
 
     public function get_server_url($serverinfo){
         return "http://" . $serverinfo->wireguard_ip . ":" . $serverinfo->port;
+    }
+
+    public function get_user_server($userid = null){
+
+        global $currentuser;
+        $auth = new authentication();
+
+        if(!$userid){
+            if($currentuser){
+                $userinfo = $currentuser;
+            }
+        } else {
+            $userinfo = $auth->getuserbyid($userid);
+        }
+
+        if($userinfo){
+            if($userinfo->gs_preference){
+                $serverinfo = $this->get_server_info($userinfo->gs_preference);
+
+                if($serverinfo){
+                    return $serverinfo;
+                }
+            }
+        }
+        
+        
+        // if they don't have a gs preference or something went wrong as a fall back
+        return $this->get_closest_server();
+
+
     }
 
     public function get_closest_server(){
@@ -215,7 +245,7 @@ class gameserver {
 
     public function execute_job($jobinfo, $scriptinfo){
 
-        $server = $this->close_server;
+        $server = $this->server;
         $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         $Result = $Grid->OpenJobEx($jobinfo, $scriptinfo);
         return $Result; 
@@ -242,7 +272,8 @@ class gameserver {
         $pagebuilder = new pagebuilder();
         $jobid = $func->createjobid();
         $port = $this->gen_port();
-        $close_server = $this->close_server;
+        $close_server = $this->server;
+        
         $apikey = $this->create_api_key($jobid);
 
         $insert = array(
