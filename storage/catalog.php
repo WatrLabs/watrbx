@@ -79,8 +79,8 @@ $category = 1;
         if ($featured) $query = $query->where("featured", 1);
         if ($publicdomain) $query = $query->where("publicdomain", 1);
         if(isset($_GET["Keyword"])){
-            $query = $query->where('name', 'LIKE', "%{$keyword}%")
-                   ->orWhere('description', 'LIKE', "%{$keyword}%");
+            $query = $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($keyword) . '%']);
+            $query = $query->whereRaw('LOWER(description) LIKE ?', ['%' . strtolower($keyword) . '%']);
         }
         return $query->get();
     }
