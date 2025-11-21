@@ -69,6 +69,29 @@ $router->get('/api/v1/get-players', function(){
     die(create_success("Succesfully got players!", ["players"=>$playercount]));
 });
 
+$router->get('/Thumbs/BCOverlay.ashx', function(){
+
+    if(isset($_GET["username"])){
+
+        $username = $_GET["username"];
+        $auth = new authentication();
+
+        $userinfo = $auth->getuserbyname($username);
+        
+        if($userinfo){
+            $overlay = $auth->get_bc_overlay($userinfo->id);
+            header("Location: $overlay");
+        } else {
+            header("Location: https://cdn.watrbx.wtf/blank.jpg");
+        }
+    } else {
+        header("Location: https://cdn.watrbx.wtf/blank.jpg");
+    }
+
+    header("Location: https://cdn.watrbx.wtf/blank.jpg");
+
+});
+
 $router->get('/Login/Negotiate.ashx', function() {
     $auth = $_GET["suggest"] ?? 0;
     

@@ -26,6 +26,7 @@ class thumbnails {
         "headshot" => "user_headshot.lua"
     ];
 
+
     function __construct(){
         $this->thumb_url = "/";
     }
@@ -50,7 +51,8 @@ class thumbnails {
         if ($jobinfo->assetid !== null) {
             $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
             if($assetinfo){
-                if(isset($this->luaFiles["$jobinfo->jobtype"])){
+                
+                if(isset($this->luaFiles["$assetinfo->prodcategory"])){
 
                     if($isCron){
                         echo "\n./storage/lua/" . $this->luaFiles["$assetinfo->prodcategory"];
@@ -58,8 +60,8 @@ class thumbnails {
 
                     return file_get_contents("./storage/lua/" . $this->luaFiles["$assetinfo->prodcategory"]);
                 }
-            }
-        }
+            } 
+        } 
 
         if($isCron){
             echo "\nReturning Hour Glass...";
@@ -160,7 +162,6 @@ class thumbnails {
         $Open = $Grid->Open($serverUri);
 
         $lua = $this->getLua($jobinfo);
-
         $exploded = explode("x", $jobinfo->dimensions);
 
         $x = $exploded[0];
@@ -176,7 +177,7 @@ class thumbnails {
 
         $jobInfo = [
             "Id"=>$jobinfo->jobid,
-            "Expiration"=>60, // I don't think it should take longer than this to render 
+            "Expiration"=>300, // I don't think it should take longer than this to render 
             "Category"=>1,
             "Cores"=>1
         ];

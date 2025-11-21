@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,7 +77,7 @@
 </div>
     <div class="content">
         <p class="notification">
-            The error page had an error, we'll be back soon!
+            watrbx is undergoing unexpected maintenance. Join our <a href="https://discord.gg/kwX8wvEFw6">discord</a> for more info.
         </p>
     </div>
 

@@ -19,6 +19,8 @@ $thumbnail = new thumbnails();
 $gameserver = new gameserver();
 $func = new sitefunctions();
 
+ini_set('default_socket_timeout', 300);
+
 //$isRunning = $func->get_setting("CRON_RUNNING");
 
 //if($isRunning == "true"){

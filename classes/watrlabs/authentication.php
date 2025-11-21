@@ -43,7 +43,7 @@ class authentication {
         } elseif($userinfo->membership == "OutrageousBuildersClub"){
             return "/images/icons/overlay_obcOnly.png";
         } else {
-            return null;
+            return "https://cdn.watrbx.wtf/blank.jpg";
         }
     }
 
@@ -383,6 +383,12 @@ class authentication {
         return $query->first();
     }
 
+    public function getuserbyname($name){
+        global $db;
+        $query = $db->table("users")->where("username", $name);
+        return $query->first();
+    }
+
     private function is_session_valid($session){
 
         global $db;
@@ -489,7 +495,7 @@ class authentication {
     
     static function verifycaptcha($captcha){
         $url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-        $post_data = array('secret' => $_ENV["TurnStileKey"], "response"=>$captcha);
+        $post_data = array('secret' => $_ENV["PrivateTurnstileKey"], "response"=>$captcha);
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -812,13 +818,13 @@ class authentication {
     }
 
     public function geolocateip($ip){
-        $ch = curl_init('https://ipwho.is/'.$ip);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        $ipwhois = json_decode(curl_exec($ch), true);
-        curl_close($ch);
+        //$ch = curl_init('https://ipwho.is/'.$ip);
+        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //curl_setopt($ch, CURLOPT_HEADER, false);
+        //$ipwhois = json_decode(curl_exec($ch), true);
+        //curl_close($ch);
 
-        return $ipwhois;
+        //return $ipwhois;
     }
     
 
