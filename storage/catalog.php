@@ -63,21 +63,17 @@ $category = 1;
     $page = 1;
     $limit = 35;
 
-    function getCatalogQuery($db, $prodCategories, $featured = false, $publicdomain = false) {
-        $query = $db->table("assets")->whereIn("prodcategory", $prodCategories)->orderBy("created", "DESC");
-        if ($featured) $query = $query->where("featured", 1);
-        if ($publicdomain) $query = $query->where("publicdomain", 1);
-        if (isset($keyword)) $query = $query->where("name", "LIKE", $keyword);
-        return $query->get();
-    }
-
     if(isset($_GET["Keyword"])){
         $keyword = $_GET["Keyword"];
     }
 
-    if(isset($_GET["Keyword"])) {
-    $keyword = $_GET["Keyword"];
-}
+    function getCatalogQuery($db, $prodCategories, $featured = false, $publicdomain = false) {
+        $query = $db->table("assets")->whereIn("prodcategory", $prodCategories)->orderBy("created", "DESC");
+        if ($featured) $query = $query->where("featured", 1);
+        if ($publicdomain) $query = $query->where("publicdomain", 1);
+        if ($keyword) $query = $query->where("name", "LIKE", $keyword);
+        return $query->get();
+    }
 
     if(isset($_GET["Category"])) {
         $category = (int)$_GET["Category"];
