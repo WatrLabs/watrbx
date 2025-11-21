@@ -160,7 +160,6 @@ $category = 1;
 
     $assets = array_splice($assets, $offset, $limit);
     
-    var_dump($keyword);
 
 ?>
 
