@@ -13,6 +13,7 @@ $category = 1;
     global $db;
 
     $limit = 42;
+    $keyword = null;
 
     $assetTypes = array(
     'Image' => 1,
@@ -62,103 +63,91 @@ $category = 1;
     $page = 1;
     $limit = 35;
 
-    if(isset($_GET["Category"])){
+    function getCatalogQuery($db, $prodCategories, $featured = false, $publicdomain = false) {
+        $query = $db->table("assets")->whereIn("prodcategory", $prodCategories)->orderBy("created", "DESC");
+        if ($featured) $query = $query->where("featured", 1);
+        if ($publicdomain) $query = $query->where("publicdomain", 1);
+        if (isset($keyword)) $query = $query->where("name", "LIKE", $keyword);
+        return $query->get();
+    }
+
+    if(isset($_GET["Keyword"])){
+        $keyword = $_GET["Keyword"];
+    }
+
+    if(isset($_GET["Keyword"])) {
+    $keyword = $_GET["Keyword"];
+}
+
+    if(isset($_GET["Category"])) {
         $category = (int)$_GET["Category"];
         $subcategory = 0;
 
-        if(isset($_GET["Subcategory"])){
+        if(isset($_GET["Subcategory"])) {
             $subcategory = (int)$_GET["Subcategory"];
         }
 
-        if(isset($_GET["PageNumber"])){
+        if(isset($_GET["PageNumber"])) {
             $page = (int)$_GET["PageNumber"];
         }
 
-        
         if($category == 1){
             // All Categories
-            
             $alltext = "ALL CATEGORIES";
-            $assets = $db->table("assets")->whereIn("prodcategory", [2, 8, 11, 12, 17, 18, 19, 32])->orderBy("created", "DESC")->get();
+            $assets = getCatalogQuery($db, [2, 8, 11, 12, 17, 18, 19, 32]);
         } elseif($category == 4){
-          
             // Body Parts
-
             $alltext = "All Body Parts";
-            $assets = $db->table("assets")->whereIn("prodcategory", [17, 18, 32])->orderBy("created", "DESC")->get();
+            $prodCategories = [17, 18, 32];
 
             if($subcategory == 15){
-                // Heads
                 $alltext = "All Heads";
-                $assets = $db->table("assets")->whereIn("prodcategory", [17])->orderBy("created", "DESC")->get();
+                $prodCategories = [17];
             } elseif($subcategory == 10){
-                // Faces
                 $alltext = "All Faces";
-                $assets = $db->table("assets")->whereIn("prodcategory", [18])->orderBy("created", "DESC")->get();
-            } elseif($subcategory == 10){
-                // Faces
-                $alltext = "All Faces";
-                $assets = $db->table("assets")->where("featured", 1)->whereIn("prodcategory", [18])->orderBy("created", "DESC")->get();
+                $prodCategories = [18];
             } elseif($subcategory == 11){
-                // Packages
                 $alltext = "All Packages";
-                $assets = $db->table("assets")->whereIn("prodcategory", [32])->orderBy("created", "DESC")->get();
+                $prodCategories = [32];
             }
-            
+
+            $assets = getCatalogQuery($db, $prodCategories);
         } elseif($category == 3){
             // All Clothing
-
             $alltext = "All Clothing";
-            $assets = $db->table("assets")->whereIn("prodcategory", [2, 8, 11, 12, 32])->orderBy("created", "DESC")->get();
+            $prodCategories = [2, 8, 11, 12, 32];
 
-            // Hats, Shirts, T-Shirts, Pants, Packages
-            if($subcategory == 3){
-                $alltext = "All Clothing";
-                $assets = $db->table("assets")->whereIn("prodcategory", [2, 8, 11, 12, 32])->orderBy("created", "DESC")->get();
-            } elseif($subcategory == 9){
-                // Hats
+            if($subcategory == 9){
                 $alltext = "All Hats";
-                $assets = $db->table("assets")->whereIn("prodcategory", [8])->orderBy("created", "DESC")->get();
+                $prodCategories = [8];
             } elseif($subcategory == 11){
-                // Packages
                 $alltext = "All Packages";
-                $assets = $db->table("assets")->whereIn("prodcategory", [32])->orderBy("created", "DESC")->get();
+                $prodCategories = [32];
             } elseif($subcategory == 12){
-                // Shirts
                 $alltext = "All Shirts";
-                $assets = $db->table("assets")->whereIn("prodcategory", [11])->orderBy("created", "DESC")->get();
+                $prodCategories = [11];
             } elseif($subcategory == 13){
-                // T-Shirts
                 $alltext = "All T-Shirts";
-                $assets = $db->table("assets")->whereIn("prodcategory", [2])->orderBy("created", "DESC")->get();
+                $prodCategories = [2];
             } elseif($subcategory == 14){
-                // Pants
                 $alltext = "All Pants";
-                $assets = $db->table("assets")->whereIn("prodcategory", [12])->orderBy("created", "DESC")->get();
-            } 
+                $prodCategories = [12];
+            }
+
+            $assets = getCatalogQuery($db, $prodCategories);
         } elseif($category == 5){
-                // All Gears
-
-                $alltext = "All Gears";
-                $assets = $db->table("assets")->whereIn("prodcategory", [19])->orderBy("created", "DESC")->get();
+            $alltext = "All Gears";
+            $assets = getCatalogQuery($db, [19]);
         } elseif($category == 6){
-                // All Models
-
-                $alltext = "All Models";
-                $assets = $db->table("assets")->whereIn("prodcategory", [10])->orderBy("created", "DESC")->get();
+            $alltext = "All Models";
+            $assets = getCatalogQuery($db, [10]);
         } elseif($category == 8){
-                // All Decals
-
-                $alltext = "All Decals";
-                $assets = $db->table("assets")->where("publicdomain", 1)->where("prodcategory", 13)->orderBy("created", "DESC")->get();
-        }elseif($category == 9){
-                // All Audio
-
-                $alltext = "All Audios";
-                $assets = $db->table("assets")->whereIn("prodcategory", [3])->orderBy("created", "DESC")->get();
+            $alltext = "All Decals";
+            $assets = getCatalogQuery($db, [13], false, true);
+        } elseif($category == 9){
+            $alltext = "All Audios";
+            $assets = getCatalogQuery($db, [3]);
         }
-
-
     }
 
     $count = count($assets);
@@ -171,6 +160,7 @@ $category = 1;
 
     $assets = array_splice($assets, $offset, $limit);
     
+    var_dump($keyword);
 
 ?>
 
@@ -187,7 +177,7 @@ $category = 1;
             <h1><a href="/catalog" id="CatalogLink">Catalog</a></h1>
         </div>
     <div class="CatalogSearchBar">
-        <input id="keywordTextbox" name="name" type="text" class="translate text-box text-box-small" />
+        <input id="keywordTextbox" name="name" type="text" class="translate text-box text-box-small" <?php if(isset($keyword)){ echo "value=\"" .  htmlspecialchars($keyword) . "\"";  } ?> />
         <div style="height:23px;border:1px solid #a7a7a7;padding:2px 2px 0px 2px;margin-right:6px;float:left;position:relative">
             <!--[if IE7]>
                 <div style="height:19px;width:131px;position:absolute;top:2px;left:2px;border:1px solid white"></div>
@@ -428,7 +418,7 @@ $category = 1;
 </div>                               </div>
 
     <div class="right-content divider-left">
-<a href="#breadcrumbs=category" class="breadCrumbFilter bolded selected" data-filter="category"><?=$alltext?></a>
+<a href="#breadcrumbs=category" class="breadCrumbFilter bolded selected" data-filter="category"><?=$alltext?> <?php if(isset($keyword)){ echo " » " . htmlspecialchars($keyword); } ?></a>
         <div id="secondRow">
             <div style="float:left;padding-top:5px">
 
@@ -510,7 +500,7 @@ $category = 1;
 <script type="text/javascript">
     $(function () {
         Roblox.require(['Pages.Catalog', 'Pages.CatalogShared', 'Widgets.HierarchicalDropdown'], function (catalog) {
-            var pagestate = { "Category": <?=$category?>, <? if(isset($subcategory)) { echo '"Subcategory": ' . $subcategory . ","; }  ?> "CurrencyType": 0, "SortType": 0, "SortAggregation": 3, "SortCurrency": 0, "AssetTypes": null, "Gears": null, "Genres": null, "Keyword": null, "PageNumber": <?=$page?>, "Creator": null, "PxMin": 0, "PxMax": 0 };
+            var pagestate = { "Category": <?=$category?>, <? if(isset($subcategory)) { echo '"Subcategory": ' . $subcategory . ","; }  ?> "CurrencyType": 0, "SortType": 0, "SortAggregation": 3, "SortCurrency": 0, "AssetTypes": null, "Gears": null, "Genres": null, "Keyword": <?php if(isset($keyword)){ echo "'" . htmlspecialchars($keyword) . "'"; } else { echo "null"; }?>, "PageNumber": <?=$page?>, "Creator": null, "PxMin": 0, "PxMax": 0 };
             catalog.init(pagestate, 1);
             Roblox.Widgets.HierarchicalDropdown.init();
             if(Roblox.CatalogValues.ContainerID)
