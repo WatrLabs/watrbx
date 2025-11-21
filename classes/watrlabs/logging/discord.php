@@ -46,7 +46,6 @@ class discord {
     }
 
     public function send_webhook($url, $username = null, $msg = null, $embed = null){
-        return true;
         $timestamp = date("c", strtotime("now"));
 
         $json_data = json_encode([
