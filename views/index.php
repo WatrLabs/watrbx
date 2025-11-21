@@ -5,6 +5,8 @@ $auth = new authentication();
 
 $func = new sitefunctions();
 $canregister = $func->get_setting("CAN_REGISTER");
+$captchaEnabled = $func->get_setting("CaptchaEnabled");
+
 
 if($auth->hasaccount()){
     header("Location: /home");
@@ -668,7 +670,13 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     </div>
     
     <div class="captcha-container" ng-controller="CaptchaController" ng-form name="captchaForm" rbx-form-context context="RollerCoaster" ng-cloak ng-show="isSectionShown">
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAABQTr-o6NowkS_zl" data-callback="onTurnstileSuccess">></div>
+        <?php
+
+                if($captchaEnabled){
+                    echo '<div class="cf-turnstile" data-sitekey=" '. $_ENV["TurnstileSiteKey"].'" data-callback="onTurnstileSuccess"></div>';
+                }
+
+        ?>
         <div class="captcha-response-message rbx-text-danger" ng-bind="$validationMessage"></div>
         <script type="text/javascript">
 		var RecaptchaOptions = {
@@ -681,11 +689,28 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 <script>
 
     const signupbtn = document.getElementById("SignupButton");
+
+    signupbtn.disabled = true;
     
     canregister = "<?=$canregister?>"
-    signupbtn.disabled = true;
+    const captchaenabled = "<?=$captchaEnabled?>";
+
+    function checkCaptcha() {
+        if (captchaenabled == "false") {
+            signupbtn.disabled = false;
+            return false;
+        }
+    }
+
+    console.log(captchaenabled);
+
+    checkCaptcha();
 
     function onTurnstileSuccess(token) {
+
+        checkCaptcha();
+
+        
 
         if(canregister == "false"){
             return;
@@ -719,6 +744,8 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     }
     
     signupbtn.disabled = true;
+
+    checkCaptcha();
 
 </script>
 
@@ -940,6 +967,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 <script>
     setTimeout(function() {
         signupbtn.disabled = true;
+        checkCaptcha();
     }, 500);
 </script>
 </body>

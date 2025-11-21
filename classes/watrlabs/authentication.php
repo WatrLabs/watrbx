@@ -205,7 +205,7 @@ class authentication {
                 'expiration' => $expiration
             );
             $insertId = $db->table('sessions')->insert($data);
-            setcookie(".ROBLOSECURITY", $session, $expiration, "/", ".watrbx.wtf");
+            setcookie(".ROBLOSECURITY", $session, $expiration, "/", "." . $_ENV["APP_DOMAIN"]);
         } else {
 
             $data = array(
@@ -216,7 +216,7 @@ class authentication {
                 'expiration' => $expiration
             );
             $insertId = $db->table('sessions')->insert($data);
-            setcookie(".ROBLOSECURITY", $session, $expiration, '/', '.watrbx.wtf');
+            setcookie(".ROBLOSECURITY", $session, $expiration, '/', '.' . $_ENV["APP_DOMAIN"]);
         }
         
         return $session;
@@ -291,7 +291,7 @@ class authentication {
         $altcount = count($alts);
 
         if($altcount > 5){
-            setcookie("noregister", 1, time() + 9999999, "/", ".watrbx.wtf");
+            setcookie("noregister", 1, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
             return array("code"=>400, "message"=>"You have too many alts!");
         }
 
@@ -796,7 +796,13 @@ class authentication {
             $response = json_decode(curl_exec($ch), true);
             curl_close($ch);
 
-            $isVPN = $response["block"] == 1;
+            if(isset($response["block"])){
+                $isVPN = $response["block"] == 1;
+            } else {
+                return false; // should I make it so it can flood open or closed?
+            }
+
+            
 
         } catch (ErrorExcpetion $e) {
             return true; // would rather not have people signup while api is down, might change 

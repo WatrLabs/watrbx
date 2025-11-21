@@ -336,7 +336,7 @@ $pagebuilder->buildheader();
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="<?= $userinfo->id ?>"
-     data-domain="watrbx.wtf"
+     data-domain="<?=$_ENV["APP_DOMAIN"]?>"
      data-gamespagelink="/games"
      data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
@@ -344,7 +344,7 @@ $pagebuilder->buildheader();
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://www.watrbx.wtf/"
+     data-notificationsdomain="https://www.<?=$_ENV["APP_DOMAIN"]?>/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true

@@ -42,15 +42,15 @@
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="<?=$currentuser->id?>"
-     data-domain="watrbx.wtf"
-     data-gamespagelink="https://www.watrbx.wtf/games"
+     data-domain="<?=$_ENV["APP_DOMAIN"]?>"
+     data-gamespagelink="https://www.<?=$_ENV["APP_DOMAIN"]?>/games"
      data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
      data-avatarheadshotsmultigetlimit="100"
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://notifications.watrbx.wtf/"
+     data-notificationsdomain="https://notifications.<?=$_ENV["APP_DOMAIN"]?>/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true

@@ -293,7 +293,7 @@ $auth->requiresession();
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="62402235"
-     data-domain="watrbx.wtf"
+     data-domain="<?=$_ENV["APP_DOMAIN"]?>"
      data-gamespagelink="https://www.roblox.com/games"
      data-chatdomain="/"
      data-numberofmembersforpartychrome="6"

@@ -100,7 +100,7 @@ $router->get("/", function() {
 });
 
 $router->get('/agree', function(){
-    setcookie('has_read', 1, time() + 999999999, '', '.watrbx.wtf');
+    setcookie('has_read', 1, time() + 999999999, '', '.' . $_ENV["APP_DOMAIN"]);
     header("Location: /");
 });
 
@@ -384,12 +384,12 @@ $router->get("/games/moreresultscached", function() {
 });
 
 $router->get("/logout", function() {
-    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
     header("Location: /newlogin");
 });
 
 $router->post("/logout", function() {
-    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", ".watrbx.wtf");
+    setcookie(".ROBLOSECURITY", "", time() - 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
     header("Location: /newlogin");
 });
 
@@ -654,13 +654,13 @@ $router->post('/my/character.aspx', function() {
                         
                         $nextpage = $currentpage +1;
 
-                        setcookie("page", $nextpage,  time() + 9999999, "/", ".watrbx.wtf");
+                        setcookie("page", $nextpage,  time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                     } else {
-                        setcookie("page", "1",  time() + 9999999, "/", ".watrbx.wtf");
+                        setcookie("page", "1",  time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                     }
                 } else {
                     $newpage = (int)$exploded[1];
-                    setcookie("page", $newpage,  time() + 9999999, "/", ".watrbx.wtf");
+                    setcookie("page", $newpage,  time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 }
 
             }
@@ -671,30 +671,30 @@ $router->post('/my/character.aspx', function() {
             case "viewheads":
 
                 $page::get_template("avatar", ["currentcategory"=>17]);
-                setcookie("lastcategory", 17, time() + 9999999, "/", ".watrbx.wtf");
+                setcookie("lastcategory", 17, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 die();
             case "viewfaces":
                 $page::get_template("avatar", ["currentcategory"=>18]);
-                setcookie("lastcategory", 18, time() + 9999999, "/", ".watrbx.wtf");
+                setcookie("lastcategory", 18, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 die();
             case "viewhats":
                 $page::get_template("avatar", ["currentcategory"=>8]);
-                setcookie("lastcategory", 8, time() + 9999999, "/", ".watrbx.wtf");
+                setcookie("lastcategory", 8, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 die();
             case "viewtshirts":
                 $page::get_template("avatar", ["currentcategory"=>2]);
-                setcookie("lastcategory", 2, time() + 2, "/", ".watrbx.wtf");
+                setcookie("lastcategory", 2, time() + 2, "/", "." . $_ENV["APP_DOMAIN"]);
                 die();
             case "viewshirts":
                 $page::get_template("avatar", ["currentcategory"=>11]);
-                setcookie("lastcategory", 11, time() + 9999999, "/", ".watrbx.wtf");
+                setcookie("lastcategory", 11, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 die();
             case "viewpants":
-                setcookie("lastcategory", 12, time() + 9999999, "/", ".watrbx.wtf");
+                setcookie("lastcategory", 12, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 $page::get_template("avatar", ["currentcategory"=>12]);
                 die();
             case "viewgear":
-                setcookie("lastcategory", 19, time() + 9999999, "/", ".watrbx.wtf");
+                setcookie("lastcategory", 19, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 $page::get_template("avatar", ["currentcategory"=>19]);
                 die();
             default:

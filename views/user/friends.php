@@ -315,7 +315,7 @@ if(!$currentuser){
      chat-view-model="chatViewModel"
      chat-library="chatLibrary"
      data-userid="62402235"
-     data-domain="watrbx.wtf"
+     data-domain="<?=$_ENV["APP_DOMAIN"]?>"
      data-gamespagelink="https://www.roblox.com/games"
      data-chatdomain="/"
      data-numberofmembersforpartychrome="6"
@@ -323,7 +323,7 @@ if(!$currentuser){
      data-userpresencemultigetlimit="100"
      data-intervalofchangetitleforpartychrome="500"
      data-spinner="https://images.rbxcdn.com/4bed93c91f909002b1f17f05c0ce13d1.gif"
-     data-notificationsdomain="https://www.watrbx.wtf/"
+     data-notificationsdomain="https://www.<?=$_ENV["APP_DOMAIN"]?>/"
      data-devicetype="Computer"
      data-inapp=false
      data-smallerchatenabled=true

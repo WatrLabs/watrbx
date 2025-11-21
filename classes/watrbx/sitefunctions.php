@@ -239,7 +239,7 @@ class sitefunctions {
         
         $encoded = json_encode($message);
         $encrypted = $this->encrypt($encoded);
-        setcookie("msg", $encrypted, time() + 500, "/", ".watrbx.wtf");
+        setcookie("msg", $encrypted, time() + 500, "/", "." . $_ENV["APP_DOMAIN"]);
         return $encrypted;
     }
     
@@ -256,10 +256,10 @@ class sitefunctions {
             
             if($decoded["type"] == "error"){
                 $page->build_component("status", ["status"=>"error", "msg"=>$decoded["message"]]);
-                setcookie("msg", $msg, time() - 500, "/", ".watrbx.wtf");
+                setcookie("msg", $msg, time() - 500, "/", "." . $_ENV["APP_DOMAIN"]);
             } elseif($decoded["type"] == "notice"){
                 $page->build_component("status", ["status"=>"confirm", "msg"=>$decoded["message"]]);
-                setcookie("msg", $msg, time() - 500, "/", ".watrbx.wtf");
+                setcookie("msg", $msg, time() - 500, "/", "." . $_ENV["APP_DOMAIN"]);
             } else {
                 throw new Exception('Invalid message type!');
             }

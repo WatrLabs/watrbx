@@ -267,7 +267,7 @@ class gameserver {
                 "port"=>(int)$port,
                 "sleeptime"=>(int)10, // honestly don't know what this does
                 "access"=>$apikey,
-                "baseUrl"=>"watrbx.wtf",
+                "baseUrl"=>$_ENV["APP_DOMAIN"],
                 "protocol"=>"http://",
                 "apiKey"=>$apikey,
                 "matchmakingContextId"=>$context,
