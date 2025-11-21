@@ -57,8 +57,8 @@ class gameserver {
         $lon2 = deg2rad($lon2);
 
         
-        $deltaLat = ($lat2 - $lat1) * pi() / 180;
-        $deltaLon = ($lon2 - $lon1) * pi() / 180;
+        $deltaLat = $lat2 - $lat1;
+        $deltaLon = $lon2 - $lon1;
 
         $a = sin($deltaLat / 2) * sin($deltaLat / 2) +
             cos($lat1) * cos($lat2) *
@@ -82,33 +82,42 @@ class gameserver {
         $all_servers = $this->get_all_servers();
         $auth = new authentication();
 
+        $min_dis = PHP_INT_MAX;
+        $close_server = null;
+
         if($all_servers !== null){
             foreach ($all_servers as $server){
-                $serverlocate = $auth->geolocateip($server->wireguard_ip);
+
+                $serverlocate = $auth->geolocateip($server->ip);
 
                 if(!isset($this->connecting_user["latitude"]) || !isset($this->connecting_user["longitude"])){
                     $this->connecting_user["longitude"] = 0;
                     $this->connecting_user["latitude"] = 0;
                 }
 
+                if(!isset($serverlocate["latitude"]) || !isset($serverlocate["longitude"])){
+                    $serverlocate["longitude"] = 0;
+                    $serverlocate["latitude"] = 0;
+                }
+
                 $user_lat = $this->connecting_user["latitude"];
                 $user_lon = $this->connecting_user["longitude"];
 
-                $server_lat = "33.7485";
-                $server_lon = "-84.3871";
+                $server_lat = $serverlocate["latitude"];
+                $server_lon = $serverlocate["longitude"];
 
-                $min_dis = PHP_INT_MAX;
                 $distance = $this->calc_distance($user_lat, $user_lon, $server_lat, $server_lon);
-
-                $close_server = null;
 
                 if ($distance < $min_dis) {
                     $min_dis = $distance;
                     $close_server = $server;
                 }
-                return $close_server;
 
             }
+
+            error_log("\nChose Server: " . $close_server->server_id);
+
+            return $close_server;
         } else {
             return false;
         }
@@ -162,7 +171,6 @@ class gameserver {
 
         $server = $this->get_server_info($jobinfo->server);
 
-        $server = $this->close_server;
         $Grid = new \watrbx\Grid\Grid;
         //$Grid = $Grid->Close("https://group-she.gl.at.ply.gg:49837");
         $Grid = new \watrbx\Grid\Close\Service("http://" . $server->wireguard_ip . ":" . $server->port);
