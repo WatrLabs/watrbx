@@ -146,8 +146,6 @@ class gameserver {
 
             }
 
-            error_log("\nChose Server: " . $close_server->server_id);
-
             return $close_server;
         } else {
             return false;
@@ -294,7 +292,7 @@ class gameserver {
         
         $jobInfo = [
             "Id"=>$jobid,
-            "Expiration"=>120, 
+            "Expiration"=>300, 
             "Category"=>1, // Still have yet to learn what this does
             "Cores"=>2 
         ];

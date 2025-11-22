@@ -4,6 +4,7 @@ use watrlabs\authentication;
 use watrbx\gameserver;
 use watrbx\sitefunctions;
 use watrlabs\api;
+use watrlabs\logging\discord;
 
 
 global $router; // IMPORTANT: KEEP THIS HERE!
@@ -271,6 +272,44 @@ $router->post('/Error/Grid.ashx', function(){
 
 $router->get('/Game/ReportSystats.ashx', function() {
 
+    $systats = [
+        "tochigi"   => "Scorn Replication (11:0)",
+        "baseball"  => "MD5 Hash wasn't correct",
+        "impala"    => "Impossible Error (31) OR Scorn Impossible Error (31:12)",
+        "robert"    => "WriteCopy changed (30)",
+        "moded"     => "Stealth Edit Revival (29)",
+        "booing"    => "Tried to modify hash function (28)",
+        "bobby"     => "Function Return Check Failed (27)",
+        "vera"      => "Tried to get build tools (26)",
+        "vegah"     => "VEH used (25)",
+        "fisher"    => "HumanoidState::computeEvent changed (24)",
+        "dallas"    => "DLL Injection (23)",
+        "tomy"      => "Sandbox or VM detected (22)",
+        "usain"     => "Speedhack. (21)",
+        "carol"     => "Lua vm hooked (20)",
+        "steven"    => "OSX hash changed (19)",
+        "larry"     => "Our VEH hook removed (18)",
+        "mal"       => "Any New CE Method (17)",
+        "ebx"       => "HumanoidState::computeEvent changed ebx (16)",
+        "terrance"  => "Early null weak pointer (15)",
+        "ursula"    => "Lua hash changed (14)",
+        "bruger"    => "Speculative Call Check (13)",
+        "seth"      => "SEH chain into dll (12)",
+        "curly"     => "Hooked API function (11)",
+        "olivia"    => "Debugger found (10)",
+        "norman"    => "Lua script hash changed (9)",
+        "mallory"   => "Catch executable acccess violation (8)",
+        "lance"     => "Const Changed (7)",
+        "jack"      => "Invalid bytecode (6)",
+        "imogen"    => "Memory hash changed (5)",
+        "ivan"      => "Illegal scripts (4)",
+        "omar"      => "Bad signature (3)",
+        "moe"       => "detected HWBP (2)",
+        "lafayette" => "xxhash broken (1)",
+        "murdle"    => "Cheat Engine Stable/Citeful Methods (0)",
+    ];
+
+
     $gameserver = new gameserver();
     $auth = new authentication();
     $sitefunc = new sitefunctions();
@@ -288,7 +327,11 @@ $router->get('/Game/ReportSystats.ashx', function() {
         
         if($cheater){
             $discord = new discord();
-            $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $cheater->username . " - Code " . $message);
+            $info = "None.";
+            if(isset($systats[$message])){
+                $info = $systats[$message];
+            }
+            $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $cheater->username . " - Code " . $message . "\nInfo: " . $info);
             http_response_code(200);
         } 
         
@@ -341,7 +384,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["8840546af2ac2613a46a133721e10a27", "1b177df0756b16eb6a6fd18b2086fad7"]}');
+    die('{"data":["ca26cd656f49f7d1aef0e0dc12a4e80f"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)

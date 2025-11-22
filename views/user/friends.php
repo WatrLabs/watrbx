@@ -28,6 +28,10 @@ if(!$currentuser){
     header("Location: /newlogin");
 }
 
+if(!$thepageuser){
+    header("Location: /");
+}
+
 ?>
 
 <div class="content  ">
