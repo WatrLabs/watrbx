@@ -312,7 +312,8 @@ $router->get('/{slug}-item', function($thing){
             $page = new pagebuilder;
             $page::get_template("item", array("asset"=>$asset));
         } else {
-            die($router->return_status(404));
+            $router->return_status(404);
+            die();
         }
 
     } else {
@@ -544,7 +545,7 @@ $router->get('/Help/Builderman.aspx', function(){
     
     $page = new pagebuilder;
 
-    $fastflags = new fastflags();
+    $fastflags = new \watrlabs\fastflags();
     
     if($fastflags::get("RedirectHelpToSubdomain")){
         header('Location: https://help.watrbx.wtf');

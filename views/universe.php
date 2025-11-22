@@ -40,7 +40,8 @@ $gameinfo = $query->first();
 
 
 if($gameinfo == null){
-    die($router->return_status(404));
+    $router->return_status(404);
+    die();
 } else {
     $visits = count($db->table("visits")->where("universeid",$gameinfo->assetid)->get());
     $visits = number_format($visits);

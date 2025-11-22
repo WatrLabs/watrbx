@@ -54,7 +54,8 @@ if url~=nil then
 	pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(assetGameUrl .. "/Asset/") end)
 	pcall(function() game:GetService("ContentProvider"):SetBaseUrl(url .. "/") end)
 	pcall(function() game:GetService("Players"):SetChatFilterUrl(assetGameUrl .. "/Game/ChatFilter.ashx") end)
-	
+	pcall(function() game:GetService("Players"):SetSysStatsUrl("https://www.watrbx.wtf/Game/ReportSystats.ashx?apikey=" .. access) end)
+
 	if gameCode then
 		game:SetVIPServerId(tostring(gameCode))
 	end

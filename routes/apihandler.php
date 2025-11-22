@@ -1694,22 +1694,24 @@ $router->get('/item-thumbnails', function(){
                     $url = $thumbs->get_asset_thumb($thumbnail->assetId);
                     $assetinfo = $db->table("assets")->where("id", $thumbnail->assetId)->first();
 
-                    $allthumbs[] = [
-                        "id"=>$thumbnail->assetId,
-                        "name"=>$assetinfo->name,
-                        "url"=>"theitem-item?id=" . $thumbnail->assetId,
-                        "thumbnailFinal"=>true,
-                        "thumbnailUrl"=>$url,
-                        "bcOverlayUrl"=>null,
-                        "limitedOverlayUrl"=>null,
-                        "deadlineOverlayUrl"=>null,
-                        "limitedAltText"=>null,
-                        "newOverlayUrl"=>null,
-                        "imageSize"=>"large",
-                        "saleOverlayUrl"=>null,
-                        "iosOverlayUrl"=>null,
-                        "transparentBackground"=>true
-                    ];
+                    if($assetinfo){
+                        $allthumbs[] = [
+                            "id"=>$thumbnail->assetId,
+                            "name"=>$assetinfo->name,
+                            "url"=>"theitem-item?id=" . $thumbnail->assetId,
+                            "thumbnailFinal"=>true,
+                            "thumbnailUrl"=>$url,
+                            "bcOverlayUrl"=>null,
+                            "limitedOverlayUrl"=>null,
+                            "deadlineOverlayUrl"=>null,
+                            "limitedAltText"=>null,
+                            "newOverlayUrl"=>null,
+                            "imageSize"=>"large",
+                            "saleOverlayUrl"=>null,
+                            "iosOverlayUrl"=>null,
+                            "transparentBackground"=>true
+                        ];
+                    }
 
                     die("$jsoncallback(".json_encode($allthumbs).")");
                 }
