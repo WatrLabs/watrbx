@@ -82,6 +82,7 @@ class gameserver {
 
         global $currentuser;
         $auth = new authentication();
+        $userinfo = null;
 
         if(!$userid){
             if($currentuser){
