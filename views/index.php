@@ -672,8 +672,8 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
     <div class="captcha-container" ng-controller="CaptchaController" ng-form name="captchaForm" rbx-form-context context="RollerCoaster" ng-cloak ng-show="isSectionShown">
         <?php
 
-                if($captchaEnabled){
-                    echo '<div class="cf-turnstile" data-sitekey=" '. $_ENV["TurnstileSiteKey"].'" data-callback="onTurnstileSuccess"></div>';
+                if($captchaEnabled == "true"){
+                    echo '<div class="cf-turnstile" data-sitekey="'. $_ENV["TurnstileSiteKey"].'" data-callback="onTurnstileSuccess"></div>';
                 }
 
         ?>
@@ -708,10 +708,8 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 
     function onTurnstileSuccess(token) {
 
-        checkCaptcha();
-
+        console.log("Turnstile has completed.");
         
-
         if(canregister == "false"){
             return;
         }
