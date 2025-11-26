@@ -7,10 +7,12 @@ use watrlabs\router\Routing;
 
     if($currentuser !== null){
         if($currentuser->is_admin !== 1){
-            die($router->return_status(403));
+            die();
+            $router->return_status(403);
         }
     } else {
-        die($router->return_status(403));
+        die();
+        $router->return_status(403);
     }
 
 $assetTypes = array(

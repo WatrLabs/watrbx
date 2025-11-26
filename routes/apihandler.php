@@ -1244,6 +1244,80 @@ $router->get('/api/v1/award-robux', function(){
 });
 
 */
+$router->post('/api/v1/audio-creator', function(){
+
+    $router = new Routing();
+    global $currentuser;
+
+    if($currentuser == null){
+        header("Location: /newlogin");
+        die();
+    }
+
+
+    if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_FILES["audio"])){
+        
+        global $db;
+
+        $oneday = time() - 160;
+
+        $created = $db->table("assets")->where("owner", $currentuser->id)->where("updated", ">", $oneday)->count();
+
+        if($created > 20){
+            http_response_code(429);
+            die("Please wait before creating another asset.");
+        }
+
+        $title = htmlspecialchars($_POST["title"]);
+        $description = htmlspecialchars($_POST["description"]);
+        $md5 = md5_file($_FILES["audio"]["tmp_name"]);
+        $forsale = false;
+
+        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($fileinfo, $_FILES["audio"]["tmp_name"]);
+        finfo_close($fileinfo);
+
+        if($mime !== "audio/mpeg"){
+            die("Only .mp3 files are supported currently.");
+        }
+
+        try {
+
+            global $s3_client;
+
+            $md5 = md5_file($_FILES["audio"]["tmp_name"]);
+            
+            $s3_client->putObject([
+                'Bucket' => $_ENV["R2_BUCKET"],
+                'Key' => $md5,
+                'SourceFile' => $_FILES["audio"]["tmp_name"]
+            ]);
+            
+            $insert2 = array(
+                "prodcategory"=>3,
+                "name"=>$title,
+                "description"=>$description,
+                "robux"=>0,
+                "tix"=>0,
+                "fileid"=>$md5,
+                "created"=>time(),
+                "updated"=>time(),
+                "publicdomain"=>0,
+                "featured"=>0,
+                "owner"=>$currentuser->id
+            );
+
+            $insertid = $db->table("assets")->insert($insert2);
+
+            //header("Location: /catalog");
+            die("Audio uploaded! ID: $insertid");
+        } catch (Exception $exception) {
+            echo "Failed to upload.";
+        }
+
+    }
+});
+
 
 $router->post('/api/v1/decal-creator', function(){
 

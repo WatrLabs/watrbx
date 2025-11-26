@@ -95,51 +95,22 @@ if(!empty($keyword)){
 */
 $query = $db->table("universes");
 
-if($usealgorithm){
-    $query->select("universes.*", "game_recommendations.score")
-        ->join("game_recommendations", "game_recommendations.universeid", "=", "universes.assetid")
-        ->where("universes.public", 1);
 
-   /* if($usenewsearch){
-        if(!empty($keyword)){
-            $fuzzyPattern = '%' . implode('%', str_split(strtolower($keyword))) . '%';
-            
-            $query->where(function($q) use ($keyword, $fuzzyPattern) {
-                $q->where("title", "LIKE", "%" . strtolower($keyword) . "%")
-                ->orWhere("description", "LIKE", "%" . strtolower($keyword) . "%")
-                //"mm2" -> "Murder Mystery 2"
-                ->orWhere("title", "LIKE", $fuzzyPattern);
-            });
-        }
-    } else {*/
-        if(!empty($keyword)){
-            $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
-            $query->where("universes.title", "LIKE", $safeKeyword);
-        }
-    //}
-    $query->orderBy("game_recommendations.score", "DESC");
-} else {
-    $query->where("public", 1);
-     if($usenewsearch){
-        if(!empty($keyword)){
-            $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
-            $safeFuzzyPattern = '%' . implode('%', str_split(str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)))) . '%';
-            
-            $query->where(function($q) use ($safeKeyword, $safeFuzzyPattern) {
-                $q->where("title", "LIKE", $safeKeyword)
-                ->orWhere("description", "LIKE", $safeKeyword)
-                //"mm2" -> "Murder Mystery 2"
-                ->orWhere("title", "LIKE", $safeFuzzyPattern);
-            });
-        }
-    } else {
-        if(!empty($keyword)){
-            $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
-            $query->where("title", "LIKE", $safeKeyword);
-        }
-    }
-    $query->orderBy($db->raw("RAND()"));
+$query->where("public", 1);
+if($usenewsearch){
+if (!empty($keyword)) {
+    $query->where(function($q) use ($keyword) {
+        $q->where('title', 'LIKE', "%{$keyword}%")
+        ->orWhere('description', 'LIKE', "%{$keyword}%");
+    });
 }
+} else {
+if(!empty($keyword)){
+    $safeKeyword = '%' . str_replace(['%', '_'], ['\%', '\_'], strtolower($keyword)) . '%';
+    $query->where("title", "LIKE", $safeKeyword);
+}
+}
+$query->orderBy($db->raw("RAND()"));
 
 $allgames = $query->offset($startrows)->limit($maxrows)->get();
 
