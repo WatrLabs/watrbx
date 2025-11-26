@@ -9,6 +9,8 @@ obviously in development
 if you'd like to contribute that'd be nice
 
 # setup
+**this project uses the fileinfo php extension, make sure to install it**
+
 copy .env.example and rename it to .env (fill it out)
 
 run `composer install` (we use a lot of composer packages)

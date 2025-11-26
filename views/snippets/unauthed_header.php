@@ -262,7 +262,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 
 <?php
 
-if($ismobile == true){ ?>
+if($ismobile == false){ ?>
 
 
 <div id="header"

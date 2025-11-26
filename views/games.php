@@ -11,6 +11,12 @@ $pagebuilder->set_page_name("Games");
 
 $loggedin = $auth->hasaccount();
 
+if($loggedin){
+    $loggedin = "true";
+} else {
+    $loggedin = "false";
+}
+
 $pagebuilder->buildheader();
 
 ?>

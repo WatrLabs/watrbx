@@ -9,6 +9,10 @@ $friendshipcount = $db->table("friends")->where("status", "accepted")->count();
 $commentcount = $db->table("comments")->count();
 $renderjobcount = $db->table("jobs")->where("type", "2")->count();
 
+$deletedcount = $db->table("moderation")->where("type", "deleted")->count();
+
+$usercount = $usercount - $deletedcount;
+
 ?>
 
 <!DOCTYPE html>

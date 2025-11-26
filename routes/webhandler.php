@@ -104,15 +104,14 @@ $router->get('/agree', function(){
     header("Location: /");
 });
 
-$router->get("/temp/cdn-upload", function(){
-    die();
-    $page = new pagebuilder;
-    $page::get_template("temp/cdn-upload");
-});
-
 $router->get("/temp/decal-creator", function(){
     $page = new pagebuilder;
     $page::get_template("temp/decal-creator");
+});
+
+$router->get("/temp/audio-creator", function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/audio-creator");
 });
 
 $router->get('/messages/compose', function(){
