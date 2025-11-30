@@ -961,7 +961,7 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 </script>
 
     
-    <script type='text/javascript' src='/js/5f02340f4e2adcdb0d68be6bd3d7e93c.js'></script>
+    <script type='text/javascript' src='/js/5f02340f4e2adcdb0d68be6bd3d7e93c.js?t=4'></script>
 <script>
     setTimeout(function() {
         signupbtn.disabled = true;

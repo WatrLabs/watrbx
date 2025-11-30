@@ -20,6 +20,7 @@ global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
 
 function create_error($error, $otherstuff = array(), $code = 400){
+    http_response_code($code);
     header("Content-type: application/json");
     $array = array(
         "success"=>false,
@@ -31,6 +32,7 @@ function create_error($error, $otherstuff = array(), $code = 400){
 }
 
 function create_success($msg, $otherstuff = array(), $code = 200){
+    http_response_code($code);
     header("Content-type: application/json");
     $array = array(
         "success"=>true,
@@ -4746,7 +4748,7 @@ $router->post('/api/v1/login', function() {
         } else {
             $func->set_message("Please fill out all fields and try again.");
             header("Location: /newlogin");
-            die(create_error("Please fill out all fields and try again."));
+            die(create_error("Please fill out all fields and try again.",[], 200));
         }
         
         // why not just change the post values? 
@@ -4766,11 +4768,11 @@ $router->post('/api/v1/login', function() {
                 if(isset($result["message"])){
                     $func->set_message($result["message"]);
                     header("Location: /newlogin");
-                    die(create_error($result["message"]));        
+                    die(create_error($result["message"], [], 200));        
                 } else {
                     $func->set_message("Something went wrong. Please try again later.");
                     header("Location: /newlogin");
-                    die(create_error("Something went wrong. Please try again later."));
+                    die(create_error("Something went wrong. Please try again later.", [], 200));
                 }
             }
         } else {
@@ -4781,13 +4783,13 @@ $router->post('/api/v1/login', function() {
             } else {
                 $func->set_message("Something went wrong. Please try again later.");
                 header("Location: /newlogin");
-                die(create_error("Something went wrong. Please try again later."));
+                die(create_error("Something went wrong. Please try again later.", [], 200));
             }
         }
     } else {
         $func->set_message("Please fill out all fields and try again.");
         header("Location: /newlogin");
-        die(create_error("Please fill out all fields and try again."));
+        die(create_error("Please fill out all fields and try again.", [], 200));
     }
 });
 
@@ -4873,14 +4875,6 @@ $router->post('/api/v1/signup', function() {
 
     $captchaEnabled = $func->get_setting("CaptchaEnabled");
 
-    if($captchaEnabled == "true"){
-        if(!isset($_COOKIE["token"])){
-            die(create_error("You must provide a captcha token."));
-            http_response_code(400);
-        }
-    }
-
-
     if(isset($_POST["username"]) && isset($_POST["password"])){
         
         global $db;
@@ -4893,17 +4887,20 @@ $router->post('/api/v1/signup', function() {
         $pass = $_POST["password"];
         $gender = null;
 
-        $func = new sitefunctions();
-        if($func::isbadtext($username)){
-            http_response_code(400);
-            die(create_error("Username is not allowed."));
-        }
-        
         if(isset($_POST["gender"])){
             $gender = (int)$_POST["gender"];
         }
 
+        $func = new sitefunctions();
+        if($func::isbadtext($username)){
+            die(create_error("Username is not allowed.", [], 400));
+        }
+
         if($captchaEnabled == "true"){
+
+            if(!isset($_COOKIE["token"])){
+                die(create_error("You must provide a captcha token.", [], 400));
+            }
 
             $token = $_COOKIE["token"];
 
@@ -4917,9 +4914,10 @@ $router->post('/api/v1/signup', function() {
                     
                     if($result["code"] == 200){
                         $db->table("captchaverified")->where("token", $token->token)->delete();
+
                         die(create_success("Account Created!"));
                     } else {
-                        die(create_error($result["message"], "", 400));
+                        die(create_error($result["message"], [], 400));
                     }
                 } else {
                     die(create_error("Captcha session provided is invalid.", [], 400));
@@ -4934,7 +4932,7 @@ $router->post('/api/v1/signup', function() {
             if($result["code"] == 200){
                 die(create_success("Account Created!"));
             } else {
-                die(create_error($result["message"], "", 400));
+                die(create_error($result["message"], [], 400));
             }
         }
 
