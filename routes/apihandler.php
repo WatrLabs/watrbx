@@ -48,6 +48,100 @@ function get_signature($script)
     return base64_encode($signature);
 }
 
+$router->get('/api/v1/status', function(){
+    $func = new sitefunctions();
+    global $db;
+
+    $ip = $func->getip(true);
+    $apireqcount = $db->table("apireq")->where("apiname", "getstatus")->where("ip", $ip)->where("time", ">", time() - 60)->count();
+    if($apireqcount >= 120){
+        ob_clean();
+        die(create_error("Too many requests!", [], 429));
+    }
+    $db->table("apireq")->insert(["apiname"=>"getstatus", "ip"=>$ip, "time"=>time()]);
+
+    header("Content-type: application/json");
+    
+    $playercount = $db->table("activeplayers")->count();
+    $canregister = (bool)$func->get_setting("CAN_REGISTER");
+    $gamesenabled = (bool)$func->get_setting("GAMES_ENABLED");
+    ob_clean();
+
+    $response = [
+        "ccu"=>$playercount,
+        "canregister"=>$canregister,
+        "gamesenabled"=>$gamesenabled,
+    ];
+
+    die(create_success("We're Okay!", $response));
+});
+
+$router->post('/api/v1/userinfo', function(){
+    $func = new sitefunctions();
+    $auth = new authentication();
+    global $db;
+
+    $ip = $func->getip(true);
+    $apireqcount = $db->table("apireq")->where("apiname", "getuserinfo")->where("ip", $ip)->where("time", ">", time() - 60)->count();
+    if($apireqcount >= 40){
+        header("Content-type: application/json");
+        die(create_error("Too many requests!", [], 429));
+    } else {
+        $db->table("apireq")->insert(["apiname"=>"getuserinfo", "ip"=>$ip, "time"=>time()]);
+
+        $userdata = null;
+
+        if(isset($_POST["username"])){
+            $username = $_POST["username"];
+            $userdata = $auth->getuserbyname($username);
+            
+        }
+
+        if(isset($_POST["userid"])){
+            $userid = (int)$_POST["userid"];
+            $userdata = $auth->getuserbyid($userid);
+        }
+
+        if($userdata){
+            $thumbnails = $db->table("thumbnails")->select(["id", "dimensions", "userid", "mode", "file"])->where("userid", $userdata->id)->get();
+
+            $blurb = null;
+            $about = null;
+
+            if($userdata->blurb){
+                $blurb = htmlspecialchars_decode($userdata->blurb);
+            }
+
+            if($userdata->about){
+                $about = htmlspecialchars_decode($userdata->about);
+            }
+
+            $response = [
+                "id"=>$userdata->id,
+                "username"=>$userdata->username,
+                "membership"=>$userdata->membership,
+                "lastactivewhere"=>$userdata->active_where,
+                "isonline"=>$auth->is_online($userdata->id),
+                "blurb"=>$blurb,
+                "about"=>$about,
+                "created"=>$userdata->regtime,
+                "lastactive"=>$userdata->last_visit,
+                "isAdmin"=>(bool)$userdata->is_admin,
+                "thumbnails"=>$thumbnails
+            ];
+
+            die(create_success("Found User!", $response, 200));
+            
+        } else {
+            die(create_error("Couldn't find user.", [], 404));
+        }
+
+    }
+
+     die(create_error("Bad Request.", [], 400));
+    
+});
+
 
 
 $router->get('/api/v1/get-players', function(){
@@ -3212,7 +3306,10 @@ $router->get('/private-server/instance-list-json', function() {
 
 // TODO: make an actual ticket system so kids dont get hacked bruh
 $router->get('/game/getauthticket', function() {
-   die($_COOKIE["_ROBLOSECURITY"]);  //... why WHYY
+    if(isset($_COOKIE["_ROBLOSECURITY"])){
+        die($_COOKIE["_ROBLOSECURITY"]);
+    }
+    die();
 });
 
 $router->post('/client-status/set', function(){
@@ -3220,7 +3317,7 @@ $router->post('/client-status/set', function(){
 });
 
 $router->get('/client-status', function(){
-    die('{"status":"LeftGame"}'); // TODO   
+    //die('{"status":"LeftGame"}'); // TODO   
 });
 
 //$router->get('/client-status', function(){

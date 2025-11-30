@@ -21,15 +21,15 @@ $func = new sitefunctions();
 
 ini_set('default_socket_timeout', 300);
 
-//$isRunning = $func->get_setting("CRON_RUNNING");
+$isRunning = $func->get_setting("CRON_RUNNING");
 
-//if($isRunning == "true"){
-//    die("\nCron is already running!");
-//}
+if($isRunning == "true"){
+    die("\nCron is already running!");
+}
 
-//$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"true"]);
+$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"true"]);
 
-$serverinfo = $gameserver->get_closest_server();
+$serverinfo = $gameserver->get_server_info("ATLANTA-MID");
 $url = $gameserver->get_server_url($serverinfo);
 
 $Grid = new watrbx\Grid\Grid(null, "https://tjs-nut.pics/i/aj6uj.wsdl");
@@ -121,4 +121,4 @@ foreach ($allofdem as $job) {
     $Close->CloseJob($job->jobid);
 }
 echo "\nCron done.\n";
-//$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);
+$db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);

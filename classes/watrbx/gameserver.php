@@ -242,9 +242,12 @@ class gameserver {
         return $visits;
     }
 
-    public function execute_job($jobinfo, $scriptinfo){
+    public function execute_job($jobinfo, $scriptinfo, $server = null){
 
-        $server = $this->server;
+        if(!$server){
+            $server = $this->server;
+        }
+
         $Grid = new \watrbx\Grid\Open\Service("http://" . $server->wireguard_ip . ":" . $server->port);
         $Result = $Grid->OpenJobEx($jobinfo, $scriptinfo);
         return $Result; 
