@@ -858,6 +858,9 @@ $router->get('/grid-test', function(){
 
 $router->get("/CSS/Base/CSS/FetchCSS", function() {
     // var_dump($_GET);
+
+    $path = "na";
+
     if(!isset($_GET["path"])){
         global $router;
         $router->return_status(404);

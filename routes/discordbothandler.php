@@ -21,7 +21,46 @@ function is_bot_authenticated() {
     }
 }
 
+function isNolanAuthorized(){
+    header("Content-type: application/json");
+
+    if(isset($_SERVER['HTTP_AUTHORIZATION'])){
+
+        $auth = $_SERVER['HTTP_AUTHORIZATION'];
+
+        $apikey = $db->table("nolanapikeys")->where("apikey", $auth)->first();
+
+        if(!$apikey){
+            die(createerror("Discord Bot is not authorized!", [], 401));
+        }
+
+    } else {
+        die(createerror("Discord Bot is not authorized!", '', 401));
+    }
+}
+
+
+
 global $router; // IMPORTANT: KEEP THIS HERE!
+
+$router->group('/api/v1/nolan-bot', function(){
+
+    global $router;
+
+    $router->get('/nodes', function(){
+        global $db;
+        $api = new api();
+
+        $servers = $db->table("servers")->select(["server_id"])->get();
+
+        $successjson = $api::create_success("Found userinfo!", $servers, 200);
+
+        die($successjson);
+
+    });
+
+}, 'isNolanAuthorized');
+
 
 $router->group('/api/v1/discord-bot', function($router) {
 

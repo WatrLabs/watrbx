@@ -150,7 +150,7 @@ class thumbnails {
     public function render_asset($jobinfo){
 
         $gameserver = new gameserver();        
-        $closeserver = $gameserver->get_closest_server(); 
+        $closeserver = $gameserver->get_server_info("ATLANTA-MID"); 
         $serverUri = $gameserver->get_server_url($closeserver);
 
         $theid = null;
@@ -194,7 +194,7 @@ class thumbnails {
             ]
         ];
 
-        return $gameserver->execute_job($jobInfo, $ScriptInfo);
+        return $gameserver->execute_job($jobInfo, $ScriptInfo, $closeserver);
     }
 
     public function get_user_thumb($userid, $size, $type = "full"){

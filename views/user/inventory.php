@@ -9,7 +9,8 @@ $auth = new authentication();
 $otheruserinfo = $auth->getuserbyid($userid);
 
 if($otheruserinfo == null){
-    die($router->return_status(404));
+    $router->return_status(404);
+    die();
 }
 
 

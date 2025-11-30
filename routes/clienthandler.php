@@ -323,6 +323,8 @@ $router->get('/Game/ReportSystats.ashx', function() {
         $message = $_GET["Message"];
         $userid = $_GET["UserID"];
 
+        $prepend = "";
+
         $cheater = $auth->getuserbyid($userid);
         
         if($cheater){
@@ -330,40 +332,15 @@ $router->get('/Game/ReportSystats.ashx', function() {
             $info = "None.";
             if(isset($systats[$message])){
                 $info = $systats[$message];
+
+                if($message == "murdle"){
+                    $prepend = "<@&1400166306128461904> ";
+                }
+
             }
-            $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $cheater->username . " - Code " . $message . "\nInfo: " . $info);
-            http_response_code(200);
-        } 
-        
-    } else {
-        $api = new api;
-        http_response_code(400);
-        die(create_error("I don't think you're a gameserver.", [], 400));
-    }
-    
-});
 
-$router->post('/Game/ReportSystats.ashx', function() {
-
-    $gameserver = new gameserver();
-    $auth = new authentication();
-    $sitefunc = new sitefunctions();
-
-    $ip = $sitefunc->getip();
-    $isgameserver = $gameserver->is_gameserver_ip($ip);
-
-
-    if(isset($_GET["UserID"]) && isset($_GET["Message"]) && $ip){
-        
-        $message = $_GET["Message"];
-        $userid = $_GET["UserID"];
-
-        $cheater = $auth->getuserbyid($userid);
-        
-        if($cheater){
-            $discord = new discord();
-            //$logging->logwebhook("Possible Cheater Detected!\nUser: " . $cheater["username"] . "\nCode: $message");
-            $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $cheater->username . " - Code " . $message);
+            
+            $discord->send_webhook($_ENV["SYSTATS_WEBHOOK"], "Systats Reporter", $prepend . $cheater->username . " - Code " . $message . "\nInfo: " . $info);
             http_response_code(200);
         } 
         
@@ -384,7 +361,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["ca26cd656f49f7d1aef0e0dc12a4e80f"]}');
+    die('{"data":["fa3654fa500ed12f02898b5d6c2cb2cc"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)
