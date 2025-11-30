@@ -421,6 +421,8 @@ class authentication {
         $ip = $func->getip(false);
         $ip = $sanitize::ip($ip);
 
+        $isVPN = $this->isVPN($ip);
+
 
         $update = [
             "last_login_ip"=>$func->encrypt($ip)
@@ -457,7 +459,7 @@ class authentication {
                     } 
                 }, $allalts);
 
-                 $isVPN = $this->isVPN($ip);
+                
 
                 if($isVPN == 1){
                     $vpntext = "Yes";
@@ -490,7 +492,12 @@ class authentication {
                     "code"=>400,
                     "message"=>"Username or password is incorrect!"
                 );
-                $discord->internal_log("Failed Login: " . $user->username . "\nIP: $ip", "Failed Login");
+
+                if($isVPN == 1){
+                    $vpntext = "Yes";
+                }
+
+                $discord->internal_log("Failed Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext", "Failed Login");
                 return $errorjson;
             }
         }

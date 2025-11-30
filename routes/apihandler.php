@@ -3315,10 +3315,12 @@ $router->get('/game/getauthticket', function() {
 });
 
 $router->post('/client-status/set', function(){
-    die('0'); // TODO   
+    //http_response_code(404);
+    //die('0'); // TODO   
 });
 
 $router->get('/client-status', function(){
+    http_response_code(404);
     //die('{"status":"LeftGame"}'); // TODO   
 });
 

@@ -4,6 +4,8 @@ use watrbx\sitefunctions;
 use watrlabs\api;
 use watrlabs\authentication;
 use watrbx\thumbnails;
+use watrbx\gameserver;
+
 
 function is_bot_authenticated() {
     header("Content-type: application/json");
@@ -27,6 +29,8 @@ function isNolanAuthorized(){
     if(isset($_SERVER['HTTP_AUTHORIZATION'])){
 
         $auth = $_SERVER['HTTP_AUTHORIZATION'];
+
+        global $db;
 
         $apikey = $db->table("nolanapikeys")->where("apikey", $auth)->first();
 
@@ -53,10 +57,63 @@ $router->group('/api/v1/nolan-bot', function(){
 
         $servers = $db->table("servers")->select(["server_id"])->get();
 
-        $successjson = $api::create_success("Found userinfo!", $servers, 200);
+        $successjson = $api::create_success("Here is the grid.", $servers, 200);
 
         die($successjson);
 
+    });
+
+    $router->post('/execute', function(){
+        if(isset($_POST["serverid"]) && isset($_POST["lua"])){
+
+            $serverid = $_POST["serverid"];
+            $lua = $_POST["lua"];
+
+            $func = new sitefunctions();
+            $gameserver = new gameserver();
+            $Grid = new \watrbx\Grid\Grid();
+            $api = new api();
+            
+
+            $jobid = $func->createjobid();
+
+            $serverinfo = $gameserver->get_server_info($serverid);
+
+            if($serverinfo){
+
+                $url = $gameserver->get_server_url($serverinfo);
+                $Close = $Grid->Close($url);
+
+                $jobInfo = [
+                    "Id"=>$jobid,
+                    "Expiration"=>120, // I don't think it should take longer than this to execute 
+                    "Category"=>1,
+                    "Cores"=>2
+                ];
+
+                $ScriptInfo = [
+                    "Name"=>"Custom Script",
+                    "Script"=>$lua,
+                    "Arguments"=>[]
+                ];
+
+                [$success, $thing] = $gameserver->execute_job($jobInfo, $ScriptInfo, $serverinfo);
+
+                $Close->CloseJob($jobid);
+
+                if($success){
+                    die($api::create_success("Ran successfully!", ["success"=>$success, "result"=>$thing]));
+                } else {
+                    die($api::create_success("Ran successfully!", ["success"=>$success, "result"=>$thing]));                   
+                }
+
+            } else {
+                die($api::create_error("Failed to find server.", [], 404));
+            }
+
+        } else {
+            die($api::create_error("You didn't post something.", [], 400));
+        }
     });
 
 }, 'isNolanAuthorized');
