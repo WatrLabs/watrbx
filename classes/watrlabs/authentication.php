@@ -241,12 +241,12 @@ class authentication {
 
         if(strlen($username) > 20){
             $discord->internal_log($username . " was too long.", "Failed Signup");
-            return array("code"=>400, "message"=>"Username is too long.");
+            return ["code"=>400, "message"=>"Username is too long."];
         }
 
         if(strlen($username) < 3){
             $discord->internal_log($username . " was too short.", "Failed Signup");
-            return array("code"=>400, "message"=>"Username is too short.");
+            return ["code"=>400, "message"=>"Username is too short."];
         }
 
         global $db;
@@ -256,17 +256,17 @@ class authentication {
 
         if($result !== NULL){
             $discord->internal_log($username . " was already taken!", "Failed Signup");
-            return array("code"=>400, "message"=>"Username has already been taken.");
+            return ["code"=>400, "message"=>"Username has already been taken."];
         }
 
         if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
             $discord->internal_log("Special Usernames detected. :robot:", "Failed Signup");
-            return array("code"=>400, "message"=>"Username has special characters.");
+            return ["code"=>400, "message"=>"Username has special characters."];
         }
 
         if (ctype_space($username)) {
             $discord->internal_log("Special Usernames detected. :robot:", "Failed Signup");
-            return array("code"=>400, "message"=>"Username has special characters.");
+            return ["code"=>400, "message"=>"Username has special characters."];
         }
 
         $allalts1 = $db->table("users")->where("register_ip", $func->encrypt($ip))->get();
@@ -284,7 +284,11 @@ class authentication {
             } 
         }, $allalts);
 
-        $allalts = array_unique($allalts);
+        try {
+            $allalts = array_unique($allalts, SORT_REGULAR);
+        } catch (Error $e){
+            $allallts = [];
+        }
 
         $possiblealts = implode(", ", $alts);
 
@@ -292,7 +296,8 @@ class authentication {
 
         if($altcount > 5){
             setcookie("noregister", 1, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
-            return array("code"=>400, "message"=>"You have too many alts!");
+            $discord->internal_log($username . " had too many accounts.\n\n(possible alts): $possiblealts", "Failed Signup");
+            return ["code"=>400, "message"=>"You have too many accounts!"];
         }
 
         $isVPN = $this->isVPN($ip);
@@ -304,7 +309,7 @@ class authentication {
 
             if($canregister !== "true"){
                 $discord->internal_log($username . " tried signing up with a vpn.", "Failed Signup");
-                return array("code"=>400, "message"=>"Registering with vpns is currently disabled!");
+                return ["code"=>400, "message"=>"Registering with vpns is currently disabled!"];
             }
         }
 
@@ -367,9 +372,8 @@ class authentication {
             $db->table("universes")->insert($universeinsert);
         }
 
-        return array("code"=>"200");
+        return ["code"=>200];
         
-
     }
     
     public function havesession() {
