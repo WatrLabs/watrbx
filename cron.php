@@ -6,6 +6,7 @@
 use watrbx\sitefunctions;
 use watrbx\thumbnails;
 use watrbx\gameserver;
+use watrlabs\logging\discord;
 
 echo "Starting Cron";
 
@@ -18,6 +19,8 @@ $isCron = true;
 $thumbnail = new thumbnails();
 $gameserver = new gameserver();
 $func = new sitefunctions();
+$discord = new discord();
+$discord->set_webhook_url($_ENV["CRON_WEBHOOK"]);
 
 ini_set('default_socket_timeout', 300);
 
@@ -53,6 +56,7 @@ foreach ($allofdem as $job) {
         $id = $job->userid;
     }
     echo "\nRunning $job->jobid (ID: $id)";
+    $discord->internal_log("Starting Job $job->jobid\nID: $id", "Starting Job");
     $result = $thumbnail->render_asset($job);
     if($result[0] == true){
         try {
@@ -89,36 +93,42 @@ foreach ($allofdem as $job) {
                             $insertid = $db->table("thumbnails")->insert($insert);
                             $db->table("jobs")->where("jobid", $job->jobid)->delete();
                             echo "\nJob $job->jobid done.";
+                            $discord->internal_log("Job $job->jobid has finished.", "Job Done");
 
                         } catch(Exception $e){
                             echo "\nSomething went wrong with $job->jobid! $e";
                             $db->table("jobs")->where("jobid", $job->jobid)->delete();
+                            $discord->internal_log("Something went wrong with $job->jobid\n\n$e", "Job Error");
                         }
                     } else {
                         echo "\nSomething went wrong with $job->jobid\n";
                         $db->table("jobs")->where("jobid", $job->jobid)->delete();
-                        var_dump($result);
+                        $discord->internal_log("Something went wrong with $job->jobid\n\n" . $result[1], "Job Error");
                     }
                 } else {
                     echo "\nSomething went wrong with $job->jobid!\n";
                     $db->table("jobs")->where("jobid", $job->jobid)->delete();
+                    $discord->internal_log("Something went wrong with $job->jobid\n\n" . $result[1], "Job Error");
                 }
             } catch (ErrorException $e){
                 $db->table("jobs")->where("jobid", $job->jobid)->delete();
                 echo "\nSomething went wrong with $job->jobid!\n$e";
+                
             }
         } catch(Error $e){
             $db->table("jobs")->where("jobid", $job->jobid)->delete();
             echo "\nSomething went wrong with $job->jobid!\n$e";
+            $discord->internal_log("Something went wrong with $job->jobid\n\n$e", "Job Error");
         }
         
     } else {
         echo "\nSomething went wrong with $job->jobid\n";
         $db->table("jobs")->where("jobid", $job->jobid)->delete();
-        var_dump($result);
+        $discord->internal_log("Something went wrong with $job->jobid\n\n" . $result[1], "Job Error");
     }
 
     $Close->CloseJob($job->jobid);
 }
 echo "\nCron done.\n";
 $db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);
+$discord->internal_log("Queue has finished.", "Queue Finished");
