@@ -36,13 +36,6 @@ $msgcount = $db->table("messages")->where("userto", $userinfo->id)->where("hasre
 
 $count = $pendingfq + $msgcount;
 
-$obc = '';
-
-if($userinfo->membership == "OutrageousBuildersClub"){
-    $obc = '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC3.css">';
-} else {
-    $obc = '';
-}
 
 ?>
 
@@ -70,8 +63,6 @@ if($userinfo->membership == "OutrageousBuildersClub"){
     <?php }}  if(isset($jsfiles)) { foreach ($jsfiles as $url) { ?>
     <script type="text/javascript" src="<?= $url ?>"></script>
     <?php }} ?>
-    <?=$obc?>
-
     <style>
         .original-image {
             height: 100px;

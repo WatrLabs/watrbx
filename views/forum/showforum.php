@@ -5,6 +5,9 @@ $pagebuilder = new pagebuilder();
 $forums = new forums();
 
 $page = 1;
+$islocked = false;
+
+global $currentuser;
 
 if(isset($_GET["ForumID"])){
 	$ForumID = (int)$_GET["ForumID"];
@@ -25,6 +28,15 @@ if(isset($_GET["ForumID"])){
 	http_response_code(404);
 	$pagebuilder::get_template("status_codes/404");
 	die();
+}
+
+if($categoryinfo->locked == 1){
+    $islocked = true;
+    if(isset($currentuser)){
+        if($currentuser->is_admin == 1){
+            $islocked = false;
+        }
+    }
 }
 
 if(isset($_GET["page"])){
@@ -93,11 +105,13 @@ $pagebuilder->buildheader();
 		</td>
 	</tr>
 	<tr style="padding-bottom:5px;">
-		<td vAlign="bottom" align="left">
-		    <a id="ctl00_cphRoblox_ThreadView1_ctl00_NewThreadLinkTop" class="btn-control btn-control-medium verified-email-act" href="/Forum/AddPost.aspx?ForumID=<?=$categoryinfo->id?>">
-				New Thread
-			</a>
-		</td>
+		<? if(!$islocked){ ?>
+            <td vAlign="bottom" align="left">
+                <a id="ctl00_cphRoblox_ThreadView1_ctl00_NewThreadLinkTop" class="btn-control btn-control-medium verified-email-act" href="/Forum/AddPost.aspx?ForumID=<?=$categoryinfo->id?>">
+                    New Thread
+                </a>
+            </td>
+        <? } ?>
 		<td align="right">
 		    <span class="normalTextSmallBold">Search this forum: </span>
 			<input name="ctl00$cphRoblox$ThreadView1$ctl00$Search" type="text" id="ctl00_cphRoblox_ThreadView1_ctl00_Search" />

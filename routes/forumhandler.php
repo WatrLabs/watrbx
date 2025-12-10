@@ -136,6 +136,8 @@ $router->post("/Forum/AddPost.aspx", function() {
     global $db;
     global $currentuser;
 
+    $islocked = false;
+
     if(isset($_COOKIE["csrftoken"])){
         if(!$auth->verifycsrf($_COOKIE["csrftoken"], "addpost")){
             $page::get_template("forum/AddPost", ["message"=>"An unexpected error occured!"]);
@@ -152,6 +154,20 @@ $router->post("/Forum/AddPost.aspx", function() {
         $forumid = (int)$_POST["section_id"];
 
         $foruminfo = $forums->getCategoryInfo($forumid);
+
+        if($foruminfo->locked == 1){
+            $islocked = true;
+            if(isset($currentuser)){
+                if($currentuser->is_admin == 1){
+                    $islocked = false;
+                }
+            }
+        }
+
+        if($islocked){
+            $page::get_template("forum/AddPost", ["message"=>"An unexpected error occured!"]);
+            die();
+        }
 
         if(!$foruminfo){
             $page::get_template("forum/AddPost", ["message"=>"This forum doesn't exist!"]);

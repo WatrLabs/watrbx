@@ -2016,7 +2016,7 @@ $router->get('/ide/toolbox/items', function(){
             if(isset($_GET["keyword"])){
                 $keyword = $_GET["keyword"];
                 if($keyword !== ""){
-                    $query->where("name", "LIKE", $keyword);
+                    $query->where("name", "LIKE", "$keyword");
                 }
             }
 
@@ -4332,8 +4332,10 @@ $router->get('/users/{$userid}/canmanage/{$assetid}', function($userid, $assetid
         }
     }
 
-    if($userinfo->is_admin == 1){
-        $return["CanManage"] = true;
+    if($userinfo){
+        if($userinfo->is_admin == 1){
+            $return["CanManage"] = true;
+        }
     }
 
     die(json_encode($return));

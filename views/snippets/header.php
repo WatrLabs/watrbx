@@ -33,10 +33,6 @@ if(isset($_SERVER['HTTP_USER_AGENT'])){
         $ismobile = true;
     }
 }
-
-$obc = ($userinfo->membership === "OutrageousBuildersClub")
-    ? '<link rel="stylesheet" href="/CSS/Base/CSS/FetchCSS?path=OBC3.css">'
-    : '';
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]><html class="ie8" ng-app="robloxApp"><![endif]-->
@@ -77,7 +73,6 @@ $obc = ($userinfo->membership === "OutrageousBuildersClub")
     <?php }}  if(isset($jsfiles)) { foreach ($jsfiles as $url) { ?>
     <script type="text/javascript" src="<?= $url ?>"></script>
     <?php }} ?>
-    <?=$obc?>
 
     <style>
         .original-image {
