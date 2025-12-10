@@ -284,15 +284,14 @@ class authentication {
             } 
         }, $allalts);
 
-        try {
-            $allalts = array_unique($allalts, SORT_REGULAR);
-        } catch (Error $e){
-            $allallts = [];
+        $unique = [];
+        foreach ($allalts as $row) {
+            $unique[$row->id] = $row;
         }
 
-        $possiblealts = implode(", ", $alts);
+        $possiblealts = implode(", ", $unique);
 
-        $altcount = count($alts);
+        $altcount = count($unique);
 
         if($altcount > 5){
             setcookie("noregister", 1, time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
@@ -449,7 +448,12 @@ class authentication {
 
                 $allalts = array_merge($allalts1, $allalts2);
 
-                $alts = array_map(function($user) {
+                $unique = [];
+                foreach ($allalts as $row) {
+                    $unique[$row->id] = $row;
+                }
+
+                $unique = array_map(function($user) {
                     if($user->last_login_ip !== null){
                         return $user->username;
                     } 
@@ -457,15 +461,13 @@ class authentication {
                     if($user->register_ip !== null){
                         return $user->username;
                     } 
-                }, $allalts);
-
-                
+                }, $unique);
 
                 if($isVPN == 1){
                     $vpntext = "Yes";
                 }
 
-                $possiblealts = implode(", ", $alts);
+                $possiblealts = implode(", ", $unique);
                 $db->table("users")->where("id", $user->id)->update($update);
 
                 if($this->havesession()){

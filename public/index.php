@@ -95,7 +95,9 @@ try {
         }
 
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uri = strtolower($uri);
+        if($uri){
+            $uri = strtolower($uri);
+        }
         $method = $_SERVER['REQUEST_METHOD'];
         
         $response = $router->dispatch($uri, $method);

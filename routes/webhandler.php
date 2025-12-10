@@ -856,6 +856,16 @@ $router->get('/grid-test', function(){
 
 });
 
+$router->get('/legal/tos', function(){
+    $page = new pagebuilder;
+    $page::get_template("tos");
+});
+
+$router->get('/legal/privacy', function(){
+    $page = new pagebuilder;
+    $page::get_template("privacy");
+});
+
 $router->get("/CSS/Base/CSS/FetchCSS", function() {
     // var_dump($_GET);
 
