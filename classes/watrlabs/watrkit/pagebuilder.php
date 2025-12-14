@@ -96,7 +96,7 @@ class pagebuilder {
     public function buildheader() {
         
         $this->addmetatag("og:title", $_ENV["APP_NAME"] . " - " . $this->config['title']);
-        $this->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=watrbx.css&t=6');
+        $this->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=watrbx.css&t=7');
 
         global $currentuser;
         $themes = new \watrbx\themes();
@@ -144,6 +144,7 @@ class pagebuilder {
                     'config' => $this->config
                 ]);
             } else {
+                $this->addresource('cssfiles', '/CSS/Base/CSS/FetchCSS?path=watrbx.css&t=7');
                 $this::get_snippet('unauthed_header', [
                     'cssfiles' => $this->cssfiles,
                     'jsfiles' => $this->jsfiles,
