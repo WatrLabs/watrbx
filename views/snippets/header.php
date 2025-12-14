@@ -303,6 +303,44 @@ Roblox.Endpoints.Urls = Roblox.Endpoints.Urls || {};
 <body id="rbx-body"
       data-performance-relative-value="0.5"
       data-internal-page-name="GameDetail">
+      <div class="snowflakes" aria-hidden="true">
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+  <div class="snowflake">
+    <div class="inner">❅</div>
+  </div>
+</div>
     <div id="roblox-linkify" data-enabled="true" data-regex="(https?\:\/\/)?(?:www\.)?([a-z0-9\-]{2,}\.)*(((m|de|www|web|api|blog|wiki|help|corp|polls|bloxcon|developer|devforum|forum)\.roblox\.com|robloxlabs\.com)|(www\.shoproblox\.com))((\/[A-Za-z0-9-+&amp;@#\/%?=~_|!:,.;]*)|(\b|\s))" data-regex-flags="gm"></div>
 
     
