@@ -361,7 +361,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["fa3654fa500ed12f02898b5d6c2cb2cc"]}');
+    die('{"data":["fa3654fa500ed12f02898b5d6c2cb2cc", "23bc004febe100c9d77f77b44f207213"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)

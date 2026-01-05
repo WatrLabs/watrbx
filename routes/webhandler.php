@@ -674,12 +674,15 @@ $router->post('/my/character.aspx', function() {
                         
                         $nextpage = $currentpage +1;
 
+                        $_COOKIE["page"] = $nextpage;
                         setcookie("page", $nextpage,  time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                     } else {
+                        $_COOKIE["page"] = 1;
                         setcookie("page", "1",  time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                     }
                 } else {
                     $newpage = (int)$exploded[1];
+                    $_COOKIE["page"] = $exploded[1];
                     setcookie("page", $newpage,  time() + 9999999, "/", "." . $_ENV["APP_DOMAIN"]);
                 }
 
@@ -854,6 +857,11 @@ $router->get('/grid-test', function(){
     //    echo $result['ServiceType\GetVersion']->getMessage();
     //}
 
+});
+
+$router->get('/christmas', function(){
+    $page = new pagebuilder;
+    $page::get_template("christmas");
 });
 
 $router->get('/legal/tos', function(){

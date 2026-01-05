@@ -4946,6 +4946,6 @@ $router->post('/api/v1/signup', function() {
         die(create_error("Something wasn't provided or you didn't complete the captcha.", [], 400));
     }
 
-    die(create_error("Something went wrong.", [], 500));    
+    die(create_error("Something went wrong.", [], 500));
     
 });

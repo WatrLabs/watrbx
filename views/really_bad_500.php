@@ -84,5 +84,14 @@
     <script type="text/javascript">
         window.window.setTimeout("window.location = 'https://www.watrbx.wtf/'", 30000);
     </script>
+
+    <!-- 
+        Your Error:
+
+        <?=$e?>
+
+        Report this to waterblox dev.
+        
+    -->
 </body>
 </html>

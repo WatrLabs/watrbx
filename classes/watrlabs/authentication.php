@@ -274,23 +274,12 @@ class authentication {
 
         $allalts = array_merge($allalts1, $allalts2);
 
-        $alts = array_map(function($user) {
-            if($user->last_login_ip !== null){
-                return $user->username;
-            } 
-
-            if($user->register_ip !== null){
-                return $user->username;
-            } 
-        }, $allalts);
-
         $unique = [];
         foreach ($allalts as $row) {
-            $unique[$row->id] = $row;
+            $unique[$row->id] = $row->username;
         }
 
         $possiblealts = implode(", ", $unique);
-
         $altcount = count($unique);
 
         if($altcount > 5){
