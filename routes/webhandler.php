@@ -379,6 +379,7 @@ $router->get("/develop", function() {
 });
 
 $router->get("/games/moreresultscached", function() {
+    header("Cache-Control: public, max-age=300");
     $page = new pagebuilder;
     $page::get_template("results");
 });

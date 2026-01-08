@@ -77,7 +77,7 @@
 </div>
     <div class="content">
         <p class="notification">
-            watrbx is undergoing unexpected maintenance. Join our <a href="https://discord.gg/kwX8wvEFw6">discord</a> for more info.
+            watrbx is undergoing maintenance. Join our <a href="https://discord.gg/kwX8wvEFw6">discord</a> for more info.
         </p>
     </div>
 

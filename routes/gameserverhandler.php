@@ -160,13 +160,12 @@ $router->get("/api/v1/gameserver/mark-active", function(){
 
     $log = new discord();
     
-    $exploded = explode("=", $_GET["jobid"]);
+    $jobid = $_GET["jobid"];
+    $apikey = $_GET["apiKey"];
 
     global $db;
 
-    if(isset($exploded[0]) && isset($exploded[1])){
-        $jobid = $exploded[0];
-        $apikey = $exploded[1];
+    if(isset($jobid) && isset($apikey)){
         $gameserver = new gameserver();
 
         if($gameserver->validate_api_key($apikey)){
