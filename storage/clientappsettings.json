@@ -697,7 +697,7 @@
     "FFlagStudioSendMouseIdleToPluginMouse": "True",
     "DFFlagPhysicsOptimizeAssemblyHistory": "True",
     "DFFlagPhysicsOptimizeBallBallContact": "True",
-    "DFFlagUseNewBubbleSkin": "False",
+    "DFFlagUseNewBubbleSkin": "True",
     "DFFlagUse9FrameBackgroundTransparency": "True",
     "DFFlagCheckForHeadHit": "False",
     "DFFlagUseHttpsForAllCalls": "True",

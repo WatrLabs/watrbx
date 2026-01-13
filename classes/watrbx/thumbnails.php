@@ -199,7 +199,7 @@ class thumbnails {
 
     public function get_user_thumb($userid, $size, $type = "full"){
         global $db;
-        $thumb = $db->table("thumbnails")->where("userid", $userid)->where("dimensions", $size)->first();
+        $thumb = $db->table("thumbnails")->where("userid", $userid)->where("dimensions", $size)->where("mode", $type)->first();
         $assetinfo = $db->table("users")->where("id", $userid)->first();
         if($thumb !== null){
             return "//cdn.watrbx.wtf/" . $thumb->file;

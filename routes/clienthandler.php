@@ -51,6 +51,41 @@ $router->get('/asset/', function() {
     $id = basename(isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0));
     $exploded = explode("=", $id);
 
+    $type = "";
+
+    if(isset($_GET["type"])){
+        $type = $_GET["type"];
+    }
+
+    if($type)[
+        if($type == "roblox"){
+            try {
+                $asset = @file_get_contents("https://assetdelivery.ttblox.mom/v1/asset/?id=$id");
+                $decoded = gzdecode($asset);
+
+                if($asset){
+                    
+                    try {
+                        $decoded = gzdecode($asset);
+                    } catch (ErrorException $e){
+                        die($asset);
+                    }
+
+                    file_put_contents("../storage/asset_cache/$id", $decoded); # THIS IS INSECURE!!!!!! (except for the fact I cast id to int & basename it)
+
+                    $decoded = str_replace("roblox.com", $_ENV["APP_DOMAIN"], $decoded);
+                    header("Content-type: application/octet-stream");
+                    die($decoded);
+                    
+                }
+
+            } catch (ErrorException $e){
+                http_response_code(500);
+                die($e);
+            }
+        }
+    ]
+
 
     if($exploded){
         if(isset($exploded[0]) && isset($exploded[1])){
@@ -361,7 +396,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["fa3654fa500ed12f02898b5d6c2cb2cc", "23bc004febe100c9d77f77b44f207213"]}');
+    die('{"data":["3d60954531116dbe47def7a51a81b522", "23bc004febe100c9d77f77b44f207213", "4e79f740f44531f4ff8f37a8d6823d0c"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)

@@ -4,6 +4,10 @@ use watrlabs\authentication;
 use watrlabs\watrkit\pagebuilder;
 use watrlabs\watrkit\sanitize;
 use watrbx\forums;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\MarkdownConverter;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Node\Inline\Image;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -114,6 +118,28 @@ $router->post("/Forum/NewReply.aspx", function() {
             die();
         }
 
+        $environment = new Environment([
+            'html_input' => 'strip',
+        ]);
+
+        $environment->addExtension(new CommonMarkCoreExtension());
+
+        $environment->addEventListener(League\CommonMark\Event\DocumentParsedEvent::class,
+            function (League\CommonMark\Event\DocumentParsedEvent $event) {
+                $walker = $event->getDocument()->walker();
+
+                while ($event = $walker->next()) {
+                    $node = $event->getNode();
+                    if ($node instanceof Image) {
+                        $node->detach();
+                    }
+                }
+            }
+        );
+
+        $converter = new MarkdownConverter($environment);
+        $content = $converter->convert($content);
+
         $insert = [
             "content"=>$content,
             "userid"=>$currentuser->id,
@@ -193,6 +219,28 @@ $router->post("/Forum/AddPost.aspx", function() {
             $page::get_template("forum/AddPost", ["message"=>"You're posting too fast!"]);
             die();
         }
+
+        $environment = new Environment([
+            'html_input' => 'strip',
+        ]);
+
+        $environment->addExtension(new CommonMarkCoreExtension());
+
+        $environment->addEventListener(League\CommonMark\Event\DocumentParsedEvent::class,
+            function (League\CommonMark\Event\DocumentParsedEvent $event) {
+                $walker = $event->getDocument()->walker();
+
+                while ($event = $walker->next()) {
+                    $node = $event->getNode();
+                    if ($node instanceof Image) {
+                        $node->detach();
+                    }
+                }
+            }
+        );
+
+        $converter = new MarkdownConverter($environment);
+        $content = $converter->convert($content);
 
         $insert = [
             "title"=>$title,

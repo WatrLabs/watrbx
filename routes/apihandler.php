@@ -752,7 +752,11 @@ $router->get('/Thumbs/Avatar.ashx', function(){
             global $db;
             if($userinfo !== null){
 
-                $thumb = $thumbs->get_user_thumb($userid, "1024x1024", $mode);
+                if($mode == "headshot"){
+                    $thumb = $thumbs->get_user_thumb($userid, "512x512", $mode);
+                } else {
+                    $thumb = $thumbs->get_user_thumb($userid, "1024x1024", $mode);
+                }
 
                 $image = file_get_contents("https:" . $thumb);
                 $tempDir = sys_get_temp_dir();
