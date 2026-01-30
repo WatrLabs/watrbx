@@ -4308,6 +4308,83 @@ $router->post('/api/v1/create-place', function(){
     }
 });
 
+// hello from notepad plus plus
+$router->post('/api/v1/update-place/{id}', function($id){
+
+    $sitefunc = new sitefunctions();
+    $auth = new authentication();
+
+    global $currentuser, $db;
+
+    if (!isset($_COOKIE["csrftoken"]) ||
+        !$auth->verifycsrf($_COOKIE["csrftoken"], "editplace")) {
+        http_response_code(400);
+        die("We found that the required data is missing!");
+    }
+
+    if ($currentuser == null) {
+        http_response_code(401);
+        die("You must be logged in to do this!");
+    }
+
+    $id = (int)$id;
+
+    // get deeta
+    $place = $db->table("assets")
+        ->where("id", $id)
+        ->where("owner", $currentuser->id)
+        ->where("prodcategory", 9)
+        ->first();
+
+    if (!$place) {
+        http_response_code(404);
+        die("We think your place doesn't exist, please check it.");
+    }
+
+    if (!isset($_POST["name"]) && !isset($_POST["description"])) {
+        http_response_code(204);
+        exit;
+    }
+
+    $name = $sitefunc->filter_text($_POST["name"] ?? $place->name);
+    $description = $sitefunc->filter_text($_POST["description"] ?? $place->description);
+
+    $name = htmlspecialchars($name);
+    $description = htmlspecialchars($description);
+
+    $currenttime = time();
+    $threemins = $currenttime - 180;
+
+    // get deeta
+    $updated = $db->table("assets")
+        ->where("owner", $currentuser->id)
+        ->where("updated", ">", $threemins)
+        ->count();
+
+    if ($updated > 10) {
+        http_response_code(429);
+        die("Stop updating places too fast!");
+    }
+
+    $db->table("assets")
+        ->where("id", $id)
+        ->update([
+            "name" => $name,
+            "description" => $description,
+            "updated" => $currenttime
+        ]);
+
+    $db->table("universes")
+        ->where("assetid", $id)
+        ->update([
+            "title" => $name,
+            "description" => $description
+        ]);
+
+    header("Content-Type: application/json");
+    echo json_encode(["ok" => true]);
+});
+
 $router->get('/users/{$userid}/canmanage/{$assetid}', function($userid, $assetid){
 
     $auth = new authentication();
