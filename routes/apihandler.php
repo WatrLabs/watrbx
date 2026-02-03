@@ -16,6 +16,7 @@ use watrlabs\fastflags;
 use watrlabs\watrkit\pagebuilder;
 use watrbx\email;
 use watrlabs\pagination;
+
 global $router; // IMPORTANT: KEEP THIS HERE!
 global $db;
 
@@ -76,6 +77,49 @@ $router->get('/api/v1/status', function(){
     ];
 
     die(create_success("We're Okay!", $response));
+});
+
+$router->post('/api/v1/change-password', function(){
+
+    global $db;
+
+    if(isset($_POST["ticket"]) && isset($_POST["password"]) && isset($_POST["confpass"])){
+        $ticket = $_POST["ticket"];
+        $pass = $_POST["password"];
+        $confpass = $_POST["confpass"];
+
+        $ticketInfo = $db->table("password_tickets")->where("ticket", $ticket)->first();
+
+        if($ticketInfo){
+            if($pass == $confpass){
+                $update = [
+                    "password"=>password_hash($pass, PASSWORD_DEFAULT)
+                ];
+
+                $db->table("users")->where("id", $ticketInfo->userid)->update($update);
+                $db->table("password_tickets")->where("ticket", $ticket)->delete();
+                $db->table("sessions")->where("author", $ticketInfo->userid)->delete();
+
+                header("Location: /newlogin");
+                die();
+                
+            } else {
+                $page = new pagebuilder;
+                $page::get_template("temp/reset-pass", ["message"=>"Password Confirmation did not match.", "ticket"=>$ticket]);
+            }
+            
+        } else {
+            $router->return_status(404);
+            die();
+        }
+
+        
+
+    } else {
+        global $router;
+        $router->return_status(404);
+        die();
+    }
 });
 
 $router->post('/api/v1/userinfo', function(){
@@ -284,6 +328,8 @@ $router->post('/my/account/sendverifyemail', function(){
     $emailClass = new email();
     $sanitize = new sanitize();
     $func = new sitefunctions();
+    $discord = new discord();
+    $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
 
     if(isset($_POST["password"]) && isset($_POST["email"]) && $currentuser){
         $password = $_POST["password"];
@@ -294,10 +340,11 @@ $router->post('/my/account/sendverifyemail', function(){
         $created = $db->table("email_codes")->where("userid", $currentuser->id)->where("time", ">", $oneday)->count();
 
         if($created > 5){
+            $discord->internal_log("$currentuser->username is attempting to verify with email $email but is trying too fast", "Email Verification Attempt");
             http_response_code(429);
             $return = [
-                "Result"=>False,
-                "Message"=>"Please wait before changing your email again."
+                "success"=>False,
+                "error"=>"Please wait before changing your email again."
             ];
 
             die(json_encode($return));
@@ -306,6 +353,55 @@ $router->post('/my/account/sendverifyemail', function(){
         if($sanitize::email($email)){
             
             if(password_verify($password, $currentuser->password)){
+
+
+                $allowedEmailDomains = [
+                    "gmail.com",
+                    "icloud.com"
+                ];
+
+                $split = explode("@", $email);
+                $emailName = $split[0];
+                $domain = $split[1];
+
+                if(!in_array($domain, $allowedEmailDomains)){
+                    $discord->internal_log("$currentuser->username is attempting to verify with email $email but is not gmail or icloud", "Email Verification Attempt");
+                    http_response_code(403);
+                    $return = [
+                        "success"=>False,
+                        "error"=>"We only currently support GMAIL emails. Please try a different email"
+                    ];
+
+                    die(json_encode($return));
+                }
+                
+                $emailDotCount = substr_count($emailName, '.');
+
+                if($emailDotCount > 3){
+                    $discord->internal_log("$currentuser->username is attempting to verify with email $email but is likely spam", "Email Verification Attempt");
+                    http_response_code(403);
+                    $return = [
+                        "success"=>False,
+                        "error"=>"An error occured verifying your email, please try again later."
+                    ];
+
+                    die(json_encode($return));
+                }
+
+                $isEmailInUse = $db->table("users")->where("email", $email)->where('id', '!=', $currentuser->id)->first();
+
+                if($isEmailInUse){
+                    $discord->internal_log("$currentuser->username is attempting to verify with email $email (but its already in use)", "Email Verification Attempt");
+                    http_response_code(403);
+                    $return = [
+                        "success"=>False,
+                        "error"=>"This email is already in use by another user. Please try again later."
+                    ];
+
+                    die(json_encode($return));
+                }
+                
+
                 $update = [
                     "email"=>$email,
                     "email_verified"=>0,
@@ -326,28 +422,32 @@ $router->post('/my/account/sendverifyemail', function(){
                 $template = $emailClass->get_template("verifyemail", ["%username%"=>$currentuser->username, "%ticket%"=>$code]);
                 $emailClass->send_email($email, "watrbx Email Verification", $template);
 
+                $discord->internal_log("$currentuser->username is attempting to verify with email $email", "Email Verification Attempt");
+
                 $return = [
-                    "Result"=>true,
-                    "Message"=>"Your email has been changed!"
+                    "success"=>true,
+                    "error"=>"Your email has been changed!"
                 ];
 
                 die(json_encode($return));
 
             } else {
+                $discord->internal_log("$currentuser->username is attempting to verify with email $email but forgot their own password", "Email Verification Attempt");
                 http_response_code(400);
                 $return = [
-                    "Result"=>False,
-                    "Message"=>"Incorrect Password!"
+                    "success"=>False,
+                    "error"=>"Incorrect Password!"
                 ];
 
                 die(json_encode($return));
             }
 
         } else {
+            $discord->internal_log("$currentuser->username is attempting to verify with email $email but it wasn't a valid email", "Email Verification Attempt");
             http_response_code(400);
             $return = [
-                "Result"=>False,
-                "Message"=>"Incorrect Email!"
+                "success"=>False,
+                "error"=>"Incorrect Email!"
             ];
 
             die(json_encode($return));
@@ -356,8 +456,8 @@ $router->post('/my/account/sendverifyemail', function(){
     } else {
         http_response_code(400);
         $return = [
-            "Result"=>False,
-            "Message"=>"Something wasn't provided!"
+            "success"=>False,
+            "error"=>"Something wasn't provided!"
         ];
 
         die(json_encode($return));
@@ -3509,6 +3609,11 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
         die(json_encode($data));
     };
 
+    // must be logged in
+    if (!$currentuser) {
+        $sendResponse($placelauncher, 401);
+    }
+
     $func = new sitefunctions();
     $canplay = $func->get_setting("GAMES_ENABLED");
 
@@ -3532,9 +3637,8 @@ $router->get('/Game/PlaceLauncher.ashx', function() {
         // forgot php let you do this
     };
 
-    // must be logged in
-    if (!$currentuser) {
-        $sendResponse($placelauncher, 401);
+    if($currentuser->email_verified == 0){
+        $sendResponse($placelauncher, 403);
     }
 
     $placelauncher["authenticationTicket"] = $_COOKIE["_ROBLOSECURITY"] ?? null;
@@ -3621,6 +3725,11 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
         die(json_encode($data));
     };
 
+    // must be logged in
+    if (!$currentuser) {
+        $sendResponse($placelauncher, 401);
+    }
+
     $func = new sitefunctions();
     $canplay = $func->get_setting("GAMES_ENABLED");
 
@@ -3644,9 +3753,8 @@ $router->post('/Game/PlaceLauncher.ashx', function() {
         // forgot php let you do this
     };
 
-    // must be logged in
-    if (!$currentuser) {
-        $sendResponse($placelauncher, 401);
+    if($currentuser->email_verified == 0){
+        $sendResponse($placelauncher, 403);
     }
 
     $placelauncher["authenticationTicket"] = $_COOKIE["_ROBLOSECURITY"] ?? null;

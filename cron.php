@@ -127,7 +127,14 @@ foreach ($allofdem as $job) {
         $discord->internal_log("Something went wrong with $job->jobid\n\n" . $result[1], "Job Error");
     }
 
-    $Close->CloseJob($job->jobid);
+    try {
+        $Close->CloseJob($job->jobid);
+    } catch (ErrorException $e){
+        echo "\nSomething went wrong with $job->jobid\n";
+        $db->table("jobs")->where("jobid", $job->jobid)->delete();
+        $discord->internal_log("Something went wrong with $job->jobid\n\n" . $result[1], "Job Error");
+    }
+    
 }
 echo "\nCron done.\n";
 $db->table("site_config")->where("thekey", "CRON_RUNNING")->update(["value"=>"false"]);

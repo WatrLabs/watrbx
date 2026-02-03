@@ -7,6 +7,7 @@ use watrlabs\watrkit\sanitize;
 use watrbx\sitefunctions;
 use watrbx\RBX;
 use watrbx\Grid\Grid;
+use watrbx\email;
 
 global $router; // IMPORTANT: KEEP THIS HERE!
 
@@ -412,6 +413,69 @@ $router->get('/thumbnail/user-avatar', function(){
 $router->get('/groupadmin', function(){ 
     $page = new pagebuilder;
     $page::get_template("groups/groupadmin");
+});
+
+$router->get('/ResetPassword.aspx', function(){
+    $page = new pagebuilder;
+    $page::get_template("temp/reset-pass");
+});
+
+$router->get('/Login/ResetPasswordRequest.aspx', function(){
+    $page = new pagebuilder;
+    $page::get_template("requestpassreset");
+});
+
+$router->post('/Login/ResetPasswordRequest.aspx', function(){
+
+    global $db;
+    $page = new pagebuilder;
+    $emailClass = new email();
+    $sitefunc = new sitefunctions();
+    
+
+    if(isset($_POST['ctl00$cphRoblox$UserName'])){
+        $username = $_POST['ctl00$cphRoblox$UserName'];
+
+        $userinfo = $db->table("users")->where("username", $username)->first();
+
+        if($userinfo){
+            if($userinfo->email){
+
+                $apireqcount = $db->table("password_tickets")->where("userid", $userinfo->id)->where("date", ">", time() - 60)->count();
+
+                if($apireqcount >= 5){
+                    $page::get_template("requestpassreset", ["message"=>"You have sent too many password resets. Please wait a moment and try again."]);
+                    die();
+                }
+
+                $ticket = $sitefunc->genstring(15);
+
+                $insert = [
+                    "userid"=>$userinfo->id,
+                    "ticket"=>$ticket,
+                    "date"=>time()
+                ];
+
+                $template = $emailClass->get_template("newpass", ["%username%"=>$userinfo->username, "%emailTicket%"=>$ticket]);
+                $emailClass->send_email($userinfo->email, "watrbx password reset", $template);
+
+                $db->table("password_tickets")->insert($insert);
+
+                $page::get_template("requestpassreset", ["message"=>"If this account exists and has a username, an email has been sent. Please check your spam inbox if you can't find it."]);
+                die();
+            } else {
+                $page::get_template("requestpassreset", ["message"=>"If this account exists and has a username, an email has been sent. Please check your spam inbox if you can't find it."]);
+                die();
+            }
+        } else {
+                $page::get_template("requestpassreset", ["message"=>"If this account exists and has a username, an email has been sent. Please check your spam inbox if you can't find it."]);
+                die();
+        }
+
+    }
+
+    $page::get_template("requestpassreset");
+
 });
 
 

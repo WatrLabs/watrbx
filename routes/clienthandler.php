@@ -57,7 +57,7 @@ $router->get('/asset/', function() {
         $type = $_GET["type"];
     }
 
-    if($type)[
+    if($type){
         if($type == "roblox"){
             try {
                 $asset = @file_get_contents("https://assetdelivery.ttblox.mom/v1/asset/?id=$id");
@@ -84,7 +84,7 @@ $router->get('/asset/', function() {
                 die($e);
             }
         }
-    ]
+    }
 
 
     if($exploded){
@@ -344,6 +344,42 @@ $router->get('/Game/ReportSystats.ashx', function() {
         "murdle"    => "Cheat Engine Stable/Citeful Methods (0)",
     ];
 
+    $important = [
+        "tochigi",
+        "impala",
+        "robert",
+        "booing",
+        "bobby",
+        "vera",
+        "vegah",
+        "fisher",
+        "dallas",
+        "tomy",
+        "usain",
+        "carol",
+        "steven",
+        "larry",
+        "mal",
+        "ebx",
+        "terrance",
+        "ursula",
+        "bruger",
+        "seth",
+        "curly",
+        "olivia",
+        "norman",
+        "mallory",
+        "lance",
+        "jack",
+        "imogen",
+        "ivan",
+        "omar",
+        "moe",
+        "lafayette",
+        "murdle"
+    ];
+
+
 
     $gameserver = new gameserver();
     $auth = new authentication();
@@ -368,7 +404,7 @@ $router->get('/Game/ReportSystats.ashx', function() {
             if(isset($systats[$message])){
                 $info = $systats[$message];
 
-                if($message == "murdle"){
+                if(in_array($message, $important)){
                     $prepend = "<@&1400166306128461904> ";
                 }
 
@@ -390,13 +426,13 @@ $router->get('/Game/ReportSystats.ashx', function() {
 // TODO: Check api key
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
-    die('{"data":["0.2.0pcplayer","INTERNALiosapp", "2.238.0x uwpapp"]}');
+    die('{"data":["0.3.0pcplayer","INTERNALiosapp", "2.238.0x uwpapp"]}');
 });
 
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["3d60954531116dbe47def7a51a81b522", "23bc004febe100c9d77f77b44f207213", "4e79f740f44531f4ff8f37a8d6823d0c"]}');
+    die('{"data":["0bfe227f21a36b815a9db17b2ff8cfd7", "edea9e3111fd6c7aa30fd22e525662c7"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)
