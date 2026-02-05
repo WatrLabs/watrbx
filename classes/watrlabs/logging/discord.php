@@ -68,7 +68,6 @@ class discord {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curl_error = curl_error($ch);
 
-        curl_close( $ch );
         // done the todo
         if($curl_error || $http_code < 200 || $http_code >= 300){
             error_log("watrbx.wtf, discord webhook failed: HTTP $http_code - $curl_error"); // il just do this

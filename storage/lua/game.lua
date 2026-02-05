@@ -202,7 +202,7 @@ if timeout then
 end
 scriptContext.ScriptsDisabled = false
 
-pcall(function() print(game:HttpGet(url .. "/api/v1/gameserver/mark-active?jobid=" .. game.JobId .. "=" .. access))() end)
+pcall(function() print(game:HttpGet(url .. "/api/v1/gameserver/mark-active?jobid=" .. game.JobId .. "&apiKey=" .. access))() end)
 
 -- StartGame --
 if not isCloudEdit then

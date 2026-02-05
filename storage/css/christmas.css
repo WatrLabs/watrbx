@@ -1,0 +1,47 @@
+.container-main, .nav-content-inner {
+        background: url(/images/snow2.png) top center rgb(34, 34, 34);
+        background-size: cover; 
+    }
+
+.home-header-content h1 a{
+    color: white;
+}
+
+h1 {
+    color: white;
+}
+
+.header-title h1 {
+    color: black;
+}
+
+.profile-avatar h3 {
+    color: white;
+}
+
+.game-name {
+    color: black;
+}
+
+.container-header h3 {
+    color: white;
+}
+
+.rbx-vip-server-item-container p, .rbx-vip-server-item-container p a {
+    color: white;
+}
+
+.content {
+    background: none;
+    background-color: none;
+}
+
+.rbx-header { 
+    background-color: #c60f0f !important;
+}
+
+.rbx-btn-secondary-xs, .rbx-btn-secondary-sm, .chat-windows-header, .table-header, th, .chat-header-title {
+    background-color: #c60f0f !important;
+    border: none;
+}
+

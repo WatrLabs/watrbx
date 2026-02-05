@@ -51,6 +51,41 @@ $router->get('/asset/', function() {
     $id = basename(isset($_GET['id']) ? $_GET['id'] : (isset($_GET['ID']) ? $_GET['ID'] : 0));
     $exploded = explode("=", $id);
 
+    $type = "";
+
+    if(isset($_GET["type"])){
+        $type = $_GET["type"];
+    }
+
+    if($type){
+        if($type == "roblox"){
+            try {
+                $asset = @file_get_contents("https://assetdelivery.ttblox.mom/v1/asset/?id=$id");
+                $decoded = gzdecode($asset);
+
+                if($asset){
+                    
+                    try {
+                        $decoded = gzdecode($asset);
+                    } catch (ErrorException $e){
+                        die($asset);
+                    }
+
+                    file_put_contents("../storage/asset_cache/$id", $decoded); # THIS IS INSECURE!!!!!! (except for the fact I cast id to int & basename it)
+
+                    $decoded = str_replace("roblox.com", $_ENV["APP_DOMAIN"], $decoded);
+                    header("Content-type: application/octet-stream");
+                    die($decoded);
+                    
+                }
+
+            } catch (ErrorException $e){
+                http_response_code(500);
+                die($e);
+            }
+        }
+    }
+
 
     if($exploded){
         if(isset($exploded[0]) && isset($exploded[1])){
@@ -309,6 +344,42 @@ $router->get('/Game/ReportSystats.ashx', function() {
         "murdle"    => "Cheat Engine Stable/Citeful Methods (0)",
     ];
 
+    $important = [
+        "tochigi",
+        "impala",
+        "robert",
+        "booing",
+        "bobby",
+        "vera",
+        "vegah",
+        "fisher",
+        "dallas",
+        "tomy",
+        "usain",
+        "carol",
+        "steven",
+        "larry",
+        "mal",
+        "ebx",
+        "terrance",
+        "ursula",
+        "bruger",
+        "seth",
+        "curly",
+        "olivia",
+        "norman",
+        "mallory",
+        "lance",
+        "jack",
+        "imogen",
+        "ivan",
+        "omar",
+        "moe",
+        "lafayette",
+        "murdle"
+    ];
+
+
 
     $gameserver = new gameserver();
     $auth = new authentication();
@@ -333,7 +404,7 @@ $router->get('/Game/ReportSystats.ashx', function() {
             if(isset($systats[$message])){
                 $info = $systats[$message];
 
-                if($message == "murdle"){
+                if(in_array($message, $important)){
                     $prepend = "<@&1400166306128461904> ";
                 }
 
@@ -355,13 +426,13 @@ $router->get('/Game/ReportSystats.ashx', function() {
 // TODO: Check api key
 $router->get('/GetAllowedSecurityVersions/', function(){
     header("Content-type: application/json");
-    die('{"data":["0.2.0pcplayer","INTERNALiosapp", "2.238.0x uwpapp"]}');
+    die('{"data":["0.3.0pcplayer","INTERNALiosapp", "2.238.0x uwpapp"]}');
 });
 
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["fa3654fa500ed12f02898b5d6c2cb2cc"]}');
+    die('{"data":["0bfe227f21a36b815a9db17b2ff8cfd7", "edea9e3111fd6c7aa30fd22e525662c7"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)

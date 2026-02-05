@@ -8,9 +8,14 @@ use watrlabs\watrkit\pagebuilder;
 
 class sitefunctions {
     
-    public $key = 'kzjdL3lbXc4ZpHP571VLUrbxWHCIeGEP'; // TODO: DO NOT SHOW THIS HERE
+    public $key = ''; // TODO: DO NOT SHOW THIS HERE
     public $method = 'AES-128-CTR'; 
     public $iv = '5449494959313423';
+
+    function construct__() {
+        $this->key = $_ENV["random_key"];
+        $this->iv = $_ENV["encryption_iv"];
+    }
     
     public function encrypt($text){
         //$method = $this->method;
@@ -22,6 +27,30 @@ class sitefunctions {
         $decrypted = openssl_decrypt($text, $this->method, $this->key, 0, $this->iv);
         return $decrypted;
     }
+
+    public static function export($rows, $filename)
+    {
+
+        if (empty($rows)) {
+            die("Nothing to export.");
+        }
+
+        header('Content-Type: text/csv');
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+
+        $out = fopen('php://output', 'w');
+
+        fputcsv($out, array_keys((array)$rows[0]));
+
+        foreach ($rows as $row) {
+            fputcsv($out, (array)$row);
+        }
+
+        fclose($out);
+        exit;
+
+    }
+
 
     public function format_number($int){
 

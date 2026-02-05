@@ -56,10 +56,12 @@ try {
         'prefix'    => '', // if you have a prefix for all your tables.
         'options'   => [
             PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+
         ]
     ];
-
     $connection = new Connection('mysql', $config);
     $db = $connection->getQueryBuilder(); 
 
@@ -74,3 +76,5 @@ try {
     require("../views/really_bad_500.php");
     die();
 }
+
+date_default_timezone_set('America/New_York');

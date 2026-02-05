@@ -32,7 +32,7 @@ if($userinfo == null){
     die();
 }
 
-$is_deleted = $db->table("moderation")->where("userid", $userinfo->id)->where("type", "deleted")->where("canignore", 1)->first();
+$is_deleted = $db->table("moderation")->where("userid", $userinfo->id)->where("type", "deleted")->where("canignore", 0)->first();
 
 if($is_deleted !== null){
     $router->return_status(404);

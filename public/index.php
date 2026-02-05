@@ -6,6 +6,7 @@ use watrlabs\users\getuserinfo;
 use watrlabs\logging\discord;
 use watrbx\sitefunctions;
 
+
 require_once '../init.php';
 
 try {
@@ -95,14 +96,53 @@ try {
         }
 
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uriraw = $_SERVER['REQUEST_URI'];
         if($uri){
             $uri = strtolower($uri);
         }
         $method = $_SERVER['REQUEST_METHOD'];
+
+        $discord = new discord();
+        $discord->set_webhook_url($_ENV["SUSSY_WEBHOOK"]);
+
+        $user = "Not Logged In";
+
+        if($currentuser){
+            $user = $currentuser->username;
+        }
+
+        if (preg_match('/[<>"\'`]/', $uriraw)) {
+            // suspicious input
+            $discord->internal_log("Someone attempted xss. URL:\n$uriraw\nUser: $user", "XSS Attmpted!");
+
+        }
+
+        if (preg_match('/<\s*script|javascript:/i', $uriraw)) {
+            // possible XSS attempt
+            $discord->internal_log("Someone attempted xss. URL:\n$uriraw\nUser: $user", "XSS Attmpted!");
+        }
+
+        $score = 0;
+        
+        if (preg_match('/\bunion\b\s+\bselect\b/', $uriraw)) $score += 5;
+        if (preg_match('/(--|#|\/\*)/', $uriraw)) $score += 3;
+        if (preg_match('/\bor\b\s+1\s*=\s*1/', $uriraw)) $score += 5;
+
+        if($score >= 3){
+
+            global $currentuser;
+
+            // suspicious behaviour
+            if($currentuser){
+                $user = $currentuser->username;
+            }
+            $discord->internal_log("Suspicious behaviour found. URL:\n$uriraw\nUser: $user", "Potential SQL Injection!");
+        }
         
         $response = $router->dispatch($uri, $method);
 
-        ob_end_flush();
+        ob_end_flush(); 
+
 
     } catch(PDOException $e){
         handle_error($e);
@@ -114,18 +154,19 @@ try {
 }
 
 function handle_error($e){
-    $log = new discord();
+    $discord = new discord();
+    $discord->set_webhook_url($_ENV["SITE_ERRWEBHOOK"]);
+
     try {
-        $log->internal_log($e, "Site Error!");
+        $discord->internal_log($e, "Site Error!");
         ob_clean();
         file_put_contents("../storage/errorlog.log", $e . "\n\n", FILE_APPEND);
         http_response_code(500);
         require("../views/status_codes/500.php");
     } catch(ErrorException $e){
-        $log->internal_log($e, "Site Error!");
+        $discord->internal_log($e, "Really Bad Site Error!");
         ob_clean();
         http_response_code(500);
-        echo $e;
         file_put_contents("../storage/errorlog.log", $e . "\n\n", FILE_APPEND);
         require("../views/really_bad_500.php");
         die();

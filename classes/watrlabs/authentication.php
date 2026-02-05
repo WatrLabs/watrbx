@@ -274,23 +274,12 @@ class authentication {
 
         $allalts = array_merge($allalts1, $allalts2);
 
-        $alts = array_map(function($user) {
-            if($user->last_login_ip !== null){
-                return $user->username;
-            } 
-
-            if($user->register_ip !== null){
-                return $user->username;
-            } 
-        }, $allalts);
-
         $unique = [];
         foreach ($allalts as $row) {
-            $unique[$row->id] = $row;
+            $unique[$row->id] = $row->username;
         }
 
         $possiblealts = implode(", ", $unique);
-
         $altcount = count($unique);
 
         if($altcount > 5){
@@ -669,8 +658,8 @@ class authentication {
                 $update["active_where"] = "Website";
             }
 
-            $db->table("users")->where("id", $userinfo->id)->update($update);
-            $db->table("logs")->insert($insert);
+            //$db->table("users")->where("id", $userinfo->id)->update($update);
+            //$db->table("logs")->insert($insert);
    
         }
     }
@@ -813,7 +802,6 @@ class authentication {
             ]);
 
             $response = json_decode(curl_exec($ch), true);
-            curl_close($ch);
 
             if(isset($response["block"])){
                 $isVPN = $response["block"] == 1;

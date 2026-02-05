@@ -49,7 +49,6 @@ class containers {
             "Authorization: " . $this->containerkey,
         ]);
         $response = curl_exec($curl);
-        curl_close($curl);
 
         if($response){
             return $response;
@@ -71,7 +70,6 @@ class containers {
             "Authorization: " . $this->containerkey, 
         ]);
         $response = curl_exec($curl);
-        curl_close($curl);
 
         if($response){
             return $response;

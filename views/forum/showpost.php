@@ -2,6 +2,7 @@
 use watrlabs\watrkit\pagebuilder;
 use watrbx\forums;
 use watrlabs\authentication;
+
 $pagebuilder = new pagebuilder();
 $forums = new forums();
 $auth = new authentication();

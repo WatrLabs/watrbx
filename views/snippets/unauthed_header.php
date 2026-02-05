@@ -32,10 +32,8 @@ if(isset($_SERVER['HTTP_USER_AGENT'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true" />
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
-    <script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js'></script>
-    <script type='text/javascript'>window.jQuery || document.write("<script type='text/javascript' src='/js/jquery/jquery-1.11.1.js'><\/script>")</script>
-    <script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.2.1.min.js'></script>
-    <script type='text/javascript'>window.jQuery || document.write("<script type='text/javascript' src='/js/jquery/jquery-migrate-1.2.1.js'><\/script>")</script>
+    <script type='text/javascript' src='/js/jquery/jquery-1.11.1.js'></script>
+    <script type='text/javascript' src='/js/jquery/jquery-migrate-1.2.1.js'></script>
 
     <?php if(isset($metatags)) { foreach ($metatags as $property => $content) { ?>
     <meta <?= substr($property, 0, 2) == "og" ? "property" : "name" ?>="<?= $property ?>" content="<?= $content ?>">

@@ -697,7 +697,7 @@
     "FFlagStudioSendMouseIdleToPluginMouse": "True",
     "DFFlagPhysicsOptimizeAssemblyHistory": "True",
     "DFFlagPhysicsOptimizeBallBallContact": "True",
-    "DFFlagUseNewBubbleSkin": "False",
+    "DFFlagUseNewBubbleSkin": "True",
     "DFFlagUse9FrameBackgroundTransparency": "True",
     "DFFlagCheckForHeadHit": "False",
     "DFFlagUseHttpsForAllCalls": "True",
@@ -865,8 +865,5 @@
     "FFlagNewInGameDevConsole": "True",
     "DFFlagUseR15Character": "True",
     "DFFlagRCCSupportCloudEdit": "True",
-    "RCCEnableCloudEdit": "True",
-    "RCCSupportCloudEdit": "True",
-    "UseNewUrlClass":"True",
-    "DebugLocalRccServerConnection":"True"
+    "DFFlagScriptExecutionContextApi": "True"
     }

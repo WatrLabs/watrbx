@@ -47,12 +47,9 @@ $count = $pendingfq + $msgcount;
     <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true" />
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
     
-    <script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js'></script>
-    <script type='text/javascript'>window.jQuery || document.write("<script type='text/javascript' src='/js/jquery/jquery-1.11.1.js'><\/script>")</script>
-    <script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.2.1.min.js'></script>
-    <script type='text/javascript'>window.jQuery || document.write("<script type='text/javascript' src='/js/jquery/jquery-migrate-1.2.1.js'><\/script>")</script>
-    <script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js'></script>
-    <script type='text/javascript'>window.Sys || document.write("<script type='text/javascript' src='/js/Microsoft/MicrosoftAjax.js'><\/script>")</script>
+    <script type='text/javascript' src='/js/jquery/jquery-1.11.1.js'></script>
+    <script type='text/javascript' src='/js/jquery/jquery-migrate-1.2.1.js'></script>
+    <script type='text/javascript' src='/js/jquery/MicrosoftAjax.js'></script>
     
     <?php if(isset($metatags)) { foreach ($metatags as $property => $content) { ?>
     <meta <?= substr($property, 0, 2) == "og" ? "property" : "name" ?>="<?= $property ?>" content="<?= $content ?>">
@@ -267,42 +264,7 @@ Roblox.Endpoints.Urls['/authentication/is-logged-in'] = '/authentication/is-logg
     data-performance-relative-value="0.5"
     data-internal-page-name="Avatar">
     <div class="snowflakes" aria-hidden="true">
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
-  <div class="snowflake">
-    <div class="inner">❅</div>
-  </div>
+  
 </div>
     <div id="roblox-linkify" data-enabled="true" data-regex="(https?\:\/\/)?(?:www\.)?([a-z0-9\-]{2,}\.)*(((m|de|www|web|api|blog|wiki|help|corp|polls|bloxcon|developer|devforum|forum)\.roblox\.com|robloxlabs\.com)|(www\.shoproblox\.com))((\/[A-Za-z0-9-+&amp;@#\/%?=~_|!:,.;]*)|(\b|\s))" data-regex-flags="gm"></div>
     <script type="text/javascript">Roblox.XsrfToken.setToken('u256v2GAyfHL');</script>
@@ -664,6 +626,10 @@ if($ismobile == false){ ?>
         
         <noscript><div class="SystemAlert"><div class="SystemAlertText">Please enable Javascript to use all the features on this site.</div></div></noscript>
 <?php
+if($currentuser->email_verified == 0){
+	echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">Your email currently isn\'t verified. To play games, <a href="/my/account">please verify your email</a></div></div>';
+}
+
 $sitebanner = $sitefunctions->get_setting("SITE_BANNER");
 
 if(!$sitebanner == "" || !$sitebanner == null){ echo '<div class="SystemAlert" style="background-color: red;"><div class="SystemAlertText">'.preg_replace('#\bhttps?://[^\s<]+#i','<a href="$0" target="_blank" rel="noopener">$0</a>',$sitebanner).'</div></div>'; }
