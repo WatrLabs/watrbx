@@ -658,8 +658,8 @@ class authentication {
                 $update["active_where"] = "Website";
             }
 
-            $db->table("users")->where("id", $userinfo->id)->update($update);
-            $db->table("logs")->insert($insert);
+            //$db->table("users")->where("id", $userinfo->id)->update($update);
+            //$db->table("logs")->insert($insert);
    
         }
     }
@@ -802,7 +802,6 @@ class authentication {
             ]);
 
             $response = json_decode(curl_exec($ch), true);
-            curl_close($ch);
 
             if(isset($response["block"])){
                 $isVPN = $response["block"] == 1;

@@ -51,7 +51,6 @@ class thumbnails {
         if ($jobinfo->assetid !== null) {
             $assetinfo = $db->table("assets")->where("id", $jobinfo->assetid)->first();
             if($assetinfo){
-                
                 if(isset($this->luaFiles["$assetinfo->prodcategory"])){
 
                     if($isCron){

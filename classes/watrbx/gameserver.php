@@ -19,8 +19,8 @@ class gameserver {
         $func = new sitefunctions();
         $ip = $func->getip();
 
-        $auth = new authentication();
-        $this->connecting_user = $auth->geolocateip($ip);
+        //$auth = new authentication();
+        //$this->connecting_user = $auth->geolocateip($ip);
 
         $this->server = $this->get_user_server();
         $this->grid = $this->get_grid($this->server);

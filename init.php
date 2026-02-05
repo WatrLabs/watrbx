@@ -55,15 +55,13 @@ try {
         'collation' => 'utf8mb4_unicode_ci',
         'prefix'    => '', // if you have a prefix for all your tables.
         'options'   => [
-            PDO::ATTR_PERSISTENT => false,
+            PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_COMPRESS => false,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 
         ]
     ];
-
     $connection = new Connection('mysql', $config);
     $db = $connection->getQueryBuilder(); 
 
