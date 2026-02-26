@@ -1,4 +1,5 @@
 <?php
+use watrlabs\logging\discord;
 use watrlabs\router\Routing;
 use watrlabs\authentication;
 use watrlabs\watrkit\pagebuilder;
@@ -148,6 +149,11 @@ $router->post("/Forum/NewReply.aspx", function() {
             "date"=>time()
         ];
 
+        $discord = new discord();
+        $discord->set_webhook_url($_ENV["FORUM_WEBHOOK"]);
+        $truncated = substr($content, 0, 100) . "...";
+        $discord->internal_log("$currentuser->username has replied to a forum post.\n\n$truncated\n\nhttps://watrbx.wtf/Forum/ShowPost.aspx?PostID=$replyid", "Forum Reply");
+
         $insertid = $db->table("forum_replies")->insert($insert);
         header("Location: /Forum/ShowPost.aspx?PostID=$replyid");
         
@@ -275,7 +281,11 @@ $router->post("/Forum/AddPost.aspx", function() {
 
         }
 
+        $discord = new discord();
+        $discord->set_webhook_url($_ENV["FORUM_WEBHOOK"]);
+        $truncated = substr($content, 0, 120) . "...";
         $insertid = $db->table("forum_posts")->insert($insert);
+        $discord->internal_log("$currentuser->username has made a forum post.\n\nTitle: $title\nContent: $truncated\n\nhttps://watrbx.wtf/Forum/ShowPost.aspx?PostID=$insertid", "Forum Post");
         header("Location: /Forum/ShowPost.aspx?PostID=$insertid");
         
     }

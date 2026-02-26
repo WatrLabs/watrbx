@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 21, 2025 at 08:59 AM
+-- Generation Time: Feb 27, 2026 at 01:30 AM
 -- Server version: 8.0.24
--- PHP Version: 7.4.33
+-- PHP Version: 8.5.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -123,7 +123,7 @@ CREATE TABLE `assets` (
   `id` int NOT NULL,
   `prodtype` enum('User Product','Group Product') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'User Product',
   `prodcategory` int NOT NULL,
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `asseticon` int DEFAULT NULL,
   `created` int NOT NULL,
@@ -389,16 +389,6 @@ CREATE TABLE `forum-header` (
   `priority` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
---
--- Dumping data for table `forum-header`
---
-
-INSERT INTO `forum-header` (`id`, `name`, `priority`) VALUES
-(1, 'ROBLOX', 1),
-(2, 'Club Houses', 2),
-(3, 'Game Creation and Development', 3),
-(4, 'Entertainment', 4);
-
 -- --------------------------------------------------------
 
 --
@@ -410,29 +400,9 @@ CREATE TABLE `forum_categories` (
   `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `priority` int NOT NULL,
-  `parent` int NOT NULL
+  `parent` int NOT NULL,
+  `locked` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
---
--- Dumping data for table `forum_categories`
---
-
-INSERT INTO `forum_categories` (`id`, `title`, `description`, `priority`, `parent`) VALUES
-(1, 'All Things ROBLOX', 'The area for discussions purely about ROBLOX – the features, the games, and company news. 	        ', 1, 1),
-(2, 'Help (Technical Support and Account Issues)', 'Seeking account or technical help? Post your questions here.', 2, 1),
-(3, 'Suggestions & Ideas\r\n	', 'Do you have a suggestion and ideas for ROBLOX? Share your feedback here.', 3, 1),
-(4, 'BLOXFaires & ROBLOX events', 'Check here to see the crazy things ROBLOX is doing. Contest information can be found here. ROBLOX is going to be at various Maker Faires and conferences around the globe. Discuss those events here!', 4, 1),
-(5, 'ROBLOX Talk', 'A popular hangout where ROBLOXians talk about various topics.', 1, 2),
-(6, 'Off Topic', 'When no other forum makes sense for your post, Off Topic will help it make even less sense.', 2, 2),
-(7, 'Clans & Guilds', 'Talk about what’s going on in your Clans, Groups, Companies, and Guilds, and about the Groups feature in general.', 3, 2),
-(8, 'Game Marketing', 'This is where you show off your awesome creations, talk about how to advertise your game or share your marketing and sale tactics.', 1, 3),
-(9, 'Game Design', 'This is the forum to get help, talk about future ROBLOX game ideas, or gather an awesome building team.', 2, 3),
-(10, 'Scripters', 'This is the place for discussion about scripting. Anything about scripting that is not a help request or topic belongs here.', 3, 3),
-(11, 'Video Game Central', 'Talk about your favorite video and computer games outside of ROBLOX, with other fanatical video gamers!\r\n', 1, 4),
-(12, 'Video Creations with ROBLOX\r\n', 'This forum is for your sweet game play footage or that awesome viral video you saw on YouTube. Also to talk about your favorite Twitch streamers.\r\n', 2, 4),
-(13, 'Ro-Sports', 'For the many leagues of ROBLOX sports, real life sports fans.\r\n', 3, 4),
-(14, 'Pop-Culture (Music/Books/Movies/TV)\r\n', 'Come here to find what ROBLOXians think is a must read, see or hear.\r\n', 4, 4),
-(15, 'Role-Playing\r\n', 'The forum for story telling and imagination. Start a role-playing thread here involving your fictional characters, or role-play out a scenario with other players.\r\n', 5, 4);
 
 -- --------------------------------------------------------
 
@@ -689,6 +659,17 @@ CREATE TABLE `moderation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `nolanapikeys`
+--
+
+CREATE TABLE `nolanapikeys` (
+  `id` int NOT NULL,
+  `apikey` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ownedassets`
 --
 
@@ -702,6 +683,19 @@ CREATE TABLE `ownedassets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `password_tickets`
+--
+
+CREATE TABLE `password_tickets` (
+  `id` int NOT NULL,
+  `userid` int NOT NULL,
+  `ticket` varchar(255) NOT NULL,
+  `date` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `playerpoints`
 --
 
@@ -710,6 +704,32 @@ CREATE TABLE `playerpoints` (
   `userid` int NOT NULL,
   `balance` bigint NOT NULL,
   `placeid` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `refers`
+--
+
+CREATE TABLE `refers` (
+  `id` int NOT NULL,
+  `refername` varchar(255) NOT NULL,
+  `uses` bigint NOT NULL,
+  `signups` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `replication_logs`
+--
+
+CREATE TABLE `replication_logs` (
+  `id` int NOT NULL,
+  `jobid` varchar(255) NOT NULL,
+  `placeid` bigint NOT NULL,
+  `logs` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
@@ -767,19 +787,6 @@ CREATE TABLE `site_config` (
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
---
--- Dumping data for table `site_config`
---
-
-INSERT INTO `site_config` (`id`, `thekey`, `value`) VALUES
-(1, 'CAN_LOGIN', 'true'),
-(2, 'CAN_REGISTER', 'true'),
-(3, 'CAN_PURCHASE', 'true'),
-(4, 'SITE_BANNER', ''),
-(5, 'CRON_RUNNING', 'true'),
-(6, 'GAMES_ENABLED', 'true'),
-(7, 'CAN_SIGNUP_WITH_VPN', 'true');
-
 -- --------------------------------------------------------
 
 --
@@ -815,7 +822,7 @@ CREATE TABLE `thumbnails` (
 
 CREATE TABLE `universes` (
   `id` int NOT NULL,
-  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `studioapi` tinyint(1) NOT NULL DEFAULT '0',
   `externalstuffidk` tinyint(1) NOT NULL DEFAULT '0',
@@ -847,12 +854,14 @@ CREATE TABLE `usernamechanges` (
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `email_verified` tinyint(1) NOT NULL DEFAULT '0',
+  `compromised` tinyint(1) NOT NULL DEFAULT '0',
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `gender` int DEFAULT NULL,
   `currenttheme` int DEFAULT NULL,
+  `gs_preference` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `regtime` bigint NOT NULL,
   `robux` int NOT NULL DEFAULT '100',
   `tix` int NOT NULL DEFAULT '50',
@@ -945,7 +954,8 @@ ALTER TABLE `apireq`
 --
 ALTER TABLE `assets`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
+  ADD KEY `id` (`id`),
+  ADD KEY `assetsindex` (`id`,`name`);
 
 --
 -- Indexes for table `asset_history`
@@ -1044,7 +1054,8 @@ ALTER TABLE `featuredgames`
 --
 ALTER TABLE `feed`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `feed` (`owner`);
+  ADD KEY `feed` (`owner`),
+  ADD KEY `feedindex` (`id`,`owner`);
 
 --
 -- Indexes for table `forum-header`
@@ -1077,7 +1088,8 @@ ALTER TABLE `friends`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id` (`id`),
   ADD KEY `userid` (`userid`),
-  ADD KEY `friendid` (`friendid`);
+  ADD KEY `friendid` (`friendid`),
+  ADD KEY `friendsindex` (`id`,`friendid`,`userid`);
 
 --
 -- Indexes for table `game_instances`
@@ -1161,7 +1173,8 @@ ALTER TABLE `maintcodes`
 -- Indexes for table `messages`
 --
 ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `messagesindex` (`id`,`userfrom`,`userto`);
 
 --
 -- Indexes for table `moderation`
@@ -1170,15 +1183,40 @@ ALTER TABLE `moderation`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `nolanapikeys`
+--
+ALTER TABLE `nolanapikeys`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `ownedassets`
 --
 ALTER TABLE `ownedassets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ownedassetsindex` (`id`,`assetid`,`userid`);
+
+--
+-- Indexes for table `password_tickets`
+--
+ALTER TABLE `password_tickets`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `playerpoints`
 --
 ALTER TABLE `playerpoints`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `refers`
+--
+ALTER TABLE `refers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `replication_logs`
+--
+ALTER TABLE `replication_logs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1217,14 +1255,16 @@ ALTER TABLE `themes`
 --
 ALTER TABLE `thumbnails`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `thumbnails` (`assetid`,`userid`);
+  ADD KEY `thumbnails` (`assetid`,`userid`),
+  ADD KEY `thumbnailsindex` (`id`,`userid`,`assetid`);
 
 --
 -- Indexes for table `universes`
 --
 ALTER TABLE `universes`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
+  ADD KEY `id` (`id`),
+  ADD KEY `universesindex` (`id`,`title`);
 
 --
 -- Indexes for table `usernamechanges`
@@ -1240,7 +1280,8 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `username` (`username`),
   ADD KEY `id` (`id`),
   ADD KEY `users` (`username`),
-  ADD KEY `userid` (`id`);
+  ADD KEY `userid` (`id`),
+  ADD KEY `usersindex` (`id`,`username`);
 
 --
 -- Indexes for table `visits`
@@ -1408,13 +1449,13 @@ ALTER TABLE `feed`
 -- AUTO_INCREMENT for table `forum-header`
 --
 ALTER TABLE `forum-header`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `forum_categories`
 --
 ALTER TABLE `forum_categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `forum_posts`
@@ -1519,15 +1560,39 @@ ALTER TABLE `moderation`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `nolanapikeys`
+--
+ALTER TABLE `nolanapikeys`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `ownedassets`
 --
 ALTER TABLE `ownedassets`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `password_tickets`
+--
+ALTER TABLE `password_tickets`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `playerpoints`
 --
 ALTER TABLE `playerpoints`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `refers`
+--
+ALTER TABLE `refers`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `replication_logs`
+--
+ALTER TABLE `replication_logs`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -1552,7 +1617,7 @@ ALTER TABLE `sessions`
 -- AUTO_INCREMENT for table `site_config`
 --
 ALTER TABLE `site_config`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `themes`

@@ -44,6 +44,55 @@ $router->get('/place/{id}/fetch', function($id){
 
 });
 
+$router->post('/Game/Log.ashx', function(){
+
+    global $db;
+
+    if(isset($_GET["jobId"]) && isset($_GET["placeId"]) && isset($_GET["access"])){
+
+        $jobId = $_GET["jobId"];
+        $placeId = $_GET["placeId"];
+        $access = $_GET["access"];
+
+        $gameserver = new gameserver();
+        if($gameserver->validate_api_key($access)){
+            $json = file_get_contents('php://input'); 
+
+            if(substr($json, 0, 2) === "\x1f\x8b") {
+                $json = gzdecode($json);
+                if($json === false){
+                    throw ErrorException("Failed to decompress incoming data");
+                }
+            }
+
+
+            $encoding = mb_detect_encoding($json, ['UTF-8', 'UTF-16', 'ASCII', 'ISO-8859-1'], true);
+
+            if($encoding !== 'UTF-8'){
+                $json = mb_convert_encoding($json, 'UTF-8', $encoding);
+            }
+
+            try{
+                $db->table("replication_logs")->insert([
+                    "jobid"=>$jobId,
+                    "placeid"=>$placeId,
+                    "logs"=>$json
+                ]);
+
+                $discord = new discord();
+                $discord->send_file($_ENV["REPLICATION_WEBHOOK"], "replication_log_".time().".txt", $json);
+
+                die();
+
+            } catch (ErrorException $e){
+                die();
+            }
+
+        }
+
+    }
+});
+
 $router->get('/asset/', function() {
 
     global $db;
@@ -379,15 +428,13 @@ $router->get('/Game/ReportSystats.ashx', function() {
         "murdle"
     ];
 
-
-
     $gameserver = new gameserver();
     $auth = new authentication();
     $sitefunc = new sitefunctions();
 
     $ip = $sitefunc->getip();
     $isgameserver = $gameserver->is_gameserver_ip($ip);
-
+    $isgameserver = true;
 
     if(isset($_GET["UserID"]) && isset($_GET["Message"]) && $ip){
         
@@ -432,7 +479,7 @@ $router->get('/GetAllowedSecurityVersions/', function(){
 $router->get('/GetAllowedMD5Hashes/', function(){
     //die("True");
     header("Content-type: application/json");
-    die('{"data":["0bfe227f21a36b815a9db17b2ff8cfd7", "edea9e3111fd6c7aa30fd22e525662c7"]}');
+    die('{"data":["b372beda29c94f50eb715792aca2205e"]}');
 });
 
 $router->get('/game/LoadPlaceInfo.ashx', function(){ //Todo: implement it (not important)

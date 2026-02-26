@@ -9,7 +9,7 @@ header("content-type: text/plain; X-Robots-Tag: noindex;charset=UTF-8");
 	if($userinfo == null){
 		$username = "Player1";
 		$id = 1;
-		$membership = $username->membership;
+		$membership = $userinfo->membership;
 	} else {
 		$username = $userinfo->username;
 		$id = $userinfo->id;

@@ -1,6 +1,9 @@
 -- Start Game Script Arguments
 local placeId, port, sleeptime, access, baseUrl, protocol, matchmakingContextId, assetGameSubdomain = ...
 
+local HttpService = game:GetService("HttpService")
+
+
 assetGameSubdomain = "assetgame"
 
 -----------------------------------"CUSTOM" SHARED CODE----------------------------------
@@ -26,6 +29,9 @@ if baseUrl~=nil and protocol ~= nil then
 	url = protocol .. "www." .. baseUrl --baseUrl is actually the domain, no leading .
 	assetGameUrl = protocol .. assetGameSubdomain .. "." .. baseUrl
 end
+
+local logs = {}
+
 
 local scriptContext = game:GetService('ScriptContext')
 pcall(function() scriptContext:AddStarterScript(libraryRegistrationScriptAssetID) end)
@@ -101,6 +107,111 @@ end
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 settings().Diagnostics.LuaRamLimit = 0
 
+local function pullUserLog(player)
+	logs["" .. player.Name] = logs["" .. player.Name] or {}
+	logs["" .. player.Name] = RemoveTableDupes(logs["" .. player.Name])
+
+	return logs["" .. player.Name]
+end
+
+local function sendLogs(blocking)
+	local success, err = pcall(function()
+		game:HttpPost(url .. "/Game/Log.ashx?" .. "jobId=" .. game.JobId .. "&placeId=" .. placeId .. "&access=" .. access, HttpService:JSONEncode(logs), blocking, "application/json")
+	end)
+
+
+end
+
+function RemoveTableDupes(tab)
+	local hash = {}
+	local res = {}
+	for _,v in ipairs(tab) do
+		if (not hash[v]) then
+			res[#res+1] = v
+			hash[v] = true
+		end
+	end
+	return res
+end
+
+
+local function logEvent(player, item, event)
+	local player_log = pullUserLog(player)
+	event = "[INSTANCE] "..event
+	pcall(function()
+		if item.Parent ~= nil then
+			event = string.format("%s Parent: %s", event, tostring(item.Parent))
+		
+			if item.Parent.Parent ~= nil then
+				event = string.format("%s Parent.Parent: %s", event, tostring(item.Parent.Parent))
+			end
+		end
+	end)
+
+    table.insert(player_log, event)
+end
+
+game:GetService("NetworkServer").ChildAdded:connect(function(replicator)
+		replicator:SetBasicFilteringEnabled(true)
+
+		replicator.NewFilter = function(item)
+			if(replicator:GetPlayer()) then
+				local player = replicator:GetPlayer()
+
+				pcall(function()
+					if item then
+						logEvent(player, item, player.Name .. " created an instance: ".. item.Name .. " ("..item.ClassName..")")
+					end 
+				end)
+			end
+
+			return Enum.FilterResult.Accepted
+		end		
+		
+		replicator.DeleteFilter = function(item)
+			if(replicator:GetPlayer()) then
+				local player = replicator:GetPlayer()
+
+				pcall(function()
+					if item then
+						logEvent(player, item, player.Name .. " deleted an item: ".. item.Name .. " ("..item.ClassName..")")
+					end 
+				end)
+			end
+
+			return Enum.FilterResult.Accepted
+		end
+	
+		replicator.PropertyFilter = function(item, member, value)
+			if(replicator:GetPlayer()) then
+				local player = replicator:GetPlayer()
+
+				pcall(function()
+					if item then
+						logEvent(player, item, player.Name .. " changed a property: ".. item.Name .."." .. member .. " (".. item.ClassName ..")")
+					end 
+				end)
+			end
+
+			return Enum.FilterResult.Accepted
+		end		
+		
+		replicator.EventFilter = function(item)	
+			if(replicator:GetPlayer()) then
+				local player = replicator:GetPlayer()
+
+				pcall(function()
+					if item then
+						logEvent(player, item, player.Name .. " fired an event: " .. item.ClassName)
+					end 
+				end)
+			end
+
+			return Enum.FilterResult.Accepted
+		end
+end)
+
+
 game:GetService("Players").PlayerAdded:connect(function(player)
 	print("Player " .. player.userId .. " added")
 	
@@ -114,6 +225,7 @@ end)
 
 game:GetService("Players").PlayerRemoving:connect(function(player)
 	print("Player " .. player.userId .. " leaving")	
+	sendLogs(tfalserue)
 
 	local isTeleportingOut = "False"
 	if player.Teleported then isTeleportingOut = "True" end
@@ -216,6 +328,9 @@ if not isCloudEdit then
 end
 
 while wait(30) do
+
+	print(HttpService:JSONEncode(logs))
+	sendLogs(false)
 
 	local PlayerCount = game:GetService('Players').NumPlayers
     game:HttpGet(url .. "/api/v1/gameserver/pinger?jobId=" .. game.JobId .. "&apiKey=" .. access .. "&Players=" .. PlayerCount)

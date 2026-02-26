@@ -27,6 +27,8 @@
                 None of this data is sold or shared with third parties. Only moderators and admins can see limited info.
             </p>
             <small>We will also make a notice if our privacy policy is updated. (via site alert and discord)</small>
+            <br><br>
+            <a href="/legal/tos">Terms of Service</a> - <a href="/legal/privacy">Privacy Policy</a> - <a href="/legal/account-deletion">Account Deletion</a>
         </div>
     </div>   
 </body>

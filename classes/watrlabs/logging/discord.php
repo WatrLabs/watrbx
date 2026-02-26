@@ -30,6 +30,37 @@ class discord {
         return true;
     }
 
+    public function send_file($url, $filename, $content){
+        $tmpfile = tempnam(sys_get_temp_dir(), 'discord_');
+
+        file_put_contents($tmpfile, $content);
+
+
+        $cfile = curl_file_create($tmpfile, 'text/plain', $filename);
+
+        $post = ['file' => $cfile];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, []); 
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($ch);
+        curl_close($ch);
+
+        unlink($tmpfile);
+
+        if($curl_error || $http_code < 200 || $http_code >= 300){
+            error_log("Discord webhook file upload failed: HTTP $http_code - $curl_error");
+            return false;
+        }
+
+        return true;
+    }
+
+
     public function abuse_report($log, $title = "Abuse Report!"){
         $embed = [
             [

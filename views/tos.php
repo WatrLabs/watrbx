@@ -35,6 +35,8 @@
             <small>To appeal any moderation action, please <a href="mailto:appeals@watrbx.wtf">contact us</a>.</small>
             <br>
             <small>We will also make a notice if our terms are updated. (via site alert and discord)</small>
+            <br><br>
+            <a href="/legal/tos">Terms of Service</a> - <a href="/legal/privacy">Privacy Policy</a> - <a href="/legal/account-deletion">Account Deletion</a>
         </div>
     </div>   
 </body>

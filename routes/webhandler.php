@@ -1,4 +1,5 @@
 <?php
+use watrlabs\logging\discord;
 use watrlabs\router\Routing;
 use watrlabs\authentication;
 use watrlabs\watrkit\pagebuilder;
@@ -482,6 +483,9 @@ $router->post('/Login/ResetPasswordRequest.aspx', function(){
 $router->get('/EmailVerify.aspx', function(){
 
     $page = new pagebuilder;
+    $discord = new discord();
+    $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
+
 
     global $db;
     global $currentuser;
@@ -509,8 +513,10 @@ $router->get('/EmailVerify.aspx', function(){
                     ];
 
                     $db->table("ownedassets")->insert($insert);
+                    
                 }
-
+                
+                $discord->internal_log("$currentuser->username has verified their email.", "Email Verification Success");
                 $page::get_template("verifiedemail");
                 die();
             }
@@ -924,9 +930,9 @@ $router->get('/grid-test', function(){
 
 });
 
-$router->get('/christmas', function(){
+$router->get('/legal/account-deletion', function(){
     $page = new pagebuilder;
-    $page::get_template("christmas");
+    $page::get_template("account");
 });
 
 $router->get('/legal/tos', function(){

@@ -7,6 +7,7 @@ use watrlabs\users\getuserinfo;
 use watrlabs\watrkit\sanitize;
 use watrlabs\logging\discord;
 use watrlabs\fastflags;
+use watrbx\refers;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use Pixie\Connection;
@@ -274,10 +275,35 @@ class authentication {
 
         $allalts = array_merge($allalts1, $allalts2);
 
-        $unique = [];
-        foreach ($allalts as $row) {
-            $unique[$row->id] = $row->username;
-        }
+        $unique = array_map(function($user) {
+            if($user->last_login_ip !== null){
+                $isBanned = $this->is_banned($user->id);
+
+                $altAppend = "";
+
+                // vmware says watrabi is gae
+                if($isBanned){
+                    $altAppend = " (BANNED❌)";
+                } else {
+                    $altAppend = " (OK)"; 
+                }
+                return $user->username . $altAppend;
+            } 
+
+            if($user->register_ip !== null){
+                $isBanned = $this->is_banned($user->id);
+
+                $altAppend = "";
+
+                // vmware says ur gae
+                if($isBanned){
+                    $altAppend = " (BANNED❌)";
+                } else {
+                    $altAppend = " (OK)"; 
+                }
+                return $user->username . $altAppend;
+            } 
+        }, $allalts);
 
         $possiblealts = implode(", ", $unique);
         $altcount = count($unique);
@@ -302,6 +328,15 @@ class authentication {
         }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
+
+        $refers = new refers();
+        $referInfo = $refers->hasReferCookie();
+        if($referInfo){
+            $refers->incrementReferSignup($referInfo->refername);
+            $discord->set_webhook_url($_ENV["REFER_WEBHOOK"]);
+            $discord->internal_log("$username - reffered by $referInfo->refername\n". $referInfo->signups + 1 . " signups.", "New Refferal Signup!");
+            $discord->set_webhook_url($_ENV["SIGNUP_WEBHOOK"]);
+        }
 
         $insert = array(
             "username"=>$username,
@@ -395,6 +430,21 @@ class authentication {
         return false;
     } 
 
+    public function checkIsCompromised($user){
+        
+        global $db;
+
+        if($user->compromised){
+            if($user->compromised == 1 || $user->compromised == true){
+                $db->table("sessions")->where("author", $user->id)->delete();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function login($username, $password){
 
         global $db;
@@ -444,11 +494,31 @@ class authentication {
 
                 $unique = array_map(function($user) {
                     if($user->last_login_ip !== null){
-                        return $user->username;
+                        $isBanned = $this->is_banned($user->id);
+
+                        $altAppend = "";
+
+                        // vmware says ur gay
+                        if($isBanned){
+                            $altAppend = " (BANNED❌)";
+                        } else {
+                            $altAppend = " (OK✅)"; 
+                        }
+                        return $user->username . $altAppend;
                     } 
 
                     if($user->register_ip !== null){
-                        return $user->username;
+                        $isBanned = $this->is_banned($user->id);
+
+                        $altAppend = "";
+
+                        // vmware wanted me to use emojis
+                        if($isBanned){
+                            $altAppend = " (BANNED❌)";
+                        } else {
+                            $altAppend = " (OK✅)"; 
+                        }
+                        return $user->username . $altAppend;
                     } 
                 }, $unique);
 
@@ -459,6 +529,26 @@ class authentication {
                 $possiblealts = implode(", ", $unique);
                 $db->table("users")->where("id", $user->id)->update($update);
 
+                $isBanned = $this->is_banned($user->id);
+
+                $append = "";
+
+                if($isBanned){
+                    $append = "\n\nUser is banned! (Likely a PG attempt)";
+                }
+                
+
+                $compResult = $this->checkIsCompromised($user);
+
+                if($compResult){
+                    $errorjson = array(
+                        "code"=>400,
+                        "message"=>"For security reasons, you must reset your password."
+                    );
+                    return $errorjson;
+                }
+                
+
                 if($this->havesession()){
                     $this->relateaccount($user->id);
                     $errorjson = array(
@@ -466,7 +556,7 @@ class authentication {
                         "message"=>"Login Success."
                     );
                     
-                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts", "Login");
+                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts" . $append, "Login");
                     return $errorjson;
                 } else {
                     $this->createsession($user->id);
@@ -475,7 +565,7 @@ class authentication {
                         "message"=>"Login Success."
                     );
                                         
-                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts", "Login");
+                    $discord->internal_log("New Login: " . $user->username . "\nIP: $ip\nIs using a vpn: $vpntext\nPossible Alts: $possiblealts . $append", "Login");
                     return $errorjson;
                 }
             } else {
@@ -557,6 +647,8 @@ class authentication {
         if (!$userid) return false;
 
         $userinfo = $db->table('users')->where('id', '=', $userid)->first();
+
+        $compResult = $this->checkIsCompromised($userinfo);
 
         $this->auth_checks($userinfo, $session);
     
@@ -658,8 +750,8 @@ class authentication {
                 $update["active_where"] = "Website";
             }
 
-            //$db->table("users")->where("id", $userinfo->id)->update($update);
-            //$db->table("logs")->insert($insert);
+            $db->table("users")->where("id", $userinfo->id)->update($update);
+            $db->table("logs")->insert($insert);
    
         }
     }

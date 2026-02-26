@@ -93,6 +93,7 @@ $router->post('/api/v1/change-password', function(){
         if($ticketInfo){
             if($pass == $confpass){
                 $update = [
+                    "compromised"=>0,
                     "password"=>password_hash($pass, PASSWORD_DEFAULT)
                 ];
 
@@ -357,7 +358,11 @@ $router->post('/my/account/sendverifyemail', function(){
 
                 $allowedEmailDomains = [
                     "gmail.com",
-                    "icloud.com"
+                    "icloud.com",
+                    "outlook.com",
+                    "live.com",
+                    "watr.lol",
+                    "watrbx.wtf"
                 ];
 
                 $split = explode("@", $email);
@@ -377,8 +382,21 @@ $router->post('/my/account/sendverifyemail', function(){
                 
                 $emailDotCount = substr_count($emailName, '.');
 
-                if($emailDotCount > 3){
+                if($emailDotCount > 0){
                     $discord->internal_log("$currentuser->username is attempting to verify with email $email but is likely spam", "Email Verification Attempt");
+                    $discord->send_webhook($_ENV["SIGNUP_WEBHOOK"], "DIDDY ALERT", "someones trying to diddle us... <@&1400166306128461904>");
+                    http_response_code(403);
+                    $return = [
+                        "success"=>False,
+                        "error"=>"An error occured verifying your email, please try again later."
+                    ];
+
+                    die(json_encode($return));
+                }
+
+                if (preg_match('/[b-df-hj-np-tv-z]{6,}/i', $email)){
+                    $discord->internal_log("$currentuser->username is attempting to verify with email $email but is likely spam (regex)", "Email Verification Attempt");
+                    $discord->send_webhook($_ENV["SIGNUP_WEBHOOK"], "DIDDY ALERT", "someones trying to diddle us... <@&1400166306128461904>");
                     http_response_code(403);
                     $return = [
                         "success"=>False,
@@ -1475,7 +1493,6 @@ $router->post('/api/v1/audio-creator', function(){
 
         $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($fileinfo, $_FILES["audio"]["tmp_name"]);
-        finfo_close($fileinfo);
 
         if($mime !== "audio/mpeg"){
             die("Only .mp3 files are supported currently.");
@@ -1769,6 +1786,25 @@ $router->post('/moderation/filtertext/', function(){
         
         $staterinfo = $auth->getuserbyid($userid);
 
+        $isSus = false;
+
+        $badNameArray = [
+            "elysian",
+            "alpha x",
+            "alphax",
+            "citeful",
+            "exploiting",
+            "exploits",
+            "nigg",
+            "exploit"
+        ];
+
+        foreach ($badNameArray as $badName){
+            if(str_contains($text, $badName)){
+                $isSus = true;
+            }
+        }
+
         $insert = [
             "userid"=>$userid,
             "message"=>$text,
@@ -1778,6 +1814,10 @@ $router->post('/moderation/filtertext/', function(){
         $db->table("chatlogs")->insert($insert);
 
         $discord->send_webhook($_ENV["CHATLOG_WEBHOOK"], "Chat Log", $staterinfo->username . ": `" . $textfiltered . "`\n" . $staterinfo->username . " (Unfiltered):` " . $text . "`");
+
+        if($isSus){
+            $discord->send_webhook($_ENV["CHATLOG_WEBHOOK"], "Chat Log Alert", "<@&1400166306128461904>");
+        }
 
         $return = json_encode([
             "success" => true,

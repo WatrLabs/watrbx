@@ -5,7 +5,7 @@ use watrlabs\authentication;
 use watrlabs\users\getuserinfo;
 use watrlabs\logging\discord;
 use watrbx\sitefunctions;
-
+use watrbx\refers;
 
 require_once '../init.php';
 
@@ -73,6 +73,7 @@ try {
                 require("../views/maintenance.php");
                 exit;
             }
+
             
         }
 
@@ -137,6 +138,21 @@ try {
                 $user = $currentuser->username;
             }
             $discord->internal_log("Suspicious behaviour found. URL:\n$uriraw\nUser: $user", "Potential SQL Injection!");
+        }
+
+        $refers = new refers();
+        $discord->set_webhook_url($_ENV["REFER_WEBHOOK"]);
+        
+        if(isset($_GET["refer"])){
+            $referName = $_GET["refer"];
+            $referInfo = $refers->getReferInfo($referName);
+
+            if($referInfo && !$refers->hasReferCookie()){
+                $refers->incrementRefer($referName);
+                $refers->assignReferCookie($referName);
+                $discord->internal_log("Someone has been reffered by: $referName.\n This refferal has had " . $referInfo->uses + 1 . " uses.", "New Refferal!");
+            }              
+
         }
         
         $response = $router->dispatch($uri, $method);

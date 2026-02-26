@@ -24,6 +24,17 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
 
+register_shutdown_function(function () {
+    $error = error_get_last();
+
+    if ($error !== null) {
+        ob_clean();
+        header("Content-type: text/plain");
+        die("watrbx is currently down. please try again later");
+    }
+});
+
+
 require_once __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
